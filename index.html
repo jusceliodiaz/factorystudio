@@ -1741,6 +1741,38 @@
         background: rgba(255, 255, 255, 0.55);
         border-color: rgba(255, 255, 255, 0.55);
       }
+
+      /* ── LANG SWITCHER ── */
+      .lang-switcher {
+        position: absolute;
+        top: 28px;
+        right: var(--pad);
+        display: flex;
+        gap: 6px;
+        z-index: 10;
+      }
+      .lang-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+        font-size: 20px;
+        color: #fff;
+        filter: grayscale(1) opacity(0.35);
+        transition: filter 0.25s ease, transform 0.25s ease;
+        display: flex;
+        align-items: center;
+        border-radius: 4px;
+      }
+      .lang-btn.active {
+        filter: none;
+        transform: scale(1.22);
+      }
+      .lang-btn:hover:not(.active) {
+        filter: grayscale(0.4) opacity(0.65);
+        transform: scale(1.1);
+      }
     </style>
   </head>
 
@@ -1768,15 +1800,21 @@
       </video>
       <div class="hero-overlay"></div>
 
+      <div class="lang-switcher" role="group" aria-label="Selecionar idioma">
+        <button class="lang-btn active" data-lang="pt" aria-label="Português (Brasil)" title="Português">🇧🇷</button>
+        <button class="lang-btn" data-lang="en" aria-label="English (US)" title="English">🇺🇸</button>
+        <button class="lang-btn" data-lang="es" aria-label="Español" title="Español">🇪🇸</button>
+      </div>
+
       <img
         src="images/logo_site2.png"
         alt="Factory Interactive — Studio de Experiências Digitais"
         class="hero-logo"
       />
 
-      <h1>Interatividade, Design e Experiências Digitais.</h1>
+      <h1 data-i18n="hero-h1">Interatividade, Design e Experiências Digitais.</h1>
 
-      <p>
+      <p data-i18n="hero-p">
         Criamos interfaces, websites, experiências interativas e soluções
         visuais para marcas, produtos e empresas contemporâneas.
       </p>
@@ -1808,13 +1846,13 @@
         <div class="ph-viewport">
           <div class="ph-track">
             <div class="ph-slide ph-slide-text">
-              <div class="section-label">— Portfólio</div>
-              <h2 class="ph-heading">
+              <div class="section-label" data-i18n="ph-label">— Portfólio</div>
+              <h2 class="ph-heading" data-i18n="ph-heading" data-i18n-html="true">
                 Criamos experiências que
                 <span class="ph-muted">unem design</span> e
                 <span class="ph-muted">interatividade.</span>
               </h2>
-              <p class="ph-desc">
+              <p class="ph-desc" data-i18n="ph-desc">
                 A Factory Interactive desenvolve websites, interfaces e soluções
                 digitais focadas em experiência visual, interatividade e
                 narrativa contemporânea.
@@ -1851,12 +1889,12 @@
                 </div>
                 <div class="ph-meta">
                   <div class="ph-meta-left">
-                    <div class="ph-meta-label">Projeto / Cliente</div>
+                    <div class="ph-meta-label" data-i18n="ph-meta-projeto">Projeto / Cliente</div>
                     <div class="ph-meta-title">LA TERROIR</div>
                     <div class="ph-meta-sub">Camila Dirani</div>
                   </div>
                   <div class="ph-meta-right">
-                    <div class="ph-meta-label">Ano</div>
+                    <div class="ph-meta-label" data-i18n="ph-meta-ano">Ano</div>
                     <div class="ph-meta-title">2026</div>
                   </div>
                 </div>
@@ -1893,12 +1931,12 @@
                 </div>
                 <div class="ph-meta">
                   <div class="ph-meta-left">
-                    <div class="ph-meta-label">Projeto / Cliente</div>
+                    <div class="ph-meta-label" data-i18n="ph-meta-projeto">Projeto / Cliente</div>
                     <div class="ph-meta-title">ITAPORÃ</div>
                     <div class="ph-meta-sub">Eduardo Rabachini</div>
                   </div>
                   <div class="ph-meta-right">
-                    <div class="ph-meta-label">Ano</div>
+                    <div class="ph-meta-label" data-i18n="ph-meta-ano">Ano</div>
                     <div class="ph-meta-title">2025</div>
                   </div>
                 </div>
@@ -1935,12 +1973,12 @@
                 </div>
                 <div class="ph-meta">
                   <div class="ph-meta-left">
-                    <div class="ph-meta-label">Projeto / Cliente</div>
+                    <div class="ph-meta-label" data-i18n="ph-meta-projeto">Projeto / Cliente</div>
                     <div class="ph-meta-title">MODUS CONSULTING</div>
                     <div class="ph-meta-sub">Miami — FL</div>
                   </div>
                   <div class="ph-meta-right">
-                    <div class="ph-meta-label">Ano</div>
+                    <div class="ph-meta-label" data-i18n="ph-meta-ano">Ano</div>
                     <div class="ph-meta-title">2026</div>
                   </div>
                 </div>
@@ -1948,8 +1986,8 @@
             </a>
 
             <div class="ph-slide ph-slide-end">
-              <div class="section-label">— Fim da Sessão</div>
-              <h2 class="ph-end-heading">
+              <div class="section-label" data-i18n="ph-end-label">— Fim da Sessão</div>
+              <h2 class="ph-end-heading" data-i18n="ph-end-heading" data-i18n-html="true">
                 <span style="color: #4a4a4a"
                   >Cada interface é desenvolvida para criar</span
                 >
@@ -1983,8 +2021,8 @@
           <div class="svc-content">
             <span class="svc-num">01</span>
             <div class="svc-bottom">
-              <h3>Websites & Digital Experiences</h3>
-              <p>
+              <h3 data-i18n="svc-web-h3">Websites & Digital Experiences</h3>
+              <p data-i18n="svc-web-p">
                 Interfaces digitais e experiências web desenvolvidas para
                 marcas, produtos e apresentações contemporâneas com alto impacto
                 visual.
@@ -2002,10 +2040,10 @@
         <article
           class="svc-card svc-card--special svc-ai reveal reveal-delay-1"
         >
-          <div class="svc-badge">IA</div>
+          <div class="svc-badge" data-i18n="svc-ai-badge">IA</div>
           <div>
-            <h3>AI Creative Interface</h3>
-            <p>
+            <h3 data-i18n="svc-ai-h3">AI Creative Interface</h3>
+            <p data-i18n="svc-ai-p">
               Ferramenta visual baseada em IA para geração de imagens, conceitos
               e iterações criativas em tempo real.
             </p>
@@ -2029,8 +2067,8 @@
           <div class="svc-content">
             <span class="svc-num">02</span>
             <div class="svc-bottom">
-              <h3>Interactive Archviz</h3>
-              <p>
+              <h3 data-i18n="svc-arch-h3">Interactive Archviz</h3>
+              <p data-i18n="svc-arch-p">
                 Experiências arquitetônicas interativas com navegação
                 cinematográfica e visualização realtime.
               </p>
@@ -2055,8 +2093,8 @@
           <div class="svc-content">
             <span class="svc-num">03</span>
             <div class="svc-bottom">
-              <h3>Realtime & Unreal Engine</h3>
-              <p>
+              <h3 data-i18n="svc-real-h3">Realtime & Unreal Engine</h3>
+              <p data-i18n="svc-real-p">
                 Experiências realtime e visualização interativa com qualidade
                 cinematográfica.
               </p>
@@ -2080,8 +2118,8 @@
           <div class="svc-content">
             <span class="svc-num">04</span>
             <div class="svc-bottom">
-              <h3>VR & AR</h3>
-              <p>
+              <h3 data-i18n="svc-vr-h3">VR & AR</h3>
+              <p data-i18n="svc-vr-p">
                 Experiências imersivas para visualização, interação e
                 apresentações digitais de alto impacto.
               </p>
@@ -2098,10 +2136,10 @@
         <article
           class="svc-card svc-card--special svc-voz reveal reveal-delay-3"
         >
-          <div class="svc-badge">VOZ</div>
+          <div class="svc-badge" data-i18n="svc-voz-badge">VOZ</div>
           <div>
-            <h3>Voice Interfaces</h3>
-            <p>
+            <h3 data-i18n="svc-voz-h3">Voice Interfaces</h3>
+            <p data-i18n="svc-voz-p">
               Interfaces controladas por voz para experiências imersivas e
               interação natural com o ambiente digital.
             </p>
@@ -2130,7 +2168,7 @@
         <div class="seq-overlay">
           <div class="seq-content">
             <span class="seq-label">— Factory Interactive</span>
-            <h2 class="seq-title">
+            <h2 class="seq-title" data-i18n="seq-title" data-i18n-html="true">
               Interatividade<br /><em>levada a sério.</em>
             </h2>
             <a
@@ -2193,7 +2231,7 @@
                 stroke="none"
               />
             </svg>
-            Aéreo
+            <span data-i18n="seq-btn-aerial">Aéreo</span>
           </button>
           <button
             class="seq-scrub-btn"
@@ -2218,7 +2256,7 @@
               <line x1="7" y1="16" x2="7" y2="19" />
               <line x1="17" y1="16" x2="17" y2="19" />
             </svg>
-            Living
+            <span data-i18n="seq-btn-living">Living</span>
           </button>
         </div>
       </div>
@@ -2226,11 +2264,11 @@
 
     <!-- ── CTA ── -->
     <section class="cta reveal" id="contact" aria-labelledby="cta-heading">
-      <div class="section-label">Iniciar Projeto</div>
-      <h2 id="cta-heading">
+      <div class="section-label" data-i18n="cta-label">Iniciar Projeto</div>
+      <h2 id="cta-heading" data-i18n="cta-h2">
         Transformamos ideias em experiências digitais de alto impacto.
       </h2>
-      <p>
+      <p data-i18n="cta-p">
         Interfaces, soluções interativas e ferramentas visuais desenvolvidas
         para marcas, produtos e empresas modernas.
       </p>
@@ -2255,31 +2293,31 @@
       <ul>
         <li>
           <a class="side-dot active" href="#hero" data-target="hero">
-            <span class="side-dot-label">Início</span>
+            <span class="side-dot-label" data-i18n="nav-inicio">Início</span>
             <span class="side-dot-pip"></span>
           </a>
         </li>
         <li>
           <a class="side-dot" href="#portfolio" data-target="portfolio">
-            <span class="side-dot-label">Portfólio</span>
+            <span class="side-dot-label" data-i18n="nav-portfolio">Portfólio</span>
             <span class="side-dot-pip"></span>
           </a>
         </li>
         <li>
           <a class="side-dot" href="#services" data-target="services">
-            <span class="side-dot-label">Serviços</span>
+            <span class="side-dot-label" data-i18n="nav-servicos">Serviços</span>
             <span class="side-dot-pip"></span>
           </a>
         </li>
         <li>
           <a class="side-dot" href="#sequencer" data-target="sequencer">
-            <span class="side-dot-label">Interatividade</span>
+            <span class="side-dot-label" data-i18n="nav-interatividade">Interatividade</span>
             <span class="side-dot-pip"></span>
           </a>
         </li>
         <li>
           <a class="side-dot" href="#contact" data-target="contact">
-            <span class="side-dot-label">Contato</span>
+            <span class="side-dot-label" data-i18n="nav-contato">Contato</span>
             <span class="side-dot-pip"></span>
           </a>
         </li>
@@ -2288,7 +2326,7 @@
 
     <!-- ── FOOTER ── -->
     <footer>
-      <small>Factory Studio © 2026 · Todos os direitos reservados.</small>
+      <small data-i18n="footer">Factory Studio © 2026 · Todos os direitos reservados.</small>
     </footer>
 
     <script>
@@ -2420,11 +2458,13 @@
 
           const seqPinsEl = document.querySelector(".seq-pins");
           Object.entries(POI_DATA).forEach(([group, pins]) => {
-            pins.forEach(({ px, py, title, desc, pano }) => {
+            pins.forEach(({ px, py, title, desc, pano }, idx) => {
+              const titleKey = `poi-${group}-${idx}-title`;
+              const descKey  = `poi-${group}-${idx}-desc`;
               const panoBtn = pano
                 ? `<button class="poi-pano-btn" onclick="openPanoModal('${pano}')">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12c3-4 5-6 10-6s7 2 10 6"/><path d="M2 12c3 4 5 6 10 6s7-2 10-6"/></svg>
-                    Ver 360°
+                    <span data-i18n="pano-btn-360">Ver 360°</span>
                   </button>`
                 : "";
               seqPinsEl.insertAdjacentHTML(
@@ -2432,8 +2472,8 @@
                 `<div class="poi-pin" data-group="${group}" style="--px:${px}%;--py:${py}%">
                   <button class="poi-dot" aria-label="${title}"></button>
                   <div class="poi-popup">
-                    <div class="poi-popup-title">${title}</div>
-                    <div class="poi-popup-desc">${desc}</div>
+                    <div class="poi-popup-title" data-i18n="${titleKey}">${title}</div>
+                    <div class="poi-popup-desc" data-i18n="${descKey}">${desc}</div>
                     ${panoBtn}
                   </div>
                 </div>`,
@@ -2670,11 +2710,11 @@
         <div id="pano-room-label"></div>
         <canvas id="pano-canvas"></canvas>
         <div id="pano-hotspots"></div>
-        <div id="pano-hint">Arraste para explorar · Scroll para zoom</div>
+        <div id="pano-hint" data-i18n="pano-hint">Arraste para explorar · Scroll para zoom</div>
         <div id="pano-rooms">
-          <button class="pano-room-btn" data-room="quarto">Quarto</button>
-          <button class="pano-room-btn" data-room="living">Living</button>
-          <button class="pano-room-btn" data-room="sacada">Sacada</button>
+          <button class="pano-room-btn" data-room="quarto" data-i18n="pano-room-quarto">Quarto</button>
+          <button class="pano-room-btn" data-room="living" data-i18n="pano-room-living">Living</button>
+          <button class="pano-room-btn" data-room="sacada" data-i18n="pano-room-sacada">Sacada</button>
         </div>
         <div id="pano-loading">
           <div id="pano-spinner"></div>
@@ -2735,7 +2775,7 @@
         const hint = document.getElementById("pano-hint");
 
         loading.classList.remove("hidden");
-        loading.innerHTML = '<div id="pano-spinner"></div>Carregando...';
+        loading.innerHTML = '<div id="pano-spinner"></div>' + (window._panoLoadingText || 'Carregando...');
         hint.classList.remove("hidden");
         modal.setAttribute("aria-hidden", "false");
         modal.classList.add("open");
@@ -2768,10 +2808,12 @@
         }
       }
 
-      function _setRoomUI(roomKey) {
+      window._setRoomUI = function _setRoomUI(roomKey) {
         _panoCurrentRoom = roomKey;
+        window._panoCurrentRoom = roomKey;
         const room = TOUR[roomKey];
-        document.getElementById("pano-room-label").textContent = room.label;
+        const rl = window._panoRoomLabels || {};
+        document.getElementById("pano-room-label").textContent = rl[roomKey] || room.label;
         document.querySelectorAll(".pano-room-btn").forEach((b) => {
           b.classList.toggle("active", b.dataset.room === roomKey);
         });
@@ -2787,7 +2829,7 @@
               </svg>
             </div>
             <div class="pano-hotspot-label"></div>`;
-          el.querySelector(".pano-hotspot-label").textContent = h.label;
+          el.querySelector(".pano-hotspot-label").textContent = rl[h.leadsTo] || h.label;
           el.addEventListener("click", () => _navigateToPano(h.leadsTo));
           container.appendChild(el);
         });
@@ -2844,7 +2886,7 @@
         hotspotsEl.style.opacity = "0";
 
         setTimeout(() => {
-          loading.innerHTML = '<div id="pano-spinner"></div>Carregando...';
+          loading.innerHTML = '<div id="pano-spinner"></div>' + (window._panoLoadingText || 'Carregando...');
           loading.classList.remove("hidden");
           new THREE.TextureLoader().load(
             TOUR[roomKey].src,
@@ -3058,6 +3100,238 @@
         btn.addEventListener("click", () => _navigateToPano(btn.dataset.room));
       });
       document.getElementById("pano-modal-backdrop").addEventListener("click", closePanoModal);
+    </script>
+
+    <!-- ── I18N ── -->
+    <script>
+      (function () {
+        const T = {
+          pt: {
+            'hero-h1':        'Interatividade, Design e Experiências Digitais.',
+            'hero-p':         'Criamos interfaces, websites, experiências interativas e soluções visuais para marcas, produtos e empresas contemporâneas.',
+            'ph-label':       '— Portfólio',
+            'ph-heading':     'Criamos experiências que <span class="ph-muted">unem design</span> e <span class="ph-muted">interatividade.</span>',
+            'ph-desc':        'A Factory Interactive desenvolve websites, interfaces e soluções digitais focadas em experiência visual, interatividade e narrativa contemporânea.',
+            'ph-meta-projeto':'Projeto / Cliente',
+            'ph-meta-ano':    'Ano',
+            'ph-end-label':   '— Fim da Sessão',
+            'ph-end-heading': '<span style="color:#4a4a4a">Cada interface é desenvolvida para criar</span> <em>presença, impacto e interação</em><span style="color:#4a4a4a">.</span>',
+            'svc-web-h3':     'Websites & Digital Experiences',
+            'svc-web-p':      'Interfaces digitais e experiências web desenvolvidas para marcas, produtos e apresentações contemporâneas com alto impacto visual.',
+            'svc-ai-badge':   'IA',
+            'svc-ai-h3':      'AI Creative Interface',
+            'svc-ai-p':       'Ferramenta visual baseada em IA para geração de imagens, conceitos e iterações criativas em tempo real.',
+            'svc-arch-h3':    'Interactive Archviz',
+            'svc-arch-p':     'Experiências arquitetônicas interativas com navegação cinematográfica e visualização realtime.',
+            'svc-real-h3':    'Realtime & Unreal Engine',
+            'svc-real-p':     'Experiências realtime e visualização interativa com qualidade cinematográfica.',
+            'svc-vr-h3':      'VR & AR',
+            'svc-vr-p':       'Experiências imersivas para visualização, interação e apresentações digitais de alto impacto.',
+            'svc-voz-badge':  'VOZ',
+            'svc-voz-h3':     'Voice Interfaces',
+            'svc-voz-p':      'Interfaces controladas por voz para experiências imersivas e interação natural com o ambiente digital.',
+            'seq-title':      'Interatividade<br><em>levada a sério.</em>',
+            'seq-btn-aerial': 'Aéreo',
+            'seq-btn-living': 'Living',
+            'cta-label':      'Iniciar Projeto',
+            'cta-h2':         'Transformamos ideias em experiências digitais de alto impacto.',
+            'cta-p':          'Interfaces, soluções interativas e ferramentas visuais desenvolvidas para marcas, produtos e empresas modernas.',
+            'nav-inicio':     'Início',
+            'nav-portfolio':  'Portfólio',
+            'nav-servicos':   'Serviços',
+            'nav-interatividade': 'Interatividade',
+            'nav-contato':    'Contato',
+            'footer':         'Factory Studio © 2026 · Todos os direitos reservados.',
+            'poi-aerial-0-title': 'Torre Residencial',
+            'poi-aerial-0-desc':  'Empreendimento de alto padrão com piscina no rooftop e vista 360° para a baía e a cidade.',
+            'poi-aerial-1-title': 'Baía Norte',
+            'poi-aerial-1-desc':  'Vista privilegiada para a baía e as ilhas naturais ao redor da capital catarinense.',
+            'poi-aerial-2-title': 'Ponte Hercílio Luz',
+            'poi-aerial-2-desc':  'Ícone histórico e cartão-postal de Florianópolis, conectando a ilha ao continente.',
+            'poi-aerial-3-title': 'Morro da Cruz',
+            'poi-aerial-3-desc':  'Ponto mais alto da Ilha, com vista panorâmica de toda a cidade e do oceano Atlântico.',
+            'poi-living-0-title': 'Área de Estar',
+            'poi-living-0-desc':  'Sofás de design italiano com acabamentos premium e integração total com a varanda.',
+            'pano-btn-360':       'Ver 360°',
+            'pano-hint':          'Arraste para explorar · Scroll para zoom',
+            'pano-room-quarto':   'Quarto',
+            'pano-room-living':   'Living',
+            'pano-room-sacada':   'Sacada',
+            'pano-loading':       'Carregando...',
+            'pano-rl-quarto':     'Quarto',
+            'pano-rl-living':     'Living',
+            'pano-rl-sacada':     'Sacada',
+          },
+          en: {
+            'hero-h1':        'Interactivity, Design and Digital Experiences.',
+            'hero-p':         'We create interfaces, websites, interactive experiences and visual solutions for contemporary brands, products and companies.',
+            'ph-label':       '— Portfolio',
+            'ph-heading':     'We create experiences that <span class="ph-muted">blend design</span> and <span class="ph-muted">interactivity.</span>',
+            'ph-desc':        'Factory Interactive develops websites, interfaces and digital solutions focused on visual experience, interactivity and contemporary narrative.',
+            'ph-meta-projeto':'Project / Client',
+            'ph-meta-ano':    'Year',
+            'ph-end-label':   '— End of Session',
+            'ph-end-heading': '<span style="color:#4a4a4a">Every interface is crafted to create</span> <em>presence, impact and interaction</em><span style="color:#4a4a4a">.</span>',
+            'svc-web-h3':     'Websites & Digital Experiences',
+            'svc-web-p':      'Digital interfaces and web experiences developed for brands, products and contemporary presentations with high visual impact.',
+            'svc-ai-badge':   'AI',
+            'svc-ai-h3':      'AI Creative Interface',
+            'svc-ai-p':       'AI-based visual tool for generating images, concepts and creative iterations in real time.',
+            'svc-arch-h3':    'Interactive Archviz',
+            'svc-arch-p':     'Interactive architectural experiences with cinematic navigation and realtime visualization.',
+            'svc-real-h3':    'Realtime & Unreal Engine',
+            'svc-real-p':     'Realtime experiences and interactive visualization with cinematic quality.',
+            'svc-vr-h3':      'VR & AR',
+            'svc-vr-p':       'Immersive experiences for visualization, interaction and high-impact digital presentations.',
+            'svc-voz-badge':  'VOICE',
+            'svc-voz-h3':     'Voice Interfaces',
+            'svc-voz-p':      'Voice-controlled interfaces for immersive experiences and natural interaction with the digital environment.',
+            'seq-title':      'Interactivity<br><em>taken seriously.</em>',
+            'seq-btn-aerial': 'Aerial',
+            'seq-btn-living': 'Living',
+            'cta-label':      'Start a Project',
+            'cta-h2':         'We transform ideas into high-impact digital experiences.',
+            'cta-p':          'Interfaces, interactive solutions and visual tools developed for modern brands, products and companies.',
+            'nav-inicio':     'Home',
+            'nav-portfolio':  'Portfolio',
+            'nav-servicos':   'Services',
+            'nav-interatividade': 'Interactivity',
+            'nav-contato':    'Contact',
+            'footer':         'Factory Studio © 2026 · All rights reserved.',
+            'poi-aerial-0-title': 'Residential Tower',
+            'poi-aerial-0-desc':  'High-end development with rooftop pool and 360° views of the bay and the city.',
+            'poi-aerial-1-title': 'North Bay',
+            'poi-aerial-1-desc':  'Privileged views of the bay and natural islands surrounding the state capital.',
+            'poi-aerial-2-title': 'Hercílio Luz Bridge',
+            'poi-aerial-2-desc':  'Historic landmark and postcard of Florianópolis, connecting the island to the mainland.',
+            'poi-aerial-3-title': 'Morro da Cruz',
+            'poi-aerial-3-desc':  'Highest point of the island, with panoramic views of the entire city and the Atlantic Ocean.',
+            'poi-living-0-title': 'Living Area',
+            'poi-living-0-desc':  'Italian-design sofas with premium finishes and full integration with the balcony.',
+            'pano-btn-360':       'View 360°',
+            'pano-hint':          'Drag to explore · Scroll to zoom',
+            'pano-room-quarto':   'Bedroom',
+            'pano-room-living':   'Living',
+            'pano-room-sacada':   'Balcony',
+            'pano-loading':       'Loading...',
+            'pano-rl-quarto':     'Bedroom',
+            'pano-rl-living':     'Living',
+            'pano-rl-sacada':     'Balcony',
+          },
+          es: {
+            'hero-h1':        'Interactividad, Diseño y Experiencias Digitales.',
+            'hero-p':         'Creamos interfaces, sitios web, experiencias interactivas y soluciones visuales para marcas, productos y empresas contemporáneas.',
+            'ph-label':       '— Portafolio',
+            'ph-heading':     'Creamos experiencias que <span class="ph-muted">unen diseño</span> e <span class="ph-muted">interactividad.</span>',
+            'ph-desc':        'Factory Interactive desarrolla sitios web, interfaces y soluciones digitales enfocadas en experiencia visual, interactividad y narrativa contemporánea.',
+            'ph-meta-projeto':'Proyecto / Cliente',
+            'ph-meta-ano':    'Año',
+            'ph-end-label':   '— Fin de Sesión',
+            'ph-end-heading': '<span style="color:#4a4a4a">Cada interfaz se desarrolla para crear</span> <em>presencia, impacto e interacción</em><span style="color:#4a4a4a">.</span>',
+            'svc-web-h3':     'Websites & Digital Experiences',
+            'svc-web-p':      'Interfaces digitales y experiencias web desarrolladas para marcas, productos y presentaciones contemporáneas con alto impacto visual.',
+            'svc-ai-badge':   'IA',
+            'svc-ai-h3':      'AI Creative Interface',
+            'svc-ai-p':       'Herramienta visual basada en IA para generación de imágenes, conceptos e iteraciones creativas en tiempo real.',
+            'svc-arch-h3':    'Interactive Archviz',
+            'svc-arch-p':     'Experiencias arquitectónicas interactivas con navegación cinematográfica y visualización en tiempo real.',
+            'svc-real-h3':    'Realtime & Unreal Engine',
+            'svc-real-p':     'Experiencias en tiempo real y visualización interactiva con calidad cinematográfica.',
+            'svc-vr-h3':      'VR & AR',
+            'svc-vr-p':       'Experiencias inmersivas para visualización, interacción y presentaciones digitales de alto impacto.',
+            'svc-voz-badge':  'VOZ',
+            'svc-voz-h3':     'Interfaces de Voz',
+            'svc-voz-p':      'Interfaces controladas por voz para experiencias inmersivas e interacción natural con el entorno digital.',
+            'seq-title':      'Interactividad<br><em>tomada en serio.</em>',
+            'seq-btn-aerial': 'Aéreo',
+            'seq-btn-living': 'Living',
+            'cta-label':      'Iniciar Proyecto',
+            'cta-h2':         'Transformamos ideas en experiencias digitales de alto impacto.',
+            'cta-p':          'Interfaces, soluciones interactivas y herramientas visuales desarrolladas para marcas, productos y empresas modernas.',
+            'nav-inicio':     'Inicio',
+            'nav-portfolio':  'Portafolio',
+            'nav-servicos':   'Servicios',
+            'nav-interatividade': 'Interactividad',
+            'nav-contato':    'Contacto',
+            'footer':         'Factory Studio © 2026 · Todos los derechos reservados.',
+            'poi-aerial-0-title': 'Torre Residencial',
+            'poi-aerial-0-desc':  'Desarrollo de alto estándar con piscina en el rooftop y vista 360° de la bahía y la ciudad.',
+            'poi-aerial-1-title': 'Bahía Norte',
+            'poi-aerial-1-desc':  'Vista privilegiada de la bahía y las islas naturales alrededor de la capital catarinense.',
+            'poi-aerial-2-title': 'Puente Hercílio Luz',
+            'poi-aerial-2-desc':  'Ícono histórico y postal de Florianópolis, conectando la isla con el continente.',
+            'poi-aerial-3-title': 'Morro da Cruz',
+            'poi-aerial-3-desc':  'Punto más alto de la isla, con vista panorámica de toda la ciudad y del océano Atlántico.',
+            'poi-living-0-title': 'Área de Estar',
+            'poi-living-0-desc':  'Sofás de diseño italiano con acabados premium e integración total con la terraza.',
+            'pano-btn-360':       'Ver 360°',
+            'pano-hint':          'Arrastra para explorar · Scroll para zoom',
+            'pano-room-quarto':   'Habitación',
+            'pano-room-living':   'Living',
+            'pano-room-sacada':   'Terraza',
+            'pano-loading':       'Cargando...',
+            'pano-rl-quarto':     'Habitación',
+            'pano-rl-living':     'Living',
+            'pano-rl-sacada':     'Terraza',
+          },
+        };
+
+        const LANG_MAP = { pt: 'pt-BR', en: 'en-US', es: 'es-ES' };
+
+        function applyLang(lang) {
+          const dict = T[lang];
+          if (!dict) return;
+
+          document.querySelectorAll('[data-i18n]').forEach(function (el) {
+            const key = el.getAttribute('data-i18n');
+            const val = dict[key];
+            if (val === undefined) return;
+            if (el.getAttribute('data-i18n-html') === 'true') {
+              el.innerHTML = val;
+            } else {
+              el.textContent = val;
+            }
+          });
+
+          // Globals usados pelo panorama
+          window._panoLoadingText = dict['pano-loading'] || 'Carregando...';
+          window._panoRoomLabels = {
+            quarto: dict['pano-rl-quarto'] || 'Quarto',
+            living: dict['pano-rl-living'] || 'Living',
+            sacada: dict['pano-rl-sacada'] || 'Sacada',
+          };
+
+          // Re-renderiza o quarto atual se o modal estiver aberto
+          if (window._panoCurrentRoom && typeof window._setRoomUI === 'function') {
+            window._setRoomUI(window._panoCurrentRoom);
+          }
+
+          document.documentElement.lang = LANG_MAP[lang] || lang;
+          localStorage.setItem('fi-lang', lang);
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            const lang = btn.getAttribute('data-lang');
+            document.querySelectorAll('.lang-btn').forEach(function (b) {
+              b.classList.toggle('active', b === btn);
+            });
+            applyLang(lang);
+          });
+        });
+
+        // Restaura idioma salvo
+        const saved = localStorage.getItem('fi-lang');
+        if (saved && T[saved] && saved !== 'pt') {
+          const btn = document.querySelector('.lang-btn[data-lang="' + saved + '"]');
+          if (btn) {
+            document.querySelectorAll('.lang-btn').forEach(function (b) {
+              b.classList.toggle('active', b === btn);
+            });
+            applyLang(saved);
+          }
+        }
+      })();
     </script>
   </body>
 </html>
