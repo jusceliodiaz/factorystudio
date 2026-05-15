@@ -4,190 +4,215 @@
 
 ---
 
-## 🧠 Sobre o Projeto
+## Sobre o Projeto
 
-**Projeto:** Site de portfólio da Factory Interactive — estúdio de design freelancer  
-**Arquivo principal:** `factoryinteractive.html` (one-page, HTML/CSS/JS puro, sem build tools)  
-**Objetivo:** Site dark/minimalista premium para atrair clientes de design web
+**Projeto:** Site de portfólio da Factory Interactive — studio criativo especializado em experiências digitais para arquitetura e mercado imobiliário  
+**Arquivo principal:** `factoryinteractive.html` (one-page, HTML/CSS/JS puro, sem build tools, sem frameworks)  
+**Objetivo:** Site dark/premium para atrair arquitetos, incorporadoras e empreendimentos de alto padrão
 
 ---
 
-## 🎨 Identidade Visual Atual
+## Identidade Visual
 
 ### CSS Variables (`:root`)
 ```css
---bg: #f8f8f8;
---bg-alt: #f0f0f0;
---bg-card: #e8e8e8;
---text: #0f0f0f;
---muted: #888;
---mid: rgba(15,15,15,0.55);
---accent: #ffd100;         /* amarelo — cor de destaque principal */
---accent-d: #e6bc00;       /* hover do accent */
---border: rgba(0,0,0,0.1);
---font-d: 'Montserrat', sans-serif;
---font-b: 'Montserrat', sans-serif;
---pad-x: clamp(6rem, 21vw, 24rem);  /* margem lateral global */
+--gold:   #b89c6e;   /* dourado — cor de destaque principal */
+--gold-d: #a08860;   /* hover do gold */
+--bg:     #080808;   /* fundo global escuro */
+--bg-alt: #1e1e1e;   /* fundo seções alternadas */
+--text:   #f5f5f5;   /* texto principal */
+--muted:  rgba(255, 255, 255, 0.45);
+--border: rgba(255, 255, 255, 0.08);
+--pad:    10%;        /* padding lateral global */
+--radius: 24px;
+--ease:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
 ```
 
 ### Tipografia
-- **Tudo:** `Montserrat` (Google Fonts) — substituiu Syne + DM Sans
+- **Tudo:** `Inter` (Google Fonts) — pesos 300, 400, 500, 600, 700, 800
 
 ### Estética
-- Hero e seções dark: fundo `#0a0a0a` / `#111`
-- Seções de conteúdo (FAQ, Soluções): fundo claro `#f8f8f8`
-- Custom cursor (`.cursor` + `.cursor-follower`)
-- Scrollbar customizada
+- Fundo global: `#080808` — todo o site é dark
+- Seção Serviços: `var(--bg-alt)` = `#1e1e1e`
+- Seção CTA "Iniciar Projeto": `var(--bg-alt)` = `#1e1e1e`
+- Slide de encerramento do portfólio horizontal: `#f7f7f7` (exceção clara)
+- Sem custom cursor, sem scrollbar customizada
 - Logo: `images/logo_site.png` (arquivo local)
 
 ---
 
-## 🏗️ Estrutura de Seções (ordem no HTML)
+## Estrutura de Seções (ordem no HTML)
 
-| ID | Seção | Notas |
+| Seção | Classe/Tag | Notas |
 |---|---|---|
-| `#inicio` | Hero | Vídeo `images/SHOWREEL.mp4` full-bleed, título grande, hero-bar com 3 cards glass |
-| `#sobre` | Sobre mim | Texto centralizado 3 linhas + 2 icon cards (globo + pin) |
-| `#solucoes` | Soluções | Accordion com 3 serviços |
-| `#projetos` | Portfólio | Grid 2×2, cards full-width sem padding lateral |
-| `#duvidas` | FAQ | Accordion |
-| `#contato` | Formulário de Contato | Seção dark acima do footer |
-| — | Footer | 3 colunas horizontais (linha única) |
+| Hero | `<section class="hero">` | Vídeo full-bleed, logo, h1, parágrafo, botão WA |
+| Portfólio horizontal | `<div class="ph-wrap">` | Scroll horizontal fixo, 300vh de altura |
+| Serviços | `<section class="section-services">` | Grid 6 cards, fundo `--bg-alt` |
+| Portfólio 2×2 | `<section class="section-portfolio">` | Grid full-width sem padding |
+| CTA | `<section class="cta">` | Centralizado, fundo `--bg-alt` |
+| Footer | `<footer>` | Linha única centralizada |
 
 ---
 
-## 🔑 Componentes Principais
-
-### Header
-- `position: fixed`, transparente sobre hero (glass pill: `rgba(255,255,255,0.07)`, `backdrop-filter: blur`)
-- Some ao rolar (`header.scrolled` → `opacity:0; transform: translateY(-120%)`)
-- Logo: `images/logo_site.png` — **140px de altura**
-- Botão WA: verde limão `#aaee00`, ícone circular + label "Whatsapp" — **51px de ícone, fonte 1.32rem**
-- Hamburger: quadrado escuro arredondado `66×66px`, `border-radius: 14px`, 3 linhas brancas `27px`
-
-### Nav Overlay (menu hamburger)
-- Abre **pela direita** (`right: 0; transform: translateX(100%)`)
-- `z-index: 600` (acima do header que tem 500)
-- Largura: `min(520px, 100vw)`
-- Fundo: `#0d0d0d`
-- Top bar: "Menu" label + botão X arredondado
-- Links grandes uppercase: INICIO /01, CONTATO /02, PROJETOS /03, SOLUÇÕES /04
-- Links centralizados verticalmente (`justify-content: center`)
-- Sem ghost text, sem email, sem redes sociais
-
-### Side Dot Nav
-- `position: fixed; right: 1.75rem` — acompanha o scroll
-- 5 dots: `13px`, amarelos `rgba(255,209,0,0.45)`, borda `var(--accent)`
-- Dot ativo: amarelo sólido, `scale(1.45)`
+## Componentes Principais
 
 ### Hero
-- Vídeo full-bleed (`images/SHOWREEL.mp4`)
-- Overlay escuro
-- Conteúdo: eyebrow text, título h1 grande, subtítulo, link CTA
-- Hero-bar flutuante na base: 3 cards glass (Sites & Landing Pages, Logo & Branding, Criativos Digitais)
+- `height: 100vh`, `flex-direction: column`, `justify-content: center`
+- Vídeo: `images/SHOWREEL.mp4` — `autoplay muted loop playsinline`
+- Overlay: `linear-gradient(to top, rgba(0,0,0,0.92), rgba(0,0,0,0.32))`
+- Logo: `images/logo_site.png` — `height: 140px; width: auto; align-self: flex-start`
+- Botão WA: `.btn-wa` — borda branca translúcida, ícone dourado `.btn-wa-icon` (`border-radius: 10px`)
+- **Animações de entrada com delays escalonados:**
+  - Logo: `heroFadeDown 0.8s delay 0.25s`
+  - H1: `heroFadeUp 0.9s delay 0.45s`
+  - Parágrafo: `heroFadeUp 0.9s delay 0.65s`
+  - Botão WA: `heroFadeUp 0.8s delay 0.85s`
 
-### Portfólio (`#projetos`)
-- Grid 2×2 **full-width** (sem padding lateral — `padding: 0 0 5rem`)
-- Gap mínimo: `0.4rem`
-- Cards: `height: 480px`, `border-radius: 8px`, **sem hover animation**
-- Cada card tem:
-  - Badge de bandeira top-left (flag emoji + cidade)
-  - Botão circular `↗` top-right (glass, vira accent no hover)
-  - Barra flutuante bottom: nome (esquerdo) | ano (centro) | tipo pill (direito) — sem fundo sólido, flutua no gradiente
-  - Gradiente overlay: `rgba(0,0,0,0.92)` na base
+### Botão WhatsApp (`.btn-wa`)
+- `display: inline-flex; align-items: center; gap: 10px`
+- `padding: 10px 24px 10px 10px; border-radius: 16px`
+- `border: 1px solid rgba(255,255,255,0.18)`
+- Ícone `.btn-wa-icon`: `48×48px; background: var(--gold); border-radius: 10px; color: #000`
+- Hover: icon rotaciona `rotate(12deg) scale(1.12)`, botão sobe `translateY(-3px)`
+- Link: `https://wa.me/5541992272317`
 
-| Projeto | Bandeira | Ano | Tipo |
+### Portfólio Horizontal (`.ph-wrap`)
+- `height: 300vh` — scroll vertical converte em horizontal via JS
+- `.ph-sticky`: `position: sticky; top: 0; height: 100vh; overflow: hidden`
+- `.ph-track`: `display: flex; gap: 16px; will-change: transform`
+- **Slide de texto** (`.ph-slide-text`): `width: 38vw !important; background: var(--gold) !important`
+- **Slides de imagem** (`.ph-slide`): `width: 42vw`
+- **Slide de encerramento** (`.ph-slide-end`): `width: 50vw !important; background: #f7f7f7 !important; color: #111`
+- **Barra de progresso** (`.ph-progress-bar`): criada via JS, `height: 2px; background: var(--gold)` na base
+- **JS:** `maxX = track.scrollWidth - viewport.offsetWidth` (cálculo correto para evitar espaço em branco extra)
+- Projetos: LA TERROIR (Camila Dirani, 2026), ITAPORÃ (Eduardo Rabachini, 2025), MODUS CONSULTING (Miami FL, 2026)
+
+### Serviços (`.section-services`)
+- `background: var(--bg-alt)` — `#1e1e1e`
+- Título H2: `color: var(--gold)`
+- Grid: `grid-template-columns: repeat(6, 1fr); gap: 16px`
+- Cards regulares (`.card`): `background: #121212; border-radius: var(--radius); padding: 36px`
+  - Imagem no topo: `.card-img` — `height: 200px`, crop `object-fit: cover`
+  - Número dourado, H3 branco, parágrafo `rgba(255,255,255,0.56)`, tags com borda
+  - Hover: `translateY(-6px)`, borda dourada, imagem `scale(1.06)`
+- Cards especiais (`.card-special`): `background: var(--gold); color: #1a1200` — **sem imagem**
+  - Badge (`.card-special-badge`): pill escuro com texto "IA" ou "VOZ"
+  - Tags (`.tag.tag-special`): `color: #3a3a3a; border-color: rgba(26,18,0,0.18)`
+
+**Ordem dos 6 cards:**
+1. Websites & Landing Pages (regular, com imagem)
+2. Geração de Imagem por AI (especial dourado, badge "IA")
+3. Archviz (regular, com imagem)
+4. Realtime & Unreal Engine (regular, com imagem)
+5. Navegação por Voz (especial dourado, badge "VOZ")
+6. VR & AR (regular, com imagem)
+
+### Portfólio 2×2 (`.section-portfolio`)
+- `padding: 0; border-bottom: none`
+- Grid: `grid-template-columns: 1fr 1fr; grid-template-rows: 60vh 60vh; gap: 3px`
+- Cada card: `position: relative; overflow: hidden`
+- Overlay: `linear-gradient(to top, rgba(0,0,0,0.82), transparent 52%)`
+- Hover: imagem `scale(1.05)`, info sobe `translateY(0)`
+
+**Projetos:**
+| Projeto | Tipo | Local | Ano |
 |---|---|---|---|
-| Modus Consulting | 🇺🇸 Miami — FL | 2026 | Website |
-| Dancon Empreendimentos | 🇧🇷 Curitiba — PR | 2025 | Landing Page |
-| Baterias Samuka | 🇧🇷 Londrina — PR | 2025 | Landing Page |
-| Solicita Licitações | 🇧🇷 Brasil — Nacional | 2025 | Website |
+| Modus Consulting | Website | Miami — FL | 2026 |
+| Dancon Empreendimentos | Landing Page | Curitiba — PR | 2025 |
+| Baterias Samuka | Landing Page | Londrina — PR | 2025 |
+| Solicita Licitações | Website | Brasil — Nacional | 2025 |
 
-### Seção de Contato (`#contato`)
-- Fundo `#111`, antes do footer
-- Grid 2 colunas: `1fr 500px`
-  - **Esquerda:** Texto "Buscando algo fora do padrão? Vamos conversar." + botão CTA WA
-  - **Direita:** Formulário com Name, Telefone, Soluções (dropdown), E-mail, Mensagem, Enviar
-- Form action: Formspree (firsightstudio@gmail.com)
-- Padding: `var(--pad-x)` nas laterais
+### CTA (`.cta`)
+- Centralizado, `background: var(--bg-alt)`
+- H2 + parágrafo + `.btn-wa` centralizado
 
-### Footer (`.footer-dark`)
-- Fundo `#111`
-- **Layout: linha única horizontal** (`display: flex; align-items: center`)
-- 3 colunas:
-  1. **Brand**: logo + tagline oculta + botão CTA oculto (compacto na linha)
-  2. **Navegação**: links em linha horizontal (/01–/04)
-  3. **Redes + Contato**: agrupados à direita (`margin-left: auto`)
-- Bottom bar: copyright centralizado, `font-size: 0.85rem`
-- Padding: `var(--pad-x)` nas laterais
+### Footer
+- `display: flex; justify-content: center`
+- Texto: `Factory Studio © 2026 · Todos os direitos reservados.`
+- `font-size: 0.82rem; color: var(--muted)`
 
 ---
 
-## ⚙️ JavaScript (inline no `<body>`)
+## JavaScript (inline no `<body>`)
 
-1. **Custom cursor** — segue o mouse com delay no follower
-2. **Reveal on scroll** — `IntersectionObserver` em `.reveal` → adiciona `.visible`
-3. **FAQ accordion** — toggle `.open` em `.faq-item`
-4. **Tabs de serviços** — toggle `.active` em `.servico-tab` / `.servico-panel`
-5. **Header scroll** — `header.scrolled` toggled a `scrollY > 60`
-6. **Side dot nav** — `IntersectionObserver` nas seções → marca dot ativo
+1. **Portfólio horizontal scroll** — converte scroll vertical em `translateX` no `.ph-track`, atualiza `.ph-progress-bar`
+2. **Scroll reveal** — `IntersectionObserver` em `.reveal` → adiciona `.visible` (threshold 0.1), desconecta após revelar
 
 ---
 
-## 📦 Conteúdo
+## Animações
 
-### Contato
+### Hero (CSS keyframes)
+```css
+@keyframes heroFadeUp   { to { opacity: 1; transform: translateY(0); } }
+@keyframes heroFadeDown { to { opacity: 1; transform: translateY(0); } }
+```
+Elementos começam `opacity: 0` e animam para visíveis com delays escalonados.
+
+### Scroll Reveal
+```css
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.75s var(--ease), transform 0.75s var(--ease); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.22s; }
+.reveal-delay-3 { transition-delay: 0.34s; }
+```
+
+---
+
+## SEO
+
+- `<title>`, `<meta name="description">`, `<meta name="keywords">`, `<meta name="robots">`, `<link rel="canonical">`
+- Open Graph completo (og:type, og:url, og:title, og:description, og:image, og:locale, og:site_name)
+- Twitter Card (`summary_large_image`)
+- JSON-LD Schema (`ProfessionalService`) com nome, telefone, e-mail, endereço, sameAs
+- Favicon: `images/logo_site.png`
+
+---
+
+## Contato
+
 - WhatsApp: `https://wa.me/5541992272317` (+55 41 99227-2317)
 - E-mail: firsightstudio@gmail.com
 - Instagram: @umdesignerchato
-- TikTok: @umdesignerchato
-- Facebook: /Um-designer-chato/
 - Behance: firsightstudio
 
 ---
 
-## 🔧 Como Trabalhar com Este Arquivo
+## Como Trabalhar com Este Arquivo
 
-### Técnica de edição CSS
-O VS Code formatter reformata o CSS inline. **Sempre injetar novos estilos como overrides antes de `</style>`** — eles ganham na cascata.
+### Edição via Edit tool (preferencial)
+Usar o Edit tool diretamente. Antes de editar, sempre ler o trecho com Read para pegar a string exata incluindo indentação.
 
-```powershell
-# Padrão para injetar CSS:
-$css = @'  /* novo CSS */ '@
-$content = $content -replace '(\s+</style>)', "$css`$1"
-```
+### Injetar CSS novo
+Adicionar como override no final do bloco `<style>`, antes de `</style>`. Usar seletores mais específicos ou `!important` se necessário para vencer a cascata.
 
-### Técnica de edição HTML
-Usar `[System.IO.File]::ReadAllLines()` para substituições por índice de linha.
-
-```powershell
-$lines = [System.IO.File]::ReadAllLines($file)
-$newLines = $lines[0..N] + $newHTML.Split([Environment]::NewLine) + $lines[M..($lines.Length-1)]
-[System.IO.File]::WriteAllLines($file, $newLines, [System.Text.Encoding]::UTF8)
-```
+### Especificidade CSS importante
+- `.card-special` e `.card` têm mesma especificidade → `.card-special` deve vir depois no CSS ou usar seletor mais específico
+- `.tag.tag-special` (dois seletores) supera `.tag` (um seletor) — usar essa forma para overrides de tag
 
 ---
 
-## 🚫 Padrões a Evitar
+## Padrões a Evitar
 
-- Não usar fontes além de Montserrat
-- Não usar accent verde ou roxo — accent é `#ffd100` (amarelo)
-- Não adicionar `box-shadow` excessivo — estética flat
-- Não mudar o cursor (body tem `cursor: none`)
+- Não usar fontes além de Inter
+- Não usar accent verde, azul ou roxo — accent é `#b89c6e` (dourado)
+- Não adicionar `box-shadow` — estética flat
+- Não alterar `--pad: 10%` sem necessidade
 - Não remover o gradiente escuro dos cards de portfólio
-- Não aumentar o `--pad-x` além de `clamp(6rem, 21vw, 24rem)` — já é o valor calibrado
-- Cuidado com overrides CSS acumulados — sempre usar `!important` e verificar qual é o último
+- Não calcular `maxX` como `viewport.offsetWidth * (n-1)` — usar `track.scrollWidth - viewport.offsetWidth`
+- Não usar `!important` desnecessariamente — só em overrides de especificidade igual comprovada
 
 ---
 
-## 💡 Próximos Passos Possíveis
+## Próximos Passos Possíveis
 
-- [ ] Imagens reais nos cards de portfólio (mockups dos projetos)
-- [ ] Integrar formulário com Formspree real
-- [ ] Lightbox nos projetos do portfólio
-- [ ] Animação de entrada no hero title
-- [ ] Versão mobile revisada (header, portfólio, footer)
+- [ ] Imagens reais nos cards (mockups dos projetos)
+- [ ] Lightbox nos projetos do portfólio 2×2
+- [ ] Versão mobile revisada (portfólio horizontal, grid de serviços)
+- [ ] Formulário de contato (Formspree)
+- [ ] Favicon dedicado (além da logo)
 
 ---
 
-*Atualizado em 14/05/2026 — estado atual do arquivo `factoryinteractive.html`*
+*Atualizado em 15/05/2026 — pós refactor completo do `factoryinteractive.html`*
