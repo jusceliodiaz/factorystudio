@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- SEO Primary -->
-    <title>
-      Factory Interactive — Experiências Digitais para Arquitetura e Mercado
-      Imobiliário
-    </title>
+    <title>Factory Interactive — Experiências Digitais para Arquitetura e Mercado Imobiliário</title>
     <meta
       name="description"
       content="Studio criativo especializado em websites premium, archviz interativo, experiências realtime e conteúdo visual para arquitetos, incorporadoras e empreendimentos premium."
@@ -19,7 +16,13 @@
     />
     <meta name="author" content="Factory Interactive" />
     <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#080808" />
+    <meta name="copyright" content="Factory Interactive" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="geo.region" content="BR-PR" />
+    <meta name="geo.placename" content="Curitiba, Paraná" />
     <link rel="canonical" href="https://factoryinteractive.com.br/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://factoryinteractive.com.br/" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -36,6 +39,8 @@
       property="og:image"
       content="https://factoryinteractive.com.br/images/og-image.jpg"
     />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:site_name" content="Factory Interactive" />
 
@@ -68,6 +73,7 @@
     <!-- Preload critical assets -->
     <link rel="preload" as="image" href="images/logo_site2.png" />
     <link rel="preload" as="image" href="images/seq/seq_teste_000.webp" />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
     <!-- JSON-LD Schema -->
     <script type="application/ld+json">
@@ -85,6 +91,12 @@
           "addressRegion": "PR",
           "addressCountry": "BR"
         },
+        "image": "https://factoryinteractive.com.br/images/og-image.jpg",
+        "priceRange": "$$",
+        "areaServed": [
+          { "@type": "City",    "name": "Curitiba" },
+          { "@type": "Country", "name": "Brasil"   }
+        ],
         "sameAs": [
           "https://www.instagram.com/umdesignerchato",
           "https://www.behance.net/firsightstudio"
@@ -131,6 +143,19 @@
       img {
         display: block;
         max-width: 100%;
+        -webkit-user-drag: none;
+        user-select: none;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
       }
       a {
         text-decoration: none;
@@ -249,8 +274,7 @@
         overflow: hidden;
       }
 
-      .hero video,
-      .hero img.hero-bg {
+      .hero-bg {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -552,6 +576,9 @@
 
       .svc-card {
         margin: -0.5px;
+        position: relative;
+        overflow: hidden;
+        cursor: default;
       }
 
       /* posições individuais */
@@ -578,13 +605,6 @@
       .svc-voz {
         grid-column: 5 / 6;
         grid-row: 2 / 3;
-      }
-
-      /* Card base */
-      .svc-card {
-        position: relative;
-        overflow: hidden;
-        cursor: default;
       }
 
       /* imagem de fundo */
@@ -1735,13 +1755,17 @@
 
     <!-- ── HERO ── -->
     <section class="hero" id="hero" aria-label="Início">
-      <img
-        src="images/SHOWREEL.webp"
-        alt=""
-        aria-hidden="true"
+      <video
         class="hero-bg"
-        fetchpriority="high"
-      />
+        autoplay
+        muted
+        loop
+        playsinline
+        poster="images/SHOWREEL.webp"
+        aria-hidden="true"
+      >
+        <source src="images/SHOWREEL.mp4" type="video/mp4" />
+      </video>
       <div class="hero-overlay"></div>
 
       <img
@@ -1944,6 +1968,7 @@
       id="services"
       aria-labelledby="services-heading"
     >
+      <h2 id="services-heading" class="sr-only">Serviços</h2>
       <div class="services-bento">
         <!-- Websites — card grande (2×2) -->
         <article class="svc-card svc-web reveal">
@@ -2088,72 +2113,6 @@
         </article>
       </div>
     </section>
-
-    <!-- ── PORTFÓLIO 2×2 — desativado temporariamente ──
-    <section class="section-portfolio" aria-label="Cases de portfólio">
-      <div class="portfolio-fw-grid">
-        <article class="portfolio-fw-card">
-          <img
-            src="images/BG_placeholder.png"
-            alt="Modus Consulting — Website Miami FL 2026"
-            loading="lazy"
-          />
-          <div class="portfolio-fw-info">
-            <div>
-              <div class="portfolio-fw-label">Projeto / Cliente</div>
-              <h3>Modus Consulting</h3>
-              <span>Website · Miami — FL · 2026</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="portfolio-fw-card">
-          <img
-            src="images/BG_placeholder.png"
-            alt="Dancon Empreendimentos — Landing Page Curitiba PR 2025"
-            loading="lazy"
-          />
-          <div class="portfolio-fw-info">
-            <div>
-              <div class="portfolio-fw-label">Projeto / Cliente</div>
-              <h3>Dancon Empreendimentos</h3>
-              <span>Landing Page · Curitiba — PR · 2025</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="portfolio-fw-card">
-          <img
-            src="images/BG_placeholder.png"
-            alt="Baterias Samuka — Landing Page Londrina PR 2025"
-            loading="lazy"
-          />
-          <div class="portfolio-fw-info">
-            <div>
-              <div class="portfolio-fw-label">Projeto / Cliente</div>
-              <h3>Baterias Samuka</h3>
-              <span>Landing Page · Londrina — PR · 2025</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="portfolio-fw-card">
-          <img
-            src="images/BG_placeholder.png"
-            alt="Solicita Licitações — Website Brasil Nacional 2025"
-            loading="lazy"
-          />
-          <div class="portfolio-fw-info">
-            <div>
-              <div class="portfolio-fw-label">Projeto / Cliente</div>
-              <h3>Solicita Licitações</h3>
-              <span>Website · Brasil — Nacional · 2025</span>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-    ──>
 
     <!-- ── IMAGE SEQUENCER ── -->
     <div
@@ -2685,11 +2644,26 @@
             if (target) target.scrollIntoView({ behavior: "smooth" });
           });
         });
+
+        /* ── Proteção de conteúdo ── */
+        document.addEventListener("contextmenu", (e) => {
+          if (e.target.closest("img, canvas")) e.preventDefault();
+        });
+        document.addEventListener("dragstart", (e) => {
+          if (e.target.tagName === "IMG") e.preventDefault();
+        });
+
+        /* ── Copyright watermark ── */
+        console.log(
+          "%c Factory Interactive ",
+          "background:#b89c6e;color:#1a1200;font-weight:700;font-size:14px;padding:4px 12px;border-radius:4px",
+          "\n© 2026 Factory Interactive — Todos os direitos reservados.\nContato: firsightstudio@gmail.com",
+        );
       })();
     </script>
     <!-- ── MODAL PANORAMA 360° ── -->
     <div id="pano-modal" aria-hidden="true">
-      <div id="pano-modal-backdrop" onclick="closePanoModal()"></div>
+      <div id="pano-modal-backdrop"></div>
       <div id="pano-modal-box">
         <button id="pano-modal-close" onclick="closePanoModal()">✕</button>
         <div id="pano-modal-badge">360°</div>
@@ -2755,6 +2729,7 @@
       };
 
       function openPanoModal(roomKey) {
+        if (!TOUR[roomKey]) return;
         const modal = document.getElementById("pano-modal");
         const loading = document.getElementById("pano-loading");
         const hint = document.getElementById("pano-hint");
@@ -2811,7 +2786,8 @@
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </div>
-            <div class="pano-hotspot-label">${h.label}</div>`;
+            <div class="pano-hotspot-label"></div>`;
+          el.querySelector(".pano-hotspot-label").textContent = h.label;
           el.addEventListener("click", () => _navigateToPano(h.leadsTo));
           container.appendChild(el);
         });
@@ -2856,7 +2832,7 @@
       }
 
       function _navigateToPano(roomKey) {
-        if (_panoTransitioning || roomKey === _panoCurrentRoom) return;
+        if (!TOUR[roomKey] || _panoTransitioning || roomKey === _panoCurrentRoom) return;
         _panoTransitioning = true;
         const canvas = document.getElementById("pano-canvas");
         const loading = document.getElementById("pano-loading");
@@ -3081,6 +3057,7 @@
       document.querySelectorAll(".pano-room-btn").forEach((btn) => {
         btn.addEventListener("click", () => _navigateToPano(btn.dataset.room));
       });
+      document.getElementById("pano-modal-backdrop").addEventListener("click", closePanoModal);
     </script>
   </body>
 </html>
