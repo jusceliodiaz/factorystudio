@@ -1056,7 +1056,7 @@
 
       #pano-hint {
         position: absolute;
-        bottom: 18px;
+        bottom: 72px;
         left: 50%;
         transform: translateX(-50%);
         padding: 6px 14px;
@@ -1107,6 +1107,122 @@
         to {
           transform: rotate(360deg);
         }
+      }
+
+      /* ── PANORAMA TOUR — room label, hotspots, room nav ── */
+      #pano-room-label {
+        position: absolute;
+        top: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #fff;
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        padding: 6px 18px;
+        border-radius: 20px;
+        pointer-events: none;
+        z-index: 10;
+        white-space: nowrap;
+      }
+      #pano-hotspots {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 5;
+      }
+      .pano-hotspot {
+        position: absolute;
+        pointer-events: auto;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+      }
+      .pano-hotspot-dot {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--gold);
+        border: 2px solid rgba(255, 255, 255, 0.75);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1a1200;
+        animation: panoPulse 2.2s ease-in-out infinite;
+        transition: transform 0.2s ease;
+      }
+      .pano-hotspot:hover .pano-hotspot-dot {
+        transform: scale(1.15);
+      }
+      .pano-hotspot-label {
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        color: #fff;
+        font-size: 0.6rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 3px 10px;
+        border-radius: 8px;
+        white-space: nowrap;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+      }
+      @keyframes panoPulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(184, 156, 110, 0.6);
+        }
+        50% {
+          box-shadow: 0 0 0 10px rgba(184, 156, 110, 0);
+        }
+      }
+      #pano-rooms {
+        position: absolute;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 4px;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 50px;
+        padding: 5px 6px;
+        z-index: 10;
+      }
+      .pano-room-btn {
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.5);
+        font-family: inherit;
+        font-size: 0.65rem;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 6px 18px;
+        border-radius: 40px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        white-space: nowrap;
+      }
+      .pano-room-btn:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .pano-room-btn.active {
+        background: var(--gold);
+        color: #1a1200;
+        font-weight: 600;
       }
 
       /* ── SEQ SCRUB BUTTONS ── */
@@ -1283,109 +1399,229 @@
 
       /* Touch devices: info always visible (sem hover) */
       @media (hover: none) {
-        .svc-bottom { transform: none !important; }
-        .portfolio-fw-info > div { transform: none !important; }
-        .ph-slide:hover img { transform: none; }
-        .ph-slide:hover .ph-arrow { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.28); color: #fff; }
+        .svc-bottom {
+          transform: none !important;
+        }
+        .portfolio-fw-info > div {
+          transform: none !important;
+        }
+        .ph-slide:hover img {
+          transform: none;
+        }
+        .ph-slide:hover .ph-arrow {
+          background: rgba(255, 255, 255, 0.1);
+          border-color: rgba(255, 255, 255, 0.28);
+          color: #fff;
+        }
       }
 
       /* 4K / Ultra-wide (≥1921px) */
       @media (min-width: 1921px) {
-        :root { --pad: 15%; }
-        .hero-logo { height: 160px; }
-        .services-bento { grid-template-rows: 400px 400px; }
-        .seq-title { font-size: clamp(4rem, 5.5vw, 9rem); }
+        :root {
+          --pad: 15%;
+        }
+        .hero-logo {
+          height: 160px;
+        }
+        .services-bento {
+          grid-template-rows: 400px 400px;
+        }
+        .seq-title {
+          font-size: clamp(4rem, 5.5vw, 9rem);
+        }
       }
 
       /* Tablet / iPad (769px – 1024px) */
       @media (min-width: 769px) and (max-width: 1024px) {
-        :root { --pad: 8%; }
+        :root {
+          --pad: 8%;
+        }
 
-        .hero-logo { height: 110px; }
+        .hero-logo {
+          height: 110px;
+        }
 
         .services-bento {
           grid-template-columns: repeat(3, 1fr);
           grid-template-rows: 300px 300px 180px;
         }
-        .svc-web  { grid-column: 1 / 3; grid-row: 1 / 2; }
-        .svc-ai   { grid-column: 3 / 4; grid-row: 1 / 2; }
-        .svc-arch { grid-column: 1 / 2; grid-row: 2 / 3; }
-        .svc-real { grid-column: 2 / 3; grid-row: 2 / 3; }
-        .svc-vr   { grid-column: 3 / 4; grid-row: 2 / 3; }
-        .svc-voz  { grid-column: 1 / 4; grid-row: 3 / 4; }
+        .svc-web {
+          grid-column: 1 / 3;
+          grid-row: 1 / 2;
+        }
+        .svc-ai {
+          grid-column: 3 / 4;
+          grid-row: 1 / 2;
+        }
+        .svc-arch {
+          grid-column: 1 / 2;
+          grid-row: 2 / 3;
+        }
+        .svc-real {
+          grid-column: 2 / 3;
+          grid-row: 2 / 3;
+        }
+        .svc-vr {
+          grid-column: 3 / 4;
+          grid-row: 2 / 3;
+        }
+        .svc-voz {
+          grid-column: 1 / 4;
+          grid-row: 3 / 4;
+        }
 
-        .ph-slide-text { width: 52vw !important; }
-        .ph-slide      { width: 60vw; }
-        .ph-slide-end  { width: 60vw !important; }
+        .ph-slide-text {
+          width: 52vw !important;
+        }
+        .ph-slide {
+          width: 60vw;
+        }
+        .ph-slide-end {
+          width: 60vw !important;
+        }
       }
 
       /* Mobile / iPad mini portrait (≤768px) */
       @media (max-width: 768px) {
-        :root { --pad: 7%; }
+        :root {
+          --pad: 7%;
+        }
 
-        section { padding: 80px var(--pad); }
+        section {
+          padding: 80px var(--pad);
+        }
 
-        .hero-logo { height: 88px; }
+        .hero-logo {
+          height: 88px;
+        }
 
         .services-bento {
           grid-template-columns: 1fr 1fr;
           grid-template-rows: repeat(4, 260px);
         }
-        .svc-web  { grid-column: 1 / 3; grid-row: 1 / 2; }
-        .svc-ai   { grid-column: 1 / 2; grid-row: 2 / 3; }
-        .svc-arch { grid-column: 2 / 3; grid-row: 2 / 3; }
-        .svc-real { grid-column: 1 / 2; grid-row: 3 / 4; }
-        .svc-vr   { grid-column: 2 / 3; grid-row: 3 / 4; }
-        .svc-voz  { grid-column: 1 / 3; grid-row: 4 / 5; }
+        .svc-web {
+          grid-column: 1 / 3;
+          grid-row: 1 / 2;
+        }
+        .svc-ai {
+          grid-column: 1 / 2;
+          grid-row: 2 / 3;
+        }
+        .svc-arch {
+          grid-column: 2 / 3;
+          grid-row: 2 / 3;
+        }
+        .svc-real {
+          grid-column: 1 / 2;
+          grid-row: 3 / 4;
+        }
+        .svc-vr {
+          grid-column: 2 / 3;
+          grid-row: 3 / 4;
+        }
+        .svc-voz {
+          grid-column: 1 / 3;
+          grid-row: 4 / 5;
+        }
 
         .svc-content,
-        .svc-card--special { padding: 24px; }
-        .svc-card p { font-size: 0.75rem; }
+        .svc-card--special {
+          padding: 24px;
+        }
+        .svc-card p {
+          font-size: 0.75rem;
+        }
 
         .portfolio-fw-grid {
           grid-template-columns: 1fr;
           grid-template-rows: repeat(4, 50vh);
         }
 
-        .ph-slide-text { width: 85vw !important; }
-        .ph-slide      { width: 82vw; }
-        .ph-slide-end  { width: 82vw !important; }
+        .ph-slide-text {
+          width: 85vw !important;
+        }
+        .ph-slide {
+          width: 82vw;
+        }
+        .ph-slide-end {
+          width: 82vw !important;
+        }
 
-        .seq-content { gap: 20px; }
-        .seq-scrub   { right: 20px; top: 20px; gap: 8px; }
-        .seq-scrub-btn { padding: 8px 14px 8px 10px; font-size: 0.62rem; }
+        .seq-content {
+          gap: 20px;
+        }
+        .seq-scrub {
+          right: 20px;
+          top: 20px;
+          gap: 8px;
+        }
+        .seq-scrub-btn {
+          padding: 8px 14px 8px 10px;
+          font-size: 0.62rem;
+        }
 
-        .side-nav { display: none; }
+        .side-nav {
+          display: none;
+        }
       }
 
       /* Small phones — iPhone SE, 16, 16 Pro (≤430px) */
       @media (max-width: 430px) {
-        :root { --pad: 6%; }
+        :root {
+          --pad: 6%;
+        }
 
-        section { padding: 64px var(--pad); }
+        section {
+          padding: 64px var(--pad);
+        }
 
-        .hero-logo { height: 68px; }
-        .hero p    { font-size: 0.88rem; }
+        .hero-logo {
+          height: 68px;
+        }
+        .hero p {
+          font-size: 0.88rem;
+        }
 
-        .btn-wa { font-size: 0.88rem; padding: 8px 18px 8px 8px; }
-        .btn-wa-icon { width: 40px; height: 40px; }
+        .btn-wa {
+          font-size: 0.88rem;
+          padding: 8px 18px 8px 8px;
+        }
+        .btn-wa-icon {
+          width: 40px;
+          height: 40px;
+        }
 
-        .services-bento { grid-template-rows: repeat(4, 220px); }
+        .services-bento {
+          grid-template-rows: repeat(4, 220px);
+        }
         .svc-content,
-        .svc-card--special { padding: 18px; }
+        .svc-card--special {
+          padding: 18px;
+        }
 
-        .ph-slide-text { width: 88vw !important; }
-        .ph-slide      { width: 86vw; }
-        .ph-slide-end  { width: 86vw !important; }
+        .ph-slide-text {
+          width: 88vw !important;
+        }
+        .ph-slide {
+          width: 86vw;
+        }
+        .ph-slide-end {
+          width: 86vw !important;
+        }
 
-        .seq-scrub { right: 14px; top: 14px; }
+        .seq-scrub {
+          right: 14px;
+          top: 14px;
+        }
         .seq-scrub-btn {
           padding: 7px 12px 7px 9px;
           font-size: 0.6rem;
           letter-spacing: 0.08em;
         }
 
-        .poi-popup { min-width: 160px; }
+        .poi-popup {
+          min-width: 160px;
+        }
       }
 
       /* ── SIDE NAV ── */
@@ -1489,9 +1725,11 @@
   </head>
 
   <body>
-    <svg style="display:none" aria-hidden="true">
+    <svg style="display: none" aria-hidden="true">
       <symbol id="icon-wa" viewBox="0 0 24 24">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+        />
       </symbol>
     </svg>
 
@@ -1527,7 +1765,9 @@
         aria-label="Falar com a Factory Interactive pelo WhatsApp"
       >
         <span class="btn-wa-icon" aria-hidden="true">
-          <svg width="22" height="22" fill="currentColor"><use href="#icon-wa"/></svg>
+          <svg width="22" height="22" fill="currentColor">
+            <use href="#icon-wa" />
+          </svg>
         </span>
         Whatsapp
       </a>
@@ -1708,7 +1948,12 @@
         <!-- Websites — card grande (2×2) -->
         <article class="svc-card svc-web reveal">
           <div class="svc-bg">
-            <img src="images/SHOWREEL.webp" alt="" aria-hidden="true" loading="lazy" />
+            <img
+              src="images/SHOWREEL.webp"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
           </div>
           <div class="svc-content">
             <span class="svc-num">01</span>
@@ -1775,7 +2020,12 @@
         <!-- Realtime — card alto (1×2) -->
         <article class="svc-card svc-real reveal reveal-delay-1">
           <div class="svc-bg">
-            <img src="images/SHOWREEL.webp" alt="" aria-hidden="true" loading="lazy" />
+            <img
+              src="images/SHOWREEL.webp"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+            />
           </div>
           <div class="svc-content">
             <span class="svc-num">03</span>
@@ -1932,7 +2182,9 @@
               aria-label="Falar pelo WhatsApp"
             >
               <span class="btn-wa-icon" aria-hidden="true">
-                <svg width="22" height="22" fill="currentColor"><use href="#icon-wa"/></svg>
+                <svg width="22" height="22" fill="currentColor">
+                  <use href="#icon-wa" />
+                </svg>
               </span>
               Whatsapp
             </a>
@@ -2031,7 +2283,9 @@
         aria-label="Iniciar projeto pelo WhatsApp"
       >
         <span class="btn-wa-icon" aria-hidden="true">
-          <svg width="22" height="22" fill="currentColor"><use href="#icon-wa"/></svg>
+          <svg width="22" height="22" fill="currentColor">
+            <use href="#icon-wa" />
+          </svg>
         </span>
         Whatsapp
       </a>
@@ -2200,7 +2454,7 @@
                 py: 46.4,
                 title: "Área de Estar",
                 desc: "Sofás de design italiano com acabamentos premium e integração total com a varanda.",
-                pano: "images/pano_living.jpg", // substitua pelo caminho da imagem equiretangular
+                pano: "living",
               },
             ],
           };
@@ -2439,8 +2693,15 @@
       <div id="pano-modal-box">
         <button id="pano-modal-close" onclick="closePanoModal()">✕</button>
         <div id="pano-modal-badge">360°</div>
+        <div id="pano-room-label"></div>
         <canvas id="pano-canvas"></canvas>
+        <div id="pano-hotspots"></div>
         <div id="pano-hint">Arraste para explorar · Scroll para zoom</div>
+        <div id="pano-rooms">
+          <button class="pano-room-btn" data-room="quarto">Quarto</button>
+          <button class="pano-room-btn" data-room="living">Living</button>
+          <button class="pano-room-btn" data-room="sacada">Sacada</button>
+        </div>
         <div id="pano-loading">
           <div id="pano-spinner"></div>
           Carregando...
@@ -2449,33 +2710,195 @@
     </div>
 
     <script>
-      let panoRenderer = null;
-      let panoFrame = null;
+      /* ── PANORAMA VIRTUAL TOUR ── */
+      let panoRenderer = null,
+        panoFrame = null;
+      let _panoScene = null,
+        _panoCamera = null,
+        _panoMesh = null;
+      let _panoLon = 180,
+        _panoLat = 0;
+      let _panoVelLon = 0,
+        _panoVelLat = 0;
+      let _panoDragging = false,
+        _panoPX = 0,
+        _panoPY = 0;
+      let _panoCurrentRoom = null,
+        _panoTransitioning = false;
 
-      function openPanoModal(imageSrc) {
+      /* ── Tour: defina os caminhos reais das imagens 360° aqui ── */
+      const TOUR = {
+        quarto: {
+          label: "Quarto",
+          src: "images/pano_quarto.jpg",
+          hotspots: [
+            { lon: 45, lat: 5, label: "Living", leadsTo: "living" },
+            { lon: 200, lat: -5, label: "Sacada", leadsTo: "sacada" },
+          ],
+        },
+        living: {
+          label: "Living",
+          src: "images/pano_living.jpg",
+          hotspots: [
+            { lon: 180, lat: 0, label: "Quarto", leadsTo: "quarto" },
+            { lon: 60, lat: -10, label: "Sacada", leadsTo: "sacada" },
+          ],
+        },
+        sacada: {
+          label: "Sacada",
+          src: "images/pano_sacada.jpg",
+          hotspots: [
+            { lon: 200, lat: 5, label: "Living", leadsTo: "living" },
+            { lon: 300, lat: 0, label: "Quarto", leadsTo: "quarto" },
+          ],
+        },
+      };
+
+      function openPanoModal(roomKey) {
         const modal = document.getElementById("pano-modal");
         const loading = document.getElementById("pano-loading");
         const hint = document.getElementById("pano-hint");
 
         loading.classList.remove("hidden");
+        loading.innerHTML = '<div id="pano-spinner"></div>Carregando...';
         hint.classList.remove("hidden");
         modal.setAttribute("aria-hidden", "false");
         modal.classList.add("open");
 
-        if (panoFrame) { cancelAnimationFrame(panoFrame); panoFrame = null; }
-        if (panoRenderer) { panoRenderer.dispose(); panoRenderer = null; }
+        if (panoFrame) {
+          cancelAnimationFrame(panoFrame);
+          panoFrame = null;
+        }
+        if (panoRenderer) {
+          panoRenderer.dispose();
+          panoRenderer = null;
+        }
+        _panoScene = _panoCamera = _panoMesh = null;
+        _panoCurrentRoom = null;
+        _panoLon = 180;
+        _panoLat = 0;
+        _panoVelLon = _panoVelLat = 0;
+        _panoTransitioning = false;
+        document.getElementById("pano-canvas").style.opacity = "1";
+        document.getElementById("pano-hotspots").style.opacity = "1";
 
         if (typeof THREE === "undefined") {
           const s = document.createElement("script");
-          s.src = "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js";
-          s.onload = () => _initPanoViewer(imageSrc);
+          s.src =
+            "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js";
+          s.onload = () => _initPanoViewer(roomKey);
           document.head.appendChild(s);
         } else {
-          _initPanoViewer(imageSrc);
+          _initPanoViewer(roomKey);
         }
       }
 
-      function _initPanoViewer(imageSrc) {
+      function _setRoomUI(roomKey) {
+        _panoCurrentRoom = roomKey;
+        const room = TOUR[roomKey];
+        document.getElementById("pano-room-label").textContent = room.label;
+        document.querySelectorAll(".pano-room-btn").forEach((b) => {
+          b.classList.toggle("active", b.dataset.room === roomKey);
+        });
+        const container = document.getElementById("pano-hotspots");
+        container.innerHTML = "";
+        room.hotspots.forEach((h) => {
+          const el = document.createElement("div");
+          el.className = "pano-hotspot";
+          el.innerHTML = `
+            <div class="pano-hotspot-dot">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+            <div class="pano-hotspot-label">${h.label}</div>`;
+          el.addEventListener("click", () => _navigateToPano(h.leadsTo));
+          container.appendChild(el);
+        });
+      }
+
+      function _updateHotspotPositions(w, h) {
+        if (!_panoCamera || !_panoCurrentRoom) return;
+        const room = TOUR[_panoCurrentRoom];
+        const els = document.querySelectorAll(".pano-hotspot");
+        const phi_c = THREE.MathUtils.degToRad(90 - _panoLat);
+        const theta_c = THREE.MathUtils.degToRad(_panoLon);
+        const camDir = new THREE.Vector3(
+          Math.sin(phi_c) * Math.cos(theta_c),
+          Math.cos(phi_c),
+          Math.sin(phi_c) * Math.sin(theta_c),
+        );
+        room.hotspots.forEach((hs, i) => {
+          const el = els[i];
+          if (!el) return;
+          const phi_h = THREE.MathUtils.degToRad(90 - hs.lat);
+          const theta_h = THREE.MathUtils.degToRad(hs.lon);
+          const hDir = new THREE.Vector3(
+            Math.sin(phi_h) * Math.cos(theta_h),
+            Math.cos(phi_h),
+            Math.sin(phi_h) * Math.sin(theta_h),
+          );
+          const dot = camDir.dot(hDir);
+          if (dot < 0.08) {
+            el.style.opacity = "0";
+            el.style.pointerEvents = "none";
+            return;
+          }
+          const worldPos = hDir.clone().multiplyScalar(90);
+          worldPos.project(_panoCamera);
+          const sx = (worldPos.x * 0.5 + 0.5) * w;
+          const sy = (-worldPos.y * 0.5 + 0.5) * h;
+          el.style.opacity = Math.min(1, (dot - 0.08) / 0.25).toFixed(2);
+          el.style.pointerEvents = dot > 0.2 ? "auto" : "none";
+          el.style.left = sx + "px";
+          el.style.top = sy + "px";
+        });
+      }
+
+      function _navigateToPano(roomKey) {
+        if (_panoTransitioning || roomKey === _panoCurrentRoom) return;
+        _panoTransitioning = true;
+        const canvas = document.getElementById("pano-canvas");
+        const loading = document.getElementById("pano-loading");
+        const hotspotsEl = document.getElementById("pano-hotspots");
+
+        canvas.style.transition = "opacity 0.3s ease";
+        hotspotsEl.style.transition = "opacity 0.3s ease";
+        canvas.style.opacity = "0";
+        hotspotsEl.style.opacity = "0";
+
+        setTimeout(() => {
+          loading.innerHTML = '<div id="pano-spinner"></div>Carregando...';
+          loading.classList.remove("hidden");
+          new THREE.TextureLoader().load(
+            TOUR[roomKey].src,
+            (tex) => {
+              tex.colorSpace = THREE.LinearSRGBColorSpace;
+              if (_panoMesh) {
+                const oldTex = _panoMesh.material.map;
+                _panoMesh.material.map = tex;
+                _panoMesh.material.needsUpdate = true;
+                if (oldTex) oldTex.dispose();
+              }
+              _panoLon = 180;
+              _panoLat = 0;
+              _panoVelLon = _panoVelLat = 0;
+              _setRoomUI(roomKey);
+              loading.classList.add("hidden");
+              canvas.style.opacity = "1";
+              hotspotsEl.style.opacity = "1";
+              _panoTransitioning = false;
+            },
+            undefined,
+            () => {
+              loading.innerHTML = "<span>Imagem não encontrada</span>";
+              _panoTransitioning = false;
+            },
+          );
+        }, 320);
+      }
+
+      function _initPanoViewer(roomKey) {
         const canvas = document.getElementById("pano-canvas");
         const box = document.getElementById("pano-modal-box");
         const loading = document.getElementById("pano-loading");
@@ -2493,18 +2916,25 @@
           panoRenderer = renderer;
 
           const scene = new THREE.Scene();
+          _panoScene = scene;
           const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 200);
+          _panoCamera = camera;
 
           const geo = new THREE.SphereGeometry(100, 64, 32);
           geo.scale(-1, 1, 1);
+          const mat = new THREE.MeshBasicMaterial();
+          const mesh = new THREE.Mesh(geo, mat);
+          _panoMesh = mesh;
+          scene.add(mesh);
 
           new THREE.TextureLoader().load(
-            imageSrc,
+            TOUR[roomKey].src,
             (tex) => {
-              scene.add(
-                new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: tex })),
-              );
+              tex.colorSpace = THREE.LinearSRGBColorSpace;
+              mat.map = tex;
+              mat.needsUpdate = true;
               loading.classList.add("hidden");
+              _setRoomUI(roomKey);
             },
             undefined,
             () => {
@@ -2512,34 +2942,26 @@
             },
           );
 
-          let lon = 180,
-            lat = 0,
-            dragging = false,
-            px = 0,
-            py = 0;
-          let velLon = 0,
-            velLat = 0;
-
           function onDown(x, y) {
-            dragging = true;
-            px = x;
-            py = y;
-            velLon = velLat = 0;
+            _panoDragging = true;
+            _panoPX = x;
+            _panoPY = y;
+            _panoVelLon = _panoVelLat = 0;
           }
           function onMove(x, y) {
-            if (!dragging) return;
-            const dLon = (x - px) * 0.12,
-              dLat = (py - y) * 0.12;
-            lon += dLon;
-            lat = Math.max(-80, Math.min(80, lat + dLat));
-            velLon = dLon;
-            velLat = dLat;
-            px = x;
-            py = y;
+            if (!_panoDragging) return;
+            const dLon = (x - _panoPX) * 0.12,
+              dLat = (_panoPY - y) * 0.12;
+            _panoLon += dLon;
+            _panoLat = Math.max(-80, Math.min(80, _panoLat + dLat));
+            _panoVelLon = dLon;
+            _panoVelLat = dLat;
+            _panoPX = x;
+            _panoPY = y;
             hint.classList.add("hidden");
           }
           function onUp() {
-            dragging = false;
+            _panoDragging = false;
           }
 
           canvas.addEventListener("mousedown", (e) =>
@@ -2597,7 +3019,6 @@
             },
             { passive: true },
           );
-
           canvas.addEventListener(
             "wheel",
             (e) => {
@@ -2611,24 +3032,25 @@
             { passive: false },
           );
 
-          function frame() {
-            panoFrame = requestAnimationFrame(frame);
-            if (!dragging) {
-              lon += velLon;
-              lat = Math.max(-80, Math.min(80, lat + velLat));
-              velLon *= 0.88;
-              velLat *= 0.88;
+          function renderFrame() {
+            panoFrame = requestAnimationFrame(renderFrame);
+            if (!_panoDragging) {
+              _panoLon += _panoVelLon;
+              _panoLat = Math.max(-80, Math.min(80, _panoLat + _panoVelLat));
+              _panoVelLon *= 0.88;
+              _panoVelLat *= 0.88;
             }
-            const phi = THREE.MathUtils.degToRad(90 - lat);
-            const theta = THREE.MathUtils.degToRad(lon);
+            const phi = THREE.MathUtils.degToRad(90 - _panoLat);
+            const theta = THREE.MathUtils.degToRad(_panoLon);
             camera.lookAt(
               Math.sin(phi) * Math.cos(theta),
               Math.cos(phi),
               Math.sin(phi) * Math.sin(theta),
             );
             renderer.render(scene, camera);
+            _updateHotspotPositions(w, h);
           }
-          frame();
+          renderFrame();
         });
       }
 
@@ -2644,10 +3066,20 @@
           panoRenderer.dispose();
           panoRenderer = null;
         }
+        _panoScene = _panoCamera = _panoMesh = null;
+        _panoCurrentRoom = null;
+        document.getElementById("pano-canvas").style.opacity = "1";
+        document.getElementById("pano-hotspots").style.opacity = "1";
+        document.getElementById("pano-hotspots").style.transition = "";
+        document.getElementById("pano-canvas").style.transition = "";
       }
 
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") closePanoModal();
+      });
+
+      document.querySelectorAll(".pano-room-btn").forEach((btn) => {
+        btn.addEventListener("click", () => _navigateToPano(btn.dataset.room));
       });
     </script>
   </body>
