@@ -65,6 +65,9 @@
       rel="stylesheet"
     />
 
+    <!-- Three.js (panorama 360°) -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
     <!-- JSON-LD Schema -->
     <script type="application/ld+json">
       {
@@ -245,7 +248,8 @@
         overflow: hidden;
       }
 
-      .hero video {
+      .hero video,
+      .hero img.hero-bg {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -942,6 +946,168 @@
         line-height: 1.55;
       }
 
+      /* ── POI 360° BUTTON ── */
+      .poi-pano-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 10px;
+        padding: 7px 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(184, 156, 110, 0.45);
+        background: rgba(184, 156, 110, 0.1);
+        color: var(--gold);
+        font-family: inherit;
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        cursor: pointer;
+        width: 100%;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
+      }
+      .poi-pano-btn:hover {
+        background: rgba(184, 156, 110, 0.22);
+        border-color: rgba(184, 156, 110, 0.7);
+      }
+
+      /* ── MODAL PANORAMA 360° ── */
+      #pano-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.35s ease;
+      }
+      #pano-modal.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      #pano-modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.78);
+        backdrop-filter: blur(8px);
+        cursor: pointer;
+      }
+      #pano-modal-box {
+        position: relative;
+        width: min(98vw, 1440px);
+        height: min(94vh, 980px);
+        border-radius: 16px;
+        overflow: hidden;
+        background: #0c0c0a;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 40px 120px rgba(0, 0, 0, 0.75);
+        transform: scale(0.93);
+        transition: transform 0.4s ease;
+      }
+      #pano-modal.open #pano-modal-box {
+        transform: scale(1);
+      }
+
+      #pano-modal-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 10;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: #fff;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      #pano-modal-badge {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        z-index: 10;
+        padding: 4px 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(200, 169, 110, 0.35);
+        background: rgba(0, 0, 0, 0.5);
+        font-size: 9px;
+        letter-spacing: 0.2em;
+        color: #c8a96e;
+        text-transform: uppercase;
+        pointer-events: none;
+      }
+      #pano-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+        cursor: grab;
+        touch-action: none;
+      }
+      #pano-canvas:active {
+        cursor: grabbing;
+      }
+
+      #pano-hint {
+        position: absolute;
+        bottom: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 6px 14px;
+        border-radius: 20px;
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        color: rgba(255, 255, 255, 0.55);
+        text-transform: uppercase;
+        pointer-events: none;
+        white-space: nowrap;
+        transition: opacity 0.5s;
+      }
+      #pano-hint.hidden {
+        opacity: 0;
+      }
+
+      #pano-loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 12px;
+        background: #0c0c0a;
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        color: rgba(255, 255, 255, 0.3);
+        text-transform: uppercase;
+        transition: opacity 0.4s;
+      }
+      #pano-loading.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      #pano-spinner {
+        width: 28px;
+        height: 28px;
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        border-top-color: #c8a96e;
+        border-radius: 50%;
+        animation: panoSpin 0.8s linear infinite;
+      }
+      @keyframes panoSpin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
       /* ── SEQ SCRUB BUTTONS ── */
       .seq-scrub {
         position: absolute;
@@ -1272,9 +1438,12 @@
   <body>
     <!-- ── HERO ── -->
     <section class="hero" id="hero" aria-label="Início">
-      <video autoplay muted loop playsinline aria-hidden="true">
-        <source src="images/SHOWREEL.mp4" type="video/mp4" />
-      </video>
+      <img
+        src="images/SHOWREEL.webp"
+        alt=""
+        aria-hidden="true"
+        class="hero-bg"
+      />
       <div class="hero-overlay"></div>
 
       <img
@@ -1483,9 +1652,7 @@
         <!-- Websites — card grande (2×2) -->
         <article class="svc-card svc-web reveal">
           <div class="svc-bg">
-            <video autoplay muted loop playsinline aria-hidden="true">
-              <source src="images/SHOWREEL.mp4" type="video/mp4" />
-            </video>
+            <img src="images/SHOWREEL.webp" alt="" aria-hidden="true" />
           </div>
           <div class="svc-content">
             <span class="svc-num">01</span>
@@ -1552,9 +1719,7 @@
         <!-- Realtime — card alto (1×2) -->
         <article class="svc-card svc-real reveal reveal-delay-1">
           <div class="svc-bg">
-            <video autoplay muted loop playsinline aria-hidden="true">
-              <source src="images/SHOWREEL.mp4" type="video/mp4" />
-            </video>
+            <img src="images/SHOWREEL.webp" alt="" aria-hidden="true" />
           </div>
           <div class="svc-content">
             <span class="svc-num">03</span>
@@ -1930,6 +2095,7 @@
             );
             const x = (canvas.width - img.naturalWidth * scale) / 2;
             const y = (canvas.height - img.naturalHeight * scale) / 2;
+            // clearRect só depois de confirmar imagem pronta, evita frame preto
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(
               img,
@@ -1959,8 +2125,8 @@
                 desc: "Vista privilegiada para a baía e as ilhas naturais ao redor da capital catarinense.",
               },
               {
-                px: 93.9,
-                py: 59.5,
+                px: 87.9,
+                py: 62.6,
                 title: "Ponte Hercílio Luz",
                 desc: "Ícone histórico e cartão-postal de Florianópolis, conectando a ilha ao continente.",
               },
@@ -1973,35 +2139,24 @@
             ],
             living: [
               {
-                px: 38.0,
-                py: 68.0,
+                px: 55.6,
+                py: 46.4,
                 title: "Área de Estar",
                 desc: "Sofás de design italiano com acabamentos premium e integração total com a varanda.",
-              },
-              {
-                px: 72.0,
-                py: 42.0,
-                title: "Vista Panorâmica",
-                desc: "Esquadrias do piso ao teto com vista direta para a baía e o skyline da cidade.",
-              },
-              {
-                px: 52.0,
-                py: 25.0,
-                title: "Iluminação de Design",
-                desc: "Projeto luminotécnico personalizado com peças assinadas e automação residencial.",
-              },
-              {
-                px: 20.0,
-                py: 55.0,
-                title: "Cozinha Integrada",
-                desc: "Bancadas em mármore natural, marcenaria sob medida e eletrodomésticos de alto padrão.",
+                pano: "images/pano_living.jpg", // substitua pelo caminho da imagem equiretangular
               },
             ],
           };
 
           const seqPinsEl = document.querySelector(".seq-pins");
           Object.entries(POI_DATA).forEach(([group, pins]) => {
-            pins.forEach(({ px, py, title, desc }) => {
+            pins.forEach(({ px, py, title, desc, pano }) => {
+              const panoBtn = pano
+                ? `<button class="poi-pano-btn" onclick="openPanoModal('${pano}')">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12c3-4 5-6 10-6s7 2 10 6"/><path d="M2 12c3 4 5 6 10 6s7-2 10-6"/></svg>
+                    Ver 360°
+                  </button>`
+                : "";
               seqPinsEl.insertAdjacentHTML(
                 "beforeend",
                 `<div class="poi-pin" data-group="${group}" style="--px:${px}%;--py:${py}%">
@@ -2009,6 +2164,7 @@
                   <div class="poi-popup">
                     <div class="poi-popup-title">${title}</div>
                     <div class="poi-popup-desc">${desc}</div>
+                    ${panoBtn}
                   </div>
                 </div>`,
               );
@@ -2130,9 +2286,13 @@
               wrap.offsetTop + maxScroll * (targetFrame / (FRAME_COUNT - 1));
 
             animateToFrame(targetFrame, () => {
-              // Snap de scroll silencioso após animação para o scroll manual continuar correto
-              window.scrollTo({ top: scrollTarget, behavior: "instant" });
-              showPins(activeGroup);
+              // Snap silencioso: desabilita smooth scroll antes para evitar rolar visível
+              document.documentElement.style.scrollBehavior = "auto";
+              window.scrollTo({ top: scrollTarget });
+              requestAnimationFrame(() => {
+                document.documentElement.style.scrollBehavior = "";
+                showPins(activeGroup);
+              });
             });
           }
 
@@ -2214,6 +2374,213 @@
           });
         });
       })();
+    </script>
+    <!-- ── MODAL PANORAMA 360° ── -->
+    <div id="pano-modal" aria-hidden="true">
+      <div id="pano-modal-backdrop" onclick="closePanoModal()"></div>
+      <div id="pano-modal-box">
+        <button id="pano-modal-close" onclick="closePanoModal()">✕</button>
+        <div id="pano-modal-badge">360°</div>
+        <canvas id="pano-canvas"></canvas>
+        <div id="pano-hint">Arraste para explorar · Scroll para zoom</div>
+        <div id="pano-loading">
+          <div id="pano-spinner"></div>
+          Carregando...
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let panoRenderer = null;
+      let panoFrame = null;
+
+      function openPanoModal(imageSrc) {
+        const modal = document.getElementById("pano-modal");
+        const canvas = document.getElementById("pano-canvas");
+        const box = document.getElementById("pano-modal-box");
+        const loading = document.getElementById("pano-loading");
+        const hint = document.getElementById("pano-hint");
+
+        loading.classList.remove("hidden");
+        hint.classList.remove("hidden");
+        modal.setAttribute("aria-hidden", "false");
+        modal.classList.add("open");
+
+        if (panoFrame) {
+          cancelAnimationFrame(panoFrame);
+          panoFrame = null;
+        }
+        if (panoRenderer) {
+          panoRenderer.dispose();
+          panoRenderer = null;
+        }
+
+        requestAnimationFrame(() => {
+          const w = box.clientWidth,
+            h = box.clientHeight;
+
+          const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+          renderer.setSize(w, h);
+          renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+          panoRenderer = renderer;
+
+          const scene = new THREE.Scene();
+          const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 200);
+
+          const geo = new THREE.SphereGeometry(100, 64, 32);
+          geo.scale(-1, 1, 1);
+
+          new THREE.TextureLoader().load(
+            imageSrc,
+            (tex) => {
+              scene.add(
+                new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: tex })),
+              );
+              loading.classList.add("hidden");
+            },
+            undefined,
+            () => {
+              loading.innerHTML = "<span>Imagem não encontrada</span>";
+            },
+          );
+
+          let lon = 180,
+            lat = 0,
+            dragging = false,
+            px = 0,
+            py = 0;
+          let velLon = 0,
+            velLat = 0;
+
+          function onDown(x, y) {
+            dragging = true;
+            px = x;
+            py = y;
+            velLon = velLat = 0;
+          }
+          function onMove(x, y) {
+            if (!dragging) return;
+            const dLon = (x - px) * 0.12,
+              dLat = (py - y) * 0.12;
+            lon += dLon;
+            lat = Math.max(-80, Math.min(80, lat + dLat));
+            velLon = dLon;
+            velLat = dLat;
+            px = x;
+            py = y;
+            hint.classList.add("hidden");
+          }
+          function onUp() {
+            dragging = false;
+          }
+
+          canvas.addEventListener("mousedown", (e) =>
+            onDown(e.clientX, e.clientY),
+          );
+          window.addEventListener("mouseup", onUp);
+          canvas.addEventListener("mousemove", (e) =>
+            onMove(e.clientX, e.clientY),
+          );
+          canvas.addEventListener(
+            "touchstart",
+            (e) => {
+              const t = e.touches[0];
+              onDown(t.clientX, t.clientY);
+            },
+            { passive: true },
+          );
+          canvas.addEventListener(
+            "touchmove",
+            (e) => {
+              e.preventDefault();
+              const t = e.touches[0];
+              onMove(t.clientX, t.clientY);
+            },
+            { passive: false },
+          );
+          canvas.addEventListener("touchend", onUp);
+
+          let lastPinch = 0;
+          canvas.addEventListener(
+            "touchstart",
+            (e) => {
+              if (e.touches.length === 2)
+                lastPinch = Math.hypot(
+                  e.touches[0].clientX - e.touches[1].clientX,
+                  e.touches[0].clientY - e.touches[1].clientY,
+                );
+            },
+            { passive: true },
+          );
+          canvas.addEventListener(
+            "touchmove",
+            (e) => {
+              if (e.touches.length !== 2) return;
+              const d = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY,
+              );
+              camera.fov = Math.max(
+                30,
+                Math.min(100, camera.fov - (d - lastPinch) * 0.1),
+              );
+              camera.updateProjectionMatrix();
+              lastPinch = d;
+            },
+            { passive: true },
+          );
+
+          canvas.addEventListener(
+            "wheel",
+            (e) => {
+              e.preventDefault();
+              camera.fov = Math.max(
+                30,
+                Math.min(100, camera.fov + e.deltaY * 0.04),
+              );
+              camera.updateProjectionMatrix();
+            },
+            { passive: false },
+          );
+
+          function frame() {
+            panoFrame = requestAnimationFrame(frame);
+            if (!dragging) {
+              lon += velLon;
+              lat = Math.max(-80, Math.min(80, lat + velLat));
+              velLon *= 0.88;
+              velLat *= 0.88;
+            }
+            const phi = THREE.MathUtils.degToRad(90 - lat);
+            const theta = THREE.MathUtils.degToRad(lon);
+            camera.lookAt(
+              Math.sin(phi) * Math.cos(theta),
+              Math.cos(phi),
+              Math.sin(phi) * Math.sin(theta),
+            );
+            renderer.render(scene, camera);
+          }
+          frame();
+        });
+      }
+
+      function closePanoModal() {
+        const modal = document.getElementById("pano-modal");
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+        if (panoFrame) {
+          cancelAnimationFrame(panoFrame);
+          panoFrame = null;
+        }
+        if (panoRenderer) {
+          panoRenderer.dispose();
+          panoRenderer = null;
+        }
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closePanoModal();
+      });
     </script>
   </body>
 </html>
