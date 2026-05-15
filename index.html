@@ -1357,6 +1357,12 @@
         flex-direction: column;
         gap: 22px;
         align-items: flex-end;
+        background: rgba(20, 20, 20, 0.55);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 20px;
+        padding: 16px 14px;
       }
 
       .side-nav li {
@@ -1374,13 +1380,16 @@
       }
 
       .side-dot-label {
+        position: absolute;
+        right: calc(100% + 20px);
+        top: 50%;
         font-size: 0.62rem;
         letter-spacing: 0.16em;
         text-transform: uppercase;
         color: rgba(255, 255, 255, 0.38);
         white-space: nowrap;
         opacity: 0;
-        transform: translateX(6px);
+        transform: translateY(-50%) translateX(6px);
         transition:
           opacity 0.25s var(--ease),
           transform 0.25s var(--ease),
@@ -1390,7 +1399,7 @@
 
       .side-nav:hover .side-dot-label {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(-50%) translateX(0);
       }
 
       .side-dot.active .side-dot-label,
@@ -1400,7 +1409,7 @@
 
       .side-dot.active .side-dot-label {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(-50%) translateX(0);
         color: var(--gold);
       }
 
@@ -2430,6 +2439,8 @@
           const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
           renderer.setSize(w, h);
           renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+          renderer.toneMapping = THREE.NoToneMapping;
+          renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
           panoRenderer = renderer;
 
           const scene = new THREE.Scene();
