@@ -2294,7 +2294,7 @@
             });
           }
 
-          if (seqWrapEl && btnFirst && btnLast) {
+          if (btnFirst && btnLast) {
             btnFirst.addEventListener("click", () =>
               activateGroup("aerial", 0),
             );
@@ -2313,7 +2313,9 @@
               if (!wasActive) pin.classList.add("active");
             });
           });
-          document.addEventListener("click", closePinPopups);
+          document.addEventListener("click", (e) => {
+            if (!e.target.closest(".poi-pin")) closePinPopups();
+          });
         })();
 
         /* ── SCROLL REVEAL ── */
@@ -2326,7 +2328,7 @@
               }
             });
           },
-          { threshold: 0.1 },
+          { threshold: 0 },
         );
 
         document
