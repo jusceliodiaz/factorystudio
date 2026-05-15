@@ -1,41 +1,190 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Factory Interactive</title>
+    <!-- SEO Primary -->
+    <title>Factory Interactive — Experiências Digitais para Arquitetura e Mercado Imobiliário</title>
+    <meta name="description" content="Studio criativo especializado em websites premium, archviz interativo, experiências realtime e conteúdo visual para arquitetos, incorporadoras e empreendimentos premium." />
+    <meta name="keywords" content="archviz interativo, website premium, arquitetura digital, experiência imersiva, realtime, unreal engine, VR AR, mercado imobiliário digital, landing page imobiliária" />
+    <meta name="author" content="Factory Interactive" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://factoryinteractive.com.br/" />
 
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://factoryinteractive.com.br/" />
+    <meta property="og:title" content="Factory Interactive — Experiências Digitais Premium" />
+    <meta property="og:description" content="Websites, archviz interativo, realtime e experiências imersivas para arquitetura e mercado imobiliário." />
+    <meta property="og:image" content="https://factoryinteractive.com.br/images/og-image.jpg" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Factory Interactive" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Factory Interactive — Experiências Digitais Premium" />
+    <meta name="twitter:description" content="Websites, archviz interativo, realtime e experiências imersivas para arquitetura e mercado imobiliário." />
+    <meta name="twitter:image" content="https://factoryinteractive.com.br/images/og-image.jpg" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/logo_site.png" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "Factory Interactive",
+      "description": "Studio criativo especializado em experiências digitais interativas para arquitetura, real estate e lançamentos imobiliários.",
+      "url": "https://factoryinteractive.com.br",
+      "telephone": "+5541992272317",
+      "email": "firsightstudio@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Curitiba",
+        "addressRegion": "PR",
+        "addressCountry": "BR"
+      },
+      "sameAs": [
+        "https://www.instagram.com/umdesignerchato",
+        "https://www.behance.net/firsightstudio"
+      ]
+    }
+    </script>
 
     <style>
-      * {
+      /* ── RESET & TOKENS ── */
+      *, *::before, *::after {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
 
+      :root {
+        --gold:    #b89c6e;
+        --gold-d:  #a08860;
+        --bg:      #080808;
+        --bg-alt:  #1e1e1e;
+        --text:    #f5f5f5;
+        --muted:   rgba(255, 255, 255, 0.45);
+        --border:  rgba(255, 255, 255, 0.08);
+        --pad:     10%;
+        --radius:  24px;
+        --ease:    cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      html { scroll-behavior: smooth; }
+
       body {
-        background: #0b0b0b;
-        color: #f5f5f5;
+        background: var(--bg);
+        color: var(--text);
         font-family: "Inter", sans-serif;
         overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
+
+      img { display: block; max-width: 100%; }
+      a   { text-decoration: none; color: inherit; }
 
       section {
-        padding: 120px 10%;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 120px var(--pad);
+        border-bottom: 1px solid var(--border);
       }
 
+      /* ── TIPOGRAFIA ── */
+      .section-label {
+        font-size: 0.72rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #666;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: clamp(2.7rem, 6.3vw, 6.3rem);
+        line-height: 0.92;
+        letter-spacing: -0.05em;
+        max-width: 1100px;
+        margin-bottom: 28px;
+        font-weight: 800;
+      }
+
+      h2 {
+        font-size: clamp(2rem, 5vw, 4.5rem);
+        line-height: 1;
+        letter-spacing: -0.04em;
+        margin-bottom: 28px;
+        max-width: 900px;
+      }
+
+      /* ── SCROLL REVEAL ── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
+      }
+
+      .reveal.visible          { opacity: 1; transform: translateY(0); }
+      .reveal-delay-1          { transition-delay: 0.1s; }
+      .reveal-delay-2          { transition-delay: 0.22s; }
+      .reveal-delay-3          { transition-delay: 0.34s; }
+
+      /* ── BOTÃO WHATSAPP ── */
+      .btn-wa {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 24px 10px 10px;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 16px;
+        color: #fff;
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        width: fit-content;
+        transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      }
+
+      .btn-wa:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.35);
+        transform: translateY(-3px);
+      }
+
+      .btn-wa-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        background: var(--gold);
+        border-radius: 10px;
+        color: #000;
+        flex-shrink: 0;
+        transition: transform 0.35s var(--ease), background 0.3s;
+      }
+
+      .btn-wa:hover .btn-wa-icon {
+        transform: rotate(12deg) scale(1.12);
+        background: var(--gold-d);
+      }
+
+      /* ── HERO ── */
       .hero {
         height: 100vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        padding: 0 var(--pad);
         position: relative;
         overflow: hidden;
       }
@@ -49,227 +198,470 @@
         z-index: -2;
       }
 
-      .overlay {
+      .hero-overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(
-          to top,
-          rgba(0, 0, 0, 0.88),
-          rgba(0, 0, 0, 0.35)
-        );
+        background: linear-gradient(to top, rgba(0,0,0,0.92), rgba(0,0,0,0.32));
         z-index: -1;
       }
 
-      .eyebrow {
-        font-size: 0.75rem;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: #8d8d8d;
+      /* Animações de entrada do hero */
+      .hero-logo {
+        height: 140px;
+        width: auto;
+        align-self: flex-start;
         margin-bottom: 24px;
+        opacity: 0;
+        transform: translateY(-14px);
+        animation: heroFadeDown 0.8s var(--ease) 0.25s forwards;
       }
 
-      h1 {
-        font-size: clamp(3rem, 7vw, 7rem);
-        line-height: 0.95;
-        letter-spacing: -0.05em;
-        max-width: 1100px;
-        margin-bottom: 28px;
-        font-weight: 800;
+      .hero h1 {
+        opacity: 0;
+        transform: translateY(22px);
+        animation: heroFadeUp 0.9s var(--ease) 0.45s forwards;
       }
 
       .hero p {
-        max-width: 700px;
-        font-size: 1.05rem;
-        line-height: 1.9;
-        color: rgba(255, 255, 255, 0.68);
-        margin-bottom: 40px;
-      }
-
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 16px 28px;
-        background: #d9ff00;
-        color: #000;
-        border-radius: 100px;
-        text-decoration: none;
-        font-weight: 700;
-        transition: 0.3s;
-        width: fit-content;
-      }
-
-      .btn:hover {
-        transform: translateY(-2px);
-      }
-
-      .section-label {
-        font-size: 0.75rem;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: #7d7d7d;
-        margin-bottom: 18px;
-      }
-
-      h2 {
-        font-size: clamp(2rem, 5vw, 4.5rem);
-        line-height: 1;
-        letter-spacing: -0.04em;
-        margin-bottom: 28px;
-        max-width: 900px;
-      }
-
-      .section-text {
-        max-width: 900px;
-        color: rgba(255, 255, 255, 0.68);
-        line-height: 1.9;
+        max-width: 680px;
         font-size: 1rem;
+        line-height: 1.85;
+        color: rgba(255, 255, 255, 0.65);
+        margin-bottom: 40px;
+        opacity: 0;
+        transform: translateY(18px);
+        animation: heroFadeUp 0.9s var(--ease) 0.65s forwards;
       }
+
+      .hero .btn-wa {
+        opacity: 0;
+        animation: heroFadeUp 0.8s var(--ease) 0.85s forwards;
+      }
+
+      @keyframes heroFadeUp   { to { opacity: 1; transform: translateY(0); } }
+      @keyframes heroFadeDown { to { opacity: 1; transform: translateY(0); } }
+
+      /* ── PORTFÓLIO HORIZONTAL ── */
+      .ph-wrap {
+        height: 300vh;
+        position: relative;
+      }
+
+      .ph-sticky {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        overflow: hidden;
+        background: var(--bg);
+      }
+
+      .ph-viewport {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .ph-track {
+        display: flex;
+        height: 100%;
+        gap: 16px;
+        will-change: transform;
+      }
+
+      /* Slide de texto */
+      .ph-slide-text {
+        width: 38vw !important;
+        background: var(--gold) !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 32px;
+        padding: 48px 6%;
+        flex-shrink: 0;
+      }
+
+      .ph-heading {
+        font-size: clamp(2.4rem, 4vw, 5rem);
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+        font-weight: 800;
+        color: #fff;
+      }
+
+      .ph-heading em {
+        font-style: italic;
+        font-weight: 400;
+        color: #3a3a3a;
+      }
+
+      .ph-desc {
+        font-size: 1rem;
+        line-height: 1.85;
+        color: rgba(255, 255, 255, 0.88);
+        max-width: 460px;
+      }
+
+      /* Slides de imagem */
+      .ph-slide {
+        position: relative;
+        width: 42vw;
+        height: 100%;
+        flex-shrink: 0;
+        overflow: hidden;
+        background: #111;
+      }
+
+      .ph-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.85s var(--ease);
+      }
+
+      .ph-slide:hover img { transform: scale(1.04); }
+
+      .ph-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.06) 45%, transparent 70%);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 32px 40px;
+      }
+
+      .ph-counter {
+        font-size: 0.68rem;
+        letter-spacing: 0.24em;
+        color: rgba(255, 255, 255, 0.38);
+        font-weight: 500;
+      }
+
+      .ph-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+
+      .ph-meta-label {
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        color: rgba(255, 255, 255, 0.36);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+      }
+
+      .ph-meta-title {
+        font-size: clamp(1.4rem, 2.2vw, 2rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+
+      .ph-meta-sub {
+        font-size: 0.74rem;
+        color: rgba(255, 255, 255, 0.46);
+        margin-top: 6px;
+        letter-spacing: 0.08em;
+      }
+
+      .ph-meta-right { text-align: right; }
+
+      /* Slide de encerramento */
+      .ph-slide-end {
+        width: 50vw !important;
+        background: #f7f7f7 !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 28px;
+        padding: 48px 6%;
+        color: #111;
+        flex-shrink: 0;
+      }
+
+      .ph-slide-end .section-label { color: #888; }
+
+      .ph-end-heading {
+        font-size: clamp(1.8rem, 3vw, 3.2rem);
+        line-height: 1.15;
+        letter-spacing: -0.03em;
+        font-weight: 400;
+        max-width: 560px;
+        color: #111;
+      }
+
+      .ph-end-heading em {
+        font-style: italic;
+        color: var(--gold);
+      }
+
+      /* Barra de progresso */
+      .ph-progress-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 2px;
+        width: 0;
+        background: var(--gold);
+        z-index: 10;
+        transition: width 0.08s linear;
+      }
+
+      /* ── SERVIÇOS ── */
+      .section-services { background: var(--bg-alt); }
+      .section-services > h2 { color: var(--gold); }
 
       .services {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 24px;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 16px;
         margin-top: 60px;
       }
 
       .card {
         background: #121212;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 24px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
         padding: 36px;
-        transition: 0.3s;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.35s var(--ease), border-color 0.35s;
       }
 
       .card:hover {
         transform: translateY(-6px);
-        border-color: rgba(217, 255, 0, 0.35);
+        border-color: rgba(184, 156, 110, 0.5);
       }
 
+      .card-img {
+        margin: -36px -36px 28px -36px;
+        height: 200px;
+        overflow: hidden;
+        border-radius: var(--radius) var(--radius) 0 0;
+      }
+
+      .card-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.55s var(--ease);
+      }
+
+      .card:hover .card-img img { transform: scale(1.06); }
+
       .card-number {
-        font-size: 0.8rem;
-        color: #d9ff00;
-        margin-bottom: 20px;
-        letter-spacing: 0.15em;
+        font-size: 0.78rem;
+        color: var(--gold);
+        margin-bottom: 18px;
+        letter-spacing: 0.16em;
       }
 
       .card h3 {
-        font-size: 1.6rem;
-        margin-bottom: 18px;
-        line-height: 1.1;
+        font-size: 1.25rem;
+        margin-bottom: 14px;
+        line-height: 1.2;
       }
 
       .card p {
-        color: rgba(255, 255, 255, 0.62);
-        line-height: 1.85;
+        font-size: 0.88rem;
+        color: rgba(255, 255, 255, 0.56);
+        line-height: 1.82;
         margin-bottom: 24px;
+        flex: 1;
       }
 
       .tags {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 8px;
       }
 
       .tag {
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 100px;
-        padding: 8px 14px;
-        font-size: 0.75rem;
-        color: #bcbcbc;
+        padding: 6px 12px;
+        font-size: 0.68rem;
+        color: #aaa;
+        transition: border-color 0.25s;
       }
 
-      .portfolio {
+      .card:hover .tag { border-color: rgba(184, 156, 110, 0.28); }
+
+      /* Cards especiais */
+      .card-special {
+        background: var(--gold);
+        border-color: transparent;
+        color: #1a1200;
+      }
+
+      .card-special h3 { color: #1a1200; }
+
+      .card-special p {
+        color: rgba(26, 18, 0, 0.68);
+        font-size: 0.88rem;
+      }
+
+      .card-special:hover { border-color: rgba(26, 18, 0, 0.2); }
+
+      .card-special-badge {
+        display: inline-block;
+        background: rgba(0, 0, 0, 0.12);
+        color: #1a1200;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.24em;
+        padding: 5px 11px;
+        border-radius: 100px;
+        margin-bottom: 24px;
+        width: fit-content;
+      }
+
+      .tag.tag-special {
+        border-color: rgba(26, 18, 0, 0.18);
+        color: #3a3a3a;
+      }
+
+      /* ── PORTFÓLIO 2×2 ── */
+      .section-portfolio {
+        padding: 0;
+        border-bottom: none;
+      }
+
+      .portfolio-fw-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-        gap: 24px;
-        margin-top: 50px;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 60vh 60vh;
+        gap: 3px;
       }
 
-      .portfolio-item {
+      .portfolio-fw-card {
         position: relative;
-        height: 420px;
         overflow: hidden;
-        border-radius: 24px;
-        background: #151515;
+        background: #111;
       }
 
-      .portfolio-item img {
+      .portfolio-fw-card img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: transform 0.85s var(--ease);
       }
 
-      .portfolio-overlay {
+      .portfolio-fw-card:hover img { transform: scale(1.05); }
+
+      .portfolio-fw-info {
         position: absolute;
         inset: 0;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-        padding: 32px;
+        background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, transparent 52%);
         display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
+        align-items: flex-end;
+        padding: 36px 40px;
+        transition: background 0.4s;
       }
 
-      .portfolio-overlay h4 {
-        font-size: 1.5rem;
+      .portfolio-fw-card:hover .portfolio-fw-info {
+        background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, transparent 58%);
+      }
+
+      .portfolio-fw-info > div {
+        transform: translateY(8px);
+        transition: transform 0.45s var(--ease);
+      }
+
+      .portfolio-fw-card:hover .portfolio-fw-info > div { transform: translateY(0); }
+
+      .portfolio-fw-label {
+        font-size: 0.58rem;
+        letter-spacing: 0.22em;
+        color: rgba(255, 255, 255, 0.4);
         margin-bottom: 8px;
+        text-transform: uppercase;
       }
 
-      .portfolio-overlay span {
-        color: rgba(255, 255, 255, 0.55);
-        font-size: 0.9rem;
+      .portfolio-fw-info h3 {
+        font-size: clamp(1.3rem, 2vw, 2rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 6px;
+        line-height: 1;
       }
 
+      .portfolio-fw-info span {
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.46);
+        letter-spacing: 0.04em;
+      }
+
+      /* ── CTA ── */
       .cta {
         text-align: center;
+        background: var(--bg-alt);
       }
 
-      .cta h2 {
-        margin: 0 auto 24px;
-      }
+      .cta h2    { margin: 0 auto 24px; }
 
       .cta p {
-        max-width: 700px;
+        max-width: 580px;
         margin: 0 auto 40px;
-        color: rgba(255, 255, 255, 0.65);
+        color: rgba(255, 255, 255, 0.6);
         line-height: 1.9;
+        font-size: 1rem;
       }
 
+      .cta .btn-wa { margin: 0 auto; }
+
+      /* ── FOOTER ── */
       footer {
-        padding: 60px 10%;
+        padding: 40px var(--pad);
         display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 20px;
-        color: rgba(255, 255, 255, 0.45);
-        font-size: 0.9rem;
+        justify-content: center;
+        color: var(--muted);
+        font-size: 0.82rem;
+        border-top: 1px solid var(--border);
+        letter-spacing: 0.03em;
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 1200px) {
+        .services { grid-template-columns: repeat(3, 1fr); }
       }
 
       @media (max-width: 768px) {
-        section {
-          padding: 90px 7%;
-        }
+        :root { --pad: 7%; }
 
-        .portfolio {
+        section { padding: 80px var(--pad); }
+
+        .services { grid-template-columns: 1fr; }
+
+        .portfolio-fw-grid {
           grid-template-columns: 1fr;
+          grid-template-rows: repeat(4, 50vh);
         }
 
-        .portfolio-item {
-          height: 320px;
-        }
+        .ph-slide-text { width: 82vw !important; }
+        .ph-slide      { width: 80vw; }
+        .ph-slide-end  { width: 80vw !important; }
       }
     </style>
   </head>
 
   <body>
-    <section class="hero">
-      <video autoplay muted loop playsinline>
-        <source src="hero.mp4" type="video/mp4" />
+
+    <!-- ── HERO ── -->
+    <section class="hero" aria-label="Início">
+      <video autoplay muted loop playsinline aria-hidden="true">
+        <source src="images/SHOWREEL.mp4" type="video/mp4" />
       </video>
+      <div class="hero-overlay"></div>
 
-      <div class="overlay"></div>
-
-      <div class="eyebrow">FACTORY INTERACTIVE</div>
+      <img
+        src="images/logo_site.png"
+        alt="Factory Interactive — Studio de Experiências Digitais"
+        class="hero-logo"
+      />
 
       <h1>Experiências Interativas para Arquitetura e Mercado Imobiliário</h1>
 
@@ -279,209 +671,302 @@
         narrativa visual e experiências web imersivas com sensação realtime.
       </p>
 
-      <a href="#" class="btn"> Explorar Experiências </a>
+      <a
+        href="https://wa.me/5541992272317"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-wa"
+        aria-label="Falar com a Factory Interactive pelo WhatsApp"
+      >
+        <span class="btn-wa-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </span>
+        Whatsapp
+      </a>
     </section>
 
-    <section>
-      <div class="section-label">SOBRE</div>
+    <!-- ── PORTFÓLIO HORIZONTAL ── -->
+    <div class="ph-wrap" role="region" aria-label="Portfólio em destaque">
+      <div class="ph-sticky">
+        <div class="ph-viewport">
+          <div class="ph-track">
 
-      <h2>
-        Experiências digitais cinematográficas desenvolvidas para elevar
-        percepção, imersão e apresentação arquitetônica.
-      </h2>
+            <div class="ph-slide ph-slide-text">
+              <div class="section-label">— Portfólio</div>
+              <h2 class="ph-heading">Apresentações que inspiram <em>emoções e geram vendas.</em></h2>
+              <p class="ph-desc">A Factory Interactive é um studio especializado em experiências digitais interativas para arquitetura, real estate e lançamentos imobiliários. Combinamos archviz, cinematic design, motion, narrativa visual e interatividade para transformar apresentações tradicionais em experiências imersivas de alto impacto.</p>
+            </div>
 
-      <p class="section-text">
-        A Factory Interactive é um studio especializado em experiências digitais
-        interativas para arquitetura, real estate e lançamentos imobiliários.
-        Combinamos archviz, cinematic design, motion, narrativa visual e
-        interatividade para transformar apresentações tradicionais em
-        experiências imersivas de alto impacto. Nosso foco não é apenas
-        estética, mas criar percepção de valor, diferenciação e conexão
-        emocional através de experiências digitais premium.
-      </p>
-    </section>
+            <div class="ph-slide">
+              <img src="images/BG_placeholder.png" alt="Projeto La Terroir — Camila Dirani, 2026" loading="lazy" />
+              <div class="ph-overlay">
+                <span class="ph-counter">01 / 03</span>
+                <div class="ph-meta">
+                  <div class="ph-meta-left">
+                    <div class="ph-meta-label">Projeto / Cliente</div>
+                    <div class="ph-meta-title">LA TERROIR</div>
+                    <div class="ph-meta-sub">Camila Dirani</div>
+                  </div>
+                  <div class="ph-meta-right">
+                    <div class="ph-meta-label">Ano</div>
+                    <div class="ph-meta-title">2026</div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-    <section>
-      <div class="section-label">SERVIÇOS</div>
+            <div class="ph-slide">
+              <img src="images/BG_placeholder.png" alt="Projeto Itaporã — Eduardo Rabachini, 2025" loading="lazy" />
+              <div class="ph-overlay">
+                <span class="ph-counter">02 / 03</span>
+                <div class="ph-meta">
+                  <div class="ph-meta-left">
+                    <div class="ph-meta-label">Projeto / Cliente</div>
+                    <div class="ph-meta-title">ITAPORÃ</div>
+                    <div class="ph-meta-sub">Eduardo Rabachini</div>
+                  </div>
+                  <div class="ph-meta-right">
+                    <div class="ph-meta-label">Ano</div>
+                    <div class="ph-meta-title">2025</div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-      <h2>
-        Produtos interativos desenvolvidos para experiências imobiliárias
-        premium.
-      </h2>
+            <div class="ph-slide">
+              <img src="images/BG_placeholder.png" alt="Projeto Modus Consulting — Miami FL, 2026" loading="lazy" />
+              <div class="ph-overlay">
+                <span class="ph-counter">03 / 03</span>
+                <div class="ph-meta">
+                  <div class="ph-meta-left">
+                    <div class="ph-meta-label">Projeto / Cliente</div>
+                    <div class="ph-meta-title">MODUS CONSULTING</div>
+                    <div class="ph-meta-sub">Miami — FL</div>
+                  </div>
+                  <div class="ph-meta-right">
+                    <div class="ph-meta-label">Ano</div>
+                    <div class="ph-meta-title">2026</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ph-slide ph-slide-end">
+              <div class="section-label">— Fim da Seleção</div>
+              <h2 class="ph-end-heading">Cada projeto é uma <em>história</em> contada em luz, textura e composição.</h2>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SERVIÇOS ── -->
+    <section class="section-services" aria-labelledby="services-heading">
+      <div class="section-label">Serviços</div>
+      <h2 id="services-heading">Soluções criativas para experiências digitais e visuais.</h2>
 
       <div class="services">
-        <div class="card">
+
+        <article class="card reveal reveal-delay-1">
+          <div class="card-img">
+            <img src="images/BG_placeholder.png" alt="Websites e Landing Pages premium" loading="lazy" />
+          </div>
           <div class="card-number">01</div>
-
-          <h3>Websites Cinematográficos</h3>
-
-          <p>
-            Websites premium para arquitetura, incorporadoras e empreendimentos
-            imobiliários com storytelling visual, motion e experiências
-            imersivas.
-          </p>
-
+          <h3>Websites & Landing Pages</h3>
+          <p>Websites, landing pages e experiências digitais desenvolvidas para apresentar marcas, produtos e lançamentos com impacto visual e narrativa premium.</p>
           <div class="tags">
-            <div class="tag">Cinematic UI</div>
-            <div class="tag">Motion Design</div>
-            <div class="tag">Realtime Feeling</div>
+            <span class="tag">Web Design</span>
+            <span class="tag">UI/UX</span>
+            <span class="tag">Motion</span>
           </div>
-        </div>
+        </article>
 
-        <div class="card">
-          <div class="card-number">02</div>
-
-          <h3>Archviz Pocket Experience</h3>
-
-          <p>
-            Experiências interativas com vídeos conectados, POIs, navegação
-            cinematográfica, hotspots e integração 360°.
-          </p>
-
+        <article class="card card-special reveal reveal-delay-2">
+          <div class="card-special-badge">IA</div>
+          <h3>Geração de Imagem por AI</h3>
+          <p>Criação de imagens, renders e visuais únicos gerados por inteligência artificial para projetos, campanhas e apresentações premium.</p>
           <div class="tags">
-            <div class="tag">POIs</div>
-            <div class="tag">360 Viewer</div>
-            <div class="tag">Exploração Interativa</div>
+            <span class="tag tag-special">Generative AI</span>
+            <span class="tag tag-special">Midjourney</span>
+            <span class="tag tag-special">Stable Diffusion</span>
           </div>
-        </div>
+        </article>
 
-        <div class="card">
+        <article class="card reveal reveal-delay-3">
+          <div class="card-img">
+            <img src="images/BG_placeholder.png" alt="Archviz interativo para projetos de arquitetura" loading="lazy" />
+          </div>
           <div class="card-number">03</div>
-
-          <h3>Landing Pages Imobiliárias</h3>
-
-          <p>
-            Landing pages premium desenvolvidas para lançamentos imobiliários
-            com foco em percepção, impacto visual e diferenciação de mercado.
-          </p>
-
+          <h3>Archviz</h3>
+          <p>Experiência interativa com imersão em projetos ultra realistas, rodando diretamente no navegador em qualquer dispositivo.</p>
           <div class="tags">
-            <div class="tag">Luxury Real Estate</div>
-            <div class="tag">Storytelling</div>
-            <div class="tag">Lançamentos</div>
+            <span class="tag">Archviz Explorer</span>
+            <span class="tag">Walkthroughs</span>
+            <span class="tag">360 Viewer</span>
           </div>
-        </div>
+        </article>
 
-        <div class="card">
+        <article class="card reveal reveal-delay-1">
+          <div class="card-img">
+            <img src="images/BG_placeholder.png" alt="Realtime e Unreal Engine para visualização avançada" loading="lazy" />
+          </div>
           <div class="card-number">04</div>
-
-          <h3>Conteúdo Cinematográfico</h3>
-
-          <p>
-            Produção de renders, loops animados, filmes arquitetônicos e
-            conteúdo visual premium para arquitetura e real estate.
-          </p>
-
+          <h3>Realtime & Unreal Engine</h3>
+          <p>Experiências realtime, apresentações interativas e visualização avançada com qualidade cinematográfica.</p>
           <div class="tags">
-            <div class="tag">Renders</div>
-            <div class="tag">Animações</div>
-            <div class="tag">Visual Premium</div>
+            <span class="tag">Unreal Engine</span>
+            <span class="tag">Realtime</span>
+            <span class="tag">Interactive</span>
           </div>
-        </div>
+        </article>
 
-        <div class="card">
-          <div class="card-number">05</div>
-
-          <h3>Experiências Realtime & VR</h3>
-
-          <p>
-            Experiências avançadas em Unreal Engine para stands de vendas,
-            walkthroughs interativos, apresentações premium e realidade virtual.
-          </p>
-
+        <article class="card card-special reveal reveal-delay-2">
+          <div class="card-special-badge">VOZ</div>
+          <h3>Navegação por Voz</h3>
+          <p>Controle total do site através de comandos de voz — experiência imersiva e acessível que coloca o visitante no centro da interação.</p>
           <div class="tags">
-            <div class="tag">Unreal Engine</div>
-            <div class="tag">VR</div>
-            <div class="tag">Realtime</div>
+            <span class="tag tag-special">Voice UI</span>
+            <span class="tag tag-special">Speech API</span>
+            <span class="tag tag-special">Acessibilidade</span>
           </div>
-        </div>
+        </article>
+
+        <article class="card reveal reveal-delay-3">
+          <div class="card-img">
+            <img src="images/BG_placeholder.png" alt="VR e AR para experiências virtuais imersivas" loading="lazy" />
+          </div>
+          <div class="card-number">06</div>
+          <h3>VR & AR</h3>
+          <p>Soluções imersivas para experiências virtuais e apresentações inovadoras de alto impacto.</p>
+          <div class="tags">
+            <span class="tag">VR</span>
+            <span class="tag">AR</span>
+            <span class="tag">Immersive</span>
+          </div>
+        </article>
+
       </div>
     </section>
 
-    <section>
-      <div class="section-label">MERCADOS</div>
+    <!-- ── PORTFÓLIO 2×2 ── -->
+    <section class="section-portfolio" aria-label="Cases de portfólio">
+      <div class="portfolio-fw-grid">
 
-      <h2>
-        Desenvolvido para segmentos premium e experiências visuais de alto
-        padrão.
-      </h2>
+        <article class="portfolio-fw-card">
+          <img src="images/BG_placeholder.png" alt="Modus Consulting — Website Miami FL 2026" loading="lazy" />
+          <div class="portfolio-fw-info">
+            <div>
+              <div class="portfolio-fw-label">Projeto / Cliente</div>
+              <h3>Modus Consulting</h3>
+              <span>Website · Miami — FL · 2026</span>
+            </div>
+          </div>
+        </article>
 
-      <div class="services">
-        <div class="card">
-          <h3>Mercado Imobiliário</h3>
-        </div>
+        <article class="portfolio-fw-card">
+          <img src="images/BG_placeholder.png" alt="Dancon Empreendimentos — Landing Page Curitiba PR 2025" loading="lazy" />
+          <div class="portfolio-fw-info">
+            <div>
+              <div class="portfolio-fw-label">Projeto / Cliente</div>
+              <h3>Dancon Empreendimentos</h3>
+              <span>Landing Page · Curitiba — PR · 2025</span>
+            </div>
+          </div>
+        </article>
 
-        <div class="card">
-          <h3>Arquitetura</h3>
-        </div>
+        <article class="portfolio-fw-card">
+          <img src="images/BG_placeholder.png" alt="Baterias Samuka — Landing Page Londrina PR 2025" loading="lazy" />
+          <div class="portfolio-fw-info">
+            <div>
+              <div class="portfolio-fw-label">Projeto / Cliente</div>
+              <h3>Baterias Samuka</h3>
+              <span>Landing Page · Londrina — PR · 2025</span>
+            </div>
+          </div>
+        </article>
 
-        <div class="card">
-          <h3>Incorporadoras</h3>
-        </div>
+        <article class="portfolio-fw-card">
+          <img src="images/BG_placeholder.png" alt="Solicita Licitações — Website Brasil Nacional 2025" loading="lazy" />
+          <div class="portfolio-fw-info">
+            <div>
+              <div class="portfolio-fw-label">Projeto / Cliente</div>
+              <h3>Solicita Licitações</h3>
+              <span>Website · Brasil — Nacional · 2025</span>
+            </div>
+          </div>
+        </article>
 
-        <div class="card">
-          <h3>Design de Interiores</h3>
-        </div>
-
-        <div class="card">
-          <h3>Hospitalidade</h3>
-        </div>
-
-        <div class="card">
-          <h3>Visualização Automotiva</h3>
-        </div>
       </div>
     </section>
 
-    <section>
-      <div class="section-label">EXPERIÊNCIAS</div>
-
-      <h2>
-        Experiências cinematográficas desenvolvidas para a nova geração do
-        mercado imobiliário.
-      </h2>
-
-      <div class="portfolio">
-        <div class="portfolio-item">
-          <img src="project-01.jpg" />
-
-          <div class="portfolio-overlay">
-            <h4>Archviz Pocket Experience</h4>
-            <span>Experiência Imobiliária Interativa</span>
-          </div>
-        </div>
-
-        <div class="portfolio-item">
-          <img src="project-02.jpg" />
-
-          <div class="portfolio-overlay">
-            <h4>Landing Cinematográfica</h4>
-            <span>Apresentação Premium de Empreendimento</span>
-          </div>
-        </div>
-      </div>
+    <!-- ── CTA ── -->
+    <section class="cta reveal" aria-labelledby="cta-heading">
+      <div class="section-label">Iniciar Projeto</div>
+      <h2 id="cta-heading">Transformamos ideias em experiências digitais de alto impacto.</h2>
+      <p>Interfaces, soluções interativas e ferramentas visuais desenvolvidas para marcas, produtos e empresas modernas.</p>
+      <a
+        href="https://wa.me/5541992272317"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-wa"
+        aria-label="Iniciar projeto pelo WhatsApp"
+      >
+        <span class="btn-wa-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </span>
+        Whatsapp
+      </a>
     </section>
 
-    <section class="cta">
-      <div class="section-label">INICIE UM PROJETO</div>
-
-      <h2>
-        Transforme seu empreendimento em uma experiência digital imersiva.
-      </h2>
-
-      <p>
-        Criamos experiências cinematográficas, archviz interativo e
-        apresentações digitais premium desenvolvidas para arquitetura e mercado
-        imobiliário contemporâneo.
-      </p>
-
-      <a href="#" class="btn"> Iniciar Projeto </a>
-    </section>
-
+    <!-- ── FOOTER ── -->
     <footer>
-      <div>FACTORY INTERACTIVE</div>
-
-      <div>Experiências Interativas para Arquitetura e Real Estate</div>
+      <small>Factory Studio © 2026 · Todos os direitos reservados.</small>
     </footer>
+
+    <script>
+      (function () {
+        'use strict';
+
+        /* ── PORTFÓLIO HORIZONTAL SCROLL ── */
+        const wrap     = document.querySelector('.ph-wrap');
+        const track    = document.querySelector('.ph-track');
+        const viewport = document.querySelector('.ph-viewport');
+
+        if (wrap && track && viewport) {
+          const bar = document.createElement('div');
+          bar.className = 'ph-progress-bar';
+          bar.setAttribute('aria-hidden', 'true');
+          viewport.appendChild(bar);
+
+          function updateScroll() {
+            const rect      = wrap.getBoundingClientRect();
+            const maxScroll = wrap.offsetHeight - window.innerHeight;
+            const progress  = Math.max(0, Math.min(-rect.top / maxScroll, 1));
+            const maxX      = track.scrollWidth - viewport.offsetWidth;
+
+            track.style.transform = `translateX(-${progress * maxX}px)`;
+            bar.style.width       = `${progress * 100}%`;
+          }
+
+          window.addEventListener('scroll', updateScroll, { passive: true });
+          window.addEventListener('resize', updateScroll);
+          updateScroll();
+        }
+
+        /* ── SCROLL REVEAL ── */
+        const revealObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+      })();
+    </script>
   </body>
 </html>
