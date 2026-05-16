@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem \"c:\\\\Users\\\\User\\\\Desktop\\\\factorystudio\\\\images\\\\\" | Where-Object { $_.Extension -match '\\\\.\\(jpg|jpeg|png|webp\\)$' } | Select-Object Name, @{N='KB';E={[math]::Round\\($_.Length/1KB\\)}} | Sort-Object KB -Descending | Format-Table -AutoSize)"
+    ]
+  }
+}

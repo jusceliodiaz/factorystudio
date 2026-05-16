@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfólio — Factory Interactive</title>
+    <meta
+      name="description"
+      content="Projetos e cases desenvolvidos pela Factory Interactive — experiências digitais, websites, archviz e muito mais."
+    />
+    <meta name="robots" content="index, follow" />
+    <link
+      rel="canonical"
+      href="https://factoryinteractive.com.br/portfolio.html"
+    />
+    <link rel="icon" type="image/png" href="images/logo_site.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --gold: #b89c6e;
+        --gold-d: #a08860;
+        --bg: #f0f0f0;
+        --text: #111;
+        --muted: rgba(0, 0, 0, 0.4);
+        --border: rgba(0, 0, 0, 0.1);
+        --pad: 10%;
+        --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      /* ── HEADER ── */
+      .pf-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 60px var(--pad) 0;
+        position: relative;
+      }
+
+      .pf-nav {
+        position: absolute;
+        left: var(--pad);
+        top: 64px;
+      }
+
+      .pf-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px 10px 14px;
+        border: 1px solid var(--border);
+        border-radius: 100px;
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        color: var(--text);
+        background: rgba(0, 0, 0, 0.05);
+        transition:
+          background 0.25s,
+          border-color 0.25s;
+      }
+
+      .pf-back:hover {
+        background: rgba(0, 0, 0, 0.1);
+        border-color: rgba(0, 0, 0, 0.2);
+      }
+      .pf-back svg {
+        transition: transform 0.25s var(--ease);
+      }
+      .pf-back:hover svg {
+        transform: translateX(-3px);
+      }
+
+      .pf-logo {
+        height: 110px;
+        width: auto;
+      }
+
+      .pf-tagline {
+        margin-top: 20px;
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      /* ── FILTER BAR ── */
+      .filter-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 52px var(--pad) 48px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: linear-gradient(to bottom, var(--bg) 80%, transparent);
+      }
+
+      .filter-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 20px;
+        border: 1px solid var(--border);
+        border-radius: 100px;
+        font-family: inherit;
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+        background: transparent;
+        cursor: pointer;
+        transition:
+          border-color 0.25s,
+          color 0.25s,
+          background 0.25s;
+      }
+
+      .filter-btn:hover {
+        color: var(--text);
+        border-color: rgba(0, 0, 0, 0.24);
+      }
+
+      .filter-btn.active {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #1a1200;
+        font-weight: 600;
+      }
+
+      .filter-count {
+        font-size: 0.64rem;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 100px;
+        padding: 2px 7px;
+        color: inherit;
+      }
+
+      .filter-btn.active .filter-count {
+        background: rgba(0, 0, 0, 0.15);
+      }
+
+      /* ── GRID FULL-WIDTH ── */
+      .pf-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 60vh;
+        gap: 3px;
+      }
+
+      /* ── CARD ── */
+      .pf-card {
+        position: relative;
+        overflow: hidden;
+        background: #111;
+        cursor: pointer;
+      }
+
+      .pf-card.hidden {
+        display: none;
+      }
+
+      .pf-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.85s var(--ease);
+      }
+
+      .pf-card:hover img {
+        transform: scale(1.05);
+      }
+
+      .pf-info {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.82) 0%,
+          transparent 52%
+        );
+        display: flex;
+        align-items: flex-end;
+        padding: 36px 40px;
+        transition: background 0.4s;
+      }
+
+      .pf-card:hover .pf-info {
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.92) 0%,
+          transparent 58%
+        );
+      }
+
+      .pf-info > div {
+        transform: translateY(8px);
+        transition: transform 0.45s var(--ease);
+      }
+
+      .pf-card:hover .pf-info > div {
+        transform: translateY(0);
+      }
+
+      .pf-label {
+        font-size: 0.58rem;
+        letter-spacing: 0.22em;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+      }
+
+      .pf-name {
+        font-size: clamp(1.3rem, 2vw, 2rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 6px;
+        line-height: 1;
+        color: #fff;
+      }
+
+      .pf-sub {
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.46);
+        letter-spacing: 0.04em;
+      }
+
+      /* ── EMPTY STATE ── */
+      .pf-empty {
+        display: none;
+        text-align: center;
+        padding: 80px var(--pad);
+        color: var(--muted);
+        font-size: 0.9rem;
+        grid-column: 1 / -1;
+      }
+
+      .pf-empty.visible {
+        display: block;
+      }
+
+      /* ── FOOTER ── */
+      .pf-footer {
+        display: flex;
+        justify-content: center;
+        padding: 32px var(--pad);
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 0.8rem;
+        letter-spacing: 0.03em;
+      }
+
+      /* ── SLIDES ── */
+      .pf-slides {
+        position: absolute;
+        inset: 0;
+      }
+
+      .pf-slides img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition:
+          opacity 0.55s var(--ease),
+          transform 0.85s var(--ease);
+      }
+
+      .pf-slides img.pf-slide-active {
+        opacity: 1;
+      }
+
+      .pf-card:hover .pf-slides img.pf-slide-active {
+        transform: scale(1.05);
+      }
+
+      /* ── SLIDE NAV BUTTONS ── */
+      .pf-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        background: rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(8px);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.3s var(--ease),
+          background 0.25s,
+          border-color 0.25s,
+          transform 0.25s var(--ease);
+        z-index: 10;
+      }
+
+      .pf-nav-btn.pf-prev {
+        left: 20px;
+      }
+
+      .pf-nav-btn.pf-next {
+        right: 20px;
+      }
+
+      .pf-card:hover .pf-nav-btn {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .pf-nav-btn:hover {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #000;
+      }
+
+      .pf-nav-btn:active {
+        transform: translateY(-50%) scale(0.9);
+      }
+
+      /* ── SLIDE DOTS ── */
+      .pf-dots {
+        position: absolute;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 6px;
+        z-index: 10;
+        opacity: 0;
+        transition: opacity 0.3s var(--ease);
+      }
+
+      .pf-card:hover .pf-dots {
+        opacity: 1;
+      }
+
+      .pf-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.35);
+        transition:
+          background 0.25s,
+          transform 0.25s;
+        cursor: pointer;
+      }
+
+      .pf-dot.active {
+        background: var(--gold);
+        transform: scale(1.4);
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 768px) {
+        :root {
+          --pad: 6%;
+        }
+        .pf-nav {
+          top: 28px;
+        }
+        .pf-header {
+          padding-top: 80px;
+        }
+        .filter-bar {
+          padding: 36px var(--pad) 32px;
+        }
+        .pf-grid {
+          grid-template-columns: 1fr;
+          grid-auto-rows: 50vh;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ── HEADER ── -->
+    <header class="pf-header">
+      <nav class="pf-nav">
+        <a
+          href="index.html"
+          class="pf-back"
+          aria-label="Voltar para home"
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M19 12H5M12 5l-7 7 7 7" />
+          </svg>
+          Home
+        </a>
+      </nav>
+      <img
+        src="images/logo_site3.png"
+        alt="Factory Interactive"
+        class="pf-logo"
+      />
+      <span class="pf-tagline">Portfólio de projetos</span>
+    </header>
+
+    <!-- ── FILTER BAR ── -->
+    <nav class="filter-bar" aria-label="Filtrar por categoria">
+      <button class="filter-btn active" data-filter="all">
+        Todos <span class="filter-count">6</span>
+      </button>
+      <button class="filter-btn" data-filter="website">
+        Websites & Digital <span class="filter-count">2</span>
+      </button>
+      <button class="filter-btn" data-filter="landing">
+        Landing Pages <span class="filter-count">2</span>
+      </button>
+      <button class="filter-btn" data-filter="archviz">
+        Archviz <span class="filter-count">2</span>
+      </button>
+      <button class="filter-btn" data-filter="realtime">
+        Realtime & Unreal <span class="filter-count">1</span>
+      </button>
+    </nav>
+
+    <!-- ── GRID FULL-WIDTH ── -->
+    <main class="pf-grid" aria-label="Projetos">
+      <article class="pf-card" data-category="website" data-images="images/Portfolio_004.jpg,images/BG_placeholder.png">
+        <img
+          src="images/Portfolio_004.jpg"
+          alt="Modus Consulting — Website Miami FL 2026"
+          loading="lazy"
+        />
+        <div class="pf-info">
+          <div>
+            <div class="pf-label">Website · Miami — FL</div>
+            <div class="pf-name">Modus Consulting</div>
+            <div class="pf-sub">2026</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="pf-card" data-category="archviz" data-images="images/Portfolio_005.jpg,images/BG_placeholder.png">
+        <img
+          src="images/Portfolio_005.jpg"
+          alt="La Terroir — Camila Dirani 2026"
+          loading="lazy"
+        />
+        <div class="pf-info">
+          <div>
+            <div class="pf-label">Archviz · Curitiba — PR</div>
+            <div class="pf-name">La Terroir</div>
+            <div class="pf-sub">Camila Dirani · 2026</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="pf-card" data-category="landing">
+        <img
+          src="images/BG_placeholder.png"
+          alt="Dancon Empreendimentos — Landing Page Curitiba PR 2025"
+          loading="lazy"
+        />
+        <div class="pf-info">
+          <div>
+            <div class="pf-label">Landing Page · Curitiba — PR</div>
+            <div class="pf-name">Dancon Empreendimentos</div>
+            <div class="pf-sub">2025</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="pf-card" data-category="archviz">
+        <img
+          src="images/BG_placeholder.png"
+          alt="Itaporã — Eduardo Rabachini 2025"
+          loading="lazy"
+        />
+        <div class="pf-info">
+          <div>
+            <div class="pf-label">Archviz · Paraná — PR</div>
+            <div class="pf-name">Itaporã</div>
+            <div class="pf-sub">Eduardo Rabachini · 2025</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="pf-card" data-category="landing">
+        <img
+          src="images/BG_placeholder.png"
+          alt="Baterias Samuka — Landing Page Londrina PR 2025"
+          loading="lazy"
+        />
+        <div class="pf-info">
+          <div>
+            <div class="pf-label">Landing Page · Londrina — PR</div>
+            <div class="pf-name">Baterias Samuka</div>
+            <div class="pf-sub">2025</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="pf-card" data-category="website realtime">
+        <img
+          src="images/BG_placeholder.png"
+          alt="Solicita Licitações — Website Brasil 2025"
+          loading="lazy"
+        />
+        <div class="pf-info">
+          <div>
+            <div class="pf-label">Website · Brasil — Nacional</div>
+            <div class="pf-name">Solicita Licitações</div>
+            <div class="pf-sub">2025</div>
+          </div>
+        </div>
+      </article>
+
+      <p class="pf-empty" aria-live="polite">
+        Nenhum projeto encontrado nesta categoria.
+      </p>
+    </main>
+
+    <!-- ── FOOTER ── -->
+    <footer class="pf-footer">
+      <small>Factory Studio © 2026 · Todos os direitos reservados.</small>
+    </footer>
+
+    <script>
+      (function () {
+        "use strict";
+        const buttons = document.querySelectorAll(".filter-btn");
+        const cards = document.querySelectorAll(".pf-card");
+        const empty = document.querySelector(".pf-empty");
+
+        function filterCards(filter) {
+          let visible = 0;
+          cards.forEach((card) => {
+            const cats = card.dataset.category || "";
+            const match = filter === "all" || cats.split(" ").includes(filter);
+            card.classList.toggle("hidden", !match);
+            if (match) visible++;
+          });
+          empty.classList.toggle("visible", visible === 0);
+        }
+
+        buttons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            buttons.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            filterCards(btn.dataset.filter);
+          });
+        });
+      })();
+
+      // ── SLIDER INIT ──
+      document.querySelectorAll(".pf-card").forEach(function (card) {
+        const raw = card.dataset.images;
+        if (!raw) return;
+        const images = raw
+          .split(",")
+          .map(function (s) {
+            return s.trim();
+          })
+          .filter(Boolean);
+        if (images.length < 2) return;
+
+        const existing = card.querySelector("img");
+        const altText = existing ? existing.alt : "";
+
+        const slidesWrap = document.createElement("div");
+        slidesWrap.className = "pf-slides";
+        images.forEach(function (src, i) {
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = altText;
+          img.loading = "lazy";
+          if (i === 0) img.classList.add("pf-slide-active");
+          slidesWrap.appendChild(img);
+        });
+        if (existing) existing.replaceWith(slidesWrap);
+
+        const btnPrev = document.createElement("button");
+        btnPrev.className = "pf-nav-btn pf-prev";
+        btnPrev.setAttribute("aria-label", "Foto anterior");
+        btnPrev.innerHTML =
+          '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
+
+        const btnNext = document.createElement("button");
+        btnNext.className = "pf-nav-btn pf-next";
+        btnNext.setAttribute("aria-label", "Próxima foto");
+        btnNext.innerHTML =
+          '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+
+        const dotsEl = document.createElement("div");
+        dotsEl.className = "pf-dots";
+        const dots = images.map(function (_, i) {
+          const d = document.createElement("span");
+          d.className = "pf-dot" + (i === 0 ? " active" : "");
+          dotsEl.appendChild(d);
+          return d;
+        });
+
+        card.appendChild(btnPrev);
+        card.appendChild(btnNext);
+        card.appendChild(dotsEl);
+
+        let current = 0;
+        const imgs = slidesWrap.querySelectorAll("img");
+
+        function goTo(idx) {
+          imgs[current].classList.remove("pf-slide-active");
+          dots[current].classList.remove("active");
+          current = ((idx % images.length) + images.length) % images.length;
+          imgs[current].classList.add("pf-slide-active");
+          dots[current].classList.add("active");
+        }
+
+        btnPrev.addEventListener("click", function (e) {
+          e.stopPropagation();
+          goTo(current - 1);
+        });
+        btnNext.addEventListener("click", function (e) {
+          e.stopPropagation();
+          goTo(current + 1);
+        });
+        dots.forEach(function (dot, i) {
+          dot.addEventListener("click", function (e) {
+            e.stopPropagation();
+            goTo(i);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
