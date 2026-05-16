@@ -1,0 +1,5505 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Factory Interactive</title>
+<link rel="icon" type="image/png" href="images/logo_site.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--g:#b89c6e;--gd:#a08860;--gold:#b89c6e;--gold-d:#a08860;--bg:#080808;--bg2:#111111;--t:#f5f5f5;--m:rgba(255,255,255,.45);--e:cubic-bezier(.25,.46,.45,.94);--ease:cubic-bezier(.25,.46,.45,.94);--pad:10%}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t);font-family:'Inter',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── GATE ── */
+.gw{position:fixed;inset:0;background:var(--bg);display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;z-index:9999;padding:48px 24px}
+.gc{width:100%;max-width:520px;text-align:center;animation:_fi .7s var(--e) forwards;margin:auto}
+@keyframes _fi{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.g-logo{height:64px;width:auto;margin-bottom:28px;opacity:.85}
+.g-sup{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--g);margin-bottom:12px}
+.g-h1{font-size:clamp(1.5rem,4vw,2rem);font-weight:700;line-height:1.2;margin-bottom:10px}
+.g-sub{font-size:.88rem;color:var(--m);margin-bottom:28px;line-height:1.75}
+.g-form{display:flex;flex-direction:column;gap:10px}
+.g-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g-in{width:100%;padding:13px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:12px;color:var(--t);font-family:inherit;font-size:.93rem;outline:none;transition:border-color .25s}
+.g-in:focus{border-color:rgba(184,156,110,.5)}
+.g-in::placeholder{color:rgba(255,255,255,.28)}
+select.g-in{-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 5 5-5' fill='rgba(255,255,255,.35)'/></svg>");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
+select.g-in option{background:#111;color:#f5f5f5}
+.g-btn{padding:14px 24px;background:var(--g);border:none;border-radius:12px;color:#000;font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .25s,transform .25s;margin-top:4px}
+.g-btn:hover{background:var(--gd);transform:translateY(-2px)}
+.g-err{font-size:.8rem;color:#e05555;min-height:18px;opacity:0;text-align:left;padding:0 4px;transition:opacity .2s;line-height:1.4}
+.g-note{font-size:.7rem;color:rgba(255,255,255,.2);margin-top:18px;line-height:1.6}
+@media(max-width:480px){.g-row{grid-template-columns:1fr}}
+
+/* ── DEMO ── */
+.dw{display:none}
+
+/* ── SECTION 1: VIDEO HERO ── */
+.d1{position:relative;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.d1-vc{position:absolute;inset:0;background:#000;z-index:0}
+.d1-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.88),rgba(0,0,0,.28));z-index:1;pointer-events:none}
+.d1-content{position:relative;z-index:2;text-align:center;padding:0 24px;pointer-events:none}
+.d-badge{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--g);border:1px solid rgba(184,156,110,.3);border-radius:100px;padding:5px 14px;margin-bottom:22px}
+.d1-h2{font-size:clamp(2rem,5.5vw,3.8rem);font-weight:800;line-height:1.12;margin-bottom:16px}
+.d1-sub{font-size:.88rem;color:var(--m);letter-spacing:.06em}
+.d1-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;font-size:.72rem;color:rgba(255,255,255,.28);letter-spacing:.12em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:6px;animation:_bv 2s ease-in-out infinite}
+@keyframes _bv{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+.d1-arr{width:1px;height:28px;background:linear-gradient(to bottom,rgba(255,255,255,0),rgba(255,255,255,.3))}
+
+/* ── SECTION 2 ── */
+.d2{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg2);padding:100px 24px}
+.ds-inner{max-width:700px;text-align:center}
+.d2-h2{font-size:clamp(1.9rem,4vw,2.9rem);font-weight:700;line-height:1.2;margin-bottom:18px}
+.d2-p{font-size:1rem;color:var(--m);line-height:1.9;margin-bottom:32px}
+.d2-placeholder{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+.d2-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:28px 20px;text-align:left}
+.d2-card-num{font-size:.7rem;font-weight:700;color:var(--g);letter-spacing:.15em;margin-bottom:12px}
+.d2-card-t{font-size:.95rem;font-weight:600;margin-bottom:8px}
+.d2-card-p{font-size:.82rem;color:var(--m);line-height:1.6}
+
+/* ── SECTION 3: CTA ── */
+.d3{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);padding:100px 24px}
+.d3-h2{font-size:clamp(1.9rem,4vw,2.9rem);font-weight:700;line-height:1.2;margin-bottom:16px}
+.d3-p{font-size:1rem;color:var(--m);line-height:1.85;margin-bottom:40px}
+.d3-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 28px 12px 12px;border:1px solid rgba(255,255,255,.18);border-radius:16px;color:#fff;font-family:inherit;font-weight:600;font-size:1rem;cursor:pointer;text-decoration:none;transition:background .3s,border-color .3s,transform .3s}
+.d3-btn:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.35);transform:translateY(-3px)}
+.d3-bicon{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:var(--g);border-radius:10px;color:#000;flex-shrink:0;transition:transform .35s var(--e),background .3s}
+.d3-btn:hover .d3-bicon{transform:rotate(12deg) scale(1.12);background:var(--gd)}
+
+/* ── BACK ── */
+.back{position:fixed;top:22px;left:24px;z-index:100;font-size:.75rem;color:rgba(255,255,255,.25);text-decoration:none;letter-spacing:.06em;transition:color .2s;display:flex;align-items:center;gap:6px}
+.back:hover{color:rgba(255,255,255,.6)}
+
+@media(max-width:640px){
+  .d2-placeholder{grid-template-columns:1fr}
+  .d1-h2{font-size:clamp(1.7rem,8vw,2.5rem)}
+}
+
+/* ── BOTÃO WHATSAPP ── */
+.btn-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px 10px 10px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  color: #fff;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  width: fit-content;
+  transition:
+    background 0.3s,
+    border-color 0.3s,
+    transform 0.3s;
+}
+
+.btn-wa:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-3px);
+}
+
+.btn-wa-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: var(--gold);
+  border-radius: 10px;
+  color: #000;
+  flex-shrink: 0;
+  transition:
+    transform 0.35s var(--ease),
+    background 0.3s;
+}
+
+.btn-wa:hover .btn-wa-icon {
+  transform: rotate(12deg) scale(1.12);
+  background: var(--gold-d);
+}
+
+/* ── IMAGE SEQUENCER ── */
+.seq-wrap {
+  height: 500vh;
+  position: relative;
+}
+
+.seq-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+.seq-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.seq-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 var(--pad) 10vh;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72) 0%,
+    transparent 55%
+  );
+  pointer-events: none;
+}
+
+.seq-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  pointer-events: auto;
+}
+
+.seq-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.seq-title {
+  font-size: clamp(3rem, 7vw, 7.5rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  color: #fff;
+  max-width: 900px;
+}
+
+.seq-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--gold);
+}
+
+/* ── POI PINS ── */
+.seq-pins {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.poi-pin {
+  position: absolute;
+  left: var(--px);
+  top: var(--py);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+}
+
+.seq-pins.show-aerial .poi-pin[data-group="aerial"],
+.seq-pins.show-living .poi-pin[data-group="living"] {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.poi-dot {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.2s,
+    transform 0.2s var(--ease);
+}
+
+.poi-dot::before {
+  content: "+";
+  font-size: 1.3rem;
+  font-weight: 300;
+  line-height: 1;
+  color: #000;
+  pointer-events: none;
+}
+
+.poi-dot::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  animation: poi-pulse 2.4s ease-out infinite;
+}
+
+.poi-dot:hover {
+  background: var(--gold);
+  transform: scale(1.12);
+}
+
+.poi-dot:hover::before {
+  color: #1a1200;
+}
+
+@keyframes poi-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.poi-pin.active .poi-dot {
+  background: var(--gold);
+  transform: scale(1.12);
+}
+
+.poi-pin.active .poi-dot::before {
+  color: #1a1200;
+}
+
+.poi-pin .poi-popup {
+  position: absolute;
+  bottom: calc(100% + 18px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  opacity: 0;
+  pointer-events: none;
+  overflow: visible;
+  transition:
+    opacity 0.28s var(--ease),
+    transform 0.28s var(--ease);
+  background: rgba(8, 8, 8, 0.9);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 16px 18px;
+  min-width: 210px;
+  max-width: 250px;
+  white-space: normal;
+}
+
+.poi-pin .poi-popup::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 7px solid transparent;
+  border-top-color: rgba(8, 8, 8, 0.9);
+}
+
+.poi-pin.active .poi-popup {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.poi-popup-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  margin-bottom: 7px;
+  text-transform: uppercase;
+}
+
+.poi-popup-desc {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.58);
+  line-height: 1.55;
+}
+
+/* ── POI 360° BUTTON ── */
+.poi-pano-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(184, 156, 110, 0.45);
+  background: rgba(184, 156, 110, 0.1);
+  color: var(--gold);
+  font-family: inherit;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  width: 100%;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.poi-pano-btn:hover {
+  background: rgba(184, 156, 110, 0.22);
+  border-color: rgba(184, 156, 110, 0.7);
+}
+
+/* ── MODAL PANORAMA 360° ── */
+#pano-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+#pano-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#pano-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+#pano-modal-box {
+  position: relative;
+  width: min(98vw, 1440px);
+  height: min(94vh, 980px);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0c0c0a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.75);
+  transform: scale(0.93);
+  transition: transform 0.4s ease;
+}
+#pano-modal.open #pano-modal-box {
+  transform: scale(1);
+}
+
+#pano-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+#pano-modal-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(200, 169, 110, 0.35);
+  background: rgba(0, 0, 0, 0.5);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: #c8a96e;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+#pano-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+  touch-action: none;
+}
+#pano-canvas:active {
+  cursor: grabbing;
+}
+
+#pano-hint {
+  position: absolute;
+  bottom: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.5s;
+}
+#pano-hint.hidden {
+  opacity: 0;
+}
+
+#pano-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  background: #0c0c0a;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  transition: opacity 0.4s;
+}
+#pano-loading.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#pano-spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-top-color: #c8a96e;
+  border-radius: 50%;
+  animation: panoSpin 0.8s linear infinite;
+}
+@keyframes panoSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── PANORAMA TOUR — room label, hotspots, room nav ── */
+#pano-room-label {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 20px;
+  pointer-events: none;
+  z-index: 10;
+  white-space: nowrap;
+}
+#pano-hotspots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.pano-hotspot {
+  position: absolute;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+.pano-hotspot-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a1200;
+  animation: panoPulse 2.2s ease-in-out infinite;
+  transition: transform 0.2s ease;
+}
+.pano-hotspot:hover .pano-hotspot-dot {
+  transform: scale(1.15);
+}
+.pano-hotspot-label {
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+@keyframes panoPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(184, 156, 110, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(184, 156, 110, 0);
+  }
+}
+#pano-rooms {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50px;
+  padding: 5px 6px;
+  z-index: 10;
+}
+.pano-room-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: inherit;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+.pano-room-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+.pano-room-btn.active {
+  background: var(--gold);
+  color: #1a1200;
+  font-weight: 600;
+}
+
+/* ── SEQ SCRUB BUTTONS ── */
+.seq-scrub {
+  position: absolute;
+  right: 40px;
+  top: 40px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  z-index: 20;
+}
+
+.seq-scrub-btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 18px 10px 14px;
+  border-radius: 100px;
+  border: 1px solid rgba(184, 156, 110, 0.6);
+  background: var(--gold);
+  color: #1a1200;
+  font-family: inherit;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.25s var(--ease),
+    border-color 0.25s,
+    transform 0.25s var(--ease);
+  white-space: nowrap;
+}
+
+.seq-scrub-btn svg {
+  flex-shrink: 0;
+  transition: transform 0.25s var(--ease);
+}
+
+.seq-scrub-btn:hover {
+  background: var(--gold-d);
+  border-color: var(--gold-d);
+  transform: translateY(-2px);
+}
+
+.seq-scrub-btn:active {
+  transform: translateY(-2px) scale(0.96);
+}
+
+.seq-scrub-btn.btn-on {
+  background: #fff;
+  border-color: #fff;
+  color: #1a1200;
+}
+
+/* ── Responsive overrides for seq/pano ── */
+@media (min-width: 1921px) {
+  .seq-title {
+    font-size: clamp(4rem, 5.5vw, 9rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .seq-content {
+    gap: 20px;
+  }
+  .seq-scrub {
+    right: 20px;
+    top: 20px;
+    gap: 8px;
+  }
+  .seq-scrub-btn {
+    padding: 8px 14px 8px 10px;
+    font-size: 0.62rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .seq-scrub {
+    right: 14px;
+    top: 14px;
+  }
+  .seq-scrub-btn {
+    padding: 7px 12px 7px 9px;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+  }
+  .poi-pin .poi-popup {
+    min-width: 160px;
+  }
+}
+
+/* ── ARCHVIZ EXPLORER ── */
+.ax-root {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: #050503;
+}
+
+/* NOISE */
+#ax-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px;
+}
+
+/* STAGE */
+#ax-stage {
+  position: absolute;
+  inset: 0;
+  background: #050503;
+}
+
+#ax-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 55%,
+    transparent 30%,
+    rgba(5, 5, 3, 0.7) 100%
+  );
+}
+
+.vid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  z-index: 1;
+  -webkit-transition: none;
+  transition: none;
+  will-change: opacity;
+}
+
+.vid.active {
+  opacity: 1;
+}
+
+/* TOPBAR */
+#ax-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 5, 3, 0.75),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+#ax-topbar.show {
+  opacity: 1;
+}
+
+#ax-logo {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.92);
+  text-transform: uppercase;
+}
+
+#ax-logo em {
+  color: #c8a96e;
+  font-style: normal;
+}
+
+#ax-state-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.38);
+  text-transform: uppercase;
+}
+
+#ax-state-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c8a96e;
+  transition: background 0.4s;
+}
+
+#ax-state-dot.playing {
+  background: #e05555;
+  animation: blink 0.8s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+/* TRACK */
+#ax-track {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(50px) saturate(1.8);
+  -webkit-backdrop-filter: blur(50px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 18px 16px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+    0 16px 48px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+#ax-track.show {
+  opacity: 1;
+}
+
+.t-pt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  opacity: 0.32;
+  transition: opacity 0.3s;
+  padding: 0 10px;
+}
+
+.t-pt.active {
+  opacity: 1;
+}
+
+.t-pt.near {
+  opacity: 0.55;
+}
+
+.t-pt.near:hover {
+  opacity: 1;
+}
+
+.t-dot-wrap {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.t-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  transition:
+    background 0.3s,
+    transform 0.35s cubic-bezier(0.87, 0, 0.13, 1),
+    box-shadow 0.3s;
+  z-index: 1;
+}
+
+.t-pt.active .t-dot {
+  background: #fff;
+  border-color: #fff;
+  transform: scale(1.3);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+}
+
+.t-pulse {
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  opacity: 0;
+  animation: tp 2.5s ease-in-out infinite;
+}
+
+.t-pt.active .t-pulse {
+  opacity: 1;
+}
+
+@keyframes tp {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.8); opacity: 0; }
+}
+
+.t-label {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.t-pt.active .t-label {
+  color: #fff;
+  font-weight: 500;
+}
+
+.t-line {
+  display: none;
+}
+
+.t-line-fill {
+  display: none;
+}
+
+.t-arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    transform 0.2s;
+  flex-shrink: 0;
+}
+
+.t-arrow:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.08);
+}
+
+.t-arrow:disabled {
+  opacity: 0.18;
+}
+
+.t-arrow svg {
+  width: 12px;
+  height: 12px;
+  stroke: rgba(255, 255, 255, 0.9);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#ax-arr-l {
+  margin-right: 16px;
+}
+
+#ax-arr-r {
+  margin-left: 16px;
+}
+
+/* PINS */
+.pin {
+  position: absolute;
+  z-index: 8;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition:
+    opacity 0.5s,
+    transform 0.5s cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.pin.off {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.5);
+}
+
+.pin-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(200, 169, 110, 0.22);
+  border-radius: 50%;
+  animation: pr 3.5s ease-in-out infinite;
+}
+
+@keyframes pr {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+  50% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
+}
+
+.pin-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #c8a96e;
+  z-index: 1;
+  box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.14);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.pin:hover .pin-dot {
+  transform: scale(1.5);
+  box-shadow: 0 0 0 7px rgba(200, 169, 110, 0.09);
+}
+
+.pin-label {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  padding-left: 10px;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: #f4f0e8;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.25s;
+  pointer-events: none;
+}
+
+.pin-label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 6px;
+  height: 1px;
+  background: #c8a96e;
+}
+
+.pin:hover .pin-label {
+  opacity: 1;
+}
+
+/* PANEL */
+#ax-panel {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--pw, 380px);
+  z-index: 20;
+  transform: translateX(calc(100% + 1px));
+  transition: transform 0.75s cubic-bezier(0.87, 0, 0.13, 1);
+  display: flex;
+  flex-direction: column;
+  background: rgba(18, 18, 16, 0.72);
+  backdrop-filter: blur(48px) saturate(1.6);
+  -webkit-backdrop-filter: blur(48px) saturate(1.6);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.35);
+}
+
+#ax-panel.open {
+  transform: translateX(0);
+}
+
+#ax-p-thumb {
+  width: 100%;
+  height: 220px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+#ax-p-thumb canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#ax-p-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 45%,
+    rgba(18, 18, 16, 0.95) 100%
+  );
+}
+
+#ax-p-body {
+  padding: 28px 28px 22px;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#ax-p-tag {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: #c8a96e;
+  text-transform: uppercase;
+}
+
+#ax-p-title {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 1.12;
+  color: rgba(255, 255, 255, 0.95);
+  white-space: pre-line;
+  letter-spacing: -0.02em;
+}
+
+#ax-p-desc {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.42);
+  letter-spacing: 0.01em;
+}
+
+.p-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.p-stat {
+  padding: 16px 16px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+}
+
+.p-stat-label {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.p-stat-val {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: -0.02em;
+}
+
+.p-stat-unit {
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.35);
+  margin-left: 3px;
+}
+
+#ax-p-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.p-nav-btn {
+  flex: 1;
+  padding: 14px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.48);
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.p-nav-btn:not(:disabled):hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.p-nav-btn:disabled {
+  opacity: 0.2;
+}
+
+.p-nav-btn svg {
+  width: 10px;
+  height: 10px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#ax-p-cta {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.btn-fill {
+  flex: 1;
+  padding: 15px;
+  background: rgba(200, 169, 110, 0.85);
+  color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(200, 169, 110, 0.5);
+  border-radius: 14px;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.btn-fill:hover {
+  background: rgba(212, 184, 122, 0.95);
+}
+
+.btn-line {
+  padding: 15px 18px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.btn-line:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+#ax-p-close {
+  position: absolute;
+  top: 16px;
+  left: -48px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.75s cubic-bezier(0.87, 0, 0.13, 1),
+    background 0.2s,
+    border-color 0.2s;
+}
+
+#ax-panel.open #ax-p-close {
+  opacity: 1;
+}
+
+#ax-p-close:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+#ax-p-close svg {
+  width: 11px;
+  height: 11px;
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 1.5;
+  fill: none;
+  stroke-linecap: round;
+}
+
+/* NEO — botão no track */
+#ax-track-sep {
+  width: 1px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 12px;
+  flex-shrink: 0;
+}
+
+#ax-neo-track-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  padding: 0 8px;
+  transition: opacity 0.3s;
+  opacity: 0.55;
+  flex-shrink: 0;
+}
+
+#ax-neo-track-btn:hover {
+  opacity: 1;
+}
+
+#ax-neo-track-btn.listening {
+  opacity: 1;
+}
+
+#ax-neo-track-btn.thinking {
+  opacity: 1;
+}
+
+#ax-neo-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    border-color 0.3s,
+    background 0.3s;
+  position: relative;
+}
+
+#ax-neo-track-btn:hover #ax-neo-circle {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+#ax-neo-track-btn.listening #ax-neo-circle {
+  border-color: #ff375f;
+  background: rgba(255, 55, 95, 0.15);
+  animation: neo-pulse 1.1s ease-in-out infinite;
+}
+
+#ax-neo-track-btn.thinking #ax-neo-circle {
+  border-color: #c8a96e;
+  animation: neo-glow 1.4s ease-in-out infinite;
+}
+
+@keyframes neo-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 55, 95, 0.5); }
+  50% { box-shadow: 0 0 0 8px rgba(255, 55, 95, 0); }
+}
+
+@keyframes neo-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200, 169, 110, 0.5); }
+  50% { box-shadow: 0 0 0 8px rgba(200, 169, 110, 0); }
+}
+
+#ax-neo-circle svg {
+  width: 16px;
+  height: 16px;
+}
+
+#ax-neo-track-btn.listening #ax-neo-circle svg {
+  stroke: #ff375f !important;
+}
+
+#ax-neo-track-btn.listening #ax-neo-circle svg circle {
+  fill: #ff375f !important;
+}
+
+#ax-neo-label {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+}
+
+/* NEO bubble */
+#ax-neo-bubble {
+  position: absolute;
+  bottom: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  max-width: 340px;
+  min-width: 200px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
+  padding: 16px 20px;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: 0.01em;
+  backdrop-filter: blur(50px) saturate(1.6);
+  -webkit-backdrop-filter: blur(50px) saturate(1.6);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+    0 12px 40px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s cubic-bezier(0.87, 0, 0.13, 1);
+  text-align: center;
+}
+
+#ax-neo-bubble.show {
+  opacity: 1;
+}
+
+#ax-neo-bubble-text {
+  margin-bottom: 4px;
+}
+
+#ax-neo-bubble-transcript {
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(200, 169, 110, 0.7);
+  letter-spacing: 0.02em;
+  font-style: italic;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+/* NEO API setup popup */
+#ax-neo-setup {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+#ax-neo-setup.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#ax-neo-setup-card {
+  width: 420px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 26px;
+  padding: 36px 36px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  backdrop-filter: blur(60px) saturate(1.8);
+  -webkit-backdrop-filter: blur(60px) saturate(1.8);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.14) inset,
+    0 24px 64px rgba(0, 0, 0, 0.4);
+  animation: setup-in 0.4s cubic-bezier(0.87, 0, 0.13, 1) both;
+}
+
+@keyframes setup-in {
+  from { transform: translateY(20px) scale(0.97); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+#ax-neo-setup-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+#ax-neo-setup-robot {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(200, 169, 110, 0.12);
+  border: 1px solid rgba(200, 169, 110, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+#ax-neo-setup-robot svg {
+  width: 22px;
+  height: 22px;
+  stroke: #c8a96e;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#ax-neo-setup-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#ax-neo-setup-name {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 26px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: -0.02em;
+}
+
+#ax-neo-setup-sub {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.38);
+  text-transform: uppercase;
+}
+
+#ax-neo-setup-desc {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.42);
+  letter-spacing: 0.01em;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  padding-top: 16px;
+}
+
+#ax-neo-setup-desc strong {
+  color: rgba(255, 255, 255, 0.72);
+  font-weight: 400;
+}
+
+#ax-neo-setup-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#ax-neo-setup-field label {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.38);
+  text-transform: uppercase;
+}
+
+#ax-neo-api-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+
+#ax-neo-api-input:focus {
+  border-color: rgba(200, 169, 110, 0.6);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+#ax-neo-api-input::placeholder {
+  color: rgba(255, 255, 255, 0.22);
+}
+
+#ax-neo-setup-actions {
+  display: flex;
+  gap: 8px;
+}
+
+#ax-neo-setup-confirm {
+  flex: 1;
+  padding: 14px;
+  background: rgba(200, 169, 110, 0.85);
+  color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(200, 169, 110, 0.5);
+  border-radius: 14px;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#ax-neo-setup-confirm:hover {
+  background: rgba(212, 184, 122, 0.95);
+}
+
+#ax-neo-setup-cancel {
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    color 0.2s;
+}
+
+#ax-neo-setup-cancel:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+#ax-neo-setup-hint {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.25);
+  text-align: center;
+  letter-spacing: 0.02em;
+  line-height: 1.7;
+}
+
+#ax-neo-setup-hint a {
+  color: rgba(200, 169, 110, 0.5);
+  text-decoration: none;
+}
+
+#ax-neo-setup-hint a:hover {
+  color: #c8a96e;
+}
+
+.poi {
+  position: absolute;
+  z-index: 9;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  opacity: 1;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s cubic-bezier(0.87, 0, 0.13, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.poi.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.5);
+}
+
+.poi-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.25s,
+    transform 0.25s;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.poi-btn::before,
+.poi-btn::after {
+  content: "";
+  position: absolute;
+  background: #0d0d0b;
+  border-radius: 2px;
+}
+
+.poi-btn::before {
+  width: 10px;
+  height: 1.5px;
+}
+
+.poi-btn::after {
+  width: 1.5px;
+  height: 10px;
+}
+
+.poi:hover .poi-btn {
+  background: #fff;
+  transform: scale(1.18);
+}
+
+.poi-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  animation: poipulse 3s ease-in-out infinite;
+}
+
+@keyframes poipulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+  50% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
+}
+
+.poi-name {
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow:
+    0 1px 6px rgba(0, 0, 0, 0.8),
+    0 0 12px rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.35);
+  padding: 3px 7px;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.poi-label {
+  position: absolute;
+  left: 38px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: #fff;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  padding-left: 8px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+
+.poi-label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 5px;
+  height: 1px;
+  background: #fff;
+}
+
+.poi:hover .poi-label {
+  opacity: 1;
+}
+
+/* POI POPUP — draggable card */
+.poi-popup {
+  position: absolute;
+  z-index: 50;
+  width: 300px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 22px;
+  overflow: hidden;
+  backdrop-filter: blur(60px) saturate(1.8) brightness(1.1);
+  -webkit-backdrop-filter: blur(60px) saturate(1.8) brightness(1.1);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+    0 20px 60px rgba(0, 0, 0, 0.22),
+    0 1px 3px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px) scale(0.96);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s cubic-bezier(0.87, 0, 0.13, 1);
+  user-select: none;
+}
+
+.poi-popup.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.poi-popup.dragging {
+  transition: none;
+  cursor: grabbing;
+}
+
+.popup-drag-handle {
+  padding: 13px 15px 11px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: grab;
+}
+
+.popup-drag-icon {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 18px;
+}
+
+.popup-drag-icon span {
+  display: block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.popup-close-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.popup-close-btn:hover {
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.popup-close-btn svg {
+  width: 9px;
+  height: 9px;
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.popup-img {
+  width: 100%;
+  height: 165px;
+  object-fit: cover;
+  display: block;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.popup-img-placeholder {
+  width: 100%;
+  height: 165px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.popup-body {
+  padding: 18px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.popup-tag {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: #c8a96e;
+  text-transform: uppercase;
+}
+
+.popup-title {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 26px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+}
+
+.popup-desc {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.58);
+  letter-spacing: 0.005em;
+}
+
+.popup-cta {
+  display: flex;
+  margin-top: 6px;
+}
+
+.popup-cta-btn {
+  flex: 1;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 12px;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.popup-cta-btn:hover {
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+.popup-more-btn {
+  width: 100%;
+  margin-top: 6px;
+  padding: 11px 14px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.48);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.popup-more-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.88);
+  border-color: rgba(255, 255, 255, 0.26);
+}
+
+.popup-more-btn svg {
+  width: 11px;
+  height: 11px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* POI DETAIL PANEL */
+#ax-poi-detail {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: min(55vw, 980px);
+  z-index: 70;
+  transform: translateX(100%);
+  transition: transform 0.65s cubic-bezier(0.87, 0, 0.13, 1);
+  display: flex;
+  flex-direction: column;
+  background: rgba(12, 12, 10, 0.82);
+  backdrop-filter: blur(56px) saturate(1.6);
+  -webkit-backdrop-filter: blur(56px) saturate(1.6);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: -24px 0 72px rgba(0, 0, 0, 0.45);
+}
+
+#ax-poi-detail.open {
+  transform: translateX(0);
+}
+
+.pdi-header {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+}
+
+.pdi-close-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.pdi-close-btn:hover {
+  background: rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.pdi-close-btn svg {
+  width: 9px;
+  height: 9px;
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.pdi-slider {
+  position: relative;
+  height: 448px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.pdi-slides {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.pdi-slide {
+  flex: 0 0 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pdi-slide-ph {
+  flex: 0 0 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.22);
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.pdi-slider-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(12, 12, 10, 0.92) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.pdi-slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.2s;
+}
+
+.pdi-slider-arrow:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.pdi-slider-arrow svg {
+  width: 12px;
+  height: 12px;
+  stroke: rgba(255, 255, 255, 0.9);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pdi-arr-prev { left: 12px; }
+.pdi-arr-next { right: 12px; }
+
+.pdi-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+
+.pdi-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition:
+    background 0.25s,
+    transform 0.25s;
+}
+
+.pdi-dot.active {
+  background: #fff;
+  transform: scale(1.35);
+}
+
+#ax-pdi-content {
+  padding: 22px 26px 28px;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+#ax-pdi-content::-webkit-scrollbar { width: 3px; }
+#ax-pdi-content::-webkit-scrollbar-track { background: transparent; }
+#ax-pdi-content::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.14); border-radius: 2px; }
+
+.pdi-tag {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: #c8a96e;
+  text-transform: uppercase;
+}
+
+.pdi-title {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 30px;
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.1;
+  margin-top: 6px;
+}
+
+.pdi-desc {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.72;
+  color: rgba(255, 255, 255, 0.46);
+  letter-spacing: 0.01em;
+}
+
+.pdi-section-label {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.26);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.pdi-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.pdi-feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+}
+
+.pdi-feat-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: rgba(200, 169, 110, 0.12);
+  border: 1px solid rgba(200, 169, 110, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pdi-feat-icon svg {
+  width: 14px;
+  height: 14px;
+  stroke: #c8a96e;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pdi-feat-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pdi-feat-label {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.32);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pdi-feat-value {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pdi-highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pdi-highlight {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 15px;
+  background: rgba(255, 255, 255, 0.038);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+}
+
+.pdi-hl-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.pdi-hl-icon svg {
+  width: 13px;
+  height: 13px;
+  stroke: rgba(255, 255, 255, 0.72);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pdi-hl-text {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.pdi-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pdi-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.pdi-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.pdi-link-label {
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.pdi-link-arr {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.09);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+.pdi-link:hover .pdi-link-arr {
+  background: rgba(200, 169, 110, 0.25);
+  transform: translateX(2px);
+}
+
+.pdi-link-arr svg {
+  width: 9px;
+  height: 9px;
+  stroke: rgba(255, 255, 255, 0.8);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pdi-cta {
+  display: flex;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.pdi-cta-primary {
+  flex: 1;
+  padding: 15px;
+  background: rgba(200, 169, 110, 0.85);
+  color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(200, 169, 110, 0.5);
+  border-radius: 14px;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+}
+
+.pdi-cta-primary:hover {
+  background: rgba(212, 184, 122, 0.95);
+}
+
+.pdi-cta-secondary {
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 14px;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+.pdi-cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+/* "Ver 360°" button in POI detail CTA */
+.pdi-cta-360 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  border-radius: 8px;
+  border: 1px solid rgba(200, 169, 110, 0.45);
+  background: rgba(200, 169, 110, 0.07);
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: #c8a96e;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+  width: 100%;
+}
+
+.pdi-cta-360:hover {
+  background: rgba(200, 169, 110, 0.14);
+  border-color: rgba(200, 169, 110, 0.7);
+}
+
+.pdi-cta-360 svg {
+  width: 15px;
+  height: 15px;
+  stroke: #c8a96e;
+  stroke-width: 1.5;
+  fill: none;
+  flex-shrink: 0;
+}
+
+.pdi-content {
+  padding: 22px 26px 28px;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* 360° Panorama Modal — stays fixed to overlay everything */
+#ax-pano-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+#ax-pano-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#ax-pano-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 5, 4, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+#ax-pano-modal-box {
+  position: relative;
+  width: min(98vw, 1440px);
+  height: min(94vh, 980px);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0c0c0a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.75);
+  transform: scale(0.93);
+  transition: transform 0.4s cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+#ax-pano-modal.open #ax-pano-modal-box {
+  transform: scale(1);
+}
+
+#ax-pano-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.85);
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+
+#ax-pano-modal-close:hover {
+  background: rgba(0, 0, 0, 0.72);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+#ax-pano-modal-close svg {
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+}
+
+#ax-pano-modal-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  padding: 4px 12px;
+  background: rgba(0, 0, 0, 0.52);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(200, 169, 110, 0.35);
+  border-radius: 20px;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: #c8a96e;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+#ax-pano-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+  touch-action: none;
+}
+
+#ax-pano-canvas:active {
+  cursor: grabbing;
+}
+
+#ax-pano-hint {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.5s;
+}
+
+#ax-pano-hint.hidden {
+  opacity: 0;
+}
+
+#ax-pano-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  background: #0c0c0a;
+  font-family: "Inter", -apple-system, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+
+#ax-pano-loading.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#ax-pano-spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  border-top-color: #c8a96e;
+  border-radius: 50%;
+  animation: axPanoSpin 0.8s linear infinite;
+}
+
+@keyframes axPanoSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* TOUCH & TABLET */
+.poi,
+.pin,
+.t-pt,
+#ax-neo-track-btn,
+button,
+[onclick] {
+  touch-action: manipulation;
+}
+
+@media (hover: none) {
+  .poi,
+  .pin,
+  .t-pt,
+  #ax-neo-track-btn {
+    cursor: pointer;
+  }
+
+  .poi::before,
+  .pin::before {
+    content: "";
+    position: absolute;
+    inset: -12px;
+  }
+
+  .poi:active .poi-label,
+  .poi:focus-within .poi-label {
+    opacity: 1;
+  }
+  .pin:active .pin-label,
+  .pin:focus-within .pin-label {
+    opacity: 1;
+  }
+  .poi:active .poi-btn {
+    background: #fff;
+    transform: scale(1.18);
+  }
+  .pin:active .pin-dot {
+    transform: scale(1.5);
+  }
+
+  #ax-neo-track-btn:active {
+    opacity: 1;
+  }
+  #ax-neo-track-btn:active #ax-neo-circle {
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.16);
+  }
+}
+
+@media (max-width: 1024px) {
+  #ax-poi-detail {
+    width: min(70vw, 92vw);
+  }
+}
+
+@media (max-width: 768px) {
+  #ax-poi-detail {
+    width: 96vw;
+  }
+  #ax-track {
+    bottom: max(20px, env(safe-area-inset-bottom, 20px));
+  }
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+</head>
+<body>
+
+<svg style="display:none" aria-hidden="true">
+  <symbol id="icon-wa" viewBox="0 0 24 24">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </symbol>
+</svg>
+
+<!-- ── GATE ── -->
+<div id="g" class="gw">
+  <div class="gc">
+    <img src="images/logo_site2.png" alt="Factory Interactive" class="g-logo">
+    <p class="g-sup">Acesso Restrito</p>
+    <h1 class="g-h1">Demonstração Exclusiva</h1>
+    <p class="g-sub">Preencha o cadastro abaixo para acessar a demonstração exclusiva.</p>
+    <form id="gf" class="g-form" autocomplete="off" novalidate>
+      <div class="g-row">
+        <input type="text"  id="gn"  class="g-in" placeholder="Nome completo"        autocomplete="off" spellcheck="false">
+        <input type="tel"   id="gt"  class="g-in" placeholder="(XX) XXXXX-XXXX"      autocomplete="off">
+      </div>
+      <input type="email"   id="ge"  class="g-in" placeholder="seu@empresa.com"       autocomplete="off" spellcheck="false">
+      <input type="text"   id="gfc"  class="g-in" placeholder="Função na empresa"     autocomplete="off" spellcheck="false">
+      <div class="g-row">
+        <input type="text"  id="gc"  class="g-in" placeholder="Cidade"               autocomplete="off" spellcheck="false">
+        <select             id="gst" class="g-in">
+          <option value="">Estado</option>
+          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+          <option>SP</option><option>SE</option><option>TO</option>
+        </select>
+      </div>
+      <button type="submit" class="g-btn">Acessar Demo</button>
+      <p id="gerr" class="g-err" aria-live="polite"></p>
+    </form>
+    <p class="g-note">E-mails de provedores gratuitos (Gmail, Outlook, Yahoo e similares) não são aceitos.<br>Acesso restrito a profissionais e empresas.</p>
+    <button type="button" id="g-admin" style="margin-top:24px;background:none;border:1px dashed rgba(255,255,255,.12);border-radius:8px;color:rgba(255,255,255,.2);font-family:inherit;font-size:.72rem;padding:7px 16px;cursor:pointer;letter-spacing:.08em">⚙ admin bypass</button>
+  </div>
+</div>
+
+<!-- ── DEMO ── -->
+<div id="d" class="dw">
+
+  <a href="index.html" class="back">← Factory Interactive</a>
+
+  <!-- Seção 1 — Vídeo Hero -->
+  <section id="d1" class="d1">
+    <div id="d1vc" class="d1-vc"></div>
+    <div class="d1-overlay"></div>
+    <div class="d1-content">
+      <span class="d-badge">Preview Exclusivo</span>
+      <h2 class="d1-h2">Experimente o Futuro<br>das Experiências Digitais.</h2>
+      <p class="d1-sub">Role para avançar no vídeo &middot; Mova o cursor para interagir</p>
+    </div>
+    <div class="d1-hint">
+      <span>Role para explorar</span>
+      <span class="d1-arr"></span>
+    </div>
+  </section>
+
+  <!-- ── IMAGE SEQUENCER ── -->
+  <div
+    class="seq-wrap"
+    id="sequencer"
+    role="region"
+    aria-label="Animação interativa"
+  >
+    <div class="seq-sticky">
+      <canvas class="seq-canvas" aria-hidden="true"></canvas>
+
+      <!-- ── POI PINS — gerados via JS (edite POI_DATA no script) ── -->
+      <div class="seq-pins"></div>
+
+      <div class="seq-overlay">
+        <div class="seq-content">
+          <span class="seq-label">— Factory Interactive</span>
+          <h2 class="seq-title">
+            Interatividade<br /><em>levada a sério.</em>
+          </h2>
+          <a
+            href="https://wa.me/5541992272317"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-wa"
+            aria-label="Falar pelo WhatsApp"
+          >
+            <span class="btn-wa-icon" aria-hidden="true">
+              <svg width="22" height="22" fill="currentColor">
+                <use href="#icon-wa" />
+              </svg>
+            </span>
+            Whatsapp
+          </a>
+        </div>
+      </div>
+      <div class="seq-scrub" aria-label="Navegar sequência">
+        <button
+          class="seq-scrub-btn"
+          id="seqBtnFirst"
+          aria-label="Ver primeiro frame"
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <!-- aerial / drone view -->
+            <circle cx="12" cy="12" r="2.5" />
+            <path
+              d="M5 5l3.5 3.5M19 5l-3.5 3.5M5 19l3.5-3.5M19 19l-3.5-3.5"
+            />
+            <circle cx="4" cy="4" r="1.5" fill="currentColor" stroke="none" />
+            <circle
+              cx="20"
+              cy="4"
+              r="1.5"
+              fill="currentColor"
+              stroke="none"
+            />
+            <circle
+              cx="4"
+              cy="20"
+              r="1.5"
+              fill="currentColor"
+              stroke="none"
+            />
+            <circle
+              cx="20"
+              cy="20"
+              r="1.5"
+              fill="currentColor"
+              stroke="none"
+            />
+          </svg>
+          <span>Aéreo</span>
+        </button>
+        <button
+          class="seq-scrub-btn"
+          id="seqBtnLast"
+          aria-label="Ver último frame"
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <!-- living room / sofa view -->
+            <path d="M3 13a2 2 0 012-2h14a2 2 0 012 2v3H3v-3z" />
+            <path d="M5 11V9a2 2 0 012-2h10a2 2 0 012 2v2" />
+            <path d="M3 13v-1a1 1 0 011-1h0a1 1 0 011 1v1" />
+            <path d="M21 13v-1a1 1 0 00-1-1h0a1 1 0 00-1 1v1" />
+            <line x1="7" y1="16" x2="7" y2="19" />
+            <line x1="17" y1="16" x2="17" y2="19" />
+          </svg>
+          <span>Living</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ARCHVIZ EXPLORER ── -->
+  <section id="ax-root" class="ax-root">
+    <div id="ax-noise"></div>
+
+    <!-- STAGE -->
+    <div id="ax-stage">
+      <video id="ax-va" class="vid" playsinline muted></video>
+      <video id="ax-vb" class="vid" playsinline muted></video>
+    </div>
+
+    <!-- TOPBAR -->
+    <div id="ax-topbar">
+      <div id="ax-logo">ARQ<em>O</em>S</div>
+      <div id="ax-state-badge">
+        <div id="ax-state-dot"></div>
+        <span id="ax-state-lbl">panorâmica</span>
+      </div>
+    </div>
+
+    <!-- TRACK -->
+    <div id="ax-track">
+      <button class="t-arrow" id="ax-arr-l" onclick="axArrowNav(-1)">
+        <svg viewBox="0 0 10 10"><polyline points="7,1 3,5 7,9"/></svg>
+      </button>
+      <button class="t-arrow" id="ax-arr-r" onclick="axArrowNav(1)">
+        <svg viewBox="0 0 10 10"><polyline points="3,1 7,5 3,9"/></svg>
+      </button>
+      <div id="ax-track-sep"></div>
+      <div id="ax-neo-track-btn" onclick="axNeoClick()">
+        <div id="ax-neo-circle">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#c8a96e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="10" rx="2"/>
+            <path d="M9 11V8a3 3 0 0 1 6 0v3"/>
+            <circle cx="9" cy="16" r="1.2" fill="#c8a96e" stroke="none"/>
+            <circle cx="15" cy="16" r="1.2" fill="#c8a96e" stroke="none"/>
+            <line x1="12" y1="3" x2="12" y2="6"/>
+            <circle cx="12" cy="2.5" r="1" fill="#c8a96e" stroke="none"/>
+          </svg>
+        </div>
+        <span id="ax-neo-label">NEO</span>
+      </div>
+    </div>
+
+    <!-- NEO bubble -->
+    <div id="ax-neo-bubble">
+      <div id="ax-neo-bubble-text"></div>
+      <div id="ax-neo-bubble-transcript"></div>
+    </div>
+
+    <!-- NEO setup -->
+    <div id="ax-neo-setup">
+      <div id="ax-neo-setup-card">
+        <div id="ax-neo-setup-head">
+          <div id="ax-neo-setup-robot">
+            <svg viewBox="0 0 24 24" stroke="#c8a96e" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="10" rx="2"/>
+              <path d="M9 11V8a3 3 0 0 1 6 0v3"/>
+              <circle cx="9" cy="16" r="1.5" fill="#c8a96e" stroke="none"/>
+              <circle cx="15" cy="16" r="1.5" fill="#c8a96e" stroke="none"/>
+              <line x1="12" y1="3" x2="12" y2="5"/>
+              <circle cx="12" cy="2.5" r="1" fill="#c8a96e" stroke="none"/>
+            </svg>
+          </div>
+          <div id="ax-neo-setup-titles">
+            <div id="ax-neo-setup-name">NEO</div>
+            <div id="ax-neo-setup-sub">Assistente de voz · ARQOS</div>
+          </div>
+        </div>
+        <div id="ax-neo-setup-desc">
+          NEO usa seu <strong>microfone</strong> para ouvir comandos e navega automaticamente pelo empreendimento.<br><br>
+          Fale naturalmente: <strong>"Vista Norte"</strong>, <strong>"mostrar piscinas"</strong>, <strong>"o que tem na vista sul?"</strong><br><br>
+          Para funcionar, NEO precisa de uma chave de API do Google Gemini — tem <strong>tier gratuito</strong>, sem cartão.
+        </div>
+        <div id="ax-neo-setup-field">
+          <label for="ax-neo-api-input">Chave de API Google Gemini</label>
+          <input id="ax-neo-api-input" type="password" placeholder="AIza..." autocomplete="off" spellcheck="false">
+        </div>
+        <div id="ax-neo-setup-actions">
+          <button id="ax-neo-setup-confirm" onclick="axNeoSaveKey()">Ativar NEO</button>
+          <button id="ax-neo-setup-cancel" onclick="axNeoCloseSetup()">Cancelar</button>
+        </div>
+        <div id="ax-neo-setup-hint">
+          Sua chave fica salva apenas neste browser e nunca é enviada a terceiros.<br>
+          <a href="https://aistudio.google.com/app/apikey" target="_blank">Obter chave gratuita no Google AI Studio →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL -->
+    <div id="ax-panel">
+      <button id="ax-p-close" onclick="axClosePanel()">
+        <svg viewBox="0 0 12 12"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg>
+      </button>
+      <div id="ax-p-thumb">
+        <canvas id="ax-p-canvas" width="760" height="440"></canvas>
+      </div>
+      <div id="ax-p-body">
+        <div id="ax-p-tag"></div>
+        <div id="ax-p-title"></div>
+        <div id="ax-p-desc"></div>
+        <div class="p-stats" id="ax-p-stats"></div>
+        <div id="ax-p-nav">
+          <button class="p-nav-btn" id="ax-p-prev" onclick="axPanelNav(-1)">
+            <svg viewBox="0 0 10 10"><polyline points="7,1 3,5 7,9"/></svg>Anterior
+          </button>
+          <button class="p-nav-btn" id="ax-p-next" onclick="axPanelNav(1)">
+            Próximo<svg viewBox="0 0 10 10"><polyline points="3,1 7,5 3,9"/></svg>
+          </button>
+        </div>
+        <div id="ax-p-cta">
+          <button class="btn-fill">Solicitar info</button>
+          <button class="btn-line">Planta</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POI DETAIL -->
+    <div id="ax-poi-detail">
+      <div class="pdi-header">
+        <button class="pdi-close-btn" onclick="axClosePOIDetail()">
+          <svg viewBox="0 0 9 9"><line x1="1" y1="1" x2="8" y2="8"/><line x1="8" y1="1" x2="1" y2="8"/></svg>
+        </button>
+      </div>
+      <div class="pdi-slider" id="ax-pdi-slider">
+        <div class="pdi-slides" id="ax-pdi-slides"></div>
+        <div class="pdi-slider-overlay"></div>
+        <button class="pdi-slider-arrow pdi-arr-prev" onclick="axPdiSlide(-1)">
+          <svg viewBox="0 0 10 10"><polyline points="7,1 3,5 7,9"/></svg>
+        </button>
+        <button class="pdi-slider-arrow pdi-arr-next" onclick="axPdiSlide(1)">
+          <svg viewBox="0 0 10 10"><polyline points="3,1 7,5 3,9"/></svg>
+        </button>
+        <div class="pdi-dots" id="ax-pdi-dots"></div>
+      </div>
+      <div class="pdi-content" id="ax-pdi-content"></div>
+    </div>
+  </section>
+
+  <!-- ARCHVIZ 360° MODAL -->
+  <div id="ax-pano-modal" aria-hidden="true">
+    <div id="ax-pano-modal-backdrop" onclick="axClosePano()"></div>
+    <div id="ax-pano-modal-box">
+      <button id="ax-pano-modal-close" onclick="axClosePano()">
+        <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <line x1="1" y1="1" x2="9" y2="9"/><line x1="9" y1="1" x2="1" y2="9"/>
+        </svg>
+      </button>
+      <div id="ax-pano-modal-badge">360°</div>
+      <canvas id="ax-pano-canvas"></canvas>
+      <div id="ax-pano-hint">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+          <path d="M7 3L3 7l4 4M3 7h11M13 17l4-4-4-4M17 13H6"/>
+        </svg>
+        Arraste para explorar · Scroll para zoom
+      </div>
+      <div id="ax-pano-loading">
+        <div id="ax-pano-spinner"></div>
+        Carregando panorama 360°
+      </div>
+    </div>
+  </div>
+
+  <!-- Seção 2 — Conteúdo principal -->
+  <section id="d2" class="d2">
+    <div class="ds-inner">
+      <span class="d-badge">Demonstração</span>
+      <h2 class="d2-h2">Conteúdo do Demo</h2>
+      <p class="d2-p">Esta seção exibirá o conteúdo principal da sua demonstração. Substitua com texto, imagens ou componentes interativos do seu produto.</p>
+      <div class="d2-placeholder">
+        <div class="d2-card">
+          <p class="d2-card-num">01</p>
+          <h3 class="d2-card-t">Feature A</h3>
+          <p class="d2-card-p">Descreva aqui o primeiro diferencial do seu produto.</p>
+        </div>
+        <div class="d2-card">
+          <p class="d2-card-num">02</p>
+          <h3 class="d2-card-t">Feature B</h3>
+          <p class="d2-card-p">Descreva aqui o segundo diferencial do seu produto.</p>
+        </div>
+        <div class="d2-card">
+          <p class="d2-card-num">03</p>
+          <h3 class="d2-card-t">Feature C</h3>
+          <p class="d2-card-p">Descreva aqui o terceiro diferencial do seu produto.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 3 — CTA -->
+  <section id="d3" class="d3">
+    <div class="ds-inner">
+      <span class="d-badge">Interessado?</span>
+      <h2 class="d3-h2">Vamos trabalhar juntos.</h2>
+      <p class="d3-p">Entre em contato e descubra como podemos transformar a experiência digital do seu projeto.</p>
+      <a class="d3-btn" href="https://wa.me/5541992272317" target="_blank" rel="noopener noreferrer">
+        <span class="d3-bicon" aria-hidden="true">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </span>
+        Falar pelo WhatsApp
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<!-- ── MODAL PANORAMA 360° ── -->
+<div id="pano-modal" aria-hidden="true">
+  <div id="pano-modal-backdrop"></div>
+  <div id="pano-modal-box">
+    <button id="pano-modal-close" onclick="closePanoModal()">✕</button>
+    <div id="pano-modal-badge">360°</div>
+    <div id="pano-room-label"></div>
+    <canvas id="pano-canvas"></canvas>
+    <div id="pano-hotspots"></div>
+    <div id="pano-hint">Arraste para explorar · Scroll para zoom</div>
+    <div id="pano-rooms">
+      <button class="pano-room-btn" data-room="quarto">Quarto</button>
+      <button class="pano-room-btn" data-room="living">Living</button>
+      <button class="pano-room-btn" data-room="sacada">Sacada</button>
+    </div>
+    <div id="pano-loading">
+      <div id="pano-spinner"></div>
+      Carregando...
+    </div>
+  </div>
+</div>
+
+<script>
+!function(){'use strict';
+
+// ── domínios bloqueados (provedores gratuitos) ──
+var BD=['gmail.com','googlemail.com','yahoo.com','yahoo.com.br','yahoo.co.uk','yahoo.co.in','yahoo.fr','yahoo.de','yahoo.es','yahoo.it','yahoo.ca','yahoo.com.ar','hotmail.com','hotmail.com.br','hotmail.co.uk','hotmail.fr','hotmail.es','hotmail.it','hotmail.de','hotmail.com.ar','outlook.com','outlook.com.br','outlook.co.uk','outlook.fr','outlook.es','outlook.it','outlook.de','outlook.com.ar','live.com','live.com.br','live.co.uk','live.fr','live.de','live.it','icloud.com','me.com','mac.com','aol.com','aim.com','protonmail.com','protonmail.me','pm.me','mail.com','gmx.com','gmx.net','gmx.de','ymail.com','uol.com.br','bol.com.br','terra.com.br','ig.com.br','r7.com','oi.com.br','globo.com','msn.com','yandex.com','yandex.ru','zoho.com','zohomail.com','tutanota.com','tutamail.com','inbox.com','fastmail.com','fastmail.fm','hushmail.com','guerrillamail.com','mailinator.com','10minutemail.com','tempmail.com','throwam.com','sharklasers.com','dispostable.com','maildrop.cc','trashmail.com','emailondeck.com','getnada.com'];
+
+function isCorp(e){
+  var m=e.toLowerCase().match(/^[^\s@]+@([^\s@]+)$/);
+  if(!m)return false;
+  return BD.indexOf(m[1])<0;
+}
+
+var G=document.getElementById('g');
+var D=document.getElementById('d');
+var gf=document.getElementById('gf');
+var gerr=document.getElementById('gerr');
+
+function showErr(t){gerr.textContent=t;gerr.style.opacity='1';}
+
+function unlock(){
+  try{sessionStorage.setItem('_fi_d','1');}catch(x){}
+  G.style.display='none';
+  D.style.display='block';
+  initDemo();
+}
+
+// se já passou pelo gate nesta sessão, abre direto
+try{if(sessionStorage.getItem('_fi_d')==='1'){G.style.display='none';D.style.display='block';initDemo();}}catch(x){}
+
+var gadmin=document.getElementById('g-admin');
+if(gadmin)gadmin.addEventListener('click',function(){unlock();});
+
+// máscara de telefone
+var gtel=document.getElementById('gt');
+if(gtel){
+  gtel.addEventListener('input',function(){
+    var v=this.value.replace(/\D/g,'').slice(0,11);
+    if(v.length>6) v='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);
+    else if(v.length>2) v='('+v.slice(0,2)+') '+v.slice(2);
+    else if(v.length) v='('+v;
+    this.value=v;
+  });
+}
+
+if(gf){
+  gf.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var nome  =(document.getElementById('gn').value||'').trim();
+    var email =(document.getElementById('ge').value||'').trim();
+    var tel   =(document.getElementById('gt').value||'').replace(/\D/g,'');
+    var func  =(document.getElementById('gfc').value||'').trim();
+    var cidade=(document.getElementById('gc').value||'').trim();
+    var estado=(document.getElementById('gst').value||'').trim();
+
+    if(!nome||nome.length<2)      {showErr('Informe seu nome completo.');return;}
+    if(!email)                    {showErr('Insira seu e-mail corporativo.');return;}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){showErr('E-mail inválido. Verifique o formato.');return;}
+    if(!isCorp(email))            {showErr('Use um e-mail corporativo. Provedores gratuitos não são aceitos.');return;}
+    if(tel.length<10)             {showErr('Informe um telefone válido com DDD (mínimo 10 dígitos).');return;}
+    if(!func||func.length<2)      {showErr('Informe sua função na empresa.');return;}
+    if(!cidade||cidade.length<2)  {showErr('Informe sua cidade.');return;}
+    if(!estado)                   {showErr('Selecione seu estado.');return;}
+    unlock();
+  });
+}
+
+// ── DEMO ──
+var _vid=null,_hero=null,_ready=false;
+
+function initDemo(){
+  _hero=document.getElementById('d1');
+  var vc=document.getElementById('d1vc');
+  if(!vc||!_hero)return;
+
+  // vídeo criado via JS — src não exposto no HTML
+  var v=document.createElement('video');
+  v.muted=true;
+  v.loop=true;
+  v.autoplay=true;
+  v.preload='auto';
+  v.setAttribute('playsinline','');
+  v.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.08) translate(0px,0px);will-change:transform;';
+
+  var s=document.createElement('source');
+  s.src=String.fromCharCode(105,109,97,103,101,115,47,83,72,79,87,82,69,69,76,46,109,112,52);
+  s.type='video/mp4';
+  v.appendChild(s);
+  vc.appendChild(v);
+  _vid=v;
+
+  v.addEventListener('loadedmetadata',function(){_ready=true;});
+  v.addEventListener('canplay',function(){v.pause();v.currentTime=0;});
+  v.load();
+
+  // parallax com mouse
+  _hero.addEventListener('mousemove',function(e){
+    if(!_vid)return;
+    var r=_hero.getBoundingClientRect();
+    var nx=(e.clientX-r.left)/r.width-0.5;
+    var ny=(e.clientY-r.top)/r.height-0.5;
+    _vid.style.transform='scale(1.08) translate('+(nx*-28)+'px,'+(ny*-20)+'px)';
+  });
+  _hero.addEventListener('mouseleave',function(){
+    if(_vid)_vid.style.transform='scale(1.08) translate(0px,0px)';
+  });
+
+  // scrub do vídeo com scroll
+  var ticking=false;
+  window.addEventListener('scroll',function(){
+    if(ticking)return;
+    ticking=true;
+    requestAnimationFrame(function(){
+      if(_ready&&_vid&&_vid.duration){
+        var h=_hero.offsetHeight;
+        var pct=Math.max(0,Math.min(window.scrollY/h,1));
+        _vid.currentTime=pct*_vid.duration;
+      }
+      ticking=false;
+    });
+  },{passive:true});
+}
+
+// leve dissuasão de inspecionar (não é proteção real, apenas eleva a barreira)
+document.addEventListener('contextmenu',function(e){e.preventDefault();});
+document.addEventListener('keydown',function(e){
+  if((e.ctrlKey||e.metaKey)&&['u','s','a'].indexOf(e.key.toLowerCase())>=0)e.preventDefault();
+  if(e.key==='F12')e.preventDefault();
+});
+
+}();
+</script>
+
+<script>
+/* ── IMAGE SEQUENCER ── */
+(function () {
+  const FRAME_COUNT = 121;
+  const BASE_PATH = "images/seq/seq_teste_";
+  const PAD = 3; // seq_teste_000.jpg … seq_teste_120.jpg
+
+  const wrap = document.querySelector(".seq-wrap");
+  const canvas = document.querySelector(".seq-canvas");
+  if (!wrap || !canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  let currentFrame = 0;
+  let activeGroup = null;
+  let isAnimating = false;
+  let animRaf = null;
+  let scrollRafPending = false;
+
+  function frameSrc(i) {
+    return BASE_PATH + String(i).padStart(PAD, "0") + ".webp";
+  }
+
+  const images = Array.from({ length: FRAME_COUNT }, () => new Image());
+
+  function ensureFrame(i) {
+    if (!images[i].src) images[i].src = frameSrc(i);
+  }
+
+  // Frame 0 imediato (visível ao entrar na seção)
+  ensureFrame(0);
+
+  // Frames críticos: início (aéreo) + fim (living) em 150ms
+  setTimeout(() => {
+    for (let i = 1; i <= 20; i++) ensureFrame(i);
+    for (let i = FRAME_COUNT - 11; i < FRAME_COUNT; i++) ensureFrame(i);
+  }, 150);
+
+  // Frames do meio após a página estabilizar
+  setTimeout(() => {
+    for (let i = 21; i < FRAME_COUNT - 11; i++) ensureFrame(i);
+  }, 1800);
+
+  function drawFrame(index) {
+    const img = images[index];
+    if (!img || !img.complete || !img.naturalWidth) return;
+    const scale = Math.max(
+      canvas.width / img.naturalWidth,
+      canvas.height / img.naturalHeight,
+    );
+    const x = (canvas.width - img.naturalWidth * scale) / 2;
+    const y = (canvas.height - img.naturalHeight * scale) / 2;
+    // clearRect só depois de confirmar imagem pronta, evita frame preto
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(
+      img,
+      x,
+      y,
+      img.naturalWidth * scale,
+      img.naturalHeight * scale,
+    );
+  }
+
+  /* ── POI CONFIG ─────────────────────────────────────────────
+     Para reposicionar um pin, altere px (% horizontal) e py (% vertical).
+     Os valores vêm do console.log de clique que você usa na tela.
+     ─────────────────────────────────────────────────────────── */
+  const POI_DATA = {
+    aerial: [
+      {
+        px: 49.8,
+        py: 29.2,
+        title: "Torre Residencial",
+        desc: "Empreendimento de alto padrão com piscina no rooftop e vista 360° para a baía e a cidade.",
+      },
+      {
+        px: 28.7,
+        py: 36.0,
+        title: "Baía Norte",
+        desc: "Vista privilegiada para a baía e as ilhas naturais ao redor da capital catarinense.",
+      },
+      {
+        px: 87.9,
+        py: 62.6,
+        title: "Ponte Hercílio Luz",
+        desc: "Ícone histórico e cartão-postal de Florianópolis, conectando a ilha ao continente.",
+      },
+      {
+        px: 57.2,
+        py: 14.1,
+        title: "Morro da Cruz",
+        desc: "Ponto mais alto da Ilha, com vista panorâmica de toda a cidade e do oceano Atlântico.",
+      },
+    ],
+    living: [
+      {
+        px: 55.6,
+        py: 46.4,
+        title: "Área de Estar",
+        desc: "Sofás de design italiano com acabamentos premium e integração total com a varanda.",
+        pano: "living",
+      },
+    ],
+  };
+
+  const seqPinsEl = document.querySelector(".seq-pins");
+  Object.entries(POI_DATA).forEach(([group, pins]) => {
+    pins.forEach(({ px, py, title, desc, pano }, idx) => {
+      const panoBtn = pano
+        ? `<button class="poi-pano-btn" onclick="openPanoModal('${pano}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12c3-4 5-6 10-6s7 2 10 6"/><path d="M2 12c3 4 5 6 10 6s7-2 10-6"/></svg>
+            <span>Ver 360°</span>
+          </button>`
+        : "";
+      seqPinsEl.insertAdjacentHTML(
+        "beforeend",
+        `<div class="poi-pin" data-group="${group}" style="--px:${px}%;--py:${py}%">
+          <button class="poi-dot" aria-label="${title}"></button>
+          <div class="poi-popup">
+            <div class="poi-popup-title">${title}</div>
+            <div class="poi-popup-desc">${desc}</div>
+            ${panoBtn}
+          </div>
+        </div>`,
+      );
+    });
+  });
+
+  function closePinPopups() {
+    document
+      .querySelectorAll(".poi-pin")
+      .forEach((p) => p.classList.remove("active"));
+  }
+  function showPins(group) {
+    seqPinsEl.classList.remove("show-aerial", "show-living");
+    if (group) seqPinsEl.classList.add("show-" + group);
+  }
+
+  /* ── Animação de frames via canvas (sem mover o scroll) ── */
+  function animateToFrame(targetFrame, onDone) {
+    if (animRaf) cancelAnimationFrame(animRaf);
+    isAnimating = true;
+    showPins(null);
+    closePinPopups();
+
+    const startFrame = currentFrame;
+    const diff = targetFrame - startFrame;
+    if (diff === 0) {
+      isAnimating = false;
+      if (onDone) onDone();
+      return;
+    }
+
+    const DURATION = 900;
+    let startTime = null;
+    function ease(t) {
+      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    }
+
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      const progress = Math.min((ts - startTime) / DURATION, 1);
+      const frame = Math.round(startFrame + diff * ease(progress));
+      if (frame !== currentFrame) {
+        currentFrame = frame;
+        drawFrame(frame);
+      }
+      if (progress < 1) {
+        animRaf = requestAnimationFrame(step);
+      } else {
+        currentFrame = targetFrame;
+        drawFrame(targetFrame);
+        isAnimating = false;
+        if (onDone) onDone();
+      }
+    }
+    animRaf = requestAnimationFrame(step);
+  }
+
+  /* ── Scroll manual → canvas (desabilitado durante animação) ── */
+  function onScroll() {
+    if (isAnimating) return;
+    if (scrollRafPending) return;
+    scrollRafPending = true;
+    requestAnimationFrame(() => {
+      scrollRafPending = false;
+      const rect = wrap.getBoundingClientRect();
+      const maxScroll = wrap.offsetHeight - window.innerHeight;
+      const progress = Math.max(0, Math.min(-rect.top / maxScroll, 1));
+      const frame = Math.min(
+        Math.round(progress * (FRAME_COUNT - 1)),
+        FRAME_COUNT - 1,
+      );
+      if (frame !== currentFrame) {
+        currentFrame = frame;
+        drawFrame(frame);
+      }
+      // Pins aparecem/somem de acordo com a posição do scroll
+      if (activeGroup === "aerial" && frame <= 2) {
+        showPins("aerial");
+      } else if (activeGroup === "living" && frame >= FRAME_COUNT - 3) {
+        showPins("living");
+      } else {
+        showPins(null);
+        closePinPopups();
+      }
+    });
+  }
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    drawFrame(currentFrame);
+  }
+
+  images[0].onload = () => drawFrame(0);
+  if (images[0].complete && images[0].naturalWidth) drawFrame(0);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", resize);
+  resize();
+
+  /* ── Botões Aéreo / Living ── */
+  const btnFirst = document.getElementById("seqBtnFirst");
+  const btnLast = document.getElementById("seqBtnLast");
+
+  function activateGroup(group, targetFrame) {
+    const already = activeGroup === group;
+    activeGroup = already ? null : group;
+    btnFirst.classList.toggle("btn-on", activeGroup === "aerial");
+    btnLast.classList.toggle("btn-on", activeGroup === "living");
+    if (already) {
+      showPins(null);
+      closePinPopups();
+      return;
+    }
+
+    // Calcula posição de scroll correspondente ao frame alvo
+    const maxScroll = wrap.offsetHeight - window.innerHeight;
+    const scrollTarget =
+      wrap.offsetTop + maxScroll * (targetFrame / (FRAME_COUNT - 1));
+
+    animateToFrame(targetFrame, () => {
+      // Snap silencioso: desabilita smooth scroll antes para evitar rolar visível
+      document.documentElement.style.scrollBehavior = "auto";
+      window.scrollTo({ top: scrollTarget });
+      requestAnimationFrame(() => {
+        document.documentElement.style.scrollBehavior = "";
+        showPins(activeGroup);
+      });
+    });
+  }
+
+  if (btnFirst && btnLast) {
+    btnFirst.addEventListener("click", () =>
+      activateGroup("aerial", 0),
+    );
+    btnLast.addEventListener("click", () =>
+      activateGroup("living", FRAME_COUNT - 1),
+    );
+  }
+
+  /* ── POI Pins toggle ── */
+  document.querySelectorAll(".poi-dot").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const pin = btn.closest(".poi-pin");
+      const wasActive = pin.classList.contains("active");
+      closePinPopups();
+      if (!wasActive) pin.classList.add("active");
+    });
+  });
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".poi-pin")) closePinPopups();
+  });
+})();
+</script>
+
+<script>
+/* ── PANORAMA VIRTUAL TOUR ── */
+let panoRenderer = null,
+  panoFrame = null;
+let _panoScene = null,
+  _panoCamera = null,
+  _panoMesh = null;
+let _panoLon = 180,
+  _panoLat = 0;
+let _panoVelLon = 0,
+  _panoVelLat = 0;
+let _panoDragging = false,
+  _panoPX = 0,
+  _panoPY = 0;
+let _panoCurrentRoom = null,
+  _panoTransitioning = false;
+
+/* ── Tour: defina os caminhos reais das imagens 360° aqui ── */
+const TOUR = {
+  quarto: {
+    label: "Quarto",
+    src: "images/pano_quarto.jpg",
+    hotspots: [
+      { lon: 45, lat: 5, label: "Living", leadsTo: "living" },
+      { lon: 200, lat: -5, label: "Sacada", leadsTo: "sacada" },
+    ],
+  },
+  living: {
+    label: "Living",
+    src: "images/pano_living.jpg",
+    hotspots: [
+      { lon: 180, lat: 0, label: "Quarto", leadsTo: "quarto" },
+      { lon: 60, lat: -10, label: "Sacada", leadsTo: "sacada" },
+    ],
+  },
+  sacada: {
+    label: "Sacada",
+    src: "images/pano_sacada.jpg",
+    hotspots: [
+      { lon: 200, lat: 5, label: "Living", leadsTo: "living" },
+      { lon: 300, lat: 0, label: "Quarto", leadsTo: "quarto" },
+    ],
+  },
+};
+
+function openPanoModal(roomKey) {
+  if (!TOUR[roomKey]) return;
+  const modal = document.getElementById("pano-modal");
+  const loading = document.getElementById("pano-loading");
+  const hint = document.getElementById("pano-hint");
+
+  loading.classList.remove("hidden");
+  loading.innerHTML = '<div id="pano-spinner"></div>' + (window._panoLoadingText || 'Carregando...');
+  hint.classList.remove("hidden");
+  modal.setAttribute("aria-hidden", "false");
+  modal.classList.add("open");
+
+  if (panoFrame) {
+    cancelAnimationFrame(panoFrame);
+    panoFrame = null;
+  }
+  if (panoRenderer) {
+    panoRenderer.dispose();
+    panoRenderer = null;
+  }
+  _panoScene = _panoCamera = _panoMesh = null;
+  _panoCurrentRoom = null;
+  _panoLon = 180;
+  _panoLat = 0;
+  _panoVelLon = _panoVelLat = 0;
+  _panoTransitioning = false;
+  document.getElementById("pano-canvas").style.opacity = "1";
+  document.getElementById("pano-hotspots").style.opacity = "1";
+
+  if (typeof THREE === "undefined") {
+    const s = document.createElement("script");
+    s.src =
+      "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js";
+    s.onload = () => _initPanoViewer(roomKey);
+    document.head.appendChild(s);
+  } else {
+    _initPanoViewer(roomKey);
+  }
+}
+
+window._setRoomUI = function _setRoomUI(roomKey) {
+  _panoCurrentRoom = roomKey;
+  window._panoCurrentRoom = roomKey;
+  const room = TOUR[roomKey];
+  const rl = window._panoRoomLabels || {};
+  document.getElementById("pano-room-label").textContent = rl[roomKey] || room.label;
+  document.querySelectorAll(".pano-room-btn").forEach((b) => {
+    b.classList.toggle("active", b.dataset.room === roomKey);
+  });
+  const container = document.getElementById("pano-hotspots");
+  container.innerHTML = "";
+  room.hotspots.forEach((h) => {
+    const el = document.createElement("div");
+    el.className = "pano-hotspot";
+    el.innerHTML = `
+      <div class="pano-hotspot-dot">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </div>
+      <div class="pano-hotspot-label"></div>`;
+    el.querySelector(".pano-hotspot-label").textContent = rl[h.leadsTo] || h.label;
+    el.addEventListener("click", () => _navigateToPano(h.leadsTo));
+    container.appendChild(el);
+  });
+}
+
+function _updateHotspotPositions(w, h) {
+  if (!_panoCamera || !_panoCurrentRoom) return;
+  const room = TOUR[_panoCurrentRoom];
+  const els = document.querySelectorAll(".pano-hotspot");
+  const phi_c = THREE.MathUtils.degToRad(90 - _panoLat);
+  const theta_c = THREE.MathUtils.degToRad(_panoLon);
+  const camDir = new THREE.Vector3(
+    Math.sin(phi_c) * Math.cos(theta_c),
+    Math.cos(phi_c),
+    Math.sin(phi_c) * Math.sin(theta_c),
+  );
+  room.hotspots.forEach((hs, i) => {
+    const el = els[i];
+    if (!el) return;
+    const phi_h = THREE.MathUtils.degToRad(90 - hs.lat);
+    const theta_h = THREE.MathUtils.degToRad(hs.lon);
+    const hDir = new THREE.Vector3(
+      Math.sin(phi_h) * Math.cos(theta_h),
+      Math.cos(phi_h),
+      Math.sin(phi_h) * Math.sin(theta_h),
+    );
+    const dot = camDir.dot(hDir);
+    if (dot < 0.08) {
+      el.style.opacity = "0";
+      el.style.pointerEvents = "none";
+      return;
+    }
+    const worldPos = hDir.clone().multiplyScalar(90);
+    worldPos.project(_panoCamera);
+    const sx = (worldPos.x * 0.5 + 0.5) * w;
+    const sy = (-worldPos.y * 0.5 + 0.5) * h;
+    el.style.opacity = Math.min(1, (dot - 0.08) / 0.25).toFixed(2);
+    el.style.pointerEvents = dot > 0.2 ? "auto" : "none";
+    el.style.left = sx + "px";
+    el.style.top = sy + "px";
+  });
+}
+
+function _navigateToPano(roomKey) {
+  if (!TOUR[roomKey] || _panoTransitioning || roomKey === _panoCurrentRoom) return;
+  _panoTransitioning = true;
+  const canvas = document.getElementById("pano-canvas");
+  const loading = document.getElementById("pano-loading");
+  const hotspotsEl = document.getElementById("pano-hotspots");
+
+  canvas.style.transition = "opacity 0.3s ease";
+  hotspotsEl.style.transition = "opacity 0.3s ease";
+  canvas.style.opacity = "0";
+  hotspotsEl.style.opacity = "0";
+
+  setTimeout(() => {
+    loading.innerHTML = '<div id="pano-spinner"></div>' + (window._panoLoadingText || 'Carregando...');
+    loading.classList.remove("hidden");
+    new THREE.TextureLoader().load(
+      TOUR[roomKey].src,
+      (tex) => {
+        tex.colorSpace = THREE.LinearSRGBColorSpace;
+        if (_panoMesh) {
+          const oldTex = _panoMesh.material.map;
+          _panoMesh.material.map = tex;
+          _panoMesh.material.needsUpdate = true;
+          if (oldTex) oldTex.dispose();
+        }
+        _panoLon = 180;
+        _panoLat = 0;
+        _panoVelLon = _panoVelLat = 0;
+        _setRoomUI(roomKey);
+        loading.classList.add("hidden");
+        canvas.style.opacity = "1";
+        hotspotsEl.style.opacity = "1";
+        _panoTransitioning = false;
+      },
+      undefined,
+      () => {
+        loading.innerHTML = "<span>Imagem não encontrada</span>";
+        _panoTransitioning = false;
+      },
+    );
+  }, 320);
+}
+
+function _initPanoViewer(roomKey) {
+  const canvas = document.getElementById("pano-canvas");
+  const box = document.getElementById("pano-modal-box");
+  const loading = document.getElementById("pano-loading");
+  const hint = document.getElementById("pano-hint");
+
+  requestAnimationFrame(() => {
+    const w = box.clientWidth,
+      h = box.clientHeight;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.toneMapping = THREE.NoToneMapping;
+    renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+    panoRenderer = renderer;
+
+    const scene = new THREE.Scene();
+    _panoScene = scene;
+    const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 200);
+    _panoCamera = camera;
+
+    const geo = new THREE.SphereGeometry(100, 64, 32);
+    geo.scale(-1, 1, 1);
+    const mat = new THREE.MeshBasicMaterial();
+    const mesh = new THREE.Mesh(geo, mat);
+    _panoMesh = mesh;
+    scene.add(mesh);
+
+    new THREE.TextureLoader().load(
+      TOUR[roomKey].src,
+      (tex) => {
+        tex.colorSpace = THREE.LinearSRGBColorSpace;
+        mat.map = tex;
+        mat.needsUpdate = true;
+        loading.classList.add("hidden");
+        _setRoomUI(roomKey);
+      },
+      undefined,
+      () => {
+        loading.innerHTML = "<span>Imagem não encontrada</span>";
+      },
+    );
+
+    function onDown(x, y) {
+      _panoDragging = true;
+      _panoPX = x;
+      _panoPY = y;
+      _panoVelLon = _panoVelLat = 0;
+    }
+    function onMove(x, y) {
+      if (!_panoDragging) return;
+      const dLon = (x - _panoPX) * 0.12,
+        dLat = (_panoPY - y) * 0.12;
+      _panoLon += dLon;
+      _panoLat = Math.max(-80, Math.min(80, _panoLat + dLat));
+      _panoVelLon = dLon;
+      _panoVelLat = dLat;
+      _panoPX = x;
+      _panoPY = y;
+      hint.classList.add("hidden");
+    }
+    function onUp() {
+      _panoDragging = false;
+    }
+
+    canvas.addEventListener("mousedown", (e) =>
+      onDown(e.clientX, e.clientY),
+    );
+    window.addEventListener("mouseup", onUp);
+    canvas.addEventListener("mousemove", (e) =>
+      onMove(e.clientX, e.clientY),
+    );
+    canvas.addEventListener(
+      "touchstart",
+      (e) => {
+        const t = e.touches[0];
+        onDown(t.clientX, t.clientY);
+      },
+      { passive: true },
+    );
+    canvas.addEventListener(
+      "touchmove",
+      (e) => {
+        e.preventDefault();
+        const t = e.touches[0];
+        onMove(t.clientX, t.clientY);
+      },
+      { passive: false },
+    );
+    canvas.addEventListener("touchend", onUp);
+
+    let lastPinch = 0;
+    canvas.addEventListener(
+      "touchstart",
+      (e) => {
+        if (e.touches.length === 2)
+          lastPinch = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY,
+          );
+      },
+      { passive: true },
+    );
+    canvas.addEventListener(
+      "touchmove",
+      (e) => {
+        if (e.touches.length !== 2) return;
+        const d = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY,
+        );
+        camera.fov = Math.max(
+          30,
+          Math.min(100, camera.fov - (d - lastPinch) * 0.1),
+        );
+        camera.updateProjectionMatrix();
+        lastPinch = d;
+      },
+      { passive: true },
+    );
+    canvas.addEventListener(
+      "wheel",
+      (e) => {
+        e.preventDefault();
+        camera.fov = Math.max(
+          30,
+          Math.min(100, camera.fov + e.deltaY * 0.04),
+        );
+        camera.updateProjectionMatrix();
+      },
+      { passive: false },
+    );
+
+    function renderFrame() {
+      panoFrame = requestAnimationFrame(renderFrame);
+      if (!_panoDragging) {
+        _panoLon += _panoVelLon;
+        _panoLat = Math.max(-80, Math.min(80, _panoLat + _panoVelLat));
+        _panoVelLon *= 0.88;
+        _panoVelLat *= 0.88;
+      }
+      const phi = THREE.MathUtils.degToRad(90 - _panoLat);
+      const theta = THREE.MathUtils.degToRad(_panoLon);
+      camera.lookAt(
+        Math.sin(phi) * Math.cos(theta),
+        Math.cos(phi),
+        Math.sin(phi) * Math.sin(theta),
+      );
+      renderer.render(scene, camera);
+      _updateHotspotPositions(w, h);
+    }
+    renderFrame();
+  });
+}
+
+function closePanoModal() {
+  const modal = document.getElementById("pano-modal");
+  modal.classList.remove("open");
+  modal.setAttribute("aria-hidden", "true");
+  if (panoFrame) {
+    cancelAnimationFrame(panoFrame);
+    panoFrame = null;
+  }
+  if (panoRenderer) {
+    panoRenderer.dispose();
+    panoRenderer = null;
+  }
+  _panoScene = _panoCamera = _panoMesh = null;
+  _panoCurrentRoom = null;
+  document.getElementById("pano-canvas").style.opacity = "1";
+  document.getElementById("pano-hotspots").style.opacity = "1";
+  document.getElementById("pano-hotspots").style.transition = "";
+  document.getElementById("pano-canvas").style.transition = "";
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closePanoModal();
+});
+
+document.querySelectorAll(".pano-room-btn").forEach((btn) => {
+  btn.addEventListener("click", () => _navigateToPano(btn.dataset.room));
+});
+document.getElementById("pano-modal-backdrop").addEventListener("click", closePanoModal);
+</script>
+
+<script>
+/* ── ARCHVIZ EXPLORER ── */
+const axRoot = document.getElementById('ax-root');
+
+// ══════════════════════════════════════════════════════
+// PONTOS DE INTERESSE
+// ══════════════════════════════════════════════════════
+const AX_PTS = [
+  {
+    id: "panoramica",
+    label: "Panorâmica",
+    index: 0,
+    pinX: null,
+    pinY: null,
+    tag: "Visão geral · ARQOS",
+    title: "Panorâmica",
+    desc: "Vista panorâmica do empreendimento. Uma visão completa do conjunto arquitetônico e sua relação com o entorno, a topografia e os acessos principais.",
+    stats: [
+      { label: "Total de unidades", value: "312", unit: "" },
+      { label: "Área do terreno", value: "4,2", unit: "ha" },
+      { label: "Entrega", value: "2027", unit: "" },
+      { label: "Andares", value: "4–28", unit: "" },
+    ],
+    hue: 220,
+    sat: 12,
+  },
+  {
+    id: "vista-norte",
+    label: "Vista Norte",
+    index: 1,
+    pinX: 0.36,
+    pinY: 0.3,
+    tag: "Residencial · Bloco Norte",
+    title: "Vista\nNorte",
+    desc: "Fachada norte do empreendimento. Torre com 28 pavimentos e vistas panorâmicas para o estuário. Unidades de 68m² a 220m² com envidraçamento piso-teto.",
+    stats: [
+      { label: "Pavimentos", value: "28", unit: "" },
+      { label: "Unidades", value: "96", unit: "" },
+      { label: "A partir de", value: "485k", unit: "R$" },
+      { label: "Disponíveis", value: "34", unit: "" },
+    ],
+    hue: 200,
+    sat: 18,
+  },
+  {
+    id: "vista-sul",
+    label: "Vista Sul",
+    index: 2,
+    pinX: 0.54,
+    pinY: 0.56,
+    tag: "Comercial · Térreo",
+    title: "Vista\nSul",
+    desc: "Fachada sul com hall comercial integrado ao térreo. 2.400m² de varejo, gastronomia e serviços abertos ao público todos os dias da semana.",
+    stats: [
+      { label: "Área", value: "2.4k", unit: "m²" },
+      { label: "Lojas", value: "48", unit: "" },
+      { label: "Pé-direito", value: "9", unit: "m" },
+      { label: "Abertura", value: "2026", unit: "" },
+    ],
+    hue: 35,
+    sat: 22,
+  },
+  {
+    id: "vista-leste",
+    label: "Vista Leste",
+    index: 3,
+    pinX: 0.64,
+    pinY: 0.42,
+    tag: "Paisagismo · Nível 4",
+    title: "Vista\nLeste",
+    desc: "Fachada leste com jardim elevado no 4º pavimento. 1.800m² de área verde com espécies nativas, espelhos d'água e pista de caminhada.",
+    stats: [
+      { label: "Área", value: "1.8k", unit: "m²" },
+      { label: "Nível", value: "4", unit: "" },
+      { label: "Árvores", value: "120", unit: "" },
+      { label: "Acesso", value: "Público", unit: "" },
+    ],
+    hue: 140,
+    sat: 18,
+  },
+  {
+    id: "vista-oeste",
+    label: "Vista Oeste",
+    index: 4,
+    pinX: 0.28,
+    pinY: 0.5,
+    tag: "Infraestrutura · Bloco Oeste",
+    title: "Vista\nOeste",
+    desc: "Fachada oeste voltada para o parque linear. Bloco residencial com unidades de 1 a 3 dormitórios, terraços privativos e conexão com a ciclovia.",
+    stats: [
+      { label: "Pavimentos", value: "18", unit: "" },
+      { label: "Unidades", value: "84", unit: "" },
+      { label: "A partir de", value: "320k", unit: "R$" },
+      { label: "Disponíveis", value: "52", unit: "" },
+    ],
+    hue: 270,
+    sat: 14,
+  },
+  {
+    id: "vista-interna",
+    label: "Vista Interna",
+    index: 5,
+    pinX: 0.5,
+    pinY: 0.38,
+    tag: "Espaços comuns · Átrio central",
+    title: "Vista\nInterna",
+    desc: "O átrio central conecta todos os blocos no nível do térreo. Espaço de convivência com iluminação zenital, jardins internos e acesso aos elevadores.",
+    stats: [
+      { label: "Pé-direito", value: "14", unit: "m" },
+      { label: "Área", value: "980", unit: "m²" },
+      { label: "Jardins", value: "3", unit: "" },
+      { label: "Acesso", value: "Livre", unit: "" },
+    ],
+    hue: 50,
+    sat: 16,
+  },
+];
+
+// ══════════════════════════════════════════════════════
+// VÍDEOS
+// ══════════════════════════════════════════════════════
+const AX_VIDS = {
+  "0_1": "images/seg_0_1.mp4",
+  "1_0": "images/seg_1_0_retorno.mp4",
+  "1_2": "images/seg_1_2.mp4",
+  "2_1": "images/seg_2_1_retorno.mp4",
+  "2_3": "images/seg_2_3.mp4",
+  "3_2": "images/seg_3_2_retorno.mp4",
+  "3_4": "images/seg_3_4.mp4",
+  "4_3": "images/seg_4_3_retorno.mp4",
+  "4_5": "images/seg_4_5.mp4",
+  "5_4": "images/seg_5_4_retorno.mp4",
+};
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let axState = "idle";
+let axCur = 0;
+let axQ = [];
+let axSlot = "a";
+
+const AX_VA = document.getElementById("ax-va");
+const AX_VB = document.getElementById("ax-vb");
+const axV = (s) => (s === "a" ? AX_VA : AX_VB);
+const axAlt = (s) => (s === "a" ? "b" : "a");
+
+// ══════════════════════════════════════════════════════
+// NAVEGAÇÃO
+// ══════════════════════════════════════════════════════
+function axGoTo(idx) {
+  if (idx === axCur) {
+    if (axState === "idle") axOpenPanel(AX_PTS[axCur]);
+    return;
+  }
+  const dir = idx > axCur ? 1 : -1;
+  axQ = [];
+  let c = axCur;
+  while (c !== idx) {
+    axQ.push({ from: c, to: c + dir });
+    c += dir;
+  }
+  axRunQ();
+}
+
+function axRunQ() {
+  if (!axQ.length) {
+    axState = "idle";
+    axUpdateUI();
+    return;
+  }
+  const step = axQ.shift();
+  axPlay(step.from, step.to);
+}
+
+// ══════════════════════════════════════════════════════
+// PLAYER
+// ══════════════════════════════════════════════════════
+function axPlay(from, to) {
+  axState = "playing";
+  axUpdateUI();
+
+  const src = AX_VIDS[`${from}_${to}`];
+  if (!src) {
+    axCur = to;
+    axRunQ();
+    return;
+  }
+
+  const inSlot = axAlt(axSlot);
+  const inVid = axV(inSlot);
+  const outVid = axV(axSlot);
+
+  inVid.pause();
+  inVid.removeAttribute("src");
+  inVid.oncanplaythrough = null;
+  inVid.onended = null;
+  inVid.onerror = null;
+  inVid.load();
+
+  inVid.src = src;
+  inVid.muted = true;
+
+  let finished = false;
+  function finish() {
+    if (finished) return;
+    finished = true;
+    axCur = to;
+    axRunQ();
+  }
+
+  const timer = setTimeout(finish, 7000);
+
+  inVid.onerror = () => {
+    clearTimeout(timer);
+    finish();
+  };
+
+  inVid.oncanplaythrough = () => {
+    inVid.oncanplaythrough = null;
+    clearTimeout(timer);
+
+    inVid.play().then(() => {
+      outVid.classList.remove("active");
+      outVid.pause();
+      outVid.removeAttribute("src");
+      outVid.load();
+      inVid.classList.add("active");
+      axSlot = inSlot;
+
+      inVid.onended = () => {
+        inVid.onended = null;
+        finish();
+      };
+    }).catch(() => {
+      clearTimeout(timer);
+      finish();
+    });
+  };
+
+  inVid.load();
+}
+
+function axArrowNav(d) {
+  const t = axCur + d;
+  if (t < 0 || t >= AX_PTS.length || axState === "playing") return;
+  axGoTo(t);
+}
+
+// ══════════════════════════════════════════════════════
+// UI
+// ══════════════════════════════════════════════════════
+const axLineFills = [];
+
+function axBuildTrack() {
+  const arrR = document.getElementById("ax-arr-r");
+  AX_PTS.forEach((pt, i) => {
+    if (i > 0) {
+      const ln = document.createElement("div");
+      ln.className = "t-line";
+      const lf = document.createElement("div");
+      lf.className = "t-line-fill";
+      ln.appendChild(lf);
+      axLineFills.push(lf);
+      arrR.before(ln);
+    }
+    const el = document.createElement("div");
+    el.className = "t-pt" + (i === 0 ? " active" : "");
+    el.dataset.i = i;
+    el.innerHTML = `<div class="t-dot-wrap"><div class="t-dot"></div><div class="t-pulse"></div></div><div class="t-label">${pt.label}</div>`;
+    el.addEventListener("click", () => {
+      if (i === axCur && axState === "idle") axOpenPanel(AX_PTS[i]);
+      else axGoTo(i);
+    });
+    el.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      if (i === axCur && axState === "idle") axOpenPanel(AX_PTS[i]);
+      else axGoTo(i);
+    }, { passive: false });
+    arrR.before(el);
+  });
+}
+
+function axBuildPins() {
+  AX_PTS.forEach((pt) => {
+    if (!pt.pinX) return;
+    const el = document.createElement("div");
+    el.className = "pin off";
+    el.id = "pin-" + pt.id;
+    el.style.left = pt.pinX * 100 + "%";
+    el.style.top = pt.pinY * 100 + "%";
+    el.innerHTML = `<div class="pin-ring"></div><div class="pin-dot"></div><div class="pin-label">${pt.label}</div>`;
+    el.addEventListener("click", () => axGoTo(pt.index));
+    el.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      axGoTo(pt.index);
+    }, { passive: false });
+    axRoot.appendChild(el);
+  });
+}
+
+function axUpdateUI() {
+  const pt = AX_PTS[axCur];
+  document.getElementById("ax-state-dot").className =
+    axState === "playing" ? "playing" : "";
+  document.getElementById("ax-state-lbl").textContent =
+    pt.label.toLowerCase();
+
+  document.querySelectorAll(".t-pt").forEach((el) => {
+    const i = parseInt(el.dataset.i);
+    el.classList.toggle("active", i === axCur);
+    el.classList.toggle("near", axState === "idle" && Math.abs(i - axCur) === 1);
+  });
+
+  axLineFills.forEach((f, i) => {
+    f.style.width = i < axCur ? "100%" : "0%";
+  });
+
+  document.getElementById("ax-arr-l").disabled =
+    axCur === 0 || axState === "playing";
+  document.getElementById("ax-arr-r").disabled =
+    axCur === AX_PTS.length - 1 || axState === "playing";
+
+  AX_PTS.forEach((p) => {
+    if (!p.pinX) return;
+    const pin = document.getElementById("pin-" + p.id);
+    if (pin) pin.classList.toggle("off", !(axState === "idle" && axCur === p.index));
+  });
+
+  const pp = document.getElementById("ax-p-prev");
+  const pn = document.getElementById("ax-p-next");
+  if (pp) pp.disabled = axCur === 0;
+  if (pn) pn.disabled = axCur === AX_PTS.length - 1;
+
+  axUpdatePOIs();
+}
+
+// ══════════════════════════════════════════════════════
+// PANEL
+// ══════════════════════════════════════════════════════
+function axOpenPanel(pt) {
+  const cv = document.getElementById("ax-p-canvas");
+  const cx = cv.getContext("2d");
+  const g = cx.createLinearGradient(0, 0, 0, 440);
+  g.addColorStop(0, `hsl(${pt.hue},${pt.sat}%,8%)`);
+  g.addColorStop(1, `hsl(${pt.hue + 18},${pt.sat + 10}%,22%)`);
+  cx.fillStyle = g;
+  cx.fillRect(0, 0, 760, 440);
+
+  document.getElementById("ax-p-tag").textContent = pt.tag;
+  document.getElementById("ax-p-title").textContent = pt.title;
+  document.getElementById("ax-p-desc").textContent = pt.desc;
+  document.getElementById("ax-p-stats").innerHTML = pt.stats
+    .map((s) => `<div class="p-stat"><div class="p-stat-label">${s.label}</div><div class="p-stat-val">${s.value}<span class="p-stat-unit">${s.unit}</span></div></div>`)
+    .join("");
+  document.getElementById("ax-p-prev").disabled = pt.index === 0;
+  document.getElementById("ax-p-next").disabled = pt.index === AX_PTS.length - 1;
+  document.getElementById("ax-panel").classList.add("open");
+}
+
+function axClosePanel() {
+  document.getElementById("ax-panel").classList.remove("open");
+}
+
+function axPanelNav(d) {
+  const t = axCur + d;
+  if (t < 0 || t >= AX_PTS.length) return;
+  axClosePanel();
+  setTimeout(() => axGoTo(t), 180);
+}
+
+// ══════════════════════════════════════════════════════
+// TECLADO
+// ══════════════════════════════════════════════════════
+window.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight" || e.key === "ArrowDown") axArrowNav(1);
+  if (e.key === "ArrowLeft" || e.key === "ArrowUp") axArrowNav(-1);
+  if (e.key === "Escape") {
+    axClosePanel();
+    axCloseAllPopups();
+    axClosePOIDetail();
+    axClosePano();
+  }
+  if (e.key === "Enter" && axState === "idle") axOpenPanel(AX_PTS[axCur]);
+});
+
+// ══════════════════════════════════════════════════════
+// POIs
+// ══════════════════════════════════════════════════════
+const AX_POIS = {
+  1: [
+    { id: "vn-1", label: "Casa Tipo 01", x: 71.2, y: 31.3, tag: "Acesso · Bloco Norte", title: "Casa Tipo 01", desc: "Acesso social com portaria 24h, hall envidraçado e paisagismo de boas-vindas ao longo do eixo central.", img: "images/POI_004.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vn-2", label: "Varanda duplex", x: 39.4, y: 34.7, tag: "Diferencial · Cobertura", title: "Varanda Duplex", desc: "Unidades de cobertura com varanda duplex de 40m², churrasqueira integrada e vista 180° para a cidade.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vn-3", label: "Piscinas", x: 60.0, y: 62.3, tag: "Área comum", title: "Piscinas", desc: "Hall de entrada com pé-direito de 6m, revestimento em mármore e recepção para moradores e visitantes.", img: "images/POI_003.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vn-4", label: "Quadras", x: 43.7, y: 74.1, tag: "Lazer · Térreo", title: "Quadras", desc: "Espaço fitness de 280m² com equipamentos profissionais, sala de yoga e vista para o jardim interno.", img: "images/POI_002.jpg", link: "https://arqos.inc/distritq" },
+  ],
+  2: [
+    { id: "vs-1", label: "Quadra Poliesportiva", x: 54.1, y: 57.1, tag: "Público · Térreo", title: "Quadra Poliesportiva", desc: "Espaço de uso coletivo com cobertura tensionada, assentos integrados e palco para eventos culturais.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vs-2", label: "Rooftop", x: 34.3, y: 34.9, tag: "Cultural · Térreo", title: "Rooftop", desc: "900m² de galeria aberta ao público, com rotatividade mensal de exposições de artistas locais e nacionais.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vs-3", label: "Estacionamento", x: 35.2, y: 87.0, tag: "Gastronomia", title: "Estacionamento", desc: "Praça de alimentação com 12 operações gastronômicas, da padaria artesanal ao restaurante autoral.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vs-4", label: "Coworking", x: 78.3, y: 57.4, tag: "Trabalho · Nível 2", title: "Coworking", desc: "Espaço compartilhado de trabalho com 40 estações, salas de reunião e lounge com vista para a praça.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+  ],
+  3: [
+    { id: "vl-1", label: "Centro da Cidade", x: 83.7, y: 12.5, tag: "Paisagismo · Nível 4", title: "Centro da Cidade", desc: "Jardim elevado com espécies nativas da Mata Atlântica, irrigação automatizada e mirante panorâmico.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vl-2", label: "Supermercado", x: 48.6, y: 44.7, tag: "Lazer · Nível 4", title: "Supermercado", desc: "Piscina de borda infinita de 25m com raia olímpica, deck solário e bar molhado integrado.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vl-3", label: "Portaria", x: 55.0, y: 26.4, tag: "Esporte · Externo", title: "Portaria", desc: "Percurso de 600m entre jardins e espelhos d'água, com iluminação cênica para uso noturno.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vl-4", label: "Coworking", x: 31.9, y: 66.7, tag: "Família · Térreo", title: "Coworking", desc: "Espaço compartilhado de trabalho com 40 estações, salas de reunião e lounge com vista para a praça.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+  ],
+  4: [
+    { id: "vo-1", label: "Casa Tipo 02", x: 61.9, y: 41.8, tag: "Mobilidade · Externo", title: "Casa Tipo 02", desc: "Ciclovia de 1,2km integrada ao sistema municipal, com paraciclos, bicicletário coberto e oficina.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vo-2", label: "Casa Tipo 01", x: 45.4, y: 40.2, tag: "Paisagismo · Externo", title: "Casa Tipo 01", desc: "Parque de 8.000m² com espelho d'água, anfiteatro ao ar livre e área de convívio comunitário.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vo-3", label: "Igreja", x: 20.7, y: 34.6, tag: "Comunidade · Térreo", title: "Igreja", desc: "3 subsolos com 480 vagas, carregadores elétricos em 20% das vagas e acesso exclusivo por app.", img: "images/POI_005.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vo-4", label: "Rooftop", x: 40.3, y: 61.3, tag: "Segurança", title: "Rooftop", desc: "Controle de acesso biométrico com monitoramento 24h, câmeras 4K e integração com portaria remota.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+  ],
+  5: [
+    { id: "vi-1", label: "Quadras Poliesportivas", x: 42.8, y: 54.6, tag: "Circulação · Térreo", title: "Quadras Poliesportivas", desc: "Átrio de 14m de pé-direito com claraboia zenital, jardim interno e escadas esculturais em aço.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vi-2", label: "Salão de festas", x: 57.4, y: 42.7, tag: "Eventos · Nível 2", title: "Salão de Festas", desc: "450m² configuráveis para eventos de até 200 pessoas, com cozinha equipada e terraço exclusivo.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vi-3", label: "Quadra Tenis", x: 43.5, y: 76.4, tag: "Circulação vertical", title: "Quadra Tenis", desc: "4 elevadores panorâmicos de alta velocidade com capacidade para 13 pessoas cada, frente envidraçada.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+    { id: "vi-4", label: "Pscina", x: 59.9, y: 62.6, tag: "Lazer · Nível 2", title: "Pscina", desc: "Mesa de sinuca, ping-pong, fliperama e espaço gamer com 8 estações de alta performance.", img: "images/POI_001.jpg", link: "https://arqos.inc/distritq" },
+  ],
+};
+
+// ══════════════════════════════════════════════════════
+// BUILD POIs
+// ══════════════════════════════════════════════════════
+let axActivePopup = null;
+
+function axBuildPOIs() {
+  Object.entries(AX_POIS).forEach(([ptIdx, pois]) => {
+    pois.forEach((poi) => {
+      const marker = document.createElement("div");
+      marker.className = "poi hidden";
+      marker.id = "poi-" + poi.id;
+      marker.dataset.pt = ptIdx;
+      marker.style.left = poi.x + "%";
+      marker.style.top = poi.y + "%";
+      marker.innerHTML = `
+        <div class="poi-pulse"></div>
+        <div class="poi-btn"></div>
+        <div class="poi-name">${poi.label}</div>
+      `;
+      marker.addEventListener("click", (e) => {
+        e.stopPropagation();
+        axTogglePopup(poi, marker);
+      });
+      marker.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        axTogglePopup(poi, marker);
+      }, { passive: false });
+      axRoot.appendChild(marker);
+
+      const popup = document.createElement("div");
+      popup.className = "poi-popup";
+      popup.id = "popup-" + poi.id;
+      popup.style.left = Math.min(poi.x + 4, 68) + "%";
+      popup.style.top = Math.max(poi.y - 30, 5) + "%";
+      popup.innerHTML = `
+        <div class="popup-drag-handle" data-drag="true">
+          <div class="popup-drag-icon">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+          </div>
+          <button class="popup-close-btn" onclick="axClosePopup('${poi.id}')">
+            <svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7"/><line x1="7" y1="1" x2="1" y2="7"/></svg>
+          </button>
+        </div>
+        ${poi.img
+          ? `<img class="popup-img" src="${poi.img}" alt="${poi.title}">`
+          : `<div class="popup-img-placeholder">${poi.tag}</div>`
+        }
+        <div class="popup-body">
+          <div class="popup-tag">${poi.tag}</div>
+          <div class="popup-title">${poi.title}</div>
+          <div class="popup-desc">${poi.desc}</div>
+          <div class="popup-cta">
+            ${poi.link
+              ? `<a class="popup-cta-btn" href="${poi.link}" target="_blank">Conferir</a>`
+              : `<button class="popup-cta-btn">Conferir</button>`
+            }
+          </div>
+          <button class="popup-more-btn" onclick="axOpenPOIDetail('${poi.id}')">
+            <svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="5"/><line x1="6" y1="4" x2="6" y2="8"/><line x1="4" y1="6" x2="8" y2="6"/></svg>
+            Mais Informações
+          </button>
+        </div>
+      `;
+      axRoot.appendChild(popup);
+      axMakeDraggable(popup);
+    });
+  });
+}
+
+function axTogglePopup(poi, marker) {
+  const popup = document.getElementById("popup-" + poi.id);
+  if (popup.classList.contains("open")) {
+    axClosePopup(poi.id);
+  } else {
+    if (axActivePopup && axActivePopup !== popup) {
+      axActivePopup.classList.remove("open");
+    }
+    const rect = marker.getBoundingClientRect();
+    const rootRect = axRoot.getBoundingClientRect();
+    let left = rect.right - rootRect.left + 12;
+    let top = rect.top - rootRect.top - 60;
+    if (left + 300 > axRoot.offsetWidth) left = rect.left - rootRect.left - 312;
+    if (top + 420 > axRoot.offsetHeight) top = axRoot.offsetHeight - 430;
+    if (top < 10) top = 10;
+    popup.style.left = left + "px";
+    popup.style.top = top + "px";
+    popup.classList.add("open");
+    axActivePopup = popup;
+  }
+}
+
+function axClosePopup(id) {
+  const popup = document.getElementById("popup-" + id);
+  if (popup) popup.classList.remove("open");
+  if (axActivePopup === popup) axActivePopup = null;
+}
+
+function axCloseAllPopups() {
+  document.querySelectorAll(".poi-popup.open").forEach((p) => p.classList.remove("open"));
+  axActivePopup = null;
+}
+
+// ══════════════════════════════════════════════════════
+// DRAG
+// ══════════════════════════════════════════════════════
+function axMakeDraggable(el) {
+  let startX, startY, startL, startT, dragging = false;
+
+  function dragStart(cx, cy) {
+    dragging = true;
+    startX = cx;
+    startY = cy;
+    startL = parseInt(el.style.left) || el.getBoundingClientRect().left;
+    startT = parseInt(el.style.top) || el.getBoundingClientRect().top;
+    el.classList.add("dragging");
+    el.style.left = startL + "px";
+    el.style.top = startT + "px";
+  }
+
+  function dragMove(cx, cy) {
+    if (!dragging) return;
+    const newL = Math.max(0, Math.min(axRoot.offsetWidth - el.offsetWidth, startL + cx - startX));
+    const newT = Math.max(0, Math.min(axRoot.offsetHeight - el.offsetHeight, startT + cy - startY));
+    el.style.left = newL + "px";
+    el.style.top = newT + "px";
+  }
+
+  function dragEnd() {
+    if (!dragging) return;
+    dragging = false;
+    el.classList.remove("dragging");
+  }
+
+  el.addEventListener("mousedown", (e) => {
+    if (!e.target.closest("[data-drag]")) return;
+    e.preventDefault();
+    dragStart(e.clientX, e.clientY);
+  });
+  document.addEventListener("mousemove", (e) => dragMove(e.clientX, e.clientY));
+  document.addEventListener("mouseup", dragEnd);
+
+  el.addEventListener("touchstart", (e) => {
+    if (!e.target.closest("[data-drag]")) return;
+    if (e.target.closest("button")) return;
+    e.preventDefault();
+    dragStart(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: false });
+  document.addEventListener("touchmove", (e) => {
+    if (!dragging) return;
+    e.preventDefault();
+    dragMove(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: false });
+  document.addEventListener("touchend", dragEnd);
+}
+
+// ══════════════════════════════════════════════════════
+// Mostra/oculta POIs do ponto atual
+// ══════════════════════════════════════════════════════
+function axUpdatePOIs() {
+  document.querySelectorAll(".poi").forEach((el) => {
+    const ptIdx = parseInt(el.dataset.pt);
+    const show = axState === "idle" && ptIdx === axCur;
+    el.classList.toggle("hidden", !show);
+    if (!show) axClosePopup(el.id.replace("poi-", ""));
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// NEO — assistente de voz
+// ══════════════════════════════════════════════════════
+let AX_NEO_API_KEY = localStorage.getItem("neo_api_key") || "";
+let axNeoListening = false;
+let axNeoProcessing = false;
+let axNeoRecognition = null;
+
+const AX_NEO_SYSTEM = `Você é NEO, assistente de voz do explorador arquitetônico ARQOS.
+
+AÇÃO OBRIGATÓRIA: responda SOMENTE com um objeto JSON usando exatamente um destes formatos:
+{"action":"goto","index":NUMBER}
+{"action":"poi","id":"STRING"}
+{"action":"info","text":"STRING"}
+{"action":"unknown"}
+
+NUNCA use outro nome de action. NUNCA adicione texto fora do JSON.
+
+VISTAS (use "goto"):
+0=Panorâmica, 1=Vista Norte, 2=Vista Sul, 3=Vista Leste, 4=Vista Oeste, 5=Vista Interna
+
+Exemplos de comandos de vista → JSON esperado:
+"abrir vista norte" → {"action":"goto","index":1}
+"ir para vista sul" → {"action":"goto","index":2}
+"mostrar vista leste" → {"action":"goto","index":3}
+"quero ver a vista oeste" → {"action":"goto","index":4}
+"vista interna" → {"action":"goto","index":5}
+"panorâmica" → {"action":"goto","index":0}
+
+POIs (use "poi"):
+Vista Norte: Casa Tipo 01=vn-1, Varanda Duplex=vn-2, Piscinas=vn-3, Quadras=vn-4
+Vista Sul: Quadra Poliesportiva=vs-1, Rooftop=vs-2, Estacionamento=vs-3, Coworking=vs-4
+Vista Leste: Centro da Cidade=vl-1, Supermercado=vl-2, Portaria=vl-3, Coworking=vl-4
+Vista Oeste: Casa Tipo 02=vo-1, Casa Tipo 01=vo-2, Igreja=vo-3, Rooftop=vo-4
+Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis=vi-3, Piscina=vi-4
+
+- Vista + POI juntos (ex: "vista norte quadras") → priorize o POI: {"action":"poi","id":"vn-4"}
+- Só POI → use o POI da vista mais provável
+- Pergunta sobre o empreendimento → {"action":"info","text":"resposta curta em português"}
+- Não entendeu → {"action":"unknown"}`;
+
+function axNeoClick() {
+  if (!AX_NEO_API_KEY) {
+    axNeoOpenSetup();
+    return;
+  }
+  if (axNeoListening) axNeoStop();
+  else axNeoStart();
+}
+
+function axNeoOpenSetup() {
+  document.getElementById("ax-neo-api-input").value = AX_NEO_API_KEY;
+  document.getElementById("ax-neo-setup").classList.add("show");
+}
+
+function axNeoCloseSetup() {
+  document.getElementById("ax-neo-setup").classList.remove("show");
+}
+
+function axNeoSaveKey() {
+  const val = document.getElementById("ax-neo-api-input").value.trim();
+  if (!val.startsWith("AIza") || val.length < 20) {
+    document.getElementById("ax-neo-api-input").style.borderColor = "#e05";
+    setTimeout(() => (document.getElementById("ax-neo-api-input").style.borderColor = ""), 1200);
+    return;
+  }
+  AX_NEO_API_KEY = val;
+  localStorage.setItem("neo_api_key", val);
+  AX_NEO_GEMINI_MODEL = null;
+  axNeoCloseSetup();
+  axNeoBubble("NEO ativado! Clique no robô e fale um comando.", "");
+}
+
+function axNeoSetState(s) {
+  const btn = document.getElementById("ax-neo-track-btn");
+  btn.classList.remove("listening", "thinking");
+  if (s !== "idle") btn.classList.add(s);
+}
+
+function axNeoBubble(text, transcript) {
+  const bubble = document.getElementById("ax-neo-bubble");
+  document.getElementById("ax-neo-bubble-text").textContent = text;
+  document.getElementById("ax-neo-bubble-transcript").textContent =
+    transcript ? '"' + transcript + '"' : "";
+  bubble.classList.add("show");
+  clearTimeout(axNeoBubble._t);
+  axNeoBubble._t = setTimeout(() => bubble.classList.remove("show"), 5000);
+}
+
+function axNeoStart() {
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRec) {
+    axNeoBubble("Use Chrome para reconhecimento de voz.", "");
+    return;
+  }
+
+  if (!axNeoRecognition) {
+    axNeoRecognition = new SpeechRec();
+    axNeoRecognition.lang = "pt-BR";
+    axNeoRecognition.continuous = false;
+    axNeoRecognition.interimResults = true;
+
+    axNeoRecognition.onresult = (e) => {
+      const t = Array.from(e.results).map((r) => r[0].transcript).join("");
+      document.getElementById("ax-neo-bubble-transcript").textContent = '"' + t + '"';
+      if (e.results[e.results.length - 1].isFinal) axNeoProcess(t);
+    };
+
+    axNeoRecognition.onend = () => {
+      if (axNeoListening) axNeoSetState("idle");
+      axNeoListening = false;
+    };
+    axNeoRecognition.onerror = (e) => {
+      axNeoSetState("idle");
+      axNeoListening = false;
+      if (e.error === "not-allowed") axNeoBubble("Permissão de microfone negada.", "");
+    };
+  }
+
+  axNeoListening = true;
+  axNeoSetState("listening");
+  axNeoBubble("Ouvindo… fale uma vista ou pergunta.", "");
+  try { axNeoRecognition.start(); } catch (e) {}
+}
+
+function axNeoStop() {
+  axNeoListening = false;
+  axNeoSetState("idle");
+  try { axNeoRecognition.abort(); } catch (e) {}
+}
+
+let AX_NEO_GEMINI_MODEL = null;
+
+async function axNeoGetModel() {
+  if (AX_NEO_GEMINI_MODEL) return AX_NEO_GEMINI_MODEL;
+  for (const ver of ["v1", "v1beta"]) {
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/${ver}/models?key=${AX_NEO_API_KEY}`
+      );
+      const data = await res.json();
+      if (data.error) continue;
+
+      const available = (data.models || [])
+        .filter((m) => (m.supportedGenerationMethods || []).includes("generateContent"))
+        .map((m) => m.name.replace("models/", ""));
+
+      const prefer = [
+        "gemini-2.5-flash-preview-05-20",
+        "gemini-2.5-pro",
+        "gemini-2.0-flash",
+        "gemini-1.5-flash",
+        "gemini-1.5-pro",
+        "gemini-pro",
+      ];
+      const chosen = prefer.find((p) => available.includes(p)) || available[0];
+      if (chosen) {
+        AX_NEO_GEMINI_MODEL = chosen + "|" + ver;
+        return AX_NEO_GEMINI_MODEL;
+      }
+    } catch (e) {}
+  }
+  throw new Error("Não foi possível encontrar um modelo disponível para esta chave.");
+}
+
+function axNeoGuardCmd(raw) {
+  if (!raw || typeof raw !== "object") return null;
+  const { action } = raw;
+  if (!["goto", "poi", "info"].includes(action)) return null;
+
+  if (action === "goto") {
+    const idx = Number(raw.index);
+    if (!Number.isInteger(idx) || idx < 0 || idx >= AX_PTS.length) return null;
+    return { action, index: idx };
+  }
+  if (action === "poi") {
+    if (typeof raw.id !== "string" || !/^v[a-z]-\d+$/.test(raw.id)) return null;
+    return { action, id: raw.id };
+  }
+  if (action === "info") {
+    if (typeof raw.text !== "string") return null;
+    return { action, text: raw.text.slice(0, 400) };
+  }
+  return null;
+}
+
+async function axNeoProcess(transcript) {
+  if (axNeoProcessing) return;
+  axNeoProcessing = true;
+  axNeoListening = false;
+  axNeoSetState("thinking");
+  axNeoBubble("Processando…", transcript);
+
+  try {
+    const modelVer = await axNeoGetModel();
+    const [model, ver] = modelVer.split("|");
+
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/${ver}/models/${model}:generateContent?key=${AX_NEO_API_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ role: "user", parts: [{ text: AX_NEO_SYSTEM + "\n\nComando do usuário: " + transcript }] }],
+          generationConfig: { maxOutputTokens: 100, temperature: 0 },
+        }),
+      }
+    );
+
+    const data = await res.json();
+    if (data.error) {
+      AX_NEO_GEMINI_MODEL = null;
+      axNeoSetState("idle");
+      axNeoBubble("Não consegui processar o comando. Tente novamente.", transcript);
+      return;
+    }
+
+    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
+    let cmd = null;
+    try {
+      const match = rawText.match(/\{[\s\S]*\}/);
+      if (match) cmd = axNeoGuardCmd(JSON.parse(match[0]));
+    } catch (e) {}
+
+    axNeoExecute(cmd, transcript);
+  } catch (err) {
+    AX_NEO_GEMINI_MODEL = null;
+    axNeoSetState("idle");
+    axNeoBubble("Sem conexão. Verifique a internet e tente novamente.", transcript);
+  } finally {
+    axNeoProcessing = false;
+  }
+}
+
+function axNeoExecute(cmd, transcript) {
+  axNeoSetState("idle");
+
+  if (!cmd || !["goto", "poi", "info"].includes(cmd.action)) {
+    const t = transcript.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+
+    const vistaMap = [
+      { idx: 0, keys: ["panoramica", "panoramic", "geral", "overview", "inicio"] },
+      { idx: 1, keys: ["norte", "north"] },
+      { idx: 2, keys: ["sul", "south"] },
+      { idx: 3, keys: ["leste", "east", "lest"] },
+      { idx: 4, keys: ["oeste", "west", "ueste"] },
+      { idx: 5, keys: ["interna", "internal", "interior", "dentro"] },
+    ];
+
+    const poiMap = [
+      { id: "vn-1", pt: 1, keys: ["casa tipo 01", "tipo 01", "casa 01"] },
+      { id: "vn-2", pt: 1, keys: ["varanda", "duplex"] },
+      { id: "vn-3", pt: 1, keys: ["piscina", "piscinao", "nadar", "natacao"] },
+      { id: "vn-4", pt: 1, keys: ["quadra", "quadras", "esporte", "tenis", "futebol"] },
+      { id: "vs-1", pt: 2, keys: ["poliesportiva", "polisportiva", "esportiva"] },
+      { id: "vs-2", pt: 2, keys: ["rooftop", "roof", "telhado", "terraco"] },
+      { id: "vs-3", pt: 2, keys: ["estacionamento", "garagem", "parking", "carro"] },
+      { id: "vs-4", pt: 2, keys: ["coworking", "trabalho", "escritorio", "home office"] },
+      { id: "vl-1", pt: 3, keys: ["centro", "cidade", "urbano"] },
+      { id: "vl-2", pt: 3, keys: ["supermercado", "mercado", "compras"] },
+      { id: "vl-3", pt: 3, keys: ["portaria", "guarita", "entrada", "seguranca"] },
+      { id: "vl-4", pt: 3, keys: ["coworking", "trabalho"] },
+      { id: "vo-1", pt: 4, keys: ["casa tipo 02", "tipo 02", "casa 02"] },
+      { id: "vo-2", pt: 4, keys: ["casa tipo 01", "tipo 01", "casa 01"] },
+      { id: "vo-3", pt: 4, keys: ["igreja", "templo", "religiao"] },
+      { id: "vo-4", pt: 4, keys: ["rooftop", "roof", "terraco"] },
+      { id: "vi-1", pt: 5, keys: ["quadras poliesportivas", "poliesportiva"] },
+      { id: "vi-2", pt: 5, keys: ["salao", "festa", "festas", "eventos", "celebracao"] },
+      { id: "vi-3", pt: 5, keys: ["quadra tenis", "tenis", "raquete"] },
+      { id: "vi-4", pt: 5, keys: ["piscina", "piscinao", "nadar"] },
+    ];
+
+    const foundVista = vistaMap.find((v) => v.keys.some((k) => t.includes(k)));
+    const allMatches = poiMap.filter((p) => p.keys.some((k) => t.includes(k)));
+    const foundPOI =
+      allMatches.find((p) => p.pt === axCur) ||
+      allMatches.find((p) => foundVista && p.pt === foundVista.idx) ||
+      allMatches[0];
+
+    if (foundPOI) {
+      cmd = { action: "poi", id: foundPOI.id };
+    } else if (foundVista) {
+      cmd = { action: "goto", index: foundVista.idx };
+    }
+  }
+
+  if (cmd && cmd.action === "goto") {
+    const pt = AX_PTS[cmd.index];
+    if (pt) {
+      axNeoBubble("→ " + pt.label, transcript);
+      axGoTo(cmd.index);
+    } else axNeoBubble("Vista não encontrada.", transcript);
+  } else if (cmd && cmd.action === "poi") {
+    let found = null, ptIdx = null;
+    Object.entries(AX_POIS).forEach(([k, arr]) =>
+      arr.forEach((p) => {
+        if (p.id === cmd.id) { found = p; ptIdx = parseInt(k); }
+      })
+    );
+    if (found) {
+      axNeoBubble("→ " + found.title, transcript);
+      axGoTo(ptIdx);
+      const t = setInterval(() => {
+        if (axState === "idle" && axCur === ptIdx) {
+          clearInterval(t);
+          const m = document.getElementById("poi-" + found.id);
+          if (m) axTogglePopup(found, m);
+        }
+      }, 200);
+    } else axNeoBubble("Ponto não encontrado.", transcript);
+  } else if (cmd && cmd.action === "info") {
+    axNeoBubble(cmd.text, transcript);
+  } else {
+    axNeoBubble('Não entendi. Tente: "vista norte", "piscinas"…', transcript);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// POI DETAIL — dados estendidos por poi.id
+// ══════════════════════════════════════════════════════
+const AX_IC = {
+  area: `<path d="M2 2h12v12H2z"/><path d="M2 7h12M7 2v12"/>`,
+  floor: `<path d="M1 9.5l7-5 7 5M1 13l7-5 7 5"/>`,
+  users: `<path d="M5 6a3 3 0 106 0 3 3 0 00-6 0M1 15s0-3.5 7-3.5S15 15 15 15"/>`,
+  clock: `<circle cx="8" cy="8" r="6"/><path d="M8 4v4l2.5 2.5"/>`,
+  leaf: `<path d="M13 2C8 2 4 8 4 13c2-1 4-3 9-11z"/><path d="M4 13l7-5"/>`,
+  shield: `<path d="M8 1L2 4v5c0 3.5 2.5 6 6 7 3.5-1 6-3.5 6-7V4z"/>`,
+  sun: `<circle cx="8" cy="8" r="3"/><line x1="8" y1="1" x2="8" y2="3"/><line x1="8" y1="13" x2="8" y2="15"/><line x1="1" y1="8" x2="3" y2="8"/><line x1="13" y1="8" x2="15" y2="8"/>`,
+  car: `<path d="M1 11h14M3 11l2-5h6l2 5M2 11v3M14 11v3"/>`,
+  zap: `<polyline points="12 2 7 9 10 9 4 16"/>`,
+  pin: `<path d="M8 1C5.2 1 3 3.2 3 6c0 4.5 5 9 5 9s5-4.5 5-9c0-2.8-2.2-5-5-5z"/><circle cx="8" cy="6" r="2"/>`,
+  wifi: `<path d="M1 7a10 10 0 0114 0M4 11a6 6 0 018 0"/><circle cx="8" cy="15" r="1"/>`,
+  star: `<path d="M8 1l1.8 5.5H16l-5 3.6 1.9 5.9L8 12l-4.9 4 1.9-5.9-5-3.6h6.2z"/>`,
+  home: `<path d="M2 10L8 2l6 8v6H2z"/><path d="M6 16v-5h4v5"/>`,
+  tree: `<path d="M8 2l4 7H4z"/><path d="M8 8l4 7H4z"/><line x1="8" y1="15" x2="8" y2="16"/>`,
+  check: `<polyline points="2,8 6,12 14,4"/>`,
+  play: `<polygon points="4,2 14,8 4,14"/>`,
+  film: `<rect x="1" y="3" width="14" height="10" rx="1"/><path d="M1 6h14M1 10h14M5 3v10M11 3v10"/>`,
+  key: `<circle cx="5" cy="9" r="4"/><path d="M9 9h6M13 7v4"/>`,
+  pool: `<path d="M1 11c1.5-2 3-2 4.5 0s3 2 4.5 0 3-2 4.5 0M1 15c1.5-2 3-2 4.5 0s3 2 4.5 0 3-2 4.5 0M8 1v6M5 4l3-3 3 3"/>`,
+};
+
+function axIcon(k) {
+  return `<svg viewBox="0 0 16 16">${AX_IC[k] || AX_IC.star}</svg>`;
+}
+
+const AX_POI_DETAILS = {
+  "vn-1": {
+    panorama360: "images/XP_NPL_360_2.jpg",
+    photos: ["images/POI_004.jpg", "images/POI_001.jpg", "images/POI_003.jpg"],
+    features: [
+      { icon: "area", label: "Área total", value: "320 m²" },
+      { icon: "floor", label: "Pavimento", value: "Térreo" },
+      { icon: "users", label: "Capacidade", value: "24h" },
+      { icon: "clock", label: "Acesso", value: "Livre" },
+    ],
+    highlights: [
+      { icon: "shield", text: "Portaria física com segurança 24h e câmeras 4K em todos os acessos." },
+      { icon: "leaf", text: "Paisagismo com espécies nativas ao longo do eixo central de entrada." },
+      { icon: "star", text: "Hall envidraçado com pé-direito duplo e iluminação cênica noturna." },
+    ],
+    links: [
+      { label: "Ver localização no empreendimento", url: "https://arqos.inc/distritq" },
+      { label: "Solicitar visita guiada", url: "https://arqos.inc/distritq" },
+    ],
+    cta: { label: "Solicitar informações", url: "https://arqos.inc/distritq" },
+  },
+  "vn-2": {
+    panorama360: "images/XP_NPL_360_3.jpg",
+    photos: ["images/POI_001.jpg", "images/POI_002.jpg"],
+    features: [
+      { icon: "area", label: "Varanda", value: "40 m²" },
+      { icon: "floor", label: "Pavimento", value: "28º" },
+      { icon: "sun", label: "Vista", value: "180°" },
+      { icon: "home", label: "Tipologia", value: "Duplex" },
+    ],
+    highlights: [
+      { icon: "star", text: "Churrasqueira integrada com bancada em granito negro e adega climatizada." },
+      { icon: "sun", text: "Vista 180° para a cidade e estuário sem obstáculos a partir do 20º andar." },
+      { icon: "home", text: "Duplex com pé-direito triplo e escada esculturada em aço e vidro." },
+    ],
+    links: [
+      { label: "Ver planta do duplex", url: "https://arqos.inc/distritq" },
+    ],
+    cta: { label: "Agendar visita ao apartamento modelo", url: "https://arqos.inc/distritq" },
+  },
+  "vn-3": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_003.jpg", "images/POI_001.jpg"],
+    features: [
+      { icon: "pool", label: "Piscina", value: "25 m" },
+      { icon: "area", label: "Deck", value: "480 m²" },
+      { icon: "users", label: "Capacidade", value: "120 pax" },
+      { icon: "clock", label: "Funcionamento", value: "7h–22h" },
+    ],
+    highlights: [
+      { icon: "pool", text: "Piscina olímpica de 25m com 6 raias e temperatura controlada o ano todo." },
+      { icon: "star", text: "Bar molhado integrado com cardápio premium e área de espreguiçadeiras." },
+      { icon: "leaf", text: "Tratamento por ozônio — sem cloro, ideal para pele sensível e crianças." },
+    ],
+    links: [
+      { label: "Regulamento das piscinas", url: "https://arqos.inc/distritq" },
+    ],
+    cta: { label: "Ver amenidades completas", url: "https://arqos.inc/distritq" },
+  },
+  "vn-4": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_002.jpg", "images/POI_001.jpg"],
+    features: [
+      { icon: "play", label: "Quadras", value: "4 un." },
+      { icon: "area", label: "Área", value: "1 200 m²" },
+      { icon: "users", label: "Modalidades", value: "6" },
+      { icon: "clock", label: "Funcionamento", value: "6h–23h" },
+    ],
+    highlights: [
+      { icon: "play", text: "Quadras poliesportivas para futsal, basquete, vôlei e tênis de mesa." },
+      { icon: "zap", text: "Iluminação LED de alta performance para uso noturno sem sombras." },
+      { icon: "users", text: "Sistema de ligas internas com ranking mensal e premiação." },
+    ],
+    links: [
+      { label: "Reservar quadra", url: "https://arqos.inc/distritq" },
+    ],
+    cta: { label: "Ver programação esportiva", url: "https://arqos.inc/distritq" },
+  },
+  "vs-1": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_001.jpg"],
+    features: [
+      { icon: "area", label: "Área", value: "2 400 m²" },
+      { icon: "play", label: "Quadras", value: "6 un." },
+      { icon: "users", label: "Modalidades", value: "8" },
+      { icon: "clock", label: "Funcionamento", value: "6h–23h" },
+    ],
+    highlights: [
+      { icon: "play", text: "Cobertura tensionada de alta tecnologia para uso em dias de chuva." },
+      { icon: "zap", text: "Placar eletrônico e cronômetro para ligas e torneios internos." },
+      { icon: "users", text: "Vestiários aquecidos com armários individuais para moradores." },
+    ],
+    links: [{ label: "Calendário de torneios", url: "https://arqos.inc/distritq" }],
+    cta: { label: "Ver programação", url: "https://arqos.inc/distritq" },
+  },
+  "vs-2": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_001.jpg"],
+    features: [
+      { icon: "area", label: "Área", value: "520 m²" },
+      { icon: "floor", label: "Pavimento", value: "Cobertura" },
+      { icon: "users", label: "Capacidade", value: "80 pessoas" },
+      { icon: "sun", label: "Vista", value: "Panorâmica" },
+    ],
+    highlights: [
+      { icon: "sun", text: "Vista 360° do estuário e parque linear sem obstruções." },
+      { icon: "star", text: "Estrutura de eventos com cozinha gourmet e área de bar coberta." },
+      { icon: "clock", text: "Disponível para locação por moradores com até 30 dias de antecedência." },
+    ],
+    links: [{ label: "Reservar o rooftop", url: "https://arqos.inc/distritq" }],
+    cta: { label: "Ver disponibilidade", url: "https://arqos.inc/distritq" },
+  },
+  "vs-3": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_001.jpg"],
+    features: [
+      { icon: "car", label: "Vagas", value: "480" },
+      { icon: "floor", label: "Subsolos", value: "3" },
+      { icon: "zap", label: "EV Chargers", value: "20%" },
+      { icon: "shield", label: "Segurança", value: "24h" },
+    ],
+    highlights: [
+      { icon: "car", text: "480 vagas em 3 subsolos com acesso exclusivo por app." },
+      { icon: "zap", text: "20% das vagas equipadas com carregadores elétricos de alta potência." },
+      { icon: "shield", text: "Câmeras 4K e acesso biométrico em todas as entradas." },
+    ],
+    links: [{ label: "Regulamento de vagas", url: "https://arqos.inc/distritq" }],
+    cta: { label: "Solicitar informações", url: "https://arqos.inc/distritq" },
+  },
+  "vs-4": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_001.jpg"],
+    features: [
+      { icon: "area", label: "Área", value: "280 m²" },
+      { icon: "users", label: "Estações", value: "40" },
+      { icon: "floor", label: "Nível", value: "2º" },
+      { icon: "clock", label: "Funcionamento", value: "8h–20h" },
+    ],
+    highlights: [
+      { icon: "wifi", text: "Internet fibra 1Gbps dedicada com Wi-Fi 6 em todo o espaço." },
+      { icon: "users", text: "Salas de reunião privativas para até 8 pessoas com videoconferência." },
+      { icon: "sun", text: "Lounge com vista para a praça interna e iluminação natural." },
+    ],
+    links: [{ label: "Reservar estação", url: "https://arqos.inc/distritq" }],
+    cta: { label: "Ver plantas e disponibilidade", url: "https://arqos.inc/distritq" },
+  },
+  "vl-1": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_001.jpg"],
+    features: [
+      { icon: "area", label: "Área verde", value: "1 800 m²" },
+      { icon: "floor", label: "Nível", value: "4º" },
+      { icon: "tree", label: "Árvores", value: "120" },
+      { icon: "pin", label: "Distância", value: "3 km" },
+    ],
+    highlights: [
+      { icon: "tree", text: "Jardim elevado com espécies nativas da Mata Atlântica." },
+      { icon: "sun", text: "Mirante panorâmico com vista para o centro e a baía." },
+      { icon: "leaf", text: "Irrigação automatizada e manejo sustentável de resíduos orgânicos." },
+    ],
+    links: [{ label: "Ver localização no mapa", url: "https://arqos.inc/distritq" }],
+    cta: { label: "Solicitar informações", url: "https://arqos.inc/distritq" },
+  },
+  "vl-2": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_001.jpg"],
+    features: [
+      { icon: "pool", label: "Piscina", value: "25 m × 3 raias" },
+      { icon: "area", label: "Deck", value: "160 m²" },
+      { icon: "clock", label: "Funcionamento", value: "7h–21h" },
+      { icon: "leaf", label: "Tratamento", value: "Ozônio" },
+    ],
+    highlights: [
+      { icon: "pool", text: "Piscina aquecida a 28°C o ano todo com 3 raias e área infantil separada." },
+      { icon: "leaf", text: "Purificação por ozônio sem cloro — ideal para pele sensível e crianças." },
+      { icon: "star", text: "Bar molhado integrado com cardápio de sucos, smoothies e lanches leves." },
+    ],
+    links: [{ label: "Regulamento das piscinas", url: "https://arqos.inc/distritq" }],
+    cta: { label: "Ver amenidades completas", url: "https://arqos.inc/distritq" },
+  },
+  "vl-3": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_001.jpg"],
+    features: [
+      { icon: "shield", label: "Segurança", value: "24h" },
+      { icon: "users", label: "Porteiros", value: "3 turnos" },
+      { icon: "clock", label: "Acesso", value: "Biométrico" },
+      { icon: "pin", label: "Entradas", value: "4" },
+    ],
+    highlights: [
+      { icon: "shield", text: "Portaria com guarita blindada e câmeras 4K em todas as entradas." },
+      { icon: "key", text: "Acesso biométrico integrado a app mobile para moradores e visitantes." },
+      { icon: "users", text: "3 turnos de porteiros 24h com monitoramento central remoto." },
+    ],
+    links: [{ label: "Ver regulamento de acesso", url: "https://arqos.inc/distritq" }],
+    cta: { label: "Solicitar informações", url: "https://arqos.inc/distritq" },
+  },
+  "vl-4": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_001.jpg"],
+    features: [
+      { icon: "area", label: "Área", value: "280 m²" },
+      { icon: "users", label: "Estações", value: "40" },
+      { icon: "floor", label: "Nível", value: "4º" },
+      { icon: "clock", label: "Funcionamento", value: "8h–20h" },
+    ],
+    highlights: [
+      { icon: "wifi", text: "Internet fibra 1Gbps dedicada com Wi-Fi 6 em todo o espaço." },
+      { icon: "users", text: "Salas de reunião privativas para até 8 pessoas com videoconferência." },
+      { icon: "sun", text: "Lounge com vista para o jardim elevado e iluminação natural." },
+    ],
+    links: [{ label: "Reservar estação", url: "https://arqos.inc/distritq" }],
+    cta: { label: "Ver plantas e disponibilidade", url: "https://arqos.inc/distritq" },
+  },
+  "vo-1": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_001.jpg"],
+    features: [
+      { icon: "area", label: "Área total", value: "120 m²" },
+      { icon: "home", label: "Dorms.", value: "3 suítes" },
+      { icon: "sun", label: "Varanda", value: "18 m²" },
+      { icon: "users", label: "Condomínio", value: "R$ 780/mês" },
+    ],
+    highlights: [
+      { icon: "home", text: "3 suítes com cozinha integrada e varanda gourmet orientada a oeste." },
+      { icon: "leaf", text: "Certificação LEED Gold — 40% de economia de água e energia vs. padrão." },
+      { icon: "pin", text: "Acesso direto ao parque linear e ciclovia por portão exclusivo do bloco." },
+    ],
+    links: [
+      { label: "Tabela de preços atualizada", url: "https://arqos.inc/distritq" },
+      { label: "Condições especiais de lançamento", url: "https://arqos.inc/distritq" },
+    ],
+    cta: { label: "Reservar unidade", url: "https://arqos.inc/distritq" },
+  },
+  "vo-2": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_001.jpg"],
+    features: [
+      { icon: "area", label: "Área total", value: "120 m²" },
+      { icon: "home", label: "Dorms.", value: "2 suítes" },
+      { icon: "sun", label: "Varanda", value: "14 m²" },
+      { icon: "users", label: "Condomínio", value: "R$ 680/mês" },
+    ],
+    highlights: [
+      { icon: "home", text: "2 suítes com cozinha integrada e varanda gourmet orientada a oeste." },
+      { icon: "leaf", text: "Certificação LEED Gold — 40% de economia de água e energia vs. padrão." },
+      { icon: "pin", text: "Acesso direto ao parque linear e ciclovia por portão exclusivo do bloco." },
+    ],
+    links: [
+      { label: "Tabela de preços atualizada", url: "https://arqos.inc/distritq" },
+      { label: "Condições especiais de lançamento", url: "https://arqos.inc/distritq" },
+    ],
+    cta: { label: "Reservar unidade", url: "https://arqos.inc/distritq" },
+  },
+  "vo-3": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_005.jpg", "images/POI_001.jpg"],
+    features: [
+      { icon: "users", label: "Capacidade", value: "400 fiéis" },
+      { icon: "area", label: "Área", value: "1 100 m²" },
+      { icon: "clock", label: "Missas", value: "Diárias" },
+      { icon: "pin", label: "Distância", value: "120 m" },
+    ],
+    highlights: [
+      { icon: "users", text: "Igreja paroquial a 120m do empreendimento com missas diárias." },
+      { icon: "star", text: "Arquitetura neogótica tombada pelo patrimônio histórico municipal." },
+      { icon: "pin", text: "Referência de convívio comunitário e valorização cultural da região." },
+    ],
+    links: [{ label: "Site da paróquia", url: "https://arqos.inc/distritq" }],
+    cta: { label: "Ver mapa do entorno", url: "https://arqos.inc/distritq" },
+  },
+  "vo-4": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_001.jpg", "images/POI_003.jpg"],
+    features: [
+      { icon: "area", label: "Área", value: "520 m²" },
+      { icon: "floor", label: "Pavimento", value: "Cobertura" },
+      { icon: "users", label: "Capacidade", value: "80 pessoas" },
+      { icon: "sun", label: "Vista", value: "Panorâmica" },
+    ],
+    highlights: [
+      { icon: "sun", text: "Vista 360° do estuário e parque linear sem obstruções." },
+      { icon: "star", text: "Estrutura de eventos com cozinha gourmet e área de bar coberta." },
+      { icon: "clock", text: "Disponível para locação por moradores com até 30 dias de antecedência." },
+    ],
+    links: [{ label: "Reservar o rooftop", url: "https://arqos.inc/distritq" }],
+    cta: { label: "Ver disponibilidade", url: "https://arqos.inc/distritq" },
+  },
+  "vi-1": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_001.jpg", "images/POI_002.jpg"],
+    features: [
+      { icon: "area", label: "Área", value: "2 400 m²" },
+      { icon: "play", label: "Quadras", value: "6 un." },
+      { icon: "users", label: "Modalidades", value: "8" },
+      { icon: "clock", label: "Funcionamento", value: "6h–23h" },
+    ],
+    highlights: [
+      { icon: "play", text: "Society, basquete, vôlei, tênis de mesa, futsal e squash em quadras dedicadas." },
+      { icon: "zap", text: "Placar eletrônico, vestiário aquecido e cronômetro para ligas internas." },
+      { icon: "users", text: "Sistema de ligas internas com ranking mensal e premiação sazonal." },
+    ],
+    links: [
+      { label: "Calendário de torneios", url: "https://arqos.inc/distritq" },
+      { label: "Reservar quadra", url: "https://arqos.inc/distritq" },
+    ],
+    cta: { label: "Ver programação", url: "https://arqos.inc/distritq" },
+  },
+  "vi-2": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_001.jpg", "images/POI_004.jpg"],
+    features: [
+      { icon: "area", label: "Área", value: "450 m²" },
+      { icon: "users", label: "Capacidade", value: "200 pax" },
+      { icon: "floor", label: "Pavimento", value: "2º" },
+      { icon: "sun", label: "Terraço", value: "80 m²" },
+    ],
+    highlights: [
+      { icon: "star", text: "Salão configurável em múltiplos layouts: banquete, coquetel ou palco." },
+      { icon: "home", text: "Cozinha equipada com fogão profissional, câmara fria e área de apoio catering." },
+      { icon: "sun", text: "Terraço exclusivo de 80m² com vista para o átrio central e jardins." },
+    ],
+    links: [
+      { label: "Disponibilidade e reserva", url: "https://arqos.inc/distritq" },
+      { label: "Fornecedores credenciados", url: "https://arqos.inc/distritq" },
+    ],
+    cta: { label: "Reservar o salão", url: "https://arqos.inc/distritq" },
+  },
+  "vi-3": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_001.jpg"],
+    features: [
+      { icon: "play", label: "Quadras", value: "2 un." },
+      { icon: "area", label: "Área", value: "1 300 m²" },
+      { icon: "users", label: "Arquibancada", value: "60 lugares" },
+      { icon: "sun", label: "Piso", value: "Saibro" },
+    ],
+    highlights: [
+      { icon: "play", text: "2 quadras de tênis em saibro com drenagem profissional anti-poça." },
+      { icon: "zap", text: "Iluminação de alta luminância para jogos noturnos sem sombras." },
+      { icon: "users", text: "Professor residente disponível para aulas individuais e coletivas." },
+    ],
+    links: [
+      { label: "Agendar aulas de tênis", url: "https://arqos.inc/distritq" },
+      { label: "Torneios internos", url: "https://arqos.inc/distritq" },
+    ],
+    cta: { label: "Reservar quadra", url: "https://arqos.inc/distritq" },
+  },
+  "vi-4": {
+    panorama360: "images/XP_NPL_360.jpg",
+    photos: ["images/POI_003.jpg", "images/POI_001.jpg"],
+    features: [
+      { icon: "pool", label: "Piscina", value: "25 m × 3 raias" },
+      { icon: "area", label: "Deck", value: "160 m²" },
+      { icon: "clock", label: "Funcionamento", value: "7h–21h" },
+      { icon: "leaf", label: "Tratamento", value: "Ozônio" },
+    ],
+    highlights: [
+      { icon: "pool", text: "Piscina aquecida a 28°C o ano todo com 3 raias e área infantil separada." },
+      { icon: "leaf", text: "Purificação por ozônio sem cloro — ideal para pele sensível e crianças." },
+      { icon: "star", text: "Bar molhado integrado com cardápio de sucos, smoothies e lanches leves." },
+    ],
+    links: [{ label: "Regulamento das piscinas", url: "https://arqos.inc/distritq" }],
+    cta: { label: "Ver amenidades completas", url: "https://arqos.inc/distritq" },
+  },
+};
+
+// ══════════════════════════════════════════════════════
+// POI DETAIL — painel lateral com slider
+// ══════════════════════════════════════════════════════
+let axPdiSlideIdx = 0;
+let axPdiSlideCount = 0;
+
+// ══════════════════════════════════════════════════════
+// 360° PANORAMA MODAL
+// ══════════════════════════════════════════════════════
+let axPanoRenderer = null;
+let axPanoFrame = null;
+
+function axOpenPano(imageSrc) {
+  const modal = document.getElementById("ax-pano-modal");
+  const canvas = document.getElementById("ax-pano-canvas");
+  const box = document.getElementById("ax-pano-modal-box");
+  const loading = document.getElementById("ax-pano-loading");
+  const hint = document.getElementById("ax-pano-hint");
+
+  loading.classList.remove("hidden");
+  hint.classList.remove("hidden");
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden", "false");
+
+  if (axPanoFrame) {
+    cancelAnimationFrame(axPanoFrame);
+    axPanoFrame = null;
+  }
+  if (axPanoRenderer) {
+    axPanoRenderer.dispose();
+    axPanoRenderer = null;
+  }
+
+  requestAnimationFrame(() => {
+    const w = box.clientWidth;
+    const h = box.clientHeight;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    axPanoRenderer = renderer;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 200);
+    camera.position.set(0, 0, 0);
+
+    const geo = new THREE.SphereGeometry(100, 64, 32);
+    geo.scale(-1, 1, 1);
+
+    new THREE.TextureLoader().load(
+      imageSrc,
+      (tex) => {
+        scene.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: tex })));
+        loading.classList.add("hidden");
+      },
+      undefined,
+      () => {
+        loading.innerHTML = "<span style='color:rgba(255,180,80,.75);letter-spacing:.1em;font-size:10px;text-transform:uppercase'>Imagem não encontrada</span>";
+      }
+    );
+
+    let lon = 180, lat = 0, dragging = false, px = 0, py = 0;
+    let velLon = 0, velLat = 0;
+
+    function onDown(x, y) { dragging = true; px = x; py = y; velLon = 0; velLat = 0; }
+    function onMove(x, y) {
+      if (!dragging) return;
+      const dLon = (x - px) * 0.12;
+      const dLat = (py - y) * 0.12;
+      lon += dLon;
+      lat = Math.max(-80, Math.min(80, lat + dLat));
+      velLon = dLon;
+      velLat = dLat;
+      px = x;
+      py = y;
+      if (!hint.classList.contains("hidden")) hint.classList.add("hidden");
+    }
+    function onUp() { dragging = false; }
+
+    canvas.addEventListener("mousedown", (e) => onDown(e.clientX, e.clientY));
+    window.addEventListener("mouseup", onUp);
+    canvas.addEventListener("mousemove", (e) => onMove(e.clientX, e.clientY));
+    canvas.addEventListener("touchstart", (e) => { const t = e.touches[0]; onDown(t.clientX, t.clientY); }, { passive: true });
+    canvas.addEventListener("touchmove", (e) => { e.preventDefault(); const t = e.touches[0]; onMove(t.clientX, t.clientY); }, { passive: false });
+    canvas.addEventListener("touchend", onUp);
+
+    let lastPinch = 0;
+    canvas.addEventListener("touchstart", (e) => {
+      if (e.touches.length === 2)
+        lastPinch = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    }, { passive: true });
+    canvas.addEventListener("touchmove", (e) => {
+      if (e.touches.length !== 2) return;
+      const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      camera.fov = Math.max(30, Math.min(100, camera.fov - (d - lastPinch) * 0.1));
+      camera.updateProjectionMatrix();
+      lastPinch = d;
+    }, { passive: true });
+
+    canvas.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      camera.fov = Math.max(30, Math.min(100, camera.fov + e.deltaY * 0.04));
+      camera.updateProjectionMatrix();
+    }, { passive: false });
+
+    function frame() {
+      axPanoFrame = requestAnimationFrame(frame);
+      if (!dragging) {
+        lon += velLon;
+        lat = Math.max(-80, Math.min(80, lat + velLat));
+        velLon *= 0.88;
+        velLat *= 0.88;
+      }
+      const phi = THREE.MathUtils.degToRad(90 - lat);
+      const theta = THREE.MathUtils.degToRad(lon);
+      camera.lookAt(Math.sin(phi) * Math.cos(theta), Math.cos(phi), Math.sin(phi) * Math.sin(theta));
+      renderer.render(scene, camera);
+    }
+    frame();
+  });
+}
+
+function axClosePano() {
+  document.getElementById("ax-pano-modal").classList.remove("open");
+  document.getElementById("ax-pano-modal").setAttribute("aria-hidden", "true");
+  if (axPanoFrame) {
+    cancelAnimationFrame(axPanoFrame);
+    axPanoFrame = null;
+  }
+  if (axPanoRenderer) {
+    axPanoRenderer.dispose();
+    axPanoRenderer = null;
+  }
+}
+
+function axOpenPOIDetail(poiId) {
+  const det = AX_POI_DETAILS[poiId];
+  if (!det) return;
+
+  let poi = null;
+  Object.values(AX_POIS).forEach((arr) => arr.forEach((p) => { if (p.id === poiId) poi = p; }));
+  if (!poi) return;
+
+  axPdiSlideIdx = 0;
+  axPdiSlideCount = det.photos.length;
+  const slidesEl = document.getElementById("ax-pdi-slides");
+  const dotsEl = document.getElementById("ax-pdi-dots");
+
+  slidesEl.innerHTML = det.photos.map((src) => `<img class="pdi-slide" src="${src}" alt="${poi.title}">`).join("");
+  dotsEl.innerHTML = det.photos.map((_, i) => `<div class="pdi-dot${i === 0 ? " active" : ""}" onclick="axPdiGoTo(${i})"></div>`).join("");
+
+  document.querySelector("#ax-pdi-slider .pdi-arr-prev").style.display = axPdiSlideCount > 1 ? "" : "none";
+  document.querySelector("#ax-pdi-slider .pdi-arr-next").style.display = axPdiSlideCount > 1 ? "" : "none";
+
+  const featuresHTML = det.features.map((f) => `
+    <div class="pdi-feature">
+      <div class="pdi-feat-icon">${axIcon(f.icon)}</div>
+      <div class="pdi-feat-text">
+        <div class="pdi-feat-label">${f.label}</div>
+        <div class="pdi-feat-value">${f.value}</div>
+      </div>
+    </div>`).join("");
+
+  const highlightsHTML = det.highlights.map((h) => `
+    <div class="pdi-highlight">
+      <div class="pdi-hl-icon">${axIcon(h.icon)}</div>
+      <div class="pdi-hl-text">${h.text}</div>
+    </div>`).join("");
+
+  const linksHTML = det.links.map((l) => `
+    <a class="pdi-link" href="${l.url}" target="_blank">
+      <span class="pdi-link-label">${l.label}</span>
+      <span class="pdi-link-arr"><svg viewBox="0 0 9 9"><polyline points="3,1 7,5 3,9"/></svg></span>
+    </a>`).join("");
+
+  document.getElementById("ax-pdi-content").innerHTML = `
+    <div>
+      <div class="pdi-tag">${poi.tag}</div>
+      <div class="pdi-title">${poi.title}</div>
+    </div>
+    <div class="pdi-desc">${poi.desc}</div>
+    <div>
+      <div class="pdi-section-label">Características</div>
+      <div class="pdi-features">${featuresHTML}</div>
+    </div>
+    <div>
+      <div class="pdi-section-label">Destaques</div>
+      <div class="pdi-highlights">${highlightsHTML}</div>
+    </div>
+    ${det.links.length ? `
+    <div>
+      <div class="pdi-section-label">Links úteis</div>
+      <div class="pdi-links">${linksHTML}</div>
+    </div>` : ""}
+    <div class="pdi-cta">
+      <a class="pdi-cta-primary" href="${det.cta.url}" target="_blank">${det.cta.label}</a>
+      <button class="pdi-cta-secondary" onclick="axClosePOIDetail()">Fechar</button>
+    </div>
+    ${det.panorama360 ? `
+    <button class="pdi-cta-360" onclick="axOpenPano('${det.panorama360}')">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 1 0 20A10 10 0 0 1 12 2z" stroke-linecap="round"/><path d="M2 12h4M18 12h4M12 2v4M12 18v4" stroke-linecap="round"/><circle cx="12" cy="12" r="3"/></svg>
+      Ver 360°
+    </button>` : ""}
+  `;
+
+  document.getElementById("ax-poi-detail").classList.add("open");
+}
+
+function axClosePOIDetail() {
+  document.getElementById("ax-poi-detail").classList.remove("open");
+}
+
+function axPdiSlide(dir) {
+  axPdiGoTo((axPdiSlideIdx + dir + axPdiSlideCount) % axPdiSlideCount);
+}
+
+function axPdiGoTo(idx) {
+  axPdiSlideIdx = idx;
+  document.getElementById("ax-pdi-slides").style.transform = `translateX(-${idx * 100}%)`;
+  document.querySelectorAll("#ax-pdi-dots .pdi-dot").forEach((d, i) => d.classList.toggle("active", i === idx));
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+AX_VA.removeAttribute("src"); AX_VA.load();
+AX_VB.removeAttribute("src"); AX_VB.load();
+axBuildTrack(); axBuildPins(); axBuildPOIs(); axUpdateUI();
+
+// Auto-start when section scrolls into view
+const axObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.getElementById('ax-topbar').classList.add('show');
+      document.getElementById('ax-track').classList.add('show');
+      axGoTo(1);
+      axObserver.disconnect();
+    }
+  });
+}, { threshold: 0.3 });
+axObserver.observe(axRoot);
+</script>
+</body>
+</html>
