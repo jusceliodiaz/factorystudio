@@ -1310,8 +1310,9 @@
       /* ── SEQ SCRUB BUTTONS ── */
       .seq-scrub {
         position: absolute;
-        right: 40px;
+        left: 50%;
         top: 40px;
+        transform: translateX(-50%);
         display: flex;
         flex-direction: row;
         gap: 10px;
@@ -1321,14 +1322,16 @@
       .seq-scrub-btn {
         display: flex;
         align-items: center;
-        gap: 9px;
-        padding: 10px 18px 10px 14px;
-        border-radius: 100px;
-        border: 1px solid rgba(184, 156, 110, 0.6);
-        background: var(--gold);
-        color: #1a1200;
+        gap: 12px;
+        padding: 13px 23px 13px 18px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(20, 20, 20, 0.55);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        color: #fff;
         font-family: inherit;
-        font-size: 0.68rem;
+        font-size: 0.88rem;
         font-weight: 600;
         letter-spacing: 0.12em;
         text-transform: uppercase;
@@ -1346,8 +1349,8 @@
       }
 
       .seq-scrub-btn:hover {
-        background: var(--gold-d);
-        border-color: var(--gold-d);
+        background: rgba(40, 40, 40, 0.7);
+        border-color: rgba(255, 255, 255, 0.32);
         transform: translateY(-2px);
       }
 
@@ -1356,9 +1359,9 @@
       }
 
       .seq-scrub-btn.btn-on {
-        background: #fff;
-        border-color: #fff;
-        color: #1a1200;
+        background: rgba(60, 60, 60, 0.75);
+        border-color: rgba(255, 255, 255, 0.45);
+        color: #fff;
       }
 
       /* ── PORTFÓLIO 2×2 ── */
@@ -1633,13 +1636,15 @@
           gap: 20px;
         }
         .seq-scrub {
-          right: 20px;
+          left: 50%;
+          transform: translateX(-50%);
           top: 20px;
           gap: 8px;
         }
         .seq-scrub-btn {
-          padding: 8px 14px 8px 10px;
-          font-size: 0.62rem;
+          padding: 10px 16px 10px 13px;
+          font-size: 0.72rem;
+          border-radius: 14px;
         }
 
         .side-nav {
@@ -1692,12 +1697,13 @@
         }
 
         .seq-scrub {
-          right: 14px;
+          left: 50%;
+          transform: translateX(-50%);
           top: 14px;
         }
         .seq-scrub-btn {
-          padding: 7px 12px 7px 9px;
-          font-size: 0.6rem;
+          padding: 9px 14px 9px 11px;
+          font-size: 0.68rem;
           letter-spacing: 0.08em;
         }
 
@@ -1843,9 +1849,9 @@
         justify-content: center;
         width: 48px;
         height: 48px;
-        background: rgba(255, 255, 255, 0.15);
+        background: var(--gold);
         border-radius: 10px;
-        color: #fff;
+        color: #1a1200;
         flex-shrink: 0;
         transition: transform 0.35s var(--ease);
       }
@@ -2015,6 +2021,43 @@
               href="portfolio.html"
               aria-label="Ver portfólio completo"
             >
+              <img src="images/Portfolio_001.jpg" alt="Dancon Empreendimentos" loading="lazy" />
+              <div class="ph-overlay">
+                <div class="ph-overlay-top">
+                  <span class="ph-arrow" aria-hidden="true"
+                    ><svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <line x1="3" y1="15" x2="15" y2="3" />
+                      <polyline points="6,3 15,3 15,12" /></svg
+                  ></span>
+                </div>
+                <div class="ph-meta">
+                  <div class="ph-meta-left">
+                    <div class="ph-meta-label" data-i18n="ph-meta-projeto">Projeto / Cliente</div>
+                    <div class="ph-meta-title">DANCON</div>
+                    <div class="ph-meta-sub">Curitiba — PR</div>
+                  </div>
+                  <div class="ph-meta-right">
+                    <div class="ph-meta-label" data-i18n="ph-meta-ano">Ano</div>
+                    <div class="ph-meta-title">2025</div>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <a
+              class="ph-slide"
+              href="portfolio.html"
+              aria-label="Ver portfólio completo"
+            >
               <video autoplay muted loop playsinline aria-hidden="true">
                 <source src="images/ui2.mp4" type="video/mp4" />
               </video>
@@ -2040,6 +2083,43 @@
                     <div class="ph-meta-label" data-i18n="ph-meta-projeto">Projeto / Cliente</div>
                     <div class="ph-meta-title">ITAPORÃ</div>
                     <div class="ph-meta-sub">Eduardo Rabachini</div>
+                  </div>
+                  <div class="ph-meta-right">
+                    <div class="ph-meta-label" data-i18n="ph-meta-ano">Ano</div>
+                    <div class="ph-meta-title">2025</div>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <a
+              class="ph-slide"
+              href="portfolio.html"
+              aria-label="Ver portfólio completo"
+            >
+              <img src="images/Portfolio_004.jpg" alt="Solicita Licitações" loading="lazy" />
+              <div class="ph-overlay">
+                <div class="ph-overlay-top">
+                  <span class="ph-arrow" aria-hidden="true"
+                    ><svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <line x1="3" y1="15" x2="15" y2="3" />
+                      <polyline points="6,3 15,3 15,12" /></svg
+                  ></span>
+                </div>
+                <div class="ph-meta">
+                  <div class="ph-meta-left">
+                    <div class="ph-meta-label" data-i18n="ph-meta-projeto">Projeto / Cliente</div>
+                    <div class="ph-meta-title">SOLICITA</div>
+                    <div class="ph-meta-sub">Brasil — Nacional</div>
                   </div>
                   <div class="ph-meta-right">
                     <div class="ph-meta-label" data-i18n="ph-meta-ano">Ano</div>
@@ -2326,8 +2406,8 @@
             aria-label="Ver primeiro frame"
           >
             <svg
-              width="15"
-              height="15"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -2371,8 +2451,8 @@
             aria-label="Ver último frame"
           >
             <svg
-              width="15"
-              height="15"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
