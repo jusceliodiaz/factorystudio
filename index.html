@@ -222,8 +222,10 @@
         align-items: center;
         gap: 10px;
         padding: 10px 24px 10px 10px;
-        background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.22);
         border-radius: 16px;
         color: #fff;
         font-family: inherit;
@@ -238,8 +240,8 @@
       }
 
       .btn-wa:hover {
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.18);
+        border-color: rgba(255, 255, 255, 0.4);
         transform: translateY(-3px);
       }
 
@@ -416,14 +418,16 @@
         background: #111;
       }
 
-      .ph-slide img {
+      .ph-slide img,
+      .ph-slide video {
         width: 100%;
         height: 100%;
         object-fit: cover;
         transition: transform 0.85s var(--ease);
       }
 
-      .ph-slide:hover img {
+      .ph-slide:hover img,
+      .ph-slide:hover video {
         transform: scale(1.04);
       }
 
@@ -459,9 +463,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
+        width: 55px;
+        height: 55px;
+        border-radius: 10px;
         border: 1px solid rgba(255, 255, 255, 0.28);
         background: rgba(255, 255, 255, 0.1);
         color: #fff;
@@ -486,6 +490,10 @@
 
       .ph-slide:hover .ph-arrow svg {
         transform: translate(3px, -3px);
+      }
+
+      .ph-arrow:hover svg {
+        transform: translate(5px, -5px) scale(1.18);
       }
 
       .ph-meta {
@@ -556,6 +564,60 @@
       }
 
       /* Barra de progresso */
+
+      /* ── WEB STATEMENT ── */
+      .web-statement {
+        padding: 120px var(--pad);
+        background: var(--bg-alt);
+      }
+      .ws-text {
+        font-size: clamp(2rem, 3.6vw, 3.2rem);
+        font-weight: 700;
+        line-height: 1.25;
+        letter-spacing: -0.025em;
+        color: var(--text);
+        max-width: 1100px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .ws-text em {
+        font-style: normal;
+        color: #c9a84c;
+      }
+      .ws-sub {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin-top: 64px;
+        padding-top: 48px;
+        border-top: 1px solid var(--border);
+        max-width: 1100px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .ws-sub-item {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+      .ws-sub-icon {
+        width: 38px;
+        height: 38px;
+        background: var(--gold);
+        border-radius: 10px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #111;
+      }
+      .ws-sub-icon svg { width: 18px; height: 18px; }
+      .ws-sub-p {
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.7;
+        font-weight: 400;
+      }
 
       /* ── SERVIÇOS ── */
       .section-services {
@@ -1757,19 +1819,22 @@
         align-items: center;
         gap: 10px;
         padding: 10px 24px 10px 10px;
-        background: var(--gold);
-        border: none;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.22);
         border-radius: 16px;
-        color: #111;
+        color: #fff;
         font-family: inherit;
         font-weight: 600;
         font-size: 1rem;
         cursor: pointer;
         white-space: nowrap;
-        transition: background 0.3s, transform 0.3s;
+        transition: background 0.3s, border-color 0.3s, transform 0.3s;
       }
       .btn-demo:hover {
-        background: var(--gold-d);
+        background: rgba(255, 255, 255, 0.18);
+        border-color: rgba(255, 255, 255, 0.4);
         transform: translateY(-3px);
       }
       .btn-demo-icon {
@@ -1778,9 +1843,9 @@
         justify-content: center;
         width: 48px;
         height: 48px;
-        background: rgba(0, 0, 0, 0.18);
+        background: rgba(255, 255, 255, 0.15);
         border-radius: 10px;
-        color: #111;
+        color: #fff;
         flex-shrink: 0;
         transition: transform 0.35s var(--ease);
       }
@@ -1844,7 +1909,7 @@
       <div class="hero-tr">
         <button class="btn-demo" id="btn-demo" aria-label="Ver demonstração do produto">
           <span class="btn-demo-icon" aria-hidden="true">▶</span>
-          Testar Demo
+          Testar Demos
         </button>
         <div class="lang-switcher" role="group" aria-label="Selecionar idioma">
           <button class="lang-btn active" data-lang="pt" aria-label="Português (Brasil)" title="Português">🇧🇷</button>
@@ -1911,14 +1976,11 @@
               href="portfolio.html"
               aria-label="Ver portfólio completo"
             >
-              <img
-                src="images/Portfolio_002.jpg"
-                alt="Projeto La Terroir — Camila Dirani, 2026"
-                loading="lazy"
-              />
+              <video autoplay muted loop playsinline aria-hidden="true">
+                <source src="images/ui.mp4" type="video/mp4" />
+              </video>
               <div class="ph-overlay">
                 <div class="ph-overlay-top">
-                  <span class="ph-counter">01 / 03</span>
                   <span class="ph-arrow" aria-hidden="true"
                     ><svg
                       width="16"
@@ -1953,14 +2015,11 @@
               href="portfolio.html"
               aria-label="Ver portfólio completo"
             >
-              <img
-                src="images/Portfolio_001.jpg"
-                alt="Projeto Itaporã — Eduardo Rabachini, 2025"
-                loading="lazy"
-              />
+              <video autoplay muted loop playsinline aria-hidden="true">
+                <source src="images/ui2.mp4" type="video/mp4" />
+              </video>
               <div class="ph-overlay">
                 <div class="ph-overlay-top">
-                  <span class="ph-counter">02 / 03</span>
                   <span class="ph-arrow" aria-hidden="true"
                     ><svg
                       width="16"
@@ -1995,14 +2054,11 @@
               href="portfolio.html"
               aria-label="Ver portfólio completo"
             >
-              <img
-                src="images/Portfolio_003.jpg"
-                alt="Projeto Modus Consulting — Miami FL, 2026"
-                loading="lazy"
-              />
+              <video autoplay muted loop playsinline aria-hidden="true">
+                <source src="images/ui3.mp4" type="video/mp4" />
+              </video>
               <div class="ph-overlay">
                 <div class="ph-overlay-top">
-                  <span class="ph-counter">03 / 03</span>
                   <span class="ph-arrow" aria-hidden="true"
                     ><svg
                       width="16"
@@ -2047,6 +2103,35 @@
       </div>
     </div>
 
+    <!-- ── WEB-FIRST STATEMENT ── -->
+    <section class="web-statement reveal" aria-label="Tecnologia web">
+      <p class="ws-text">Sem apps, sem plugins, sem complicação. Nossas experiências rodam <em>direto no navegador</em> — em qualquer dispositivo, com a mesma qualidade visual. O cliente recebe <em>um link</em> e já está dentro do projeto.</p>
+      <div style="display:flex;justify-content:center;margin-top:48px;">
+        <button class="btn-demo" onclick="window.open('fi-preview.html','_blank')" aria-label="Ver demonstração do produto">
+          <span class="btn-demo-icon" aria-hidden="true">▶</span>
+          Testar Demos
+        </button>
+      </div>
+      <div class="ws-sub">
+        <div class="ws-sub-item">
+          <span class="ws-sub-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+            </svg>
+          </span>
+          <p class="ws-sub-p">Funciona em desktop, tablet e celular sem nenhuma adaptação extra — a experiência foi pensada para todos os tamanhos de tela desde o primeiro pixel.</p>
+        </div>
+        <div class="ws-sub-item">
+          <span class="ws-sub-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/>
+            </svg>
+          </span>
+          <p class="ws-sub-p">Entregamos um link. Nada para baixar, nada para instalar. O cliente acessa na hora, de qualquer lugar — e compartilha com a equipe em segundos.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- ── SERVIÇOS ── -->
     <section
       class="section-services"
@@ -2059,7 +2144,7 @@
         <article class="svc-card svc-web reveal">
           <div class="svc-bg">
             <img
-              src="images/SHOWREEL.webp"
+              src="images/Portfolio_001.jpg"
               alt=""
               aria-hidden="true"
               loading="lazy"
@@ -2106,7 +2191,7 @@
         <article class="svc-card svc-arch reveal reveal-delay-2">
           <div class="svc-bg">
             <img
-              src="images/BG_placeholder.png"
+              src="images/Portfolio_002.jpg"
               alt="Archviz interativo para projetos de arquitetura"
               loading="lazy"
             />
@@ -2131,7 +2216,7 @@
         <article class="svc-card svc-real reveal reveal-delay-1">
           <div class="svc-bg">
             <img
-              src="images/SHOWREEL.webp"
+              src="images/Portfolio_003.jpg"
               alt=""
               aria-hidden="true"
               loading="lazy"
@@ -2157,7 +2242,7 @@
         <article class="svc-card svc-vr reveal reveal-delay-2">
           <div class="svc-bg">
             <img
-              src="images/BG_placeholder2.png"
+              src="images/Portfolio_004.jpg"
               alt="VR e AR para experiências virtuais imersivas"
               loading="lazy"
             />
