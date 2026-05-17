@@ -2921,80 +2921,69 @@
       }
 
       // ══════════════════════════════════════════════════════
-      // PLAYER — corte seco entre dois slots <video>
-      // slot: 'a'|'b' — qual slot está visível (opacity 1)
-      // ALT(slot) — o outro slot, usado como buffer de pré-carga
+      // PLAYER — dual-slot: slot ativo + slot pré-bufferizando o próximo
+      // _presrc: rastreia qual src foi carregado naquele slot sem re-load
       // ══════════════════════════════════════════════════════
       function play(from, to) {
+        const src = VIDS[`${from}_${to}`];
+        if (!src) { cur = to; runQ(); return; }
+
         state = "playing";
         updateUI();
 
-        const src = VIDS[`${from}_${to}`];
-        if (!src) {
-          cur = to;
-          runQ();
-          return;
+        const ns = ALT(slot);
+        const nv = V(ns);
+        const pv = V(slot);
+
+        // Limpa handlers obsoletos
+        nv.oncanplay = null;
+        nv.onended   = null;
+        nv.onerror   = null;
+
+        // Só faz load() se não há pré-buffer desse src neste slot
+        if (nv._presrc !== src) {
+          nv.pause();
+          nv.src   = src;
+          nv.muted = true;
+          nv.load();
+        }
+        nv._presrc = null;
+
+        const bail = setTimeout(() => { cur = to; runQ(); }, 5000);
+
+        nv.onerror = () => { nv.onerror = null; clearTimeout(bail); cur = to; runQ(); };
+
+        function onReady() {
+          nv.oncanplay = null;
+          clearTimeout(bail);
+          nv.play().then(() => {
+            pv.classList.remove("active");
+            nv.classList.add("active");
+            slot = ns;
+            cur  = to;
+
+            // Enquanto o vídeo atual toca, pré-buffer do próximo passo no slot liberado
+            const next = q[0];
+            const nsrc = next && VIDS[`${next.from}_${next.to}`];
+            if (nsrc) {
+              pv.pause();
+              pv.src     = nsrc;
+              pv.muted   = true;
+              pv._presrc = nsrc;
+              pv.load();
+            } else {
+              pv.pause();
+              pv.removeAttribute("src");
+              pv._presrc = null;
+            }
+
+            nv.onended = () => { nv.onended = null; runQ(); };
+          }).catch(() => { cur = to; runQ(); });
         }
 
-        const inSlot = ALT(slot);
-        const inVid = V(inSlot);
-        const outVid = V(slot);
-
-        // Reseta o vídeo de entrada
-        inVid.pause();
-        inVid.removeAttribute("src");
-        inVid.oncanplaythrough = null;
-        inVid.onended = null;
-        inVid.onerror = null;
-        inVid.load();
-
-        // Carrega o novo
-        inVid.src = src;
-        inVid.muted = true;
-
-        // Guarda flag para evitar chamar finish() mais de uma vez
-        let finished = false;
-        function finish() {
-          if (finished) return;
-          finished = true;
-          cur = to;
-          runQ();
-        }
-
-        // Fallback: se não carregar/tocar em 7s avança mesmo assim
-        const timer = setTimeout(finish, 7000);
-
-        inVid.onerror = () => {
-          clearTimeout(timer);
-          finish();
-        };
-
-        inVid.oncanplaythrough = () => {
-          inVid.oncanplaythrough = null;
-          clearTimeout(timer);
-
-          inVid
-            .play()
-            .then(() => {
-              outVid.classList.remove("active");
-              outVid.pause();
-              outVid.removeAttribute("src");
-              outVid.load();
-              inVid.classList.add("active");
-              slot = inSlot;
-
-              inVid.onended = () => {
-                inVid.onended = null;
-                finish();
-              };
-            })
-            .catch(() => {
-              clearTimeout(timer);
-              finish();
-            });
-        };
-
-        inVid.load(); // dispara o carregamento
+        nv.oncanplay = onReady;
+        // Disparo imediato se o pré-buffer já completou
+        if (nv.readyState >= 3) { nv.oncanplay = null; onReady(); }
       }
 
       function arrowNav(d) {
@@ -5178,10 +5167,6 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
       // ══════════════════════════════════════════════════════
       // INIT
       // ══════════════════════════════════════════════════════
-      VA.removeAttribute("src");
-      VA.load();
-      VB.removeAttribute("src");
-      VB.load();
       buildTrack();
       buildPins();
       buildPOIs();
