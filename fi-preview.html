@@ -42,6 +42,60 @@
         font-family: "Inter", sans-serif;
       }
 
+      /* ── LANG SWITCHER ── */
+      .lang-switcher {
+        display: flex;
+        gap: 16px;
+      }
+      .lang-btn {
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        padding: 2px 0 4px;
+        line-height: 1;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        font-family: "Inter", sans-serif;
+        color: rgba(255, 255, 255, 0.35);
+        transition:
+          color 0.2s ease,
+          border-color 0.2s ease;
+      }
+      .lang-btn.active {
+        color: #fff;
+        border-bottom-color: var(--gold);
+      }
+      .lang-btn:hover:not(.active) {
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      /* switcher dentro do gate-card */
+      .gate-card .lang-switcher {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+
+      /* switcher na barra de produtos (fundo claro) — canto superior direito */
+      .lang-switcher--prod {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .lang-switcher--prod .lang-btn {
+        color: rgba(0, 0, 0, 0.28);
+      }
+      .lang-switcher--prod .lang-btn.active {
+        color: #111;
+        border-bottom-color: var(--gold);
+      }
+      .lang-switcher--prod .lang-btn:hover:not(.active) {
+        color: rgba(0, 0, 0, 0.6);
+      }
+
       /* ── GATE BACKGROUND ── */
       .gate {
         position: fixed;
@@ -63,7 +117,6 @@
         pointer-events: none;
       }
 
-      /* bg image desfocada */
       .gate-bg {
         position: fixed;
         inset: 0;
@@ -73,8 +126,6 @@
         transform: scale(1.08);
         pointer-events: none;
       }
-
-      /* overlay gradiente sobre a imagem */
       .gate-bg::after {
         content: "";
         position: absolute;
@@ -102,8 +153,6 @@
         position: relative;
         z-index: 1;
       }
-
-      /* card glassmorphism */
       .gate-card {
         position: relative;
         width: 100%;
@@ -140,7 +189,6 @@
         }
       }
 
-      /* brilho topo do card */
       .gate-card::before {
         content: "";
         position: absolute;
@@ -193,7 +241,6 @@
         text-align: center;
       }
 
-      /* divider */
       .gate-divider {
         height: 1px;
         background: linear-gradient(
@@ -205,7 +252,6 @@
         margin-bottom: 28px;
       }
 
-      /* form */
       .gate-form {
         display: flex;
         flex-direction: column;
@@ -360,17 +406,15 @@
       }
       .btn-back {
         position: absolute;
-        right: 0;
+        left: 0;
         top: 50%;
         transform: translateY(-50%);
-      }
-      .btn-back {
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        padding: 10px 24px 10px 10px;
-        background: var(--gold);
-        border: none;
+        padding: 10px 20px 10px 10px;
+        background: transparent;
+        border: 1px solid rgba(0, 0, 0, 0.18);
         border-radius: 16px;
         color: #111;
         font-family: inherit;
@@ -381,19 +425,21 @@
         white-space: nowrap;
         transition:
           background 0.3s,
+          border-color 0.3s,
           transform 0.3s;
       }
       .btn-back:hover {
-        background: var(--gold-d);
+        background: rgba(0, 0, 0, 0.05);
+        border-color: rgba(0, 0, 0, 0.3);
         transform: translateY(calc(-50% - 3px));
       }
       .btn-back-icon {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 48px;
-        height: 48px;
-        background: rgba(0, 0, 0, 0.18);
+        width: 40px;
+        height: 40px;
+        background: rgba(0, 0, 0, 0.08);
         border-radius: 10px;
         color: #111;
         flex-shrink: 0;
@@ -432,7 +478,6 @@
         margin-right: auto;
       }
 
-      /* cards */
       .cards {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -540,16 +585,23 @@
     <div class="gate" id="gate">
       <div class="gate-bg"></div>
       <div class="gate-card">
+        <div class="lang-switcher" role="group" aria-label="Select language">
+          <button class="lang-btn active" data-lang="pt">PT</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+
         <img
-          src="images/logo_site2.png"
+          src="images/logo_site3.png"
           alt="Factory Interactive"
           class="gate-logo"
         />
-        <div class="gate-sup">Acesso Exclusivo</div>
-        <h1 class="gate-h1">Solicitar acesso<br />à demonstração.</h1>
-        <p class="gate-sub">
-          Preencha seus dados corporativos para visualizar os produtos Factory
-          Interactive.
+        <div class="gate-sup" data-i18n="gate-sup">Acesso Exclusivo</div>
+        <h1 class="gate-h1" data-i18n="gate-h1" data-i18n-html="true">
+          Experiências que vendem<br />antes de construir.
+        </h1>
+        <p class="gate-sub" data-i18n="gate-sub">
+          Acesse nossas demonstrações exclusivas desenvolvidas para arquitetos e
+          incorporadoras.
         </p>
 
         <div class="gate-divider"></div>
@@ -560,6 +612,7 @@
               id="f-name"
               type="text"
               name="nome"
+              data-ph="f-name"
               placeholder="Nome completo"
               autocomplete="name"
               required
@@ -569,6 +622,7 @@
               id="f-company"
               type="text"
               name="empresa"
+              data-ph="f-company"
               placeholder="Empresa"
               required
             />
@@ -578,6 +632,7 @@
             id="f-email"
             type="email"
             name="email"
+            data-ph="f-email"
             placeholder="E-mail corporativo"
             autocomplete="email"
             required
@@ -589,6 +644,7 @@
               id="f-phone"
               type="tel"
               name="telefone"
+              data-ph="f-phone"
               placeholder="Telefone / WhatsApp"
               autocomplete="tel"
             />
@@ -597,27 +653,37 @@
               id="f-city"
               type="text"
               name="cidade"
+              data-ph="f-city"
               placeholder="Cidade"
               autocomplete="address-level2"
             />
           </div>
           <select class="fi-select" id="f-role" name="posicao" required>
-            <option value="" disabled selected>Posição na empresa</option>
-            <option>Sócio / Proprietário</option>
-            <option>Diretor / C-Level</option>
-            <option>Gerente</option>
-            <option>Arquiteto / Designer</option>
-            <option>Incorporadora / Construtora</option>
-            <option>Marketing / Comunicação</option>
-            <option>Outro</option>
+            <option value="" disabled selected data-i18n="role-placeholder">
+              Posição na empresa
+            </option>
+            <option data-i18n="role-1">Sócio / Proprietário</option>
+            <option data-i18n="role-2">Diretor / C-Level</option>
+            <option data-i18n="role-3">Gerente</option>
+            <option data-i18n="role-4">Arquiteto / Designer</option>
+            <option data-i18n="role-5">Incorporadora / Construtora</option>
+            <option data-i18n="role-6">Marketing / Comunicação</option>
+            <option data-i18n="role-7">Outro</option>
           </select>
-          <button class="btn-access" id="btn-access" type="submit">
+          <button
+            class="btn-access"
+            id="btn-access"
+            type="submit"
+            data-i18n="btn-access"
+          >
             Acessar demonstração →
           </button>
         </form>
 
         <div class="gate-foot">
-          <span class="gate-privacy">Seus dados não serão compartilhados.</span>
+          <span class="gate-privacy" data-i18n="gate-privacy"
+            >Seus dados não serão compartilhados.</span
+          >
           <button class="btn-admin" id="btn-admin" type="button">admin</button>
         </div>
       </div>
@@ -626,20 +692,30 @@
     <!-- ── PRODUCTS ── -->
     <section class="products" id="products">
       <nav class="prod-nav">
+        <a class="btn-back" href="index.html">
+          <span class="btn-back-icon">←</span>
+          <span data-i18n="btn-back">Voltar ao site</span>
+        </a>
         <img
-          src="images/logo_site2.png"
+          src="images/logo_site3.png"
           alt="Factory Interactive"
           class="prod-logo"
         />
-        <a class="btn-back" href="index.html">
-          <span class="btn-back-icon">←</span>
-          Voltar ao site
-        </a>
+        <div
+          class="lang-switcher lang-switcher--prod"
+          role="group"
+          aria-label="Select language"
+        >
+          <button class="lang-btn active" data-lang="pt">PT</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
       </nav>
 
-      <div class="prod-sup">— Produtos</div>
-      <h1 class="prod-h1">Demonstrações<br />disponíveis.</h1>
-      <p class="prod-sub">
+      <div class="prod-sup" data-i18n="prod-sup">Produtos</div>
+      <h1 class="prod-h1" data-i18n="prod-h1" data-i18n-html="true">
+        Demonstrações<br />disponíveis.
+      </h1>
+      <p class="prod-sub" data-i18n="prod-sub">
         Explore nossas ferramentas interativas desenvolvidas para arquitetura e
         incorporação imobiliária.
       </p>
@@ -652,11 +728,13 @@
           </div>
           <div class="pcard-body">
             <div class="pcard-title">Archviz Explorer</div>
-            <div class="pcard-desc">
+            <div class="pcard-desc" data-i18n="card-archviz-desc">
               Navegação interativa por pontos de vista do empreendimento com
               transições em vídeo, painéis informativos e POIs dinâmicos.
             </div>
-            <div class="pcard-link">Explorar demo →</div>
+            <div class="pcard-link" data-i18n="link-explore">
+              Explorar demo →
+            </div>
           </div>
         </a>
 
@@ -667,42 +745,48 @@
           </div>
           <div class="pcard-body">
             <div class="pcard-title">Launching Page</div>
-            <div class="pcard-desc">
+            <div class="pcard-desc" data-i18n="card-launching-desc">
               Landing page de lançamento com galeria de vistas externas e
               ambientes internos, tour visual e call-to-action integrado.
             </div>
-            <div class="pcard-link">Explorar demo →</div>
+            <div class="pcard-link" data-i18n="link-explore">
+              Explorar demo →
+            </div>
           </div>
         </a>
 
-        <a class="pcard" href="#" target="_blank">
+        <a class="pcard" href="panorama-360.html" target="_blank">
           <div class="pcard-thumb">
             <img src="images/pano_living.jpg" alt="Panorama 360°" />
             <span class="pcard-badge">360°</span>
           </div>
           <div class="pcard-body">
             <div class="pcard-title">Panorama 360°</div>
-            <div class="pcard-desc">
+            <div class="pcard-desc" data-i18n="card-pano-desc">
               Tour imersivo em 360° pelos ambientes do empreendimento
               diretamente no navegador, sem app ou óculos — quarto, living e
               sacada.
             </div>
-            <div class="pcard-link">Explorar demo →</div>
+            <div class="pcard-link" data-i18n="link-explore">
+              Explorar demo →
+            </div>
           </div>
         </a>
 
-        <a class="pcard" href="#" target="_blank">
+        <a class="pcard" href="3d-viewer.html" target="_blank">
           <div class="pcard-thumb">
             <img src="images/Portfolio_003.jpg" alt="Visualizador 3D" />
             <span class="pcard-badge">3D</span>
           </div>
           <div class="pcard-body">
-            <div class="pcard-title">Visualizador 3D</div>
-            <div class="pcard-desc">
+            <div class="pcard-title" data-i18n="card-3d-title">
+              Visualizador 3D
+            </div>
+            <div class="pcard-desc" data-i18n="card-3d-desc">
               Modelo tridimensional interativo do edifício com rotação livre,
               zoom e seleção de pavimentos diretamente no navegador.
             </div>
-            <div class="pcard-link">Em breve →</div>
+            <div class="pcard-link" data-i18n="link-explore">Explorar demo →</div>
           </div>
         </a>
 
@@ -712,12 +796,14 @@
             <span class="pcard-badge">Planta</span>
           </div>
           <div class="pcard-body">
-            <div class="pcard-title">Planta Humanizada</div>
-            <div class="pcard-desc">
+            <div class="pcard-title" data-i18n="card-floor-title">
+              Planta Humanizada
+            </div>
+            <div class="pcard-desc" data-i18n="card-floor-desc">
               Planta baixa animada com mobiliário, texturas e elementos humanos
               que revelam progressivamente os ambientes do imóvel.
             </div>
-            <div class="pcard-link">Em breve →</div>
+            <div class="pcard-link" data-i18n="link-soon">Em breve →</div>
           </div>
         </a>
 
@@ -728,11 +814,11 @@
           </div>
           <div class="pcard-body">
             <div class="pcard-title">Walkthrough Interior</div>
-            <div class="pcard-desc">
+            <div class="pcard-desc" data-i18n="card-walk-desc">
               Percurso imersivo pelos ambientes internos do empreendimento com
               sequência de imagens navegáveis e pontos de interesse interativos.
             </div>
-            <div class="pcard-link">Em breve →</div>
+            <div class="pcard-link" data-i18n="link-soon">Em breve →</div>
           </div>
         </a>
 
@@ -742,13 +828,15 @@
             <span class="pcard-badge">Configurador</span>
           </div>
           <div class="pcard-body">
-            <div class="pcard-title">Configurador de Ambiente</div>
-            <div class="pcard-desc">
+            <div class="pcard-title" data-i18n="card-config-title">
+              Configurador de Ambiente
+            </div>
+            <div class="pcard-desc" data-i18n="card-config-desc">
               Ferramenta interativa para personalização de acabamentos,
               revestimentos e mobiliário com visualização em tempo real do
               resultado.
             </div>
-            <div class="pcard-link">Em breve →</div>
+            <div class="pcard-link" data-i18n="link-soon">Em breve →</div>
           </div>
         </a>
 
@@ -759,11 +847,11 @@
           </div>
           <div class="pcard-body">
             <div class="pcard-title">AR / VR</div>
-            <div class="pcard-desc">
+            <div class="pcard-desc" data-i18n="card-arvr-desc">
               Experiência imersiva em realidade aumentada e virtual — visualize
               o empreendimento em escala real pelo celular ou headset VR.
             </div>
-            <div class="pcard-link">Em breve →</div>
+            <div class="pcard-link" data-i18n="link-soon">Em breve →</div>
           </div>
         </a>
       </div>
@@ -771,14 +859,9 @@
 
     <script>
       (function () {
-        // ── CONFIGURAÇÃO ───────────────────────────────────────────
-        // Para enviar os dados por e-mail:
-        // 1. Crie conta gratuita em formspree.io
-        // 2. Crie um form com destino: firsightstudio@gmail.com
-        // 3. Cole o ID do form abaixo (ex: 'xpwzgkla')
-        const FORMSPREE_ID = "xeedjkjo";
+        var FORMSPREE_ID = "xeedjkjo";
 
-        const BLOCKED = [
+        var BLOCKED = [
           "gmail",
           "yahoo",
           "hotmail",
@@ -807,22 +890,20 @@
           "pm",
         ];
 
-        // ── ELEMENTOS ─────────────────────────────────────────────
-        const gate = document.getElementById("gate");
-        const products = document.getElementById("products");
-        const form = document.getElementById("gate-form");
-        const fName = document.getElementById("f-name");
-        const fCompany = document.getElementById("f-company");
-        const fEmail = document.getElementById("f-email");
-        const fRole = document.getElementById("f-role");
-        const emailErr = document.getElementById("email-err");
-        const btnAccess = document.getElementById("btn-access");
-        const btnAdmin = document.getElementById("btn-admin");
+        var gate = document.getElementById("gate");
+        var products = document.getElementById("products");
+        var form = document.getElementById("gate-form");
+        var fName = document.getElementById("f-name");
+        var fCompany = document.getElementById("f-company");
+        var fEmail = document.getElementById("f-email");
+        var fRole = document.getElementById("f-role");
+        var emailErr = document.getElementById("email-err");
+        var btnAccess = document.getElementById("btn-access");
+        var btnAdmin = document.getElementById("btn-admin");
 
-        // ── HELPERS ───────────────────────────────────────────────
         function isPersonal(email) {
-          const domain = (email.split("@")[1] || "").toLowerCase();
-          const base = domain.split(".")[0];
+          var domain = (email.split("@")[1] || "").toLowerCase();
+          var base = domain.split(".")[0];
           return BLOCKED.includes(base);
         }
 
@@ -834,13 +915,14 @@
 
         function saveLead(data) {
           try {
-            const list = JSON.parse(localStorage.getItem("fi_leads") || "[]");
-            list.unshift({ ...data, ts: new Date().toISOString() });
+            var list = JSON.parse(localStorage.getItem("fi_leads") || "[]");
+            list.unshift(
+              Object.assign({}, data, { ts: new Date().toISOString() }),
+            );
             localStorage.setItem("fi_leads", JSON.stringify(list));
           } catch (_) {}
         }
 
-        // ── ADMIN BYPASS ──────────────────────────────────────────
         if (location.hash === "#admin") {
           unlock();
         }
@@ -849,24 +931,21 @@
           unlock();
         });
 
-        // ── EMAIL VALIDATION LIVE ─────────────────────────────────
         fEmail.addEventListener("blur", function () {
           if (fEmail.value && isPersonal(fEmail.value)) {
             fEmail.classList.add("err");
-            emailErr.textContent =
-              "Use um e-mail corporativo (não gmail, hotmail, yahoo…)";
+            emailErr.textContent = window.MSGS.emailErr;
           } else {
             fEmail.classList.remove("err");
             emailErr.textContent = "";
           }
         });
 
-        // ── SUBMIT ────────────────────────────────────────────────
-        form.addEventListener("submit", async function (e) {
+        form.addEventListener("submit", function (e) {
           e.preventDefault();
           emailErr.textContent = "";
 
-          const data = {
+          var data = {
             nome: fName.value.trim(),
             empresa: fCompany.value.trim(),
             email: fEmail.value.trim(),
@@ -876,98 +955,250 @@
           };
 
           if (!data.nome || !data.empresa || !data.email || !data.posicao) {
-            emailErr.textContent = "Preencha todos os campos.";
+            emailErr.textContent = window.MSGS.required;
             return;
           }
           if (isPersonal(data.email)) {
             fEmail.classList.add("err");
-            emailErr.textContent =
-              "Use um e-mail corporativo (não gmail, hotmail, yahoo…)";
+            emailErr.textContent = window.MSGS.emailErr;
             return;
           }
 
           btnAccess.disabled = true;
-          btnAccess.textContent = "Enviando…";
+          btnAccess.textContent = window.MSGS.sending;
 
-          // Salva localmente sempre
           saveLead(data);
 
-          // Envia via Formspree se configurado
           if (FORMSPREE_ID) {
-            try {
-              await fetch("https://formspree.io/f/" + FORMSPREE_ID, {
-                method: "POST",
-                headers: {
-                  Accept: "application/json",
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
+            fetch("https://formspree.io/f/" + FORMSPREE_ID, {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            })
+              .catch(function () {})
+              .finally(function () {
+                unlock();
               });
-            } catch (_) {}
+          } else {
+            unlock();
           }
-
-          unlock();
         });
 
-        // Para ver leads salvos: abra o console e rode:  JSON.parse(localStorage.getItem('fi_leads'))
-
-        // ── CARD TILT (mouse tracking) ────────────────────────────
+        // ── CARD TILT ─────────────────────────────────────────────
         (function () {
-          const card = document.querySelector(".gate-card");
+          var card = document.querySelector(".gate-card");
           if (!card) return;
-
-          const STRENGTH = 22; // graus máx de rotação
-          const SCALE = 1.04; // zoom suave ao hover
-
-          let tx = 0,
-            ty = 0; // valores alvo
-          let cx = 0,
-            cy = 0; // valores atuais (interpolados)
-          let raf = null;
-          let active = false;
-
+          var STRENGTH = 22,
+            SCALE = 1.04;
+          var tx = 0,
+            ty = 0,
+            cx = 0,
+            cy = 0,
+            active = false;
           function lerp(a, b, t) {
             return a + (b - a) * t;
           }
-
           function loop() {
             cx = lerp(cx, tx, 0.12);
             cy = lerp(cy, ty, 0.12);
-
-            const dx = Math.abs(cx) + Math.abs(cy);
-            const sc = active ? SCALE : 1;
-            const scC = lerp(parseFloat(card.dataset.sc || 1), sc, 0.08);
+            var sc = active ? SCALE : 1;
+            var scC = lerp(parseFloat(card.dataset.sc || 1), sc, 0.08);
             card.dataset.sc = scC;
-
-            card.style.transform = `perspective(600px) rotateX(${cy}deg) rotateY(${cx}deg) scale(${scC})`;
-
-            raf = requestAnimationFrame(loop);
+            card.style.transform =
+              "perspective(600px) rotateX(" +
+              cy +
+              "deg) rotateY(" +
+              cx +
+              "deg) scale(" +
+              scC +
+              ")";
+            requestAnimationFrame(loop);
           }
-
-          function onMove(e) {
-            const r = card.getBoundingClientRect();
-            const px = (e.clientX - r.left) / r.width - 0.5;
-            const py = (e.clientY - r.top) / r.height - 0.5;
-            tx = px * STRENGTH * 2;
-            ty = -py * STRENGTH;
+          card.addEventListener("mouseenter", function () {
+            active = true;
+          });
+          card.addEventListener("mousemove", function (e) {
+            var r = card.getBoundingClientRect();
+            tx = ((e.clientX - r.left) / r.width - 0.5) * STRENGTH * 2;
+            ty = -((e.clientY - r.top) / r.height - 0.5) * STRENGTH;
             card.classList.add("tilting");
-          }
-
-          function onLeave() {
+          });
+          card.addEventListener("mouseleave", function () {
             tx = 0;
             ty = 0;
             active = false;
             card.classList.remove("tilting");
-          }
-
-          card.addEventListener("mouseenter", function () {
-            active = true;
           });
-          card.addEventListener("mousemove", onMove);
-          card.addEventListener("mouseleave", onLeave);
-
           loop();
         })();
+      })();
+    </script>
+
+    <!-- ── I18N ── -->
+    <script>
+      (function () {
+        var T = {
+          pt: {
+            "gate-sup": "Acesso Exclusivo",
+            "gate-h1": "Experiências que vendem<br>antes de construir.",
+            "gate-sub":
+              "Acesse nossas demonstrações exclusivas desenvolvidas para arquitetos e incorporadoras.",
+            "f-name": "Nome completo",
+            "f-company": "Empresa",
+            "f-email": "E-mail corporativo",
+            "f-phone": "Telefone / WhatsApp",
+            "f-city": "Cidade",
+            "role-placeholder": "Posição na empresa",
+            "role-1": "Sócio / Proprietário",
+            "role-2": "Diretor / C-Level",
+            "role-3": "Gerente",
+            "role-4": "Arquiteto / Designer",
+            "role-5": "Incorporadora / Construtora",
+            "role-6": "Marketing / Comunicação",
+            "role-7": "Outro",
+            "btn-access": "Acessar demonstração →",
+            "gate-privacy": "Seus dados não serão compartilhados.",
+            "btn-back": "Voltar ao site",
+            "prod-sup": "— Produtos",
+            "prod-h1": "Demonstrações<br>disponíveis.",
+            "prod-sub":
+              "Explore nossas ferramentas interativas desenvolvidas para arquitetura e incorporação imobiliária.",
+            "card-archviz-desc":
+              "Navegação interativa por pontos de vista do empreendimento com transições em vídeo, painéis informativos e POIs dinâmicos.",
+            "card-launching-desc":
+              "Landing page de lançamento com galeria de vistas externas e ambientes internos, tour visual e call-to-action integrado.",
+            "card-pano-desc":
+              "Tour imersivo em 360° pelos ambientes do empreendimento diretamente no navegador, sem app ou óculos — quarto, living e sacada.",
+            "card-3d-title": "Visualizador 3D",
+            "card-3d-desc":
+              "Modelo tridimensional interativo do edifício com rotação livre, zoom e seleção de pavimentos diretamente no navegador.",
+            "card-floor-title": "Planta Humanizada",
+            "card-floor-desc":
+              "Planta baixa animada com mobiliário, texturas e elementos humanos que revelam progressivamente os ambientes do imóvel.",
+            "card-walk-desc":
+              "Percurso imersivo pelos ambientes internos do empreendimento com sequência de imagens navegáveis e pontos de interesse interativos.",
+            "card-config-title": "Configurador de Ambiente",
+            "card-config-desc":
+              "Ferramenta interativa para personalização de acabamentos, revestimentos e mobiliário com visualização em tempo real do resultado.",
+            "card-arvr-desc":
+              "Experiência imersiva em realidade aumentada e virtual — visualize o empreendimento em escala real pelo celular ou headset VR.",
+            "link-explore": "Explorar demo →",
+            "link-soon": "Em breve →",
+            _emailErr: "Use um e-mail corporativo (não gmail, hotmail, yahoo…)",
+            _required: "Preencha todos os campos.",
+            _sending: "Enviando…",
+          },
+          en: {
+            "gate-sup": "Exclusive Access",
+            "gate-h1": "Experiences that sell<br>before you build.",
+            "gate-sub":
+              "Access our exclusive demos built for architects and real estate developers.",
+            "f-name": "Full name",
+            "f-company": "Company",
+            "f-email": "Corporate email",
+            "f-phone": "Phone / WhatsApp",
+            "f-city": "City",
+            "role-placeholder": "Position at company",
+            "role-1": "Partner / Owner",
+            "role-2": "Director / C-Level",
+            "role-3": "Manager",
+            "role-4": "Architect / Designer",
+            "role-5": "Developer / Builder",
+            "role-6": "Marketing / Communications",
+            "role-7": "Other",
+            "btn-access": "Access demo →",
+            "gate-privacy": "Your data won't be shared.",
+            "btn-back": "Back to site",
+            "prod-sup": "Products",
+            "prod-h1": "Available<br>demos.",
+            "prod-sub":
+              "Explore our interactive tools developed for architecture and real estate.",
+            "card-archviz-desc":
+              "Interactive navigation through project viewpoints with video transitions, info panels and dynamic POIs.",
+            "card-launching-desc":
+              "Launch landing page with external views gallery, interior environments, visual tour and integrated call-to-action.",
+            "card-pano-desc":
+              "Immersive 360° tour through project environments directly in the browser, no app or headset — bedroom, living room and balcony.",
+            "card-3d-title": "3D Viewer",
+            "card-3d-desc":
+              "Interactive 3D building model with free rotation, zoom and floor selection directly in the browser.",
+            "card-floor-title": "Humanized Floor Plan",
+            "card-floor-desc":
+              "Animated floor plan with furniture, textures and human elements that progressively reveal the property's spaces.",
+            "card-walk-desc":
+              "Immersive walkthrough of the building's interior environments with navigable image sequences and interactive points of interest.",
+            "card-config-title": "Space Configurator",
+            "card-config-desc":
+              "Interactive tool for customizing finishes, cladding and furniture with real-time visualization of the result.",
+            "card-arvr-desc":
+              "Immersive augmented and virtual reality experience — visualize the building at real scale via mobile or VR headset.",
+            "link-explore": "Explore demo →",
+            "link-soon": "Coming soon →",
+            _emailErr: "Use a corporate email (no gmail, hotmail, yahoo…)",
+            _required: "Please fill in all fields.",
+            _sending: "Sending…",
+          },
+        };
+
+        // Mensagens JS acessíveis pelo script de submit
+        window.MSGS = {
+          emailErr: T.pt._emailErr,
+          required: T.pt._required,
+          sending: T.pt._sending,
+        };
+
+        function applyLang(lang) {
+          var d = T[lang];
+          if (!d) return;
+
+          document.querySelectorAll("[data-i18n]").forEach(function (el) {
+            var key = el.getAttribute("data-i18n");
+            if (!d[key]) return;
+            if (el.getAttribute("data-i18n-html")) {
+              el.innerHTML = d[key];
+            } else {
+              el.textContent = d[key];
+            }
+          });
+
+          document.querySelectorAll("[data-ph]").forEach(function (el) {
+            var key = el.getAttribute("data-ph");
+            if (d[key]) el.placeholder = d[key];
+          });
+
+          window.MSGS.emailErr = d._emailErr;
+          window.MSGS.required = d._required;
+          window.MSGS.sending = d._sending;
+
+          document.documentElement.lang = lang === "en" ? "en" : "pt-BR";
+          localStorage.setItem("fi-lang", lang);
+        }
+
+        // Sincroniza todos os botões .lang-btn da página (gate + produtos)
+        document.querySelectorAll(".lang-btn").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var lang = btn.getAttribute("data-lang");
+            document.querySelectorAll(".lang-btn").forEach(function (b) {
+              b.classList.toggle(
+                "active",
+                b.getAttribute("data-lang") === lang,
+              );
+            });
+            applyLang(lang);
+          });
+        });
+
+        // Restaura idioma salvo — sincronizado com a home via localStorage 'fi-lang'
+        var saved = localStorage.getItem("fi-lang");
+        if (saved && T[saved] && saved !== "pt") {
+          document.querySelectorAll(".lang-btn").forEach(function (b) {
+            b.classList.toggle("active", b.getAttribute("data-lang") === saved);
+          });
+          applyLang(saved);
+        }
       })();
     </script>
   </body>

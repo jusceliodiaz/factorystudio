@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Panorama 360° — Factory Interactive</title>
+    <link rel="icon" type="image/png" href="images/logo_site.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --gold: #b89c6e;
+        --gold-d: #a08860;
+        --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* canvas full-screen */
+      #pano-canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        cursor: grab;
+        touch-action: none;
+        outline: none;
+      }
+      #pano-canvas:active {
+        cursor: grabbing;
+      }
+
+      /* ── LOADING ── */
+      #pano-loading {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        background: #000;
+        transition:
+          opacity 0.5s var(--ease),
+          visibility 0.5s;
+      }
+      #pano-loading.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .pano-spinner {
+        width: 36px;
+        height: 36px;
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        border-top-color: var(--gold);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .pano-loading-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.35);
+      }
+
+      /* ── HUD SUPERIOR ── */
+      #hud {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 36px 28px;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.7) 0%,
+          transparent 100%
+        );
+        pointer-events: none;
+      }
+      .hud-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        pointer-events: auto;
+      }
+      .hud-center {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        pointer-events: none;
+      }
+      .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px 8px 8px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 12px;
+        color: rgba(255, 255, 255, 0.8);
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-decoration: none;
+        white-space: nowrap;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        transition:
+          background 0.25s,
+          transform 0.25s;
+      }
+      .btn-back:hover {
+        background: rgba(255, 255, 255, 0.13);
+        transform: translateY(-2px);
+      }
+      .btn-back-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        font-size: 13px;
+        transition: transform 0.3s var(--ease);
+      }
+      .btn-back:hover .btn-back-icon {
+        transform: translateX(-3px);
+      }
+
+      #room-label {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--gold);
+        transition: opacity 0.3s;
+      }
+      .logo-hud {
+        height: 67px;
+        width: auto;
+        opacity: 1;
+        pointer-events: none;
+      }
+
+      /* ── HINT ── */
+      #hint {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 40;
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        color: rgba(255, 255, 255, 0.5);
+        background: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        padding: 10px 20px;
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+        transition: opacity 0.5s var(--ease);
+      }
+      #hint.hidden {
+        opacity: 0;
+      }
+
+      /* ── ROOM SELECTOR (bottom) ── */
+      #room-selector {
+        position: fixed;
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 50;
+        display: flex;
+        gap: 8px;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 6px;
+      }
+      .room-btn {
+        padding: 9px 22px;
+        background: transparent;
+        border: none;
+        border-radius: 14px;
+        color: rgba(255, 255, 255, 0.45);
+        font-family: inherit;
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          color 0.2s;
+        white-space: nowrap;
+      }
+      .room-btn:hover {
+        color: rgba(255, 255, 255, 0.8);
+      }
+      .room-btn.active {
+        background: var(--gold);
+        color: #111;
+      }
+
+      /* fade de transição */
+      #fade {
+        position: fixed;
+        inset: 0;
+        z-index: 45;
+        background: #000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+      #fade.show {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="pano-loading">
+      <div class="pano-spinner"></div>
+      <span class="pano-loading-label">Carregando panorama</span>
+    </div>
+
+    <div id="hud">
+      <div class="hud-left">
+        <a class="btn-back" href="fi-preview.html#admin">
+          <span class="btn-back-icon">←</span>
+          Voltar
+        </a>
+        <span id="room-label"></span>
+      </div>
+      <div class="hud-center">
+        <img
+          src="images/logo_site.png"
+          alt="Factory Interactive"
+          class="logo-hud"
+        />
+      </div>
+    </div>
+
+    <canvas id="pano-canvas"></canvas>
+
+    <div id="hint">Arraste para explorar · Scroll para zoom</div>
+
+    <div id="fade"></div>
+
+    <div id="room-selector">
+      <button class="room-btn" data-room="quarto">Quarto</button>
+      <button class="room-btn" data-room="living">Living</button>
+      <button class="room-btn" data-room="sacada">Sacada</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script>
+      (function () {
+        var TOUR = {
+          quarto: { label: "Quarto", src: "images/pano_quarto.jpg" },
+          living: { label: "Living", src: "images/pano_living.jpg" },
+          sacada: { label: "Sacada", src: "images/pano_sacada.jpg" },
+        };
+
+        var canvas = document.getElementById("pano-canvas");
+        var loadingEl = document.getElementById("pano-loading");
+        var roomLabel = document.getElementById("room-label");
+        var hintEl = document.getElementById("hint");
+        var fadeEl = document.getElementById("fade");
+
+        // state
+        var lon = 180,
+          lat = 0,
+          velLon = 0,
+          velLat = 0;
+        var dragging = false,
+          px = 0,
+          py = 0;
+        var transitioning = false;
+        var currentRoom = null;
+        var rafId = null;
+
+        // three.js objects
+        var renderer, scene, camera, mesh;
+
+        // ── INIT RENDERER ───────────────────────────────────────
+        function init() {
+          var w = window.innerWidth,
+            h = window.innerHeight;
+
+          renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true,
+          });
+          renderer.setSize(w, h);
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+          renderer.toneMapping = THREE.NoToneMapping;
+          renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+
+          scene = new THREE.Scene();
+          camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 200);
+
+          var geo = new THREE.SphereGeometry(100, 64, 32);
+          geo.scale(-1, 1, 1);
+          var mat = new THREE.MeshBasicMaterial();
+          mesh = new THREE.Mesh(geo, mat);
+          scene.add(mesh);
+
+          bindEvents();
+          loadRoom("living"); // abre no living por padrão
+        }
+
+        // ── CARREGA QUARTO ──────────────────────────────────────
+        function loadRoom(roomKey, withTransition) {
+          if (!TOUR[roomKey] || transitioning) return;
+          transitioning = true;
+
+          function doLoad() {
+            loadingEl.classList.remove("hidden");
+            new THREE.TextureLoader().load(
+              TOUR[roomKey].src,
+              function (tex) {
+                tex.colorSpace = THREE.LinearSRGBColorSpace;
+                var old = mesh.material.map;
+                mesh.material.map = tex;
+                mesh.material.needsUpdate = true;
+                if (old) old.dispose();
+
+                lon = 180;
+                lat = 0;
+                velLon = 0;
+                velLat = 0;
+                setRoomUI(roomKey);
+                loadingEl.classList.add("hidden");
+
+                if (withTransition) {
+                  fadeEl.classList.remove("show"); // fade in
+                }
+                transitioning = false;
+              },
+              undefined,
+              function () {
+                document.querySelector(".pano-loading-label").textContent =
+                  "Imagem não encontrada";
+                transitioning = false;
+              },
+            );
+          }
+
+          if (withTransition) {
+            fadeEl.classList.add("show");
+            setTimeout(doLoad, 300);
+          } else {
+            doLoad();
+          }
+        }
+
+        function setRoomUI(roomKey) {
+          currentRoom = roomKey;
+          roomLabel.textContent = "— " + TOUR[roomKey].label;
+          document.querySelectorAll(".room-btn").forEach(function (btn) {
+            btn.classList.toggle("active", btn.dataset.room === roomKey);
+          });
+        }
+
+        // ── EVENTOS ─────────────────────────────────────────────
+        function bindEvents() {
+          // mouse
+          canvas.addEventListener("mousedown", function (e) {
+            dragging = true;
+            px = e.clientX;
+            py = e.clientY;
+            velLon = velLat = 0;
+          });
+          window.addEventListener("mouseup", function () {
+            dragging = false;
+          });
+          canvas.addEventListener("mousemove", function (e) {
+            if (!dragging) return;
+            var dLon = (e.clientX - px) * 0.12;
+            var dLat = (py - e.clientY) * 0.12;
+            lon += dLon;
+            lat = Math.max(-80, Math.min(80, lat + dLat));
+            velLon = dLon;
+            velLat = dLat;
+            px = e.clientX;
+            py = e.clientY;
+            hintEl.classList.add("hidden");
+          });
+
+          // touch
+          canvas.addEventListener(
+            "touchstart",
+            function (e) {
+              var t = e.touches[0];
+              dragging = true;
+              px = t.clientX;
+              py = t.clientY;
+              velLon = velLat = 0;
+            },
+            { passive: true },
+          );
+          canvas.addEventListener("touchend", function () {
+            dragging = false;
+          });
+          canvas.addEventListener(
+            "touchmove",
+            function (e) {
+              e.preventDefault();
+              var t = e.touches[0];
+              var dLon = (t.clientX - px) * 0.12;
+              var dLat = (py - t.clientY) * 0.12;
+              lon += dLon;
+              lat = Math.max(-80, Math.min(80, lat + dLat));
+              velLon = dLon;
+              velLat = dLat;
+              px = t.clientX;
+              py = t.clientY;
+              hintEl.classList.add("hidden");
+            },
+            { passive: false },
+          );
+
+          // pinch zoom
+          var lastPinch = 0;
+          canvas.addEventListener(
+            "touchstart",
+            function (e) {
+              if (e.touches.length === 2)
+                lastPinch = Math.hypot(
+                  e.touches[0].clientX - e.touches[1].clientX,
+                  e.touches[0].clientY - e.touches[1].clientY,
+                );
+            },
+            { passive: true },
+          );
+          canvas.addEventListener(
+            "touchmove",
+            function (e) {
+              if (e.touches.length !== 2) return;
+              var d = Math.hypot(
+                e.touches[0].clientX - e.touches[1].clientX,
+                e.touches[0].clientY - e.touches[1].clientY,
+              );
+              camera.fov = Math.max(
+                30,
+                Math.min(100, camera.fov - (d - lastPinch) * 0.1),
+              );
+              camera.updateProjectionMatrix();
+              lastPinch = d;
+            },
+            { passive: true },
+          );
+
+          // scroll zoom
+          canvas.addEventListener(
+            "wheel",
+            function (e) {
+              e.preventDefault();
+              camera.fov = Math.max(
+                30,
+                Math.min(100, camera.fov + e.deltaY * 0.04),
+              );
+              camera.updateProjectionMatrix();
+            },
+            { passive: false },
+          );
+
+          // resize
+          window.addEventListener("resize", function () {
+            var w = window.innerWidth,
+              h = window.innerHeight;
+            renderer.setSize(w, h);
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+          });
+
+          // botões de quarto
+          document.querySelectorAll(".room-btn").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              if (btn.dataset.room !== currentRoom) {
+                loadRoom(btn.dataset.room, true);
+              }
+            });
+          });
+
+          // teclado esc → voltar
+          document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape")
+              window.location.href = "fi-preview.html#admin";
+          });
+        }
+
+        // ── RENDER LOOP ─────────────────────────────────────────
+        function renderLoop() {
+          rafId = requestAnimationFrame(renderLoop);
+          if (!dragging) {
+            lon += velLon;
+            velLon *= 0.88;
+            lat = Math.max(-80, Math.min(80, lat + velLat));
+            velLat *= 0.88;
+          }
+          var phi = THREE.MathUtils.degToRad(90 - lat);
+          var theta = THREE.MathUtils.degToRad(lon);
+          camera.lookAt(
+            Math.sin(phi) * Math.cos(theta),
+            Math.cos(phi),
+            Math.sin(phi) * Math.sin(theta),
+          );
+          renderer.render(scene, camera);
+        }
+
+        // ── START ───────────────────────────────────────────────
+        init();
+        renderLoop();
+      })();
+    </script>
+  </body>
+</html>
