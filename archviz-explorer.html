@@ -307,9 +307,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 5px;
+        gap: 7px;
         cursor: none;
-        padding: 0 5px;
+        padding: 0 7px;
         transition: opacity 0.3s;
         opacity: 0.55;
         flex-shrink: 0;
@@ -317,8 +317,8 @@
       #ai-track-btn:hover { opacity: 1; }
       #ai-track-btn.active { opacity: 1; }
       #ai-circle {
-        width: 26px;
-        height: 26px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.1);
         border: 1.5px solid rgba(255, 255, 255, 0.3);
@@ -580,7 +580,7 @@
         -webkit-backdrop-filter: blur(50px) saturate(1.8);
         border: 1px solid rgba(255, 255, 255, 0.18);
         border-radius: 999px;
-        padding: 13px 10px;
+        padding: 17px 13px;
         box-shadow:
           0 0 0 1px rgba(255, 255, 255, 0.12) inset,
           0 16px 48px rgba(0, 0, 0, 0.4);
@@ -596,11 +596,11 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         cursor: none;
         opacity: 0.32;
         transition: opacity 0.3s;
-        padding: 0 6px;
+        padding: 0 8px;
       }
 
       .t-pt.active {
@@ -617,16 +617,16 @@
 
       .t-dot-wrap {
         position: relative;
-        width: 14px;
-        height: 14px;
+        width: 18px;
+        height: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
       .t-dot {
-        width: 7px;
-        height: 7px;
+        width: 9px;
+        height: 9px;
         border-radius: 50%;
         border: 1.5px solid rgba(255, 255, 255, 0.7);
         transition:
@@ -674,9 +674,9 @@
           "Inter",
           -apple-system,
           sans-serif;
-        font-size: 9px;
+        font-size: 11px;
         font-weight: 400;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.06em;
         color: rgba(255, 255, 255, 0.75);
         text-transform: uppercase;
         white-space: nowrap;
@@ -695,9 +695,13 @@
         display: none;
       }
 
+      .t-pt.slot-hidden {
+        display: none;
+      }
+
       .t-arrow {
-        width: 28px;
-        height: 28px;
+        width: 36px;
+        height: 36px;
         border-radius: 50%;
         border: 1px solid rgba(255, 255, 255, 0.2);
         background: rgba(255, 255, 255, 0.1);
@@ -723,8 +727,8 @@
       }
 
       .t-arrow svg {
-        width: 9px;
-        height: 9px;
+        width: 12px;
+        height: 12px;
         stroke: rgba(255, 255, 255, 0.9);
         fill: none;
         stroke-width: 2;
@@ -733,11 +737,11 @@
       }
 
       #arr-l {
-        margin-right: 8px;
+        margin-right: 12px;
       }
 
       #arr-r {
-        margin-left: 8px;
+        margin-left: 12px;
       }
 
       /* PINS */
@@ -1114,9 +1118,9 @@
       /* ══ NEO — botão no track ══ */
       #track-sep {
         width: 1px;
-        height: 20px;
+        height: 26px;
         background: rgba(255, 255, 255, 0.15);
-        margin: 0 8px;
+        margin: 0 10px;
         flex-shrink: 0;
       }
 
@@ -1124,9 +1128,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 5px;
+        gap: 7px;
         cursor: none;
-        padding: 0 5px;
+        padding: 0 7px;
         transition: opacity 0.3s;
         opacity: 0.55;
         flex-shrink: 0;
@@ -1145,8 +1149,8 @@
       }
 
       #neo-circle {
-        width: 26px;
-        height: 26px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.1);
         border: 1.5px solid rgba(255, 255, 255, 0.3);
@@ -1198,8 +1202,8 @@
       }
 
       #neo-circle svg {
-        width: 12px;
-        height: 12px;
+        width: 16px;
+        height: 16px;
       }
 
       #neo-track-btn.listening #neo-circle svg {
@@ -3243,10 +3247,20 @@
         if (nv.readyState >= 3) { nv.oncanplay = null; onReady(); }
       }
 
+      const WINDOW_SIZE = 3;
+      let windowStart = 0;
+
+      function updateWindow() {
+        document.querySelectorAll(".t-pt").forEach((el) => {
+          const i = parseInt(el.dataset.i);
+          el.classList.toggle("slot-hidden", i < windowStart || i >= windowStart + WINDOW_SIZE);
+        });
+      }
+
       function arrowNav(d) {
         const t = cur + d;
         if (t < 0 || t >= PTS.length || state === "playing") return;
-        goTo(t);
+        goTo(t); // updateUI auto-scrolls the window to keep cur visible
       }
 
       // ══════════════════════════════════════════════════════
@@ -3285,6 +3299,7 @@
           );
           arrR.before(el);
         });
+        updateWindow();
       }
 
       function buildPins() {
@@ -3329,10 +3344,12 @@
           f.style.width = i < cur ? "100%" : "0%";
         });
 
-        document.getElementById("arr-l").disabled =
-          cur === 0 || state === "playing";
-        document.getElementById("arr-r").disabled =
-          cur === PTS.length - 1 || state === "playing";
+        // auto-scroll window to keep active item visible
+        if (cur < windowStart) windowStart = cur;
+        else if (cur >= windowStart + WINDOW_SIZE) windowStart = cur - WINDOW_SIZE + 1;
+        updateWindow();
+        document.getElementById("arr-l").disabled = cur === 0 || state === "playing";
+        document.getElementById("arr-r").disabled = cur === PTS.length - 1 || state === "playing";
 
         PTS.forEach((p) => {
           if (!p.pinX) return;
