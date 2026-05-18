@@ -1,587 +1,974 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>Factory Interactive — Acesso</title>
-<link rel="icon" type="image/png" href="images/logo_site.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --gold:#b89c6e;--gold-d:#a08860;
-  --bg:#080808;--bg-alt:#1e1e1e;
-  --text:#f5f5f5;--muted:rgba(255,255,255,.45);
-  --border:rgba(255,255,255,.08);
-  --ease:cubic-bezier(.25,.46,.45,.94);
-}
-html,body{width:100%;min-height:100%;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Factory Interactive — Acesso</title>
+    <link rel="icon" type="image/png" href="images/logo_site.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --gold: #b89c6e;
+        --gold-d: #a08860;
+        --bg: #080808;
+        --bg-alt: #1e1e1e;
+        --text: #f5f5f5;
+        --muted: rgba(255, 255, 255, 0.45);
+        --border: rgba(255, 255, 255, 0.08);
+        --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      html,
+      body {
+        width: 100%;
+        min-height: 100%;
+        -webkit-font-smoothing: antialiased;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+      }
 
-/* ── GATE BACKGROUND ── */
-.gate{
-  position:fixed;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  z-index:200;padding:32px 20px;
-  overflow-y:auto;
-  transition:opacity .8s var(--ease),visibility .8s;
-  background:#06060a;
-}
-.gate.out{opacity:0;visibility:hidden;pointer-events:none}
+      /* ── GATE BACKGROUND ── */
+      .gate {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 200;
+        padding: 32px 20px;
+        overflow-y: auto;
+        transition:
+          opacity 0.8s var(--ease),
+          visibility 0.8s;
+        background: #06060a;
+      }
+      .gate.out {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
 
-/* bg image desfocada */
-.gate-bg{
-  position:fixed;inset:0;z-index:0;
-  background:url('images/Portfolio_001.jpg') center/cover no-repeat;
-  filter:blur(32px) brightness(.6) saturate(1.3);
-  transform:scale(1.08);
-  pointer-events:none;
-}
+      /* bg image desfocada */
+      .gate-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background: url("images/Portfolio_001.jpg") center/cover no-repeat;
+        filter: blur(32px) brightness(0.6) saturate(1.3);
+        transform: scale(1.08);
+        pointer-events: none;
+      }
 
-/* overlay gradiente sobre a imagem */
-.gate-bg::after{
-  content:'';position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(184,156,110,.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 90%, rgba(80,60,160,.2) 0%, transparent 60%),
-    linear-gradient(to bottom, rgba(6,6,10,.55) 0%, rgba(6,6,10,.3) 50%, rgba(6,6,10,.7) 100%);
-}
+      /* overlay gradiente sobre a imagem */
+      .gate-bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 80% 60% at 20% 10%,
+            rgba(184, 156, 110, 0.18) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 60% 50% at 80% 90%,
+            rgba(80, 60, 160, 0.2) 0%,
+            transparent 60%
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(6, 6, 10, 0.55) 0%,
+            rgba(6, 6, 10, 0.3) 50%,
+            rgba(6, 6, 10, 0.7) 100%
+          );
+      }
 
-.gate-card{position:relative;z-index:1}
+      .gate-card {
+        position: relative;
+        z-index: 1;
+      }
 
-/* card glassmorphism */
-.gate-card{
-  position:relative;
-  width:100%;max-width:480px;
-  background:rgba(255,255,255,.055);
-  backdrop-filter:blur(48px);
-  -webkit-backdrop-filter:blur(48px);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:28px;
-  padding:44px 40px 36px;
-  box-shadow:
-    0 0 0 1px rgba(255,255,255,.04) inset,
-    0 32px 80px rgba(0,0,0,.55),
-    0 4px 24px rgba(0,0,0,.3);
-  animation:gateIn .8s var(--ease) both;
-  transform-style:preserve-3d;
-  will-change:transform;
-  transition:box-shadow .4s var(--ease);
-}
-.gate-card.tilting{
-  box-shadow:
-    0 0 0 1px rgba(255,255,255,.06) inset,
-    0 48px 100px rgba(0,0,0,.65),
-    0 8px 32px rgba(0,0,0,.4);
-}
-@keyframes gateIn{from{opacity:0;transform:translateY(32px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+      /* card glassmorphism */
+      .gate-card {
+        position: relative;
+        width: 100%;
+        max-width: 480px;
+        background: rgba(255, 255, 255, 0.055);
+        backdrop-filter: blur(48px);
+        -webkit-backdrop-filter: blur(48px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 28px;
+        padding: 44px 40px 36px;
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+          0 32px 80px rgba(0, 0, 0, 0.55),
+          0 4px 24px rgba(0, 0, 0, 0.3);
+        animation: gateIn 0.8s var(--ease) both;
+        transform-style: preserve-3d;
+        will-change: transform;
+        transition: box-shadow 0.4s var(--ease);
+      }
+      .gate-card.tilting {
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+          0 48px 100px rgba(0, 0, 0, 0.65),
+          0 8px 32px rgba(0, 0, 0, 0.4);
+      }
+      @keyframes gateIn {
+        from {
+          opacity: 0;
+          transform: translateY(32px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
 
-/* brilho topo do card */
-.gate-card::before{
-  content:'';position:absolute;top:0;left:10%;right:10%;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
-  border-radius:50%;
-}
+      /* brilho topo do card */
+      .gate-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 10%;
+        right: 10%;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.25),
+          transparent
+        );
+        border-radius: 50%;
+      }
 
-.gate-logo{height:48px;width:auto;margin:0 auto 32px;opacity:.92;display:block}
+      .gate-logo {
+        height: 48px;
+        width: auto;
+        margin: 0 auto 32px;
+        opacity: 0.92;
+        display: block;
+      }
 
-.gate-sup{
-  font-size:.65rem;font-weight:600;letter-spacing:.24em;
-  text-transform:uppercase;color:var(--gold);margin-bottom:8px;
-  opacity:.9;text-align:center;
-}
-.gate-h1{
-  font-size:clamp(1.5rem,3.5vw,1.9rem);font-weight:700;
-  line-height:1.2;margin-bottom:8px;
-  color:#fff;letter-spacing:-.02em;text-align:center;
-}
-.gate-sub{
-  font-size:.84rem;color:rgba(255,255,255,.38);
-  line-height:1.7;margin-bottom:32px;font-weight:400;text-align:center;
-}
+      .gate-sup {
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 8px;
+        opacity: 0.9;
+        text-align: center;
+      }
+      .gate-h1 {
+        font-size: clamp(1.5rem, 3.5vw, 1.9rem);
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 8px;
+        color: #fff;
+        letter-spacing: -0.02em;
+        text-align: center;
+      }
+      .gate-sub {
+        font-size: 0.84rem;
+        color: rgba(255, 255, 255, 0.38);
+        line-height: 1.7;
+        margin-bottom: 32px;
+        font-weight: 400;
+        text-align: center;
+      }
 
-/* divider */
-.gate-divider{
-  height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);
-  margin-bottom:28px;
-}
+      /* divider */
+      .gate-divider {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        margin-bottom: 28px;
+      }
 
-/* form */
-.gate-form{display:flex;flex-direction:column;gap:8px}
-.gate-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+      /* form */
+      .gate-form {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .gate-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
 
-.fi-input,.fi-select{
-  width:100%;padding:13px 16px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:14px;
-  color:#fff;font-family:inherit;font-size:.9rem;font-weight:400;
-  outline:none;
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  transition:background .2s,border-color .2s,box-shadow .2s;
-}
-.fi-input::placeholder{color:rgba(255,255,255,.28)}
-.fi-input:focus,.fi-select:focus{
-  background:rgba(255,255,255,.09);
-  border-color:rgba(184,156,110,.6);
-  box-shadow:0 0 0 3px rgba(184,156,110,.1);
-}
-.fi-input.err{border-color:rgba(220,80,80,.7);box-shadow:0 0 0 3px rgba(220,80,80,.1)}
+      .fi-input,
+      .fi-select {
+        width: 100%;
+        padding: 13px 16px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        color: #fff;
+        font-family: inherit;
+        font-size: 0.9rem;
+        font-weight: 400;
+        outline: none;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        transition:
+          background 0.2s,
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .fi-input::placeholder {
+        color: rgba(255, 255, 255, 0.28);
+      }
+      .fi-input:focus,
+      .fi-select:focus {
+        background: rgba(255, 255, 255, 0.09);
+        border-color: rgba(184, 156, 110, 0.6);
+        box-shadow: 0 0 0 3px rgba(184, 156, 110, 0.1);
+      }
+      .fi-input.err {
+        border-color: rgba(220, 80, 80, 0.7);
+        box-shadow: 0 0 0 3px rgba(220, 80, 80, 0.1);
+      }
 
-.fi-select{
-  appearance:none;cursor:pointer;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,.3)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 14px center;padding-right:40px;
-}
-.fi-select option{background:#111}
+      .fi-select {
+        appearance: none;
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,.3)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        padding-right: 40px;
+      }
+      .fi-select option {
+        background: #111;
+      }
 
-.gate-errmsg{
-  font-size:.75rem;color:#f07070;
-  padding-left:2px;margin-top:-2px;
-  min-height:0;line-height:1.4;
-}
-.gate-errmsg:empty{display:none}
+      .gate-errmsg {
+        font-size: 0.75rem;
+        color: #f07070;
+        padding-left: 2px;
+        margin-top: -2px;
+        min-height: 0;
+        line-height: 1.4;
+      }
+      .gate-errmsg:empty {
+        display: none;
+      }
 
-.btn-access{
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  width:100%;padding:15px 24px;
-  background:linear-gradient(135deg, var(--gold) 0%, var(--gold-d) 100%);
-  border:none;border-radius:14px;
-  color:#111;font-family:inherit;font-weight:700;font-size:.95rem;
-  letter-spacing:.01em;cursor:pointer;margin-top:6px;
-  box-shadow:0 4px 24px rgba(184,156,110,.3);
-  transition:opacity .25s,transform .25s,box-shadow .25s;
-}
-.btn-access:hover{
-  opacity:.92;transform:translateY(-2px);
-  box-shadow:0 8px 32px rgba(184,156,110,.4);
-}
-.btn-access:disabled{opacity:.4;cursor:default;transform:none;box-shadow:none}
+      .btn-access {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 15px 24px;
+        background: linear-gradient(135deg, var(--gold) 0%, var(--gold-d) 100%);
+        border: none;
+        border-radius: 14px;
+        color: #111;
+        font-family: inherit;
+        font-weight: 700;
+        font-size: 0.95rem;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        margin-top: 6px;
+        box-shadow: 0 4px 24px rgba(184, 156, 110, 0.3);
+        transition:
+          opacity 0.25s,
+          transform 0.25s,
+          box-shadow 0.25s;
+      }
+      .btn-access:hover {
+        opacity: 0.92;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(184, 156, 110, 0.4);
+      }
+      .btn-access:disabled {
+        opacity: 0.4;
+        cursor: default;
+        transform: none;
+        box-shadow: none;
+      }
 
-.gate-foot{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-top:22px;
-}
-.gate-privacy{font-size:.7rem;color:rgba(255,255,255,.18);font-weight:400}
-.btn-admin{
-  font-size:.65rem;color:rgba(255,255,255,.08);
-  background:none;border:none;cursor:pointer;
-  font-family:inherit;letter-spacing:.06em;
-  transition:color .25s;
-}
-.btn-admin:hover{color:rgba(255,255,255,.28)}
+      .gate-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 22px;
+      }
+      .gate-privacy {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.18);
+        font-weight: 400;
+      }
+      .btn-admin {
+        font-size: 0.65rem;
+        color: rgba(255, 255, 255, 0.08);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        letter-spacing: 0.06em;
+        transition: color 0.25s;
+      }
+      .btn-admin:hover {
+        color: rgba(255, 255, 255, 0.28);
+      }
 
-/* ── PRODUCTS PAGE ── */
-.products{
-  display:none;
-  min-height:100vh;
-  background:#f0f0ee;
-  padding:72px 10% 100px;
-  animation:gateIn .7s var(--ease) both;
-}
-.products.show{display:block}
+      /* ── PRODUCTS PAGE ── */
+      .products {
+        display: none;
+        min-height: 100vh;
+        background: #f0f0ee;
+        padding: 72px 10% 100px;
+        animation: gateIn 0.7s var(--ease) both;
+      }
+      .products.show {
+        display: block;
+      }
 
-.prod-nav{
-  position:relative;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:56px;
-}
-.prod-logo{height:120px;width:auto;opacity:.9}
-.btn-back{position:absolute;right:0;top:50%;transform:translateY(-50%)}
-.btn-back{
-  display:inline-flex;align-items:center;gap:10px;
-  padding:10px 24px 10px 10px;
-  background:var(--gold);
-  border:none;border-radius:16px;
-  color:#111;font-family:inherit;font-weight:600;font-size:1rem;
-  cursor:pointer;text-decoration:none;white-space:nowrap;
-  transition:background .3s,transform .3s;
-}
-.btn-back:hover{background:var(--gold-d);transform:translateY(calc(-50% - 3px))}
-.btn-back-icon{
-  display:flex;align-items:center;justify-content:center;
-  width:48px;height:48px;
-  background:rgba(0,0,0,.18);border-radius:10px;
-  color:#111;flex-shrink:0;font-size:18px;
-  transition:transform .35s var(--ease);
-}
-.btn-back:hover .btn-back-icon{transform:translateX(-4px) scale(1.1)}
+      .prod-nav {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 56px;
+      }
+      .prod-logo {
+        height: 120px;
+        width: auto;
+        opacity: 0.9;
+      }
+      .btn-back {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 24px 10px 10px;
+        background: var(--gold);
+        border: none;
+        border-radius: 16px;
+        color: #111;
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        text-decoration: none;
+        white-space: nowrap;
+        transition:
+          background 0.3s,
+          transform 0.3s;
+      }
+      .btn-back:hover {
+        background: var(--gold-d);
+        transform: translateY(calc(-50% - 3px));
+      }
+      .btn-back-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        background: rgba(0, 0, 0, 0.18);
+        border-radius: 10px;
+        color: #111;
+        flex-shrink: 0;
+        font-size: 18px;
+        transition: transform 0.35s var(--ease);
+      }
+      .btn-back:hover .btn-back-icon {
+        transform: translateX(-4px) scale(1.1);
+      }
 
-.prod-sup{font-size:.68rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;text-align:center}
-.prod-h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:800;line-height:1.1;margin-bottom:14px;color:#111;text-align:center}
-.prod-sub{font-size:.95rem;color:#666;line-height:1.7;max-width:540px;margin-bottom:56px;text-align:center;margin-left:auto;margin-right:auto}
+      .prod-sup {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 12px;
+        text-align: center;
+      }
+      .prod-h1 {
+        font-size: clamp(2rem, 5vw, 3.4rem);
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 14px;
+        color: #111;
+        text-align: center;
+      }
+      .prod-sub {
+        font-size: 0.95rem;
+        color: #666;
+        line-height: 1.7;
+        max-width: 540px;
+        margin-bottom: 56px;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
 
-/* cards */
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
+      /* cards */
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 24px;
+      }
 
-.pcard{
-  background:#fff;border-radius:20px;overflow:hidden;
-  border:1px solid rgba(0,0,0,.07);
-  display:flex;flex-direction:column;
-  text-decoration:none;color:#111;
-  transition:transform .35s var(--ease),border-color .3s;
-  cursor:pointer;
-}
-.pcard:hover{transform:translateY(-7px);border-color:rgba(184,156,110,.4);box-shadow:0 12px 40px rgba(0,0,0,.1)}
+      .pcard {
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.07);
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        color: #111;
+        transition:
+          transform 0.35s var(--ease),
+          border-color 0.3s;
+        cursor: pointer;
+      }
+      .pcard:hover {
+        transform: translateY(-7px);
+        border-color: rgba(184, 156, 110, 0.4);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+      }
 
-.pcard-thumb{
-  height:210px;
-  background:#1a1a1a;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;flex-shrink:0;
-}
-.pcard-thumb img{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;transition:transform .5s var(--ease);
-}
-.pcard:hover .pcard-thumb img{transform:scale(1.06)}
-.pcard-thumb::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to top, rgba(0,0,0,.45) 0%, rgba(0,0,0,.1) 60%);
-  z-index:1;
-}
-.pcard-badge{
-  position:absolute;top:16px;left:16px;z-index:2;
-  font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  background:var(--gold);color:#111;padding:4px 12px;border-radius:20px;
-}
-.pcard-body{padding:24px 24px 28px;flex:1;display:flex;flex-direction:column}
-.pcard-title{font-size:1.2rem;font-weight:700;margin-bottom:8px;color:#111}
-.pcard-desc{font-size:.86rem;color:#777;line-height:1.65;flex:1}
-.pcard-link{
-  display:inline-flex;align-items:center;gap:6px;
-  margin-top:20px;font-size:.8rem;font-weight:600;
-  color:var(--gold);letter-spacing:.03em;
-}
-</style>
-</head>
-<body>
+      .pcard-thumb {
+        height: 210px;
+        background: #1a1a1a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .pcard-thumb img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s var(--ease);
+      }
+      .pcard:hover .pcard-thumb img {
+        transform: scale(1.06);
+      }
+      .pcard-thumb::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.45) 0%,
+          rgba(0, 0, 0, 0.1) 60%
+        );
+        z-index: 1;
+      }
+      .pcard-badge {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        z-index: 2;
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        background: var(--gold);
+        color: #111;
+        padding: 4px 12px;
+        border-radius: 20px;
+      }
+      .pcard-body {
+        padding: 24px 24px 28px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .pcard-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: #111;
+      }
+      .pcard-desc {
+        font-size: 0.86rem;
+        color: #777;
+        line-height: 1.65;
+        flex: 1;
+      }
+      .pcard-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--gold);
+        letter-spacing: 0.03em;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── GATE ── -->
+    <div class="gate" id="gate">
+      <div class="gate-bg"></div>
+      <div class="gate-card">
+        <img
+          src="images/logo_site2.png"
+          alt="Factory Interactive"
+          class="gate-logo"
+        />
+        <div class="gate-sup">Acesso Exclusivo</div>
+        <h1 class="gate-h1">Solicitar acesso<br />à demonstração.</h1>
+        <p class="gate-sub">
+          Preencha seus dados corporativos para visualizar os produtos Factory
+          Interactive.
+        </p>
 
-<!-- ── GATE ── -->
-<div class="gate" id="gate">
-  <div class="gate-bg"></div>
-  <div class="gate-card">
-    <img src="images/logo_site2.png" alt="Factory Interactive" class="gate-logo">
-    <div class="gate-sup">— Acesso Exclusivo</div>
-    <h1 class="gate-h1">Solicitar acesso<br>à demonstração.</h1>
-    <p class="gate-sub">Preencha seus dados corporativos para visualizar os produtos Factory Interactive.</p>
+        <div class="gate-divider"></div>
+        <form class="gate-form" id="gate-form" novalidate>
+          <div class="gate-row">
+            <input
+              class="fi-input"
+              id="f-name"
+              type="text"
+              name="nome"
+              placeholder="Nome completo"
+              autocomplete="name"
+              required
+            />
+            <input
+              class="fi-input"
+              id="f-company"
+              type="text"
+              name="empresa"
+              placeholder="Empresa"
+              required
+            />
+          </div>
+          <input
+            class="fi-input"
+            id="f-email"
+            type="email"
+            name="email"
+            placeholder="E-mail corporativo"
+            autocomplete="email"
+            required
+          />
+          <div class="gate-errmsg" id="email-err"></div>
+          <div class="gate-row">
+            <input
+              class="fi-input"
+              id="f-phone"
+              type="tel"
+              name="telefone"
+              placeholder="Telefone / WhatsApp"
+              autocomplete="tel"
+            />
+            <input
+              class="fi-input"
+              id="f-city"
+              type="text"
+              name="cidade"
+              placeholder="Cidade"
+              autocomplete="address-level2"
+            />
+          </div>
+          <select class="fi-select" id="f-role" name="posicao" required>
+            <option value="" disabled selected>Posição na empresa</option>
+            <option>Sócio / Proprietário</option>
+            <option>Diretor / C-Level</option>
+            <option>Gerente</option>
+            <option>Arquiteto / Designer</option>
+            <option>Incorporadora / Construtora</option>
+            <option>Marketing / Comunicação</option>
+            <option>Outro</option>
+          </select>
+          <button class="btn-access" id="btn-access" type="submit">
+            Acessar demonstração →
+          </button>
+        </form>
 
-    <div class="gate-divider"></div>
-    <form class="gate-form" id="gate-form" novalidate>
-      <div class="gate-row">
-        <input class="fi-input" id="f-name"    type="text"  name="nome"    placeholder="Nome completo"  autocomplete="name"  required>
-        <input class="fi-input" id="f-company" type="text"  name="empresa" placeholder="Empresa"                             required>
+        <div class="gate-foot">
+          <span class="gate-privacy">Seus dados não serão compartilhados.</span>
+          <button class="btn-admin" id="btn-admin" type="button">admin</button>
+        </div>
       </div>
-      <input   class="fi-input" id="f-email"   type="email" name="email"   placeholder="E-mail corporativo" autocomplete="email" required>
-      <div class="gate-errmsg" id="email-err"></div>
-      <div class="gate-row">
-        <input class="fi-input" id="f-phone" type="tel"  name="telefone" placeholder="Telefone / WhatsApp" autocomplete="tel">
-        <input class="fi-input" id="f-city"  type="text" name="cidade"   placeholder="Cidade"              autocomplete="address-level2">
-      </div>
-      <select class="fi-select" id="f-role" name="posicao" required>
-        <option value="" disabled selected>Posição na empresa</option>
-        <option>Sócio / Proprietário</option>
-        <option>Diretor / C-Level</option>
-        <option>Gerente</option>
-        <option>Arquiteto / Designer</option>
-        <option>Incorporadora / Construtora</option>
-        <option>Marketing / Comunicação</option>
-        <option>Outro</option>
-      </select>
-      <button class="btn-access" id="btn-access" type="submit">Acessar demonstração →</button>
-    </form>
-
-    <div class="gate-foot">
-      <span class="gate-privacy">Seus dados não serão compartilhados.</span>
-      <button class="btn-admin" id="btn-admin" type="button">admin</button>
     </div>
-  </div>
-</div>
 
-<!-- ── PRODUCTS ── -->
-<section class="products" id="products">
-  <nav class="prod-nav">
-    <img src="images/logo_site2.png" alt="Factory Interactive" class="prod-logo">
-    <a class="btn-back" href="index.html">
-      <span class="btn-back-icon">←</span>
-      Voltar ao site
-    </a>
-  </nav>
+    <!-- ── PRODUCTS ── -->
+    <section class="products" id="products">
+      <nav class="prod-nav">
+        <img
+          src="images/logo_site2.png"
+          alt="Factory Interactive"
+          class="prod-logo"
+        />
+        <a class="btn-back" href="index.html">
+          <span class="btn-back-icon">←</span>
+          Voltar ao site
+        </a>
+      </nav>
 
-  <div class="prod-sup">— Produtos</div>
-  <h1 class="prod-h1">Demonstrações<br>disponíveis.</h1>
-  <p class="prod-sub">Explore nossas ferramentas interativas desenvolvidas para arquitetura e incorporação imobiliária.</p>
+      <div class="prod-sup">— Produtos</div>
+      <h1 class="prod-h1">Demonstrações<br />disponíveis.</h1>
+      <p class="prod-sub">
+        Explore nossas ferramentas interativas desenvolvidas para arquitetura e
+        incorporação imobiliária.
+      </p>
 
-  <div class="cards">
+      <div class="cards">
+        <a class="pcard" href="archviz-explorer.html" target="_blank">
+          <div class="pcard-thumb">
+            <img src="images/Portfolio_001.jpg" alt="Archviz Explorer" />
+            <span class="pcard-badge">Archviz</span>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-title">Archviz Explorer</div>
+            <div class="pcard-desc">
+              Navegação interativa por pontos de vista do empreendimento com
+              transições em vídeo, painéis informativos e POIs dinâmicos.
+            </div>
+            <div class="pcard-link">Explorar demo →</div>
+          </div>
+        </a>
 
-    <a class="pcard" href="archviz-explorer.html" target="_blank">
-      <div class="pcard-thumb">
-        <img src="images/Portfolio_001.jpg" alt="Archviz Explorer">
-        <span class="pcard-badge">Archviz</span>
+        <a class="pcard" href="launching-page.html" target="_blank">
+          <div class="pcard-thumb">
+            <img src="images/Portfolio_002.jpg" alt="Launching Page" />
+            <span class="pcard-badge">Lançamento</span>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-title">Launching Page</div>
+            <div class="pcard-desc">
+              Landing page de lançamento com galeria de vistas externas e
+              ambientes internos, tour visual e call-to-action integrado.
+            </div>
+            <div class="pcard-link">Explorar demo →</div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" target="_blank">
+          <div class="pcard-thumb">
+            <img src="images/pano_living.jpg" alt="Panorama 360°" />
+            <span class="pcard-badge">360°</span>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-title">Panorama 360°</div>
+            <div class="pcard-desc">
+              Tour imersivo em 360° pelos ambientes do empreendimento
+              diretamente no navegador, sem app ou óculos — quarto, living e
+              sacada.
+            </div>
+            <div class="pcard-link">Explorar demo →</div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" target="_blank">
+          <div class="pcard-thumb">
+            <img src="images/Portfolio_003.jpg" alt="Visualizador 3D" />
+            <span class="pcard-badge">3D</span>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-title">Visualizador 3D</div>
+            <div class="pcard-desc">
+              Modelo tridimensional interativo do edifício com rotação livre,
+              zoom e seleção de pavimentos diretamente no navegador.
+            </div>
+            <div class="pcard-link">Em breve →</div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" target="_blank">
+          <div class="pcard-thumb">
+            <img src="images/Portfolio_004.jpg" alt="Planta Humanizada" />
+            <span class="pcard-badge">Planta</span>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-title">Planta Humanizada</div>
+            <div class="pcard-desc">
+              Planta baixa animada com mobiliário, texturas e elementos humanos
+              que revelam progressivamente os ambientes do imóvel.
+            </div>
+            <div class="pcard-link">Em breve →</div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" target="_blank">
+          <div class="pcard-thumb">
+            <img src="images/Portfolio_005.jpg" alt="Walkthrough Interior" />
+            <span class="pcard-badge">Walkthrough</span>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-title">Walkthrough Interior</div>
+            <div class="pcard-desc">
+              Percurso imersivo pelos ambientes internos do empreendimento com
+              sequência de imagens navegáveis e pontos de interesse interativos.
+            </div>
+            <div class="pcard-link">Em breve →</div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" target="_blank">
+          <div class="pcard-thumb">
+            <img src="images/pano_quarto.jpg" alt="Configurador de Ambiente" />
+            <span class="pcard-badge">Configurador</span>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-title">Configurador de Ambiente</div>
+            <div class="pcard-desc">
+              Ferramenta interativa para personalização de acabamentos,
+              revestimentos e mobiliário com visualização em tempo real do
+              resultado.
+            </div>
+            <div class="pcard-link">Em breve →</div>
+          </div>
+        </a>
+
+        <a class="pcard" href="#" target="_blank">
+          <div class="pcard-thumb">
+            <img src="images/pano_sacada.jpg" alt="AR / VR" />
+            <span class="pcard-badge">AR / VR</span>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-title">AR / VR</div>
+            <div class="pcard-desc">
+              Experiência imersiva em realidade aumentada e virtual — visualize
+              o empreendimento em escala real pelo celular ou headset VR.
+            </div>
+            <div class="pcard-link">Em breve →</div>
+          </div>
+        </a>
       </div>
-      <div class="pcard-body">
-        <div class="pcard-title">Archviz Explorer</div>
-        <div class="pcard-desc">Navegação interativa por pontos de vista do empreendimento com transições em vídeo, painéis informativos e POIs dinâmicos.</div>
-        <div class="pcard-link">Explorar demo →</div>
-      </div>
-    </a>
+    </section>
 
-    <a class="pcard" href="launching-page.html" target="_blank">
-      <div class="pcard-thumb">
-        <img src="images/Portfolio_002.jpg" alt="Launching Page">
-        <span class="pcard-badge">Lançamento</span>
-      </div>
-      <div class="pcard-body">
-        <div class="pcard-title">Launching Page</div>
-        <div class="pcard-desc">Landing page de lançamento com galeria de vistas externas e ambientes internos, tour visual e call-to-action integrado.</div>
-        <div class="pcard-link">Explorar demo →</div>
-      </div>
-    </a>
+    <script>
+      (function () {
+        // ── CONFIGURAÇÃO ───────────────────────────────────────────
+        // Para enviar os dados por e-mail:
+        // 1. Crie conta gratuita em formspree.io
+        // 2. Crie um form com destino: firsightstudio@gmail.com
+        // 3. Cole o ID do form abaixo (ex: 'xpwzgkla')
+        const FORMSPREE_ID = "xeedjkjo";
 
-    <a class="pcard" href="#" target="_blank">
-      <div class="pcard-thumb">
-        <img src="images/pano_living.jpg" alt="Panorama 360°">
-        <span class="pcard-badge">360°</span>
-      </div>
-      <div class="pcard-body">
-        <div class="pcard-title">Panorama 360°</div>
-        <div class="pcard-desc">Tour imersivo em 360° pelos ambientes do empreendimento diretamente no navegador, sem app ou óculos — quarto, living e sacada.</div>
-        <div class="pcard-link">Explorar demo →</div>
-      </div>
-    </a>
+        const BLOCKED = [
+          "gmail",
+          "yahoo",
+          "hotmail",
+          "outlook",
+          "live",
+          "icloud",
+          "msn",
+          "me",
+          "aol",
+          "uol",
+          "bol",
+          "terra",
+          "ig",
+          "globo",
+          "oi",
+          "superig",
+          "zipmail",
+          "r7",
+          "ymail",
+          "protonmail",
+          "tutanota",
+          "gmx",
+          "mail",
+          "inbox",
+          "yandex",
+          "pm",
+        ];
 
-    <a class="pcard" href="#" target="_blank">
-      <div class="pcard-thumb">
-        <img src="images/Portfolio_003.jpg" alt="Visualizador 3D">
-        <span class="pcard-badge">3D</span>
-      </div>
-      <div class="pcard-body">
-        <div class="pcard-title">Visualizador 3D</div>
-        <div class="pcard-desc">Modelo tridimensional interativo do edifício com rotação livre, zoom e seleção de pavimentos diretamente no navegador.</div>
-        <div class="pcard-link">Em breve →</div>
-      </div>
-    </a>
+        // ── ELEMENTOS ─────────────────────────────────────────────
+        const gate = document.getElementById("gate");
+        const products = document.getElementById("products");
+        const form = document.getElementById("gate-form");
+        const fName = document.getElementById("f-name");
+        const fCompany = document.getElementById("f-company");
+        const fEmail = document.getElementById("f-email");
+        const fRole = document.getElementById("f-role");
+        const emailErr = document.getElementById("email-err");
+        const btnAccess = document.getElementById("btn-access");
+        const btnAdmin = document.getElementById("btn-admin");
 
-    <a class="pcard" href="#" target="_blank">
-      <div class="pcard-thumb">
-        <img src="images/Portfolio_004.jpg" alt="Planta Humanizada">
-        <span class="pcard-badge">Planta</span>
-      </div>
-      <div class="pcard-body">
-        <div class="pcard-title">Planta Humanizada</div>
-        <div class="pcard-desc">Planta baixa animada com mobiliário, texturas e elementos humanos que revelam progressivamente os ambientes do imóvel.</div>
-        <div class="pcard-link">Em breve →</div>
-      </div>
-    </a>
+        // ── HELPERS ───────────────────────────────────────────────
+        function isPersonal(email) {
+          const domain = (email.split("@")[1] || "").toLowerCase();
+          const base = domain.split(".")[0];
+          return BLOCKED.includes(base);
+        }
 
-    <a class="pcard" href="#" target="_blank">
-      <div class="pcard-thumb">
-        <img src="images/Portfolio_005.jpg" alt="Walkthrough Interior">
-        <span class="pcard-badge">Walkthrough</span>
-      </div>
-      <div class="pcard-body">
-        <div class="pcard-title">Walkthrough Interior</div>
-        <div class="pcard-desc">Percurso imersivo pelos ambientes internos do empreendimento com sequência de imagens navegáveis e pontos de interesse interativos.</div>
-        <div class="pcard-link">Em breve →</div>
-      </div>
-    </a>
+        function unlock() {
+          gate.classList.add("out");
+          products.classList.add("show");
+          window.scrollTo(0, 0);
+        }
 
-    <a class="pcard" href="#" target="_blank">
-      <div class="pcard-thumb">
-        <img src="images/pano_quarto.jpg" alt="Configurador de Ambiente">
-        <span class="pcard-badge">Configurador</span>
-      </div>
-      <div class="pcard-body">
-        <div class="pcard-title">Configurador de Ambiente</div>
-        <div class="pcard-desc">Ferramenta interativa para personalização de acabamentos, revestimentos e mobiliário com visualização em tempo real do resultado.</div>
-        <div class="pcard-link">Em breve →</div>
-      </div>
-    </a>
+        function saveLead(data) {
+          try {
+            const list = JSON.parse(localStorage.getItem("fi_leads") || "[]");
+            list.unshift({ ...data, ts: new Date().toISOString() });
+            localStorage.setItem("fi_leads", JSON.stringify(list));
+          } catch (_) {}
+        }
 
-    <a class="pcard" href="#" target="_blank">
-      <div class="pcard-thumb">
-        <img src="images/pano_sacada.jpg" alt="AR / VR">
-        <span class="pcard-badge">AR / VR</span>
-      </div>
-      <div class="pcard-body">
-        <div class="pcard-title">AR / VR</div>
-        <div class="pcard-desc">Experiência imersiva em realidade aumentada e virtual — visualize o empreendimento em escala real pelo celular ou headset VR.</div>
-        <div class="pcard-link">Em breve →</div>
-      </div>
-    </a>
-
-  </div>
-</section>
-
-<script>
-(function () {
-  // ── CONFIGURAÇÃO ───────────────────────────────────────────
-  // Para enviar os dados por e-mail:
-  // 1. Crie conta gratuita em formspree.io
-  // 2. Crie um form com destino: firsightstudio@gmail.com
-  // 3. Cole o ID do form abaixo (ex: 'xpwzgkla')
-  const FORMSPREE_ID = 'xeedjkjo';
-
-  const BLOCKED = [
-    'gmail','yahoo','hotmail','outlook','live','icloud','msn','me','aol',
-    'uol','bol','terra','ig','globo','oi','superig','zipmail','r7',
-    'ymail','protonmail','tutanota','gmx','mail','inbox','yandex','pm'
-  ];
-
-  // ── ELEMENTOS ─────────────────────────────────────────────
-  const gate     = document.getElementById('gate');
-  const products = document.getElementById('products');
-  const form     = document.getElementById('gate-form');
-  const fName    = document.getElementById('f-name');
-  const fCompany = document.getElementById('f-company');
-  const fEmail   = document.getElementById('f-email');
-  const fRole    = document.getElementById('f-role');
-  const emailErr = document.getElementById('email-err');
-  const btnAccess= document.getElementById('btn-access');
-  const btnAdmin = document.getElementById('btn-admin');
-
-  // ── HELPERS ───────────────────────────────────────────────
-  function isPersonal(email) {
-    const domain = (email.split('@')[1] || '').toLowerCase();
-    const base = domain.split('.')[0];
-    return BLOCKED.includes(base);
-  }
-
-  function unlock() {
-    gate.classList.add('out');
-    products.classList.add('show');
-    window.scrollTo(0, 0);
-  }
-
-  function saveLead(data) {
-    try {
-      const list = JSON.parse(localStorage.getItem('fi_leads') || '[]');
-      list.unshift({ ...data, ts: new Date().toISOString() });
-      localStorage.setItem('fi_leads', JSON.stringify(list));
-    } catch (_) {}
-  }
-
-  // ── ADMIN BYPASS ──────────────────────────────────────────
-  if (location.hash === '#admin') { unlock(); }
-  btnAdmin.addEventListener('click', function () {
-    location.hash = '#admin';
-    unlock();
-  });
-
-  // ── EMAIL VALIDATION LIVE ─────────────────────────────────
-  fEmail.addEventListener('blur', function () {
-    if (fEmail.value && isPersonal(fEmail.value)) {
-      fEmail.classList.add('err');
-      emailErr.textContent = 'Use um e-mail corporativo (não gmail, hotmail, yahoo…)';
-    } else {
-      fEmail.classList.remove('err');
-      emailErr.textContent = '';
-    }
-  });
-
-  // ── SUBMIT ────────────────────────────────────────────────
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    emailErr.textContent = '';
-
-    const data = {
-      nome:     fName.value.trim(),
-      empresa:  fCompany.value.trim(),
-      email:    fEmail.value.trim(),
-      telefone: document.getElementById('f-phone').value.trim(),
-      cidade:   document.getElementById('f-city').value.trim(),
-      posicao:  fRole.value,
-    };
-
-    if (!data.nome || !data.empresa || !data.email || !data.posicao) {
-      emailErr.textContent = 'Preencha todos os campos.';
-      return;
-    }
-    if (isPersonal(data.email)) {
-      fEmail.classList.add('err');
-      emailErr.textContent = 'Use um e-mail corporativo (não gmail, hotmail, yahoo…)';
-      return;
-    }
-
-    btnAccess.disabled = true;
-    btnAccess.textContent = 'Enviando…';
-
-    // Salva localmente sempre
-    saveLead(data);
-
-    // Envia via Formspree se configurado
-    if (FORMSPREE_ID) {
-      try {
-        await fetch('https://formspree.io/f/' + FORMSPREE_ID, {
-          method: 'POST',
-          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
+        // ── ADMIN BYPASS ──────────────────────────────────────────
+        if (location.hash === "#admin") {
+          unlock();
+        }
+        btnAdmin.addEventListener("click", function () {
+          location.hash = "#admin";
+          unlock();
         });
-      } catch (_) {}
-    }
 
-    unlock();
-  });
+        // ── EMAIL VALIDATION LIVE ─────────────────────────────────
+        fEmail.addEventListener("blur", function () {
+          if (fEmail.value && isPersonal(fEmail.value)) {
+            fEmail.classList.add("err");
+            emailErr.textContent =
+              "Use um e-mail corporativo (não gmail, hotmail, yahoo…)";
+          } else {
+            fEmail.classList.remove("err");
+            emailErr.textContent = "";
+          }
+        });
 
-  // Para ver leads salvos: abra o console e rode:  JSON.parse(localStorage.getItem('fi_leads'))
+        // ── SUBMIT ────────────────────────────────────────────────
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+          emailErr.textContent = "";
 
-  // ── CARD TILT (mouse tracking) ────────────────────────────
-  (function () {
-    const card = document.querySelector('.gate-card');
-    if (!card) return;
+          const data = {
+            nome: fName.value.trim(),
+            empresa: fCompany.value.trim(),
+            email: fEmail.value.trim(),
+            telefone: document.getElementById("f-phone").value.trim(),
+            cidade: document.getElementById("f-city").value.trim(),
+            posicao: fRole.value,
+          };
 
-    const STRENGTH = 22;   // graus máx de rotação
-    const SCALE    = 1.04; // zoom suave ao hover
+          if (!data.nome || !data.empresa || !data.email || !data.posicao) {
+            emailErr.textContent = "Preencha todos os campos.";
+            return;
+          }
+          if (isPersonal(data.email)) {
+            fEmail.classList.add("err");
+            emailErr.textContent =
+              "Use um e-mail corporativo (não gmail, hotmail, yahoo…)";
+            return;
+          }
 
-    let tx = 0, ty = 0;   // valores alvo
-    let cx = 0, cy = 0;   // valores atuais (interpolados)
-    let raf = null;
-    let active = false;
+          btnAccess.disabled = true;
+          btnAccess.textContent = "Enviando…";
 
-    function lerp(a, b, t) { return a + (b - a) * t; }
+          // Salva localmente sempre
+          saveLead(data);
 
-    function loop() {
-      cx = lerp(cx, tx, 0.12);
-      cy = lerp(cy, ty, 0.12);
+          // Envia via Formspree se configurado
+          if (FORMSPREE_ID) {
+            try {
+              await fetch("https://formspree.io/f/" + FORMSPREE_ID, {
+                method: "POST",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+              });
+            } catch (_) {}
+          }
 
-      const dx = Math.abs(cx) + Math.abs(cy);
-      const sc = active ? SCALE : 1;
-      const scC = lerp(parseFloat(card.dataset.sc || 1), sc, 0.08);
-      card.dataset.sc = scC;
+          unlock();
+        });
 
-      card.style.transform =
-        `perspective(600px) rotateX(${cy}deg) rotateY(${cx}deg) scale(${scC})`;
+        // Para ver leads salvos: abra o console e rode:  JSON.parse(localStorage.getItem('fi_leads'))
 
-      raf = requestAnimationFrame(loop);
-    }
+        // ── CARD TILT (mouse tracking) ────────────────────────────
+        (function () {
+          const card = document.querySelector(".gate-card");
+          if (!card) return;
 
-    function onMove(e) {
-      const r   = card.getBoundingClientRect();
-      const px  = (e.clientX - r.left) / r.width  - 0.5;
-      const py  = (e.clientY - r.top)  / r.height - 0.5;
-      tx =  px * STRENGTH * 2;
-      ty = -py * STRENGTH;
-      card.classList.add('tilting');
-    }
+          const STRENGTH = 22; // graus máx de rotação
+          const SCALE = 1.04; // zoom suave ao hover
 
-    function onLeave() {
-      tx = 0; ty = 0;
-      active = false;
-      card.classList.remove('tilting');
-    }
+          let tx = 0,
+            ty = 0; // valores alvo
+          let cx = 0,
+            cy = 0; // valores atuais (interpolados)
+          let raf = null;
+          let active = false;
 
-    card.addEventListener('mouseenter', function () { active = true; });
-    card.addEventListener('mousemove',  onMove);
-    card.addEventListener('mouseleave', onLeave);
+          function lerp(a, b, t) {
+            return a + (b - a) * t;
+          }
 
-    loop();
-  })();
-})();
-</script>
-</body>
+          function loop() {
+            cx = lerp(cx, tx, 0.12);
+            cy = lerp(cy, ty, 0.12);
+
+            const dx = Math.abs(cx) + Math.abs(cy);
+            const sc = active ? SCALE : 1;
+            const scC = lerp(parseFloat(card.dataset.sc || 1), sc, 0.08);
+            card.dataset.sc = scC;
+
+            card.style.transform = `perspective(600px) rotateX(${cy}deg) rotateY(${cx}deg) scale(${scC})`;
+
+            raf = requestAnimationFrame(loop);
+          }
+
+          function onMove(e) {
+            const r = card.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width - 0.5;
+            const py = (e.clientY - r.top) / r.height - 0.5;
+            tx = px * STRENGTH * 2;
+            ty = -py * STRENGTH;
+            card.classList.add("tilting");
+          }
+
+          function onLeave() {
+            tx = 0;
+            ty = 0;
+            active = false;
+            card.classList.remove("tilting");
+          }
+
+          card.addEventListener("mouseenter", function () {
+            active = true;
+          });
+          card.addEventListener("mousemove", onMove);
+          card.addEventListener("mouseleave", onLeave);
+
+          loop();
+        })();
+      })();
+    </script>
+  </body>
 </html>
