@@ -3,8 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex,nofollow" />
-    <title>Factory Interactive — Acesso</title>
+    <meta name="robots" content="index,follow" />
+    <title>Demos Interativos de Archviz — Factory Interactive</title>
+    <meta name="description" content="Acesse demonstrações exclusivas de archviz interativo, panorama 360°, planta humanizada e visualizador 3D. Experiências digitais para arquitetos e incorporadoras de alto padrão." />
+    <meta name="keywords" content="archviz interativo, visualização arquitetônica, panorama 360, planta humanizada, visualizador 3D, factory interactive, lançamento imobiliário" />
+    <meta name="author" content="Factory Interactive" />
+    <link rel="canonical" href="https://factorystudio-one.vercel.app/fi-preview.html" />
+
+    <!-- Open Graph — preview no WhatsApp, LinkedIn, Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://factorystudio-one.vercel.app/fi-preview.html" />
+    <meta property="og:title" content="Demos Interativos de Archviz — Factory Interactive" />
+    <meta property="og:description" content="Experimente archviz interativo, panorama 360°, planta humanizada e visualizador 3D. Ferramentas digitais para arquitetos e incorporadoras." />
+    <meta property="og:image" content="https://factorystudio-one.vercel.app/images/Portfolio_001.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Factory Interactive" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Demos Interativos de Archviz — Factory Interactive" />
+    <meta name="twitter:description" content="Archviz interativo, panorama 360°, planta humanizada e visualizador 3D para arquitetos e incorporadoras." />
+    <meta name="twitter:image" content="https://factorystudio-one.vercel.app/images/Portfolio_001.jpg" />
+
     <link rel="icon" type="image/png" href="images/logo_site.png" />
     <!-- Preload LCP image — gate background -->
     <link rel="preload" as="image" href="images/Portfolio_001.jpg" fetchpriority="high" />
@@ -1260,6 +1282,41 @@
           applyLang(saved);
         }
       })();
+    </script>
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "Factory Interactive",
+      "description": "Studio criativo especializado em experiências digitais interativas para arquitetura e mercado imobiliário de alto padrão.",
+      "url": "https://factorystudio-one.vercel.app/fi-preview.html",
+      "logo": "https://factorystudio-one.vercel.app/images/logo_site.png",
+      "image": "https://factorystudio-one.vercel.app/images/Portfolio_001.jpg",
+      "telephone": "+55-41-99227-2317",
+      "email": "firsightstudio@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Curitiba",
+        "addressRegion": "PR",
+        "addressCountry": "BR"
+      },
+      "sameAs": [
+        "https://www.instagram.com/umdesignerchato",
+        "https://www.behance.net/firsightstudio"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Demos Interativos",
+        "itemListElement": [
+          { "@type": "Offer", "name": "Archviz Explorer", "description": "Navegação interativa por pontos de vista do empreendimento com transições e POIs dinâmicos." },
+          { "@type": "Offer", "name": "Panorama 360°", "description": "Tour imersivo em 360° pelos ambientes do empreendimento diretamente no navegador." },
+          { "@type": "Offer", "name": "Planta Humanizada", "description": "Planta baixa animada com mobiliário, texturas e elementos humanos interativos." },
+          { "@type": "Offer", "name": "Visualizador 3D", "description": "Modelo tridimensional interativo do edifício com rotação livre e zoom no navegador." }
+        ]
+      }
+    }
     </script>
   </body>
 </html>
