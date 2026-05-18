@@ -80,13 +80,7 @@
 
       /* NOISE */
       #noise {
-        position: fixed;
-        inset: 0;
-        z-index: 3;
-        pointer-events: none;
-        opacity: 0.04;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-        background-size: 160px;
+        display: none;
       }
 
       /* STAGE */
@@ -125,9 +119,11 @@
         object-fit: cover;
         opacity: 0;
         z-index: 1;
-        -webkit-transition: none;
-        transition: none;
-        will-change: opacity;
+        transition: opacity 0.55s ease;
+      }
+
+      .vid.active {
+        opacity: 1;
       }
 
       .vid.active {
@@ -314,7 +310,9 @@
         opacity: 0;
         transition: opacity 0.8s var(--ease);
       }
-      #ai-bot-bar.show { opacity: 1; }
+      #ai-bot-bar.show {
+        opacity: 1;
+      }
       .ai-bot-sep {
         width: 1px;
         height: 26px;
@@ -335,8 +333,12 @@
         opacity: 0.55;
         flex-shrink: 0;
       }
-      #ai-track-btn:hover { opacity: 1; }
-      #ai-track-btn.active { opacity: 1; }
+      #ai-track-btn:hover {
+        opacity: 1;
+      }
+      #ai-track-btn.active {
+        opacity: 1;
+      }
       #ai-circle {
         width: 34px;
         height: 34px;
@@ -346,7 +348,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: border-color 0.3s, background 0.3s;
+        transition:
+          border-color 0.3s,
+          background 0.3s;
       }
       #ai-track-btn:hover #ai-circle,
       #ai-track-btn.active #ai-circle {
@@ -354,7 +358,10 @@
         background: rgba(30, 24, 16, 1);
       }
       #ai-label {
-        font-family: "Inter", -apple-system, sans-serif;
+        font-family:
+          "Inter",
+          -apple-system,
+          sans-serif;
         font-size: 10px;
         font-weight: 400;
         letter-spacing: 0.06em;
@@ -379,7 +386,9 @@
         opacity: 0;
         pointer-events: none;
         transform: translate(-50%, -50%) scale(0.97);
-        transition: opacity 0.3s ease, transform 0.3s var(--ease);
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s var(--ease);
         user-select: none;
       }
       #ai-panel.open {
@@ -399,7 +408,9 @@
         justify-content: space-between;
         cursor: grab;
       }
-      #ai-panel-header:active { cursor: grabbing; }
+      #ai-panel-header:active {
+        cursor: grabbing;
+      }
       #ai-panel-title {
         color: var(--warm);
         font-size: 11px;
@@ -411,35 +422,52 @@
         width: 24px;
         height: 24px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.07);
-        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: none;
         transition: background 0.2s;
       }
-      #ai-panel-close:hover { background: rgba(255,255,255,0.14); }
-      #ai-panel-close svg { width:10px; height:10px; stroke:rgba(255,255,255,0.7); fill:none; stroke-width:2; stroke-linecap:round; }
+      #ai-panel-close:hover {
+        background: rgba(255, 255, 255, 0.14);
+      }
+      #ai-panel-close svg {
+        width: 10px;
+        height: 10px;
+        stroke: rgba(255, 255, 255, 0.7);
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+      }
       #ai-panel-body {
         padding: 16px;
         display: flex;
         flex-direction: column;
         gap: 12px;
       }
-      .ai-row { display: flex; gap: 10px; }
-      .ai-field { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+      .ai-row {
+        display: flex;
+        gap: 10px;
+      }
+      .ai-field {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
       .ai-lbl {
         font-size: 10px;
-        color: rgba(255,255,255,0.5);
+        color: rgba(255, 255, 255, 0.5);
         text-transform: uppercase;
         letter-spacing: 0.1em;
       }
       .ai-field input,
       .ai-field select,
       .ai-field textarea {
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 10px;
         padding: 9px 11px;
         color: #fff;
@@ -450,9 +478,17 @@
       }
       .ai-field input:focus,
       .ai-field select:focus,
-      .ai-field textarea:focus { border-color: rgba(200,169,110,0.4); }
-      .ai-field textarea { resize: none; min-height: 80px; line-height: 1.5; }
-      .ai-field select option { background: #1a1510; }
+      .ai-field textarea:focus {
+        border-color: rgba(200, 169, 110, 0.4);
+      }
+      .ai-field textarea {
+        resize: none;
+        min-height: 80px;
+        line-height: 1.5;
+      }
+      .ai-field select option {
+        background: #1a1510;
+      }
       #ai-generate-btn {
         width: 100%;
         padding: 12px;
@@ -466,13 +502,22 @@
         letter-spacing: 0.1em;
         text-transform: uppercase;
         cursor: none;
-        transition: background 0.2s, transform 0.2s;
+        transition:
+          background 0.2s,
+          transform 0.2s;
       }
-      #ai-generate-btn:hover { background: #ddb16a; transform: scale(1.02); }
-      #ai-generate-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+      #ai-generate-btn:hover {
+        background: #ddb16a;
+        transform: scale(1.02);
+      }
+      #ai-generate-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
       #ai-status {
         font-size: 12px;
-        color: rgba(255,255,255,0.55);
+        color: rgba(255, 255, 255, 0.55);
         text-align: center;
         min-height: 18px;
       }
@@ -481,19 +526,26 @@
         aspect-ratio: 1/1;
         border-radius: 12px;
         overflow: hidden;
-        background: rgba(0,0,0,0.4);
+        background: rgba(0, 0, 0, 0.4);
         display: none;
-        border: 1px solid rgba(255,255,255,0.07);
+        border: 1px solid rgba(255, 255, 255, 0.07);
       }
-      #ai-img-wrap.visible { display: block; }
-      #ai-result-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      #ai-img-wrap.visible {
+        display: block;
+      }
+      #ai-result-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
       #ai-dl-btn {
         width: 100%;
         padding: 11px;
-        border: 1px solid rgba(255,255,255,0.12);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 12px;
-        background: rgba(255,255,255,0.06);
-        color: rgba(255,255,255,0.8);
+        background: rgba(255, 255, 255, 0.06);
+        color: rgba(255, 255, 255, 0.8);
         font-family: "Inter", sans-serif;
         font-size: 12px;
         font-weight: 600;
@@ -503,8 +555,12 @@
         transition: background 0.2s;
         text-transform: uppercase;
       }
-      #ai-dl-btn.visible { display: block; }
-      #ai-dl-btn:hover { background: rgba(255,255,255,0.12); }
+      #ai-dl-btn.visible {
+        display: block;
+      }
+      #ai-dl-btn:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
 
       /* TOPBAR */
       #topbar {
@@ -586,18 +642,19 @@
       /* TRACK */
       #track {
         position: fixed;
-        bottom: 36px;
-        left: 50%;
-        transform: translateX(-50%);
+        right: 36px;
+        top: 50%;
+        transform: translateY(-50%);
         z-index: 10;
         display: flex;
+        flex-direction: column-reverse;
         align-items: center;
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(50px) saturate(1.8);
-        -webkit-backdrop-filter: blur(50px) saturate(1.8);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        border-radius: 999px;
-        padding: 17px 13px;
+        background: rgba(18, 18, 15, 0.88);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 13px 10px;
         box-shadow:
           0 0 0 1px rgba(255, 255, 255, 0.12) inset,
           0 16px 48px rgba(0, 0, 0, 0.4);
@@ -613,11 +670,11 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 8px;
+        gap: 0;
         cursor: none;
         opacity: 0.32;
         transition: opacity 0.3s;
-        padding: 0 8px;
+        padding: 6px 4px;
       }
 
       .t-pt.active {
@@ -660,18 +717,7 @@
         box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
       }
 
-      .t-pulse {
-        position: absolute;
-        inset: -5px;
-        border-radius: 50%;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        opacity: 0;
-        animation: tp 2.5s ease-in-out infinite;
-      }
-
-      .t-pt.active .t-pulse {
-        opacity: 1;
-      }
+      .t-pulse { display: none; }
 
       @keyframes tp {
         0%,
@@ -687,21 +733,27 @@
       }
 
       .t-label {
-        font-family:
-          "Inter",
-          -apple-system,
-          sans-serif;
-        font-size: 11px;
-        font-weight: 400;
-        letter-spacing: 0.06em;
-        color: rgba(255, 255, 255, 0.75);
-        text-transform: uppercase;
-        white-space: nowrap;
+        display: none;
       }
 
-      .t-pt.active .t-label {
+      .t-icon {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.7);
+        transition: color 0.3s, background 0.3s;
+        position: relative;
+      }
+
+      .t-pt.active .t-icon {
         color: #fff;
-        font-weight: 500;
+        background: rgba(255, 255, 255, 0.1);
       }
 
       .t-line {
@@ -754,11 +806,11 @@
       }
 
       #arr-l {
-        margin-right: 12px;
+        margin-bottom: 10px;
       }
 
       #arr-r {
-        margin-left: 12px;
+        margin-top: 10px;
       }
 
       /* PINS */
@@ -2725,7 +2777,7 @@
     <div id="noise"></div>
 
     <!-- COVER -->
-    <div id="cover">
+    <div id="cover" style="display: none">
       <div id="cover-bg"></div>
       <div id="cover-content">
         <div id="cover-eyebrow">Factory Interactive</div>
@@ -2743,13 +2795,13 @@
 
     <!-- STAGE -->
     <div id="stage">
-      <video id="va" class="vid" playsinline muted></video>
-      <video id="vb" class="vid" playsinline muted></video>
+      <img id="va" class="vid active" alt="" />
+      <img id="vb" class="vid" alt="" />
     </div>
 
     <!-- TOPBAR -->
     <div id="topbar">
-      <div id="logo">Explorer</div>
+      <div id="logo">Floor Plan</div>
       <div id="state-badge">
         <div id="state-dot"></div>
         <span id="state-lbl">panorâmica</span>
@@ -2758,15 +2810,15 @@
 
     <!-- TRACK -->
     <div id="track">
-      <button class="t-arrow" id="arr-l" onclick="arrowNav(-1)">
+      <button class="t-arrow" id="arr-l" onclick="arrowNav(1)">
         <svg viewBox="0 0 10 10">
-          <polyline points="7,1 3,5 7,9" />
+          <polyline points="1,7 5,3 9,7" />
         </svg>
       </button>
       <!-- dots inserted by JS between the two arrows -->
-      <button class="t-arrow" id="arr-r" onclick="arrowNav(1)">
+      <button class="t-arrow" id="arr-r" onclick="arrowNav(-1)">
         <svg viewBox="0 0 10 10">
-          <polyline points="3,1 7,5 3,9" />
+          <polyline points="1,3 5,7 9,3" />
         </svg>
       </button>
     </div>
@@ -2775,11 +2827,22 @@
     <div id="ai-bot-bar">
       <div id="ai-track-btn" onclick="aiTogglePanel()">
         <div id="ai-circle">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#c8a96e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3h1V6a4 4 0 0 1 4-4z"/>
-            <circle cx="9" cy="14" r="1" fill="#c8a96e" stroke="none"/>
-            <circle cx="15" cy="14" r="1" fill="#c8a96e" stroke="none"/>
-            <path d="M9 18h6"/>
+          <svg
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            fill="none"
+            stroke="#c8a96e"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3h1V6a4 4 0 0 1 4-4z"
+            />
+            <circle cx="9" cy="14" r="1" fill="#c8a96e" stroke="none" />
+            <circle cx="15" cy="14" r="1" fill="#c8a96e" stroke="none" />
+            <path d="M9 18h6" />
           </svg>
         </div>
         <span id="ai-label">IA</span>
@@ -2787,7 +2850,16 @@
       <div class="ai-bot-sep"></div>
       <div id="neo-track-btn" onclick="neoClick()">
         <div id="neo-circle">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#c8a96e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            fill="none"
+            stroke="#c8a96e"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <rect x="3" y="11" width="18" height="10" rx="2" />
             <path d="M9 11V8a3 3 0 0 1 6 0v3" />
             <circle cx="9" cy="16" r="1.2" fill="#c8a96e" stroke="none" />
@@ -2805,7 +2877,10 @@
       <div id="ai-panel-header">
         <div id="ai-panel-title">AI Image Generator</div>
         <div id="ai-panel-close" onclick="aiTogglePanel()">
-          <svg viewBox="0 0 10 10"><line x1="2" y1="2" x2="8" y2="8"/><line x1="8" y1="2" x2="2" y2="8"/></svg>
+          <svg viewBox="0 0 10 10">
+            <line x1="2" y1="2" x2="8" y2="8" />
+            <line x1="8" y1="2" x2="2" y2="8" />
+          </svg>
         </div>
       </div>
       <div id="ai-panel-body">
@@ -2819,12 +2894,15 @@
           </div>
           <div class="ai-field">
             <label class="ai-lbl">API Key</label>
-            <input type="password" id="ai-key" placeholder="AIzaSy...">
+            <input type="password" id="ai-key" placeholder="AIzaSy..." />
           </div>
         </div>
         <div class="ai-field">
           <label class="ai-lbl">Prompt</label>
-          <textarea id="ai-prompt" placeholder="Modern luxury architectural visualization, cinematic lighting..."></textarea>
+          <textarea
+            id="ai-prompt"
+            placeholder="Modern luxury architectural visualization, cinematic lighting..."
+          ></textarea>
         </div>
         <div class="ai-row">
           <div class="ai-field">
@@ -2837,9 +2915,11 @@
             </select>
           </div>
         </div>
-        <button id="ai-generate-btn" onclick="aiGenerate()">Generate Image</button>
+        <button id="ai-generate-btn" onclick="aiGenerate()">
+          Generate Image
+        </button>
         <div id="ai-status"></div>
-        <div id="ai-img-wrap"><img id="ai-result-img" alt=""></div>
+        <div id="ai-img-wrap"><img id="ai-result-img" alt="" /></div>
         <button id="ai-dl-btn" onclick="aiDownload()">Download Image</button>
       </div>
     </div>
@@ -2893,7 +2973,8 @@
           Fale naturalmente: <strong>"Vista Norte"</strong>,
           <strong>"mostrar piscinas"</strong>,
           <strong>"o que tem na vista sul?"</strong><br /><br />
-          Para funcionar, o Bot precisa de uma chave de API do Google Gemini — tem
+          Para funcionar, o Bot precisa de uma chave de API do Google Gemini —
+          tem
           <strong>tier gratuito</strong>, sem cartão.
         </div>
         <div id="neo-setup-field">
@@ -2923,7 +3004,7 @@
         </div>
       </div>
     </div>
-    <div id="panel">
+    <div id="panel" style="display:none">
       <button id="p-close" onclick="closePanel()">
         <svg viewBox="0 0 12 12">
           <line x1="1" y1="1" x2="11" y2="11" />
@@ -2958,7 +3039,7 @@
     </div>
 
     <!-- POI DETAIL PANEL -->
-    <div id="poi-detail">
+    <div id="poi-detail" style="display:none">
       <div class="pdi-header">
         <button class="pdi-close-btn" onclick="closePOIDetail()">
           <svg viewBox="0 0 9 9">
@@ -2982,7 +3063,7 @@
     </div>
 
     <!-- 360° PANORAMA MODAL -->
-    <div id="pano-modal" aria-hidden="true">
+    <div id="pano-modal" aria-hidden="true" style="display:none">
       <div id="pano-modal-backdrop" onclick="closePanoModal()"></div>
       <div id="pano-modal-box">
         <button id="pano-modal-close" onclick="closePanoModal()">
@@ -3029,6 +3110,8 @@
         {
           id: "panoramica",
           label: "Panorâmica",
+          icon: `1`,
+          img: "images/floor_3d_01.jpg",
           index: 0,
           pinX: null,
           pinY: null,
@@ -3047,6 +3130,8 @@
         {
           id: "vista-norte",
           label: "Vista 001",
+          icon: `2`,
+          img: "images/floor_3d_02.jpg",
           index: 1,
           pinX: 0.36,
           pinY: 0.3,
@@ -3065,17 +3150,19 @@
         {
           id: "vista-sul",
           label: "Vista 002",
+          icon: `3`,
+          img: "images/floor_3d_03.jpg",
           index: 2,
           pinX: 0.54,
           pinY: 0.56,
-          tag: "Comercial · Térreo",
-          title: "Vista\nSul",
-          desc: "Fachada sul com hall comercial integrado ao térreo. 2.400m² de varejo, gastronomia e serviços abertos ao público todos os dias da semana.",
+          tag: "Residencial · Bloco Sul",
+          title: "Vista\n002",
+          desc: "Vista 002 do empreendimento.",
           stats: [
-            { label: "Área", value: "2.4k", unit: "m²" },
-            { label: "Lojas", value: "48", unit: "" },
-            { label: "Pé-direito", value: "9", unit: "m" },
-            { label: "Abertura", value: "2026", unit: "" },
+            { label: "Pavimentos", value: "—", unit: "" },
+            { label: "Unidades", value: "—", unit: "" },
+            { label: "A partir de", value: "—", unit: "R$" },
+            { label: "Disponíveis", value: "—", unit: "" },
           ],
           hue: 35,
           sat: 22,
@@ -3083,17 +3170,19 @@
         {
           id: "vista-leste",
           label: "Vista 003",
+          icon: `4`,
+          img: "images/floor_3d_04.jpg",
           index: 3,
           pinX: 0.64,
           pinY: 0.42,
-          tag: "Paisagismo · Nível 4",
-          title: "Vista\nLeste",
-          desc: "Fachada leste com jardim elevado no 4º pavimento. 1.800m² de área verde com espécies nativas, espelhos d'água e pista de caminhada.",
+          tag: "Residencial · Bloco Leste",
+          title: "Vista\n003",
+          desc: "Vista 003 do empreendimento.",
           stats: [
-            { label: "Área", value: "1.8k", unit: "m²" },
-            { label: "Nível", value: "4", unit: "" },
-            { label: "Árvores", value: "120", unit: "" },
-            { label: "Acesso", value: "Público", unit: "" },
+            { label: "Pavimentos", value: "—", unit: "" },
+            { label: "Unidades", value: "—", unit: "" },
+            { label: "A partir de", value: "—", unit: "R$" },
+            { label: "Disponíveis", value: "—", unit: "" },
           ],
           hue: 140,
           sat: 18,
@@ -3101,55 +3190,58 @@
         {
           id: "vista-oeste",
           label: "Vista 004",
+          icon: `5`,
+          img: "images/floor_3d_05.jpg",
           index: 4,
           pinX: 0.28,
           pinY: 0.5,
-          tag: "Infraestrutura · Bloco Oeste",
-          title: "Vista\nOeste",
-          desc: "Fachada oeste voltada para o parque linear. Bloco residencial com unidades de 1 a 3 dormitórios, terraços privativos e conexão com a ciclovia.",
+          tag: "Residencial · Bloco Oeste",
+          title: "Vista\n004",
+          desc: "Vista 004 do empreendimento.",
           stats: [
-            { label: "Pavimentos", value: "18", unit: "" },
-            { label: "Unidades", value: "84", unit: "" },
-            { label: "A partir de", value: "320k", unit: "R$" },
-            { label: "Disponíveis", value: "52", unit: "" },
+            { label: "Pavimentos", value: "—", unit: "" },
+            { label: "Unidades", value: "—", unit: "" },
+            { label: "A partir de", value: "—", unit: "R$" },
+            { label: "Disponíveis", value: "—", unit: "" },
           ],
           hue: 270,
           sat: 14,
         },
         {
-          id: "vista-interna",
-          label: "Vista 006",
+          id: "vista-cinco",
+          label: "Vista 005",
+          icon: `6`,
+          img: "images/floor_3d_06.jpg",
           index: 5,
           pinX: 0.5,
-          pinY: 0.38,
-          tag: "Espaços comuns · Átrio central",
-          title: "Vista\nInterna",
-          desc: "O átrio central conecta todos os blocos no nível do térreo. Espaço de convivência com iluminação zenital, jardins internos e acesso aos elevadores.",
+          pinY: 0.35,
+          tag: "Residencial · Bloco 5",
+          title: "Vista\n005",
+          desc: "Vista 005 do empreendimento.",
           stats: [
-            { label: "Pé-direito", value: "14", unit: "m" },
-            { label: "Área", value: "980", unit: "m²" },
-            { label: "Jardins", value: "3", unit: "" },
-            { label: "Acesso", value: "Livre", unit: "" },
+            { label: "Pavimentos", value: "—", unit: "" },
+            { label: "Unidades", value: "—", unit: "" },
+            { label: "A partir de", value: "—", unit: "R$" },
+            { label: "Disponíveis", value: "—", unit: "" },
           ],
-          hue: 50,
+          hue: 15,
           sat: 16,
         },
       ];
 
-      // ══════════════════════════════════════════════════════
-      // VÍDEOS  — 10 arquivos para 6 pontos lineares
-      // ══════════════════════════════════════════════════════
       const VIDS = {
-        "0_1": "images/seg_0_1.mp4",
-        "1_0": "images/seg_1_0_retorno.mp4",
-        "1_2": "images/seg_1_2.mp4",
-        "2_1": "images/seg_2_1_retorno.mp4",
-        "2_3": "images/seg_2_3.mp4",
-        "3_2": "images/seg_3_2_retorno.mp4",
-        "3_4": "images/seg_3_4.mp4",
-        "4_3": "images/seg_4_3_retorno.mp4",
-        "4_5": "images/seg_4_5.mp4",
-        "5_4": "images/seg_5_4_retorno.mp4",
+        "0_1": "images/planta_0_1.mp4",
+        "1_0": "images/planta_1_0.mp4",
+        "1_2": "images/planta_1_2.mp4",
+        "2_1": "images/planta_2_1.mp4",
+        "2_3": "images/planta_2_3.mp4",
+        "3_2": "images/planta_3_2.mp4",
+        "3_4": "images/planta_3_4.mp4",
+        "4_3": "images/planta_4_3.mp4",
+        "4_5": "images/planta_4_5.mp4",
+        "5_4": "images/planta_5_4.mp4",
+        "5_6": "images/planta_5_6.mp4",
+        "6_5": "images/planta_6_5.mp4",
       };
 
       // ══════════════════════════════════════════════════════
@@ -3166,106 +3258,40 @@
       const ALT = (s) => (s === "a" ? "b" : "a");
 
       // ══════════════════════════════════════════════════════
-      // NAVEGAÇÃO
+      // NAVEGAÇÃO — crossfade de imagem
       // ══════════════════════════════════════════════════════
       function goTo(idx) {
-        if (idx === cur) {
-          if (state === "idle") openPanel(PTS[cur]);
-          return;
-        }
-        const dir = idx > cur ? 1 : -1;
-        q = [];
-        let c = cur;
-        while (c !== idx) {
-          q.push({ from: c, to: c + dir });
-          c += dir;
-        }
-        runQ();
-      }
-
-      function runQ() {
-        if (!q.length) {
-          state = "idle";
-          updateUI();
-          return;
-        }
-        const step = q.shift();
-        play(step.from, step.to);
-      }
-
-      // ══════════════════════════════════════════════════════
-      // PLAYER — dual-slot: slot ativo + slot pré-bufferizando o próximo
-      // _presrc: rastreia qual src foi carregado naquele slot sem re-load
-      // ══════════════════════════════════════════════════════
-      function play(from, to) {
-        const src = VIDS[`${from}_${to}`];
-        if (!src) { cur = to; runQ(); return; }
-
+        if (idx === cur || state === "playing") return;
         state = "playing";
+        cur = idx;
         updateUI();
 
         const ns = ALT(slot);
-        const nv = V(ns);
-        const pv = V(slot);
+        const ni = V(ns);
+        const pi = V(slot);
 
-        // Limpa handlers obsoletos
-        nv.oncanplay = null;
-        nv.onended   = null;
-        nv.onerror   = null;
-
-        // Só faz load() se não há pré-buffer desse src neste slot
-        if (nv._presrc !== src) {
-          nv.pause();
-          nv.src   = src;
-          nv.muted = true;
-          nv.load();
-        }
-        nv._presrc = null;
-
-        const bail = setTimeout(() => { cur = to; runQ(); }, 5000);
-
-        nv.onerror = () => { nv.onerror = null; clearTimeout(bail); cur = to; runQ(); };
-
-        function onReady() {
-          nv.oncanplay = null;
-          clearTimeout(bail);
-          nv.play().then(() => {
-            pv.classList.remove("active");
-            nv.classList.add("active");
-            slot = ns;
-            cur  = to;
-
-            // Enquanto o vídeo atual toca, pré-buffer do próximo passo no slot liberado
-            const next = q[0];
-            const nsrc = next && VIDS[`${next.from}_${next.to}`];
-            if (nsrc) {
-              pv.pause();
-              pv.src     = nsrc;
-              pv.muted   = true;
-              pv._presrc = nsrc;
-              pv.load();
-            } else {
-              pv.pause();
-              pv.removeAttribute("src");
-              pv._presrc = null;
-            }
-
-            nv.onended = () => { nv.onended = null; runQ(); };
-          }).catch(() => { cur = to; runQ(); });
-        }
-
-        nv.oncanplay = onReady;
-        // Disparo imediato se o pré-buffer já completou
-        if (nv.readyState >= 3) { nv.oncanplay = null; onReady(); }
+        ni.src = PTS[cur].img;
+        ni.onload = () => {
+          ni.onload = null;
+          pi.classList.remove("active");
+          ni.classList.add("active");
+          slot = ns;
+          state = "idle";
+          updateUI();
+        };
+        ni.onerror = () => {
+          ni.onerror = null;
+          state = "idle";
+          updateUI();
+        };
       }
 
-      const WINDOW_SIZE = 3;
+      const WINDOW_SIZE = Infinity;
       let windowStart = 0;
 
       function updateWindow() {
         document.querySelectorAll(".t-pt").forEach((el) => {
-          const i = parseInt(el.dataset.i);
-          el.classList.toggle("slot-hidden", i < windowStart || i >= windowStart + WINDOW_SIZE);
+          el.classList.remove("slot-hidden");
         });
       }
 
@@ -3295,17 +3321,15 @@
           const el = document.createElement("div");
           el.className = "t-pt" + (i === 0 ? " active" : "");
           el.dataset.i = i;
-          el.innerHTML = `<div class="t-dot-wrap"><div class="t-dot"></div><div class="t-pulse"></div></div><div class="t-label">${pt.label}</div>`;
+          el.innerHTML = `<div class="t-dot-wrap"><div class="t-icon">${pt.icon}</div></div>`;
           el.addEventListener("click", () => {
-            if (i === cur && state === "idle") openPanel(PTS[i]);
-            else goTo(i);
+            goTo(i);
           });
           el.addEventListener(
             "touchstart",
             (e) => {
               e.preventDefault();
-              if (i === cur && state === "idle") openPanel(PTS[i]);
-              else goTo(i);
+              goTo(i);
             },
             { passive: false },
           );
@@ -3314,27 +3338,7 @@
         updateWindow();
       }
 
-      function buildPins() {
-        PTS.forEach((pt) => {
-          if (!pt.pinX) return;
-          const el = document.createElement("div");
-          el.className = "pin off";
-          el.id = "pin-" + pt.id;
-          el.style.left = pt.pinX * 100 + "%";
-          el.style.top = pt.pinY * 100 + "%";
-          el.innerHTML = `<div class="pin-ring"></div><div class="pin-dot"></div><div class="pin-label">${pt.label}</div>`;
-          el.addEventListener("click", () => goTo(pt.index));
-          el.addEventListener(
-            "touchstart",
-            (e) => {
-              e.preventDefault();
-              goTo(pt.index);
-            },
-            { passive: false },
-          );
-          document.body.appendChild(el);
-        });
-      }
+      function buildPins() {}
 
       function updateUI() {
         const pt = PTS[cur];
@@ -3358,17 +3362,14 @@
 
         // auto-scroll window to keep active item visible
         if (cur < windowStart) windowStart = cur;
-        else if (cur >= windowStart + WINDOW_SIZE) windowStart = cur - WINDOW_SIZE + 1;
+        else if (cur >= windowStart + WINDOW_SIZE)
+          windowStart = cur - WINDOW_SIZE + 1;
         updateWindow();
-        document.getElementById("arr-l").disabled = cur === 0 || state === "playing";
-        document.getElementById("arr-r").disabled = cur === PTS.length - 1 || state === "playing";
+        document.getElementById("arr-l").disabled =
+          cur === 0 || state === "playing";
+        document.getElementById("arr-r").disabled =
+          cur === PTS.length - 1 || state === "playing";
 
-        PTS.forEach((p) => {
-          if (!p.pinX) return;
-          const pin = document.getElementById("pin-" + p.id);
-          if (pin)
-            pin.classList.toggle("off", !(state === "idle" && cur === p.index));
-        });
 
         const pp = document.getElementById("p-prev");
         const pn = document.getElementById("p-next");
@@ -3422,13 +3423,13 @@
       // ══════════════════════════════════════════════════════
       function startExperience() {
         document.getElementById("cover").classList.add("out");
-        setTimeout(() => {
-          document.getElementById("topbar").classList.add("show");
-          document.getElementById("track").classList.add("show");
-          document.getElementById("ai-bot-bar").classList.add("show");
-        }, 500);
-        setTimeout(() => goTo(1), 350);
+        document.getElementById("topbar").classList.add("show");
+        document.getElementById("track").classList.add("show");
+        document.getElementById("ai-bot-bar").classList.add("show");
+        VA.src = PTS[0].img;
+        updateUI();
       }
+      startExperience();
 
       // ══════════════════════════════════════════════════════
       // TECLADO
@@ -3747,80 +3748,7 @@
       // ══════════════════════════════════════════════════════
       let activePopup = null; // popup atualmente aberto
 
-      function buildPOIs() {
-        Object.entries(POIS).forEach(([ptIdx, pois]) => {
-          pois.forEach((poi) => {
-            // Marker
-            const marker = document.createElement("div");
-            marker.className = "poi hidden";
-            marker.id = "poi-" + poi.id;
-            marker.dataset.pt = ptIdx;
-            marker.style.left = poi.x + "%";
-            marker.style.top = poi.y + "%";
-            marker.innerHTML = `
-            <div class="poi-pulse"></div>
-            <div class="poi-btn"></div>
-            <div class="poi-name">${poi.label}</div>
-          `;
-            marker.addEventListener("click", (e) => {
-              e.stopPropagation();
-              togglePopup(poi, marker);
-            });
-            marker.addEventListener(
-              "touchstart",
-              (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                togglePopup(poi, marker);
-              },
-              { passive: false },
-            );
-            document.body.appendChild(marker);
-
-            // Popup
-            const popup = document.createElement("div");
-            popup.className = "poi-popup";
-            popup.id = "popup-" + poi.id;
-            // Initial position: near the marker
-            popup.style.left = Math.min(poi.x + 4, 68) + "%";
-            popup.style.top = Math.max(poi.y - 30, 5) + "%";
-            popup.innerHTML = `
-            <div class="popup-drag-handle" data-drag="true">
-              <div class="popup-drag-icon">
-                <span></span><span></span><span></span>
-                <span></span><span></span><span></span>
-              </div>
-              <button class="popup-close-btn" onclick="closePopup('${poi.id}')">
-                <svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7"/><line x1="7" y1="1" x2="1" y2="7"/></svg>
-              </button>
-            </div>
-            ${
-              poi.img
-                ? `<img class="popup-img" src="${poi.img}" alt="${poi.title}">`
-                : `<div class="popup-img-placeholder">${poi.tag}</div>`
-            }
-            <div class="popup-body">
-              <div class="popup-tag">${poi.tag}</div>
-              <div class="popup-title">${poi.title}</div>
-              <div class="popup-desc">${poi.desc}</div>
-              <div class="popup-cta">
-                ${
-                  poi.link
-                    ? `<a class="popup-cta-btn" href="${poi.link}" target="_blank">Conferir</a>`
-                    : `<button class="popup-cta-btn">Conferir</button>`
-                }
-              </div>
-              <button class="popup-more-btn" onclick="openPOIDetail('${poi.id}')">
-                <svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="5"/><line x1="6" y1="4" x2="6" y2="8"/><line x1="4" y1="6" x2="8" y2="6"/></svg>
-                Mais Informações
-              </button>
-            </div>
-          `;
-            document.body.appendChild(popup);
-            makeDraggable(popup);
-          });
-        });
-      }
+      function buildPOIs() {}
 
       function togglePopup(poi, marker) {
         const popup = document.getElementById("popup-" + poi.id);
@@ -3834,7 +3762,8 @@
           // Centraliza na tela
           const popH = popup.offsetHeight || 420;
           popup.style.left = Math.round((window.innerWidth - 300) / 2) + "px";
-          popup.style.top = Math.max(10, Math.round((window.innerHeight - popH) / 2)) + "px";
+          popup.style.top =
+            Math.max(10, Math.round((window.innerHeight - popH) / 2)) + "px";
           popup.classList.add("open");
           activePopup = popup;
         }
@@ -4625,7 +4554,10 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
               label: "Eventos privados no rooftop",
               url: "https://factorystudio-one.vercel.app/",
             },
-            { label: "Regulamento de uso", url: "https://factorystudio-one.vercel.app/" },
+            {
+              label: "Regulamento de uso",
+              url: "https://factorystudio-one.vercel.app/",
+            },
           ],
           cta: {
             label: "Reservar para eventos",
@@ -4661,7 +4593,10 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
               url: "https://factorystudio-one.vercel.app/",
             },
           ],
-          cta: { label: "Solicitar vaga", url: "https://factorystudio-one.vercel.app/" },
+          cta: {
+            label: "Solicitar vaga",
+            url: "https://factorystudio-one.vercel.app/",
+          },
         },
         "vs-4": {
           panorama360: "images/XP_NPL_360.jpg",
@@ -4696,7 +4631,10 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
               url: "https://factorystudio-one.vercel.app/",
             },
           ],
-          cta: { label: "Conhecer planos", url: "https://factorystudio-one.vercel.app/" },
+          cta: {
+            label: "Conhecer planos",
+            url: "https://factorystudio-one.vercel.app/",
+          },
         },
 
         // ─── Vista Leste ──────────────────────────────────────────
@@ -4762,9 +4700,15 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
             },
           ],
           links: [
-            { label: "Cardápio da padaria", url: "https://factorystudio-one.vercel.app/" },
+            {
+              label: "Cardápio da padaria",
+              url: "https://factorystudio-one.vercel.app/",
+            },
           ],
-          cta: { label: "Ver loja online", url: "https://factorystudio-one.vercel.app/" },
+          cta: {
+            label: "Ver loja online",
+            url: "https://factorystudio-one.vercel.app/",
+          },
         },
         "vl-3": {
           panorama360: "images/XP_NPL_360.jpg",
@@ -4824,13 +4768,19 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
             },
           ],
           links: [
-            { label: "Planos de coworking", url: "https://factorystudio-one.vercel.app/" },
+            {
+              label: "Planos de coworking",
+              url: "https://factorystudio-one.vercel.app/",
+            },
             {
               label: "Reservar sala de reunião",
               url: "https://factorystudio-one.vercel.app/",
             },
           ],
-          cta: { label: "Conhecer planos", url: "https://factorystudio-one.vercel.app/" },
+          cta: {
+            label: "Conhecer planos",
+            url: "https://factorystudio-one.vercel.app/",
+          },
         },
 
         // ─── Vista Oeste ──────────────────────────────────────────
@@ -4905,7 +4855,10 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
               url: "https://factorystudio-one.vercel.app/",
             },
           ],
-          cta: { label: "Reservar unidade", url: "https://factorystudio-one.vercel.app/" },
+          cta: {
+            label: "Reservar unidade",
+            url: "https://factorystudio-one.vercel.app/",
+          },
         },
         "vo-3": {
           panorama360: "images/XP_NPL_360.jpg",
@@ -4931,7 +4884,10 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
             },
           ],
           links: [
-            { label: "Site da paróquia", url: "https://factorystudio-one.vercel.app/" },
+            {
+              label: "Site da paróquia",
+              url: "https://factorystudio-one.vercel.app/",
+            },
           ],
           cta: {
             label: "Ver mapa do entorno",
@@ -4962,7 +4918,10 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
             },
           ],
           links: [
-            { label: "Reservar o rooftop", url: "https://factorystudio-one.vercel.app/" },
+            {
+              label: "Reservar o rooftop",
+              url: "https://factorystudio-one.vercel.app/",
+            },
           ],
           cta: {
             label: "Ver disponibilidade",
@@ -4999,9 +4958,15 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
               label: "Calendário de torneios",
               url: "https://factorystudio-one.vercel.app/",
             },
-            { label: "Reservar quadra", url: "https://factorystudio-one.vercel.app/" },
+            {
+              label: "Reservar quadra",
+              url: "https://factorystudio-one.vercel.app/",
+            },
           ],
-          cta: { label: "Ver programação", url: "https://factorystudio-one.vercel.app/" },
+          cta: {
+            label: "Ver programação",
+            url: "https://factorystudio-one.vercel.app/",
+          },
         },
         "vi-2": {
           panorama360: "images/XP_NPL_360.jpg",
@@ -5036,7 +5001,10 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
               url: "https://factorystudio-one.vercel.app/",
             },
           ],
-          cta: { label: "Reservar o salão", url: "https://factorystudio-one.vercel.app/" },
+          cta: {
+            label: "Reservar o salão",
+            url: "https://factorystudio-one.vercel.app/",
+          },
         },
         "vi-3": {
           panorama360: "images/XP_NPL_360.jpg",
@@ -5066,9 +5034,15 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
               label: "Agendar aulas de tênis",
               url: "https://factorystudio-one.vercel.app/",
             },
-            { label: "Torneios internos", url: "https://factorystudio-one.vercel.app/" },
+            {
+              label: "Torneios internos",
+              url: "https://factorystudio-one.vercel.app/",
+            },
           ],
-          cta: { label: "Reservar quadra", url: "https://factorystudio-one.vercel.app/" },
+          cta: {
+            label: "Reservar quadra",
+            url: "https://factorystudio-one.vercel.app/",
+          },
         },
         "vi-4": {
           panorama360: "images/XP_NPL_360.jpg",
@@ -5463,7 +5437,8 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
 
       // drag state
       let _aiDragging = false;
-      let _aiDragOX = 0, _aiDragOY = 0;
+      let _aiDragOX = 0,
+        _aiDragOY = 0;
 
       function aiInitDrag() {
         const panel = document.getElementById("ai-panel");
@@ -5489,7 +5464,10 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
           let ny = e.clientY - _aiDragOY;
           // clamp to viewport
           nx = Math.max(0, Math.min(window.innerWidth - panel.offsetWidth, nx));
-          ny = Math.max(0, Math.min(window.innerHeight - panel.offsetHeight, ny));
+          ny = Math.max(
+            0,
+            Math.min(window.innerHeight - panel.offsetHeight, ny),
+          );
           panel.style.left = nx + "px";
           panel.style.top = ny + "px";
         });
@@ -5545,8 +5523,14 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
         const promptRaw = document.getElementById("ai-prompt").value.trim();
         const style = document.getElementById("ai-style").value;
 
-        if (!key) { aiSetStatus("Insira a API Key"); return; }
-        if (!promptRaw) { aiSetStatus("Insira um prompt"); return; }
+        if (!key) {
+          aiSetStatus("Insira a API Key");
+          return;
+        }
+        if (!promptRaw) {
+          aiSetStatus("Insira um prompt");
+          return;
+        }
 
         const prompt = style ? promptRaw + ", " + style + " style" : promptRaw;
         const btn = document.getElementById("ai-generate-btn");
@@ -5586,13 +5570,15 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
               contents: [{ parts: [{ text: prompt }] }],
               generationConfig: { responseModalities: ["TEXT", "IMAGE"] },
             }),
-          }
+          },
         );
         const data = await response.json();
-        if (!response.ok) throw new Error(data?.error?.message || "Gemini request failed");
+        if (!response.ok)
+          throw new Error(data?.error?.message || "Gemini request failed");
         const parts = data?.candidates?.[0]?.content?.parts || [];
         for (const part of parts) {
-          if (part.inlineData?.data) _aiImages.push({ b64: part.inlineData.data });
+          if (part.inlineData?.data)
+            _aiImages.push({ b64: part.inlineData.data });
         }
       }
 
@@ -5601,15 +5587,42 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
         if (_aiDragging) return;
         const panel = document.getElementById("ai-panel");
         const btn = document.getElementById("ai-track-btn");
-        if (panel.classList.contains("open") && !panel.contains(e.target) && !btn.contains(e.target)) {
+        if (
+          panel.classList.contains("open") &&
+          !panel.contains(e.target) &&
+          !btn.contains(e.target)
+        ) {
           panel.classList.remove("open");
           btn.classList.remove("active");
         }
       });
     </script>
 
-    <div style="position:fixed;bottom:16px;right:20px;z-index:999;font-family:'Inter',sans-serif;font-size:0.62rem;letter-spacing:0.1em;color:rgba(255,255,255,0.22);pointer-events:none">
-      Powered by <a href="https://factorystudio-one.vercel.app/" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.42);font-weight:600;text-decoration:none">Factory</a>
+    <div
+      style="
+        position: fixed;
+        bottom: 16px;
+        right: 20px;
+        z-index: 999;
+        font-family: &quot;Inter&quot;, sans-serif;
+        font-size: 0.62rem;
+        letter-spacing: 0.1em;
+        color: rgba(255, 255, 255, 0.22);
+        pointer-events: none;
+      "
+    >
+      Powered by
+      <a
+        href="https://factorystudio-one.vercel.app/"
+        target="_blank"
+        rel="noopener"
+        style="
+          color: rgba(255, 255, 255, 0.42);
+          font-weight: 600;
+          text-decoration: none;
+        "
+        >Factory</a
+      >
     </div>
   </body>
 </html>
