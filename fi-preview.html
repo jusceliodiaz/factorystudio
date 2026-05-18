@@ -5,17 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="index,follow" />
     <title>Demos Interativos de Archviz — Factory Interactive</title>
-    <meta name="description" content="Acesse demonstrações exclusivas de archviz interativo, panorama 360°, planta humanizada e visualizador 3D. Experiências digitais para arquitetos e incorporadoras de alto padrão." />
-    <meta name="keywords" content="archviz interativo, visualização arquitetônica, panorama 360, planta humanizada, visualizador 3D, factory interactive, lançamento imobiliário" />
+    <meta
+      name="description"
+      content="Acesse demonstrações exclusivas de archviz interativo, panorama 360°, planta humanizada e visualizador 3D. Experiências digitais para arquitetos e incorporadoras de alto padrão."
+    />
+    <meta
+      name="keywords"
+      content="archviz interativo, visualização arquitetônica, panorama 360, planta humanizada, visualizador 3D, factory interactive, lançamento imobiliário"
+    />
     <meta name="author" content="Factory Interactive" />
-    <link rel="canonical" href="https://factorystudio-one.vercel.app/fi-preview.html" />
+    <link
+      rel="canonical"
+      href="https://factorystudio-one.vercel.app/fi-preview.html"
+    />
 
     <!-- Open Graph — preview no WhatsApp, LinkedIn, Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://factorystudio-one.vercel.app/fi-preview.html" />
-    <meta property="og:title" content="Demos Interativos de Archviz — Factory Interactive" />
-    <meta property="og:description" content="Experimente archviz interativo, panorama 360°, planta humanizada e visualizador 3D. Ferramentas digitais para arquitetos e incorporadoras." />
-    <meta property="og:image" content="https://factorystudio-one.vercel.app/images/Portfolio_001.jpg" />
+    <meta
+      property="og:url"
+      content="https://factorystudio-one.vercel.app/fi-preview.html"
+    />
+    <meta
+      property="og:title"
+      content="Demos Interativos de Archviz — Factory Interactive"
+    />
+    <meta
+      property="og:description"
+      content="Experimente archviz interativo, panorama 360°, planta humanizada e visualizador 3D. Ferramentas digitais para arquitetos e incorporadoras."
+    />
+    <meta
+      property="og:image"
+      content="https://factorystudio-one.vercel.app/images/Portfolio_001.jpg"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="pt_BR" />
@@ -23,25 +44,46 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Demos Interativos de Archviz — Factory Interactive" />
-    <meta name="twitter:description" content="Archviz interativo, panorama 360°, planta humanizada e visualizador 3D para arquitetos e incorporadoras." />
-    <meta name="twitter:image" content="https://factorystudio-one.vercel.app/images/Portfolio_001.jpg" />
+    <meta
+      name="twitter:title"
+      content="Demos Interativos de Archviz — Factory Interactive"
+    />
+    <meta
+      name="twitter:description"
+      content="Archviz interativo, panorama 360°, planta humanizada e visualizador 3D para arquitetos e incorporadoras."
+    />
+    <meta
+      name="twitter:image"
+      content="https://factorystudio-one.vercel.app/images/Portfolio_001.jpg"
+    />
 
     <link rel="icon" type="image/png" href="images/logo_site.png" />
     <!-- Preload LCP image — gate background -->
-    <link rel="preload" as="image" href="images/Portfolio_001.jpg" fetchpriority="high" />
+    <link
+      rel="preload"
+      as="image"
+      href="images/Portfolio_001.jpg"
+      fetchpriority="high"
+    />
     <!-- Fonts: preconnect + non-blocking load -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
       media="print"
-      onload="this.media='all'"
+      onload="this.media = 'all'"
     />
     <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+      />
     </noscript>
     <style>
       *,
@@ -622,37 +664,37 @@
         color: var(--gold);
         letter-spacing: 0.03em;
       }
-    @media (max-width: 640px) {
-      .prod-nav {
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        gap: 16px;
-        margin-bottom: 36px;
+      @media (max-width: 640px) {
+        .prod-nav {
+          flex-wrap: wrap;
+          justify-content: space-between;
+          align-items: center;
+          gap: 16px;
+          margin-bottom: 36px;
+        }
+        .btn-back {
+          position: static;
+          transform: none;
+          order: 1;
+          flex-shrink: 0;
+        }
+        .btn-back:hover {
+          transform: translateY(-2px);
+        }
+        .lang-switcher--prod {
+          position: static;
+          transform: none;
+          order: 2;
+          flex-shrink: 0;
+        }
+        .prod-logo {
+          order: 3;
+          width: 100%;
+          height: 72px;
+          display: block;
+          margin: 0 auto;
+        }
       }
-      .btn-back {
-        position: static;
-        transform: none;
-        order: 1;
-        flex-shrink: 0;
-      }
-      .btn-back:hover {
-        transform: translateY(-2px);
-      }
-      .lang-switcher--prod {
-        position: static;
-        transform: none;
-        order: 2;
-        flex-shrink: 0;
-      }
-      .prod-logo {
-        order: 3;
-        width: 100%;
-        height: 72px;
-        display: block;
-        margin: 0 auto;
-      }
-    }
     </style>
   </head>
   <body>
@@ -768,7 +810,16 @@
           <button class="btn-admin" id="btn-admin" type="button">admin</button>
         </div>
       </div>
-      <div id="gate-powered">Powered by <a href="https://factorystudio-one.vercel.app/" target="_blank" rel="noopener" style="color:inherit;font-weight:inherit;text-decoration:none">Factory</a></div>
+      <div id="gate-powered">
+        Powered by
+        <a
+          href="https://factorystudio-one.vercel.app/"
+          target="_blank"
+          rel="noopener"
+          style="color: inherit; font-weight: inherit; text-decoration: none"
+          >Factory</a
+        >
+      </div>
     </div>
 
     <!-- ── PRODUCTS ── -->
@@ -811,7 +862,13 @@
       <div class="cards">
         <a class="pcard" href="archviz-explorer.html" target="_blank">
           <div class="pcard-thumb">
-            <img src="images/Portfolio_001.jpg" alt="Archviz Explorer" width="800" height="500" fetchpriority="high" />
+            <img
+              src="images/Portfolio_001.jpg"
+              alt="Archviz Explorer"
+              width="800"
+              height="500"
+              fetchpriority="high"
+            />
             <span class="pcard-badge">Archviz</span>
           </div>
           <div class="pcard-body">
@@ -828,7 +885,13 @@
 
         <a class="pcard" href="launching-page.html" target="_blank">
           <div class="pcard-thumb">
-            <img src="images/Portfolio_002.jpg" alt="Launching Page" width="800" height="500" loading="lazy" />
+            <img
+              src="images/Portfolio_002.jpg"
+              alt="Launching Page"
+              width="800"
+              height="500"
+              loading="lazy"
+            />
             <span class="pcard-badge">Lançamento</span>
           </div>
           <div class="pcard-body">
@@ -845,7 +908,13 @@
 
         <a class="pcard" href="panorama-360.html" target="_blank">
           <div class="pcard-thumb">
-            <img src="images/pano_living.jpg" alt="Panorama 360°" width="800" height="500" loading="lazy" />
+            <img
+              src="images/pano_living.jpg"
+              alt="Panorama 360°"
+              width="800"
+              height="500"
+              loading="lazy"
+            />
             <span class="pcard-badge">360°</span>
           </div>
           <div class="pcard-body">
@@ -863,7 +932,13 @@
 
         <a class="pcard" href="3d-viewer.html" target="_blank">
           <div class="pcard-thumb">
-            <img src="images/Portfolio_003.jpg" alt="Visualizador 3D" width="800" height="500" loading="lazy" />
+            <img
+              src="images/Portfolio_003.jpg"
+              alt="Visualizador 3D"
+              width="800"
+              height="500"
+              loading="lazy"
+            />
             <span class="pcard-badge">3D</span>
           </div>
           <div class="pcard-body">
@@ -874,13 +949,21 @@
               Modelo tridimensional interativo do edifício com rotação livre,
               zoom e seleção de pavimentos diretamente no navegador.
             </div>
-            <div class="pcard-link" data-i18n="link-explore">Explorar demo →</div>
+            <div class="pcard-link" data-i18n="link-explore">
+              Explorar demo →
+            </div>
           </div>
         </a>
 
         <a class="pcard" href="floor-plan.html" target="_blank">
           <div class="pcard-thumb">
-            <img src="images/Portfolio_004.jpg" alt="Planta Humanizada" width="800" height="500" loading="lazy" />
+            <img
+              src="images/Portfolio_004.jpg"
+              alt="Planta Humanizada"
+              width="800"
+              height="500"
+              loading="lazy"
+            />
             <span class="pcard-badge">Planta</span>
           </div>
           <div class="pcard-body">
@@ -891,13 +974,21 @@
               Planta baixa animada com mobiliário, texturas e elementos humanos
               que revelam progressivamente os ambientes do imóvel.
             </div>
-            <div class="pcard-link" data-i18n="link-explore">Explorar →</div>
+            <div class="pcard-link" data-i18n="link-explore">
+              Explorar demo →
+            </div>
           </div>
         </a>
 
-        <a class="pcard" href="#" target="_blank" style="display:none">
+        <a class="pcard" href="#" target="_blank" style="display: none">
           <div class="pcard-thumb">
-            <img src="images/Portfolio_005.jpg" alt="Walkthrough Interior" width="800" height="500" loading="lazy" />
+            <img
+              src="images/Portfolio_005.jpg"
+              alt="Walkthrough Interior"
+              width="800"
+              height="500"
+              loading="lazy"
+            />
             <span class="pcard-badge">Walkthrough</span>
           </div>
           <div class="pcard-body">
@@ -912,7 +1003,13 @@
 
         <a class="pcard" href="#" target="_blank">
           <div class="pcard-thumb">
-            <img src="images/pano_quarto.jpg" alt="Configurador de Ambiente" width="800" height="500" loading="lazy" />
+            <img
+              src="images/pano_quarto.jpg"
+              alt="Configurador de Ambiente"
+              width="800"
+              height="500"
+              loading="lazy"
+            />
             <span class="pcard-badge">Configurador</span>
           </div>
           <div class="pcard-body">
@@ -930,7 +1027,13 @@
 
         <a class="pcard" href="#" target="_blank">
           <div class="pcard-thumb">
-            <img src="images/pano_sacada.jpg" alt="AR / VR" width="800" height="500" loading="lazy" />
+            <img
+              src="images/pano_sacada.jpg"
+              alt="AR / VR"
+              width="800"
+              height="500"
+              loading="lazy"
+            />
             <span class="pcard-badge">AR / VR</span>
           </div>
           <div class="pcard-body">
@@ -1292,37 +1395,53 @@
 
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ProfessionalService",
-      "name": "Factory Interactive",
-      "description": "Studio criativo especializado em experiências digitais interativas para arquitetura e mercado imobiliário de alto padrão.",
-      "url": "https://factorystudio-one.vercel.app/fi-preview.html",
-      "logo": "https://factorystudio-one.vercel.app/images/logo_site.png",
-      "image": "https://factorystudio-one.vercel.app/images/Portfolio_001.jpg",
-      "telephone": "+55-41-99227-2317",
-      "email": "firsightstudio@gmail.com",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Curitiba",
-        "addressRegion": "PR",
-        "addressCountry": "BR"
-      },
-      "sameAs": [
-        "https://www.instagram.com/umdesignerchato",
-        "https://www.behance.net/firsightstudio"
-      ],
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Demos Interativos",
-        "itemListElement": [
-          { "@type": "Offer", "name": "Archviz Explorer", "description": "Navegação interativa por pontos de vista do empreendimento com transições e POIs dinâmicos." },
-          { "@type": "Offer", "name": "Panorama 360°", "description": "Tour imersivo em 360° pelos ambientes do empreendimento diretamente no navegador." },
-          { "@type": "Offer", "name": "Planta Humanizada", "description": "Planta baixa animada com mobiliário, texturas e elementos humanos interativos." },
-          { "@type": "Offer", "name": "Visualizador 3D", "description": "Modelo tridimensional interativo do edifício com rotação livre e zoom no navegador." }
-        ]
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Factory Interactive",
+        "description": "Studio criativo especializado em experiências digitais interativas para arquitetura e mercado imobiliário de alto padrão.",
+        "url": "https://factorystudio-one.vercel.app/fi-preview.html",
+        "logo": "https://factorystudio-one.vercel.app/images/logo_site.png",
+        "image": "https://factorystudio-one.vercel.app/images/Portfolio_001.jpg",
+        "telephone": "+55-41-99227-2317",
+        "email": "firsightstudio@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Curitiba",
+          "addressRegion": "PR",
+          "addressCountry": "BR"
+        },
+        "sameAs": [
+          "https://www.instagram.com/umdesignerchato",
+          "https://www.behance.net/firsightstudio"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Demos Interativos",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "name": "Archviz Explorer",
+              "description": "Navegação interativa por pontos de vista do empreendimento com transições e POIs dinâmicos."
+            },
+            {
+              "@type": "Offer",
+              "name": "Panorama 360°",
+              "description": "Tour imersivo em 360° pelos ambientes do empreendimento diretamente no navegador."
+            },
+            {
+              "@type": "Offer",
+              "name": "Planta Humanizada",
+              "description": "Planta baixa animada com mobiliário, texturas e elementos humanos interativos."
+            },
+            {
+              "@type": "Offer",
+              "name": "Visualizador 3D",
+              "description": "Modelo tridimensional interativo do edifício com rotação livre e zoom no navegador."
+            }
+          ]
+        }
       }
-    }
     </script>
   </body>
 </html>
