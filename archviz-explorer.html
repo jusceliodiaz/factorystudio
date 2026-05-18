@@ -135,173 +135,6 @@
       }
 
       /* COVER */
-      #cover {
-        position: fixed;
-        inset: 0;
-        z-index: 100;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition:
-          opacity 0.9s var(--ease),
-          visibility 0.9s;
-      }
-
-      #cover.out {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-      }
-
-      #cover-bg {
-        position: absolute;
-        inset: -20px;
-        background: url("images/BG_CAPA.png") center/cover no-repeat;
-        filter: blur(10px);
-        transform: scale(1.04);
-      }
-
-      #cover-bg::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          160deg,
-          rgba(5, 5, 3, 0.52) 0%,
-          rgba(5, 5, 3, 0.38) 50%,
-          rgba(5, 5, 3, 0.65) 100%
-        );
-      }
-
-      #cover-content {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0;
-        animation: cin 1.1s var(--ease) both;
-        background: rgba(255, 255, 255, 0.055);
-        backdrop-filter: blur(24px) saturate(1.4);
-        -webkit-backdrop-filter: blur(24px) saturate(1.4);
-        border: 1px solid rgba(255, 255, 255, 0.11);
-        border-radius: 28px;
-        padding: 56px 72px 52px;
-        box-shadow:
-          0 2px 0 rgba(255, 255, 255, 0.08) inset,
-          0 32px 80px rgba(0, 0, 0, 0.45);
-        min-width: 340px;
-        text-align: center;
-      }
-
-      @keyframes cin {
-        from {
-          opacity: 0;
-          transform: translateY(24px) scale(0.97);
-        }
-
-        to {
-          opacity: 1;
-          transform: none;
-        }
-      }
-
-      #cover-eyebrow {
-        font-size: 9px;
-        letter-spacing: 0.38em;
-        color: var(--warm);
-        text-transform: uppercase;
-        font-weight: 600;
-        margin-bottom: 20px;
-        opacity: 0.85;
-      }
-
-      #cover-logo {
-        font-family: "Cormorant Garamond", serif;
-        font-size: clamp(44px, 6vw, 82px);
-        font-weight: 300;
-        letter-spacing: 0.32em;
-        color: var(--paper);
-        text-transform: uppercase;
-        text-shadow: 0 2px 40px rgba(0, 0, 0, 0.2);
-        line-height: 1;
-        margin-bottom: 10px;
-      }
-
-      #cover-logo em {
-        color: var(--warm);
-        font-style: normal;
-      }
-
-      #cover-sub {
-        font-size: 10px;
-        letter-spacing: 0.3em;
-        color: rgba(244, 240, 232, 0.38);
-        text-transform: uppercase;
-        margin-bottom: 40px;
-      }
-
-      #cover-line {
-        width: 36px;
-        height: 1px;
-        background: linear-gradient(
-          to right,
-          transparent,
-          var(--warm),
-          transparent
-        );
-        opacity: 0.55;
-        margin-bottom: 40px;
-      }
-
-      #btn-start {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        padding: 16px 44px;
-        background: var(--warm);
-        border: none;
-        border-radius: 999px;
-        cursor: none;
-        font-family:
-          "Inter",
-          -apple-system,
-          sans-serif;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.22em;
-        color: rgba(10, 8, 5, 0.9);
-        text-transform: uppercase;
-        transition:
-          background 0.25s,
-          transform 0.25s var(--ease),
-          gap 0.25s,
-          box-shadow 0.25s;
-        box-shadow: 0 8px 28px rgba(162, 136, 88, 0.38);
-      }
-
-      #btn-start:hover {
-        background: #cdb07e;
-        transform: scale(1.05);
-        gap: 22px;
-        box-shadow: 0 12px 36px rgba(162, 136, 88, 0.52);
-      }
-
-      #btn-start svg {
-        width: 13px;
-        height: 13px;
-        stroke: rgba(10, 8, 5, 0.8);
-        fill: none;
-        stroke-width: 2.2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        transition: transform 0.25s;
-      }
-
-      #btn-start:hover svg {
-        transform: translateX(4px);
-      }
-
       /* ── AI + BOT BAR (top center) ── */
       #ai-bot-bar {
         position: fixed;
@@ -2724,23 +2557,6 @@
     <div id="ring"></div>
     <div id="noise"></div>
 
-    <!-- COVER -->
-    <div id="cover">
-      <div id="cover-bg"></div>
-      <div id="cover-content">
-        <div id="cover-eyebrow">Factory Interactive</div>
-        <div id="cover-logo">Archviz</div>
-        <div id="cover-sub">Ambiente Interativo</div>
-        <div id="cover-line"></div>
-        <button id="btn-start" onclick="startExperience()">
-          <span>Explorar</span>
-          <svg viewBox="0 0 14 14">
-            <polyline points="3,1 11,7 3,13" />
-          </svg>
-        </button>
-      </div>
-    </div>
-
     <!-- STAGE -->
     <div id="stage">
       <video id="va" class="vid" playsinline muted></video>
@@ -3422,17 +3238,12 @@
       }
 
       // ══════════════════════════════════════════════════════
-      // COVER
+      // INICIALIZAÇÃO
       // ══════════════════════════════════════════════════════
-      function startExperience() {
-        document.getElementById("cover").classList.add("out");
-        setTimeout(() => {
-          document.getElementById("topbar").classList.add("show");
-          document.getElementById("track").classList.add("show");
-          document.getElementById("ai-bot-bar").classList.add("show");
-        }, 500);
-        setTimeout(() => goTo(1), 350);
-      }
+      document.getElementById("topbar").classList.add("show");
+      document.getElementById("track").classList.add("show");
+      document.getElementById("ai-bot-bar").classList.add("show");
+      setTimeout(() => goTo(1), 100);
 
       // ══════════════════════════════════════════════════════
       // TECLADO
