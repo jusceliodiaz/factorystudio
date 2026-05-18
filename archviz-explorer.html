@@ -302,6 +302,189 @@
         transform: translateX(4px);
       }
 
+      /* ── AI IMAGE BTN ── */
+      #ai-track-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        cursor: none;
+        padding: 0 5px;
+        transition: opacity 0.3s;
+        opacity: 0.55;
+        flex-shrink: 0;
+      }
+      #ai-track-btn:hover { opacity: 1; }
+      #ai-track-btn.active { opacity: 1; }
+      #ai-circle {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1.5px solid rgba(255, 255, 255, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color 0.3s, background 0.3s;
+      }
+      #ai-track-btn:hover #ai-circle,
+      #ai-track-btn.active #ai-circle {
+        border-color: var(--warm);
+        background: rgba(200, 169, 110, 0.14);
+      }
+      #ai-label {
+        font-family: "Inter", -apple-system, sans-serif;
+        font-size: 10px;
+        font-weight: 400;
+        letter-spacing: 0.06em;
+        color: rgba(255, 255, 255, 0.75);
+        text-transform: uppercase;
+      }
+
+      /* ── AI PANEL ── */
+      #ai-panel {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 60;
+        width: 360px;
+        background: rgba(14, 12, 10, 0.92);
+        border: 1px solid rgba(200, 169, 110, 0.22);
+        border-radius: 20px;
+        overflow: hidden;
+        backdrop-filter: blur(40px) saturate(1.6);
+        -webkit-backdrop-filter: blur(40px) saturate(1.6);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, -50%) scale(0.97);
+        transition: opacity 0.3s ease, transform 0.3s var(--ease);
+        user-select: none;
+      }
+      #ai-panel.open {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translate(-50%, -50%);
+      }
+      #ai-panel.dragging {
+        transition: none;
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.65);
+      }
+      #ai-panel-header {
+        padding: 14px 18px;
+        border-bottom: 1px solid rgba(200, 169, 110, 0.14);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: grab;
+      }
+      #ai-panel-header:active { cursor: grabbing; }
+      #ai-panel-title {
+        color: var(--warm);
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+      #ai-panel-close {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: none;
+        transition: background 0.2s;
+      }
+      #ai-panel-close:hover { background: rgba(255,255,255,0.14); }
+      #ai-panel-close svg { width:10px; height:10px; stroke:rgba(255,255,255,0.7); fill:none; stroke-width:2; stroke-linecap:round; }
+      #ai-panel-body {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .ai-row { display: flex; gap: 10px; }
+      .ai-field { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+      .ai-lbl {
+        font-size: 10px;
+        color: rgba(255,255,255,0.5);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .ai-field input,
+      .ai-field select,
+      .ai-field textarea {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+        padding: 9px 11px;
+        color: #fff;
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .ai-field input:focus,
+      .ai-field select:focus,
+      .ai-field textarea:focus { border-color: rgba(200,169,110,0.4); }
+      .ai-field textarea { resize: none; min-height: 80px; line-height: 1.5; }
+      .ai-field select option { background: #1a1510; }
+      #ai-generate-btn {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 12px;
+        background: var(--warm);
+        color: #1a1000;
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        cursor: none;
+        transition: background 0.2s, transform 0.2s;
+      }
+      #ai-generate-btn:hover { background: #ddb16a; transform: scale(1.02); }
+      #ai-generate-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+      #ai-status {
+        font-size: 12px;
+        color: rgba(255,255,255,0.55);
+        text-align: center;
+        min-height: 18px;
+      }
+      #ai-img-wrap {
+        width: 100%;
+        aspect-ratio: 1/1;
+        border-radius: 12px;
+        overflow: hidden;
+        background: rgba(0,0,0,0.4);
+        display: none;
+        border: 1px solid rgba(255,255,255,0.07);
+      }
+      #ai-img-wrap.visible { display: block; }
+      #ai-result-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      #ai-dl-btn {
+        width: 100%;
+        padding: 11px;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 12px;
+        background: rgba(255,255,255,0.06);
+        color: rgba(255,255,255,0.8);
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        cursor: none;
+        display: none;
+        transition: background 0.2s;
+        text-transform: uppercase;
+      }
+      #ai-dl-btn.visible { display: block; }
+      #ai-dl-btn:hover { background: rgba(255,255,255,0.12); }
+
       /* TOPBAR */
       #topbar {
         position: fixed;
@@ -397,7 +580,7 @@
         -webkit-backdrop-filter: blur(50px) saturate(1.8);
         border: 1px solid rgba(255, 255, 255, 0.18);
         border-radius: 999px;
-        padding: 18px 16px;
+        padding: 13px 10px;
         box-shadow:
           0 0 0 1px rgba(255, 255, 255, 0.12) inset,
           0 16px 48px rgba(0, 0, 0, 0.4);
@@ -413,11 +596,11 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 9px;
+        gap: 6px;
         cursor: none;
         opacity: 0.32;
         transition: opacity 0.3s;
-        padding: 0 10px;
+        padding: 0 6px;
       }
 
       .t-pt.active {
@@ -434,16 +617,16 @@
 
       .t-dot-wrap {
         position: relative;
-        width: 18px;
-        height: 18px;
+        width: 14px;
+        height: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
       .t-dot {
-        width: 9px;
-        height: 9px;
+        width: 7px;
+        height: 7px;
         border-radius: 50%;
         border: 1.5px solid rgba(255, 255, 255, 0.7);
         transition:
@@ -491,9 +674,9 @@
           "Inter",
           -apple-system,
           sans-serif;
-        font-size: 10px;
+        font-size: 9px;
         font-weight: 400;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.04em;
         color: rgba(255, 255, 255, 0.75);
         text-transform: uppercase;
         white-space: nowrap;
@@ -513,8 +696,8 @@
       }
 
       .t-arrow {
-        width: 36px;
-        height: 36px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
         border: 1px solid rgba(255, 255, 255, 0.2);
         background: rgba(255, 255, 255, 0.1);
@@ -540,8 +723,8 @@
       }
 
       .t-arrow svg {
-        width: 12px;
-        height: 12px;
+        width: 9px;
+        height: 9px;
         stroke: rgba(255, 255, 255, 0.9);
         fill: none;
         stroke-width: 2;
@@ -550,11 +733,11 @@
       }
 
       #arr-l {
-        margin-right: 16px;
+        margin-right: 8px;
       }
 
       #arr-r {
-        margin-left: 16px;
+        margin-left: 8px;
       }
 
       /* PINS */
@@ -931,9 +1114,9 @@
       /* ══ NEO — botão no track ══ */
       #track-sep {
         width: 1px;
-        height: 28px;
+        height: 20px;
         background: rgba(255, 255, 255, 0.15);
-        margin: 0 12px;
+        margin: 0 8px;
         flex-shrink: 0;
       }
 
@@ -941,9 +1124,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 7px;
+        gap: 5px;
         cursor: none;
-        padding: 0 8px;
+        padding: 0 5px;
         transition: opacity 0.3s;
         opacity: 0.55;
         flex-shrink: 0;
@@ -962,8 +1145,8 @@
       }
 
       #neo-circle {
-        width: 34px;
-        height: 34px;
+        width: 26px;
+        height: 26px;
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.1);
         border: 1.5px solid rgba(255, 255, 255, 0.3);
@@ -1015,8 +1198,8 @@
       }
 
       #neo-circle svg {
-        width: 16px;
-        height: 16px;
+        width: 12px;
+        height: 12px;
       }
 
       #neo-track-btn.listening #neo-circle svg {
@@ -2565,8 +2748,18 @@
           <polyline points="3,1 7,5 3,9" />
         </svg>
       </button>
-      <!-- Separador + NEO -->
-      <div id="track-sep"></div>
+      <!-- AI + BOT grupo -->
+      <div id="ai-track-btn" onclick="aiTogglePanel()">
+        <div id="ai-circle">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#c8a96e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3h1V6a4 4 0 0 1 4-4z"/>
+            <circle cx="9" cy="14" r="1" fill="#c8a96e" stroke="none"/>
+            <circle cx="15" cy="14" r="1" fill="#c8a96e" stroke="none"/>
+            <path d="M9 18h6"/>
+          </svg>
+        </div>
+        <span id="ai-label">IA</span>
+      </div>
       <div id="neo-track-btn" onclick="neoClick()">
         <div id="neo-circle">
           <svg
@@ -2588,6 +2781,50 @@
           </svg>
         </div>
         <span id="neo-label">Bot</span>
+      </div>
+    </div>
+
+    <!-- AI IMAGE PANEL -->
+    <div id="ai-panel">
+      <div id="ai-panel-header">
+        <div id="ai-panel-title">AI Image Generator</div>
+        <div id="ai-panel-close" onclick="aiTogglePanel()">
+          <svg viewBox="0 0 10 10"><line x1="2" y1="2" x2="8" y2="8"/><line x1="8" y1="2" x2="2" y2="8"/></svg>
+        </div>
+      </div>
+      <div id="ai-panel-body">
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-lbl">Provider</label>
+            <select id="ai-provider">
+              <option value="gemini">Google Gemini</option>
+              <option value="openai">OpenAI DALL·E</option>
+            </select>
+          </div>
+          <div class="ai-field">
+            <label class="ai-lbl">API Key</label>
+            <input type="password" id="ai-key" placeholder="AIzaSy...">
+          </div>
+        </div>
+        <div class="ai-field">
+          <label class="ai-lbl">Prompt</label>
+          <textarea id="ai-prompt" placeholder="Modern luxury architectural visualization, cinematic lighting..."></textarea>
+        </div>
+        <div class="ai-row">
+          <div class="ai-field">
+            <label class="ai-lbl">Style</label>
+            <select id="ai-style">
+              <option value="">None</option>
+              <option value="photorealistic">Photorealistic</option>
+              <option value="architectural visualization">ArchViz</option>
+              <option value="cinematic">Cinematic</option>
+            </select>
+          </div>
+        </div>
+        <button id="ai-generate-btn" onclick="aiGenerate()">Generate Image</button>
+        <div id="ai-status"></div>
+        <div id="ai-img-wrap"><img id="ai-result-img" alt=""></div>
+        <button id="ai-dl-btn" onclick="aiDownload()">Download Image</button>
       </div>
     </div>
 
@@ -4881,6 +5118,9 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
           const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
           renderer.setSize(w, h);
           renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+          renderer.toneMapping = THREE.NoToneMapping;
+          renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+          THREE.ColorManagement.enabled = false;
           panoRenderer = renderer;
 
           const scene = new THREE.Scene();
@@ -4893,6 +5133,7 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
           new THREE.TextureLoader().load(
             imageSrc,
             (tex) => {
+              tex.colorSpace = THREE.LinearSRGBColorSpace;
               scene.add(
                 new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: tex })),
               );
@@ -5185,6 +5426,156 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
       buildPins();
       buildPOIs();
       updateUI();
+
+      // ── AI IMAGE GENERATOR ────────────────────────────────
+      let _aiImages = [];
+      let _aiImgIdx = 0;
+
+      // drag state
+      let _aiDragging = false;
+      let _aiDragOX = 0, _aiDragOY = 0;
+
+      function aiInitDrag() {
+        const panel = document.getElementById("ai-panel");
+        const header = document.getElementById("ai-panel-header");
+
+        header.addEventListener("mousedown", function (e) {
+          if (e.target.closest("#ai-panel-close")) return;
+          _aiDragging = true;
+          panel.classList.add("dragging");
+          // switch from translate(-50%,-50%) to absolute pixel position
+          const r = panel.getBoundingClientRect();
+          panel.style.top = r.top + "px";
+          panel.style.left = r.left + "px";
+          panel.style.transform = "none";
+          _aiDragOX = e.clientX - r.left;
+          _aiDragOY = e.clientY - r.top;
+          e.preventDefault();
+        });
+
+        window.addEventListener("mousemove", function (e) {
+          if (!_aiDragging) return;
+          let nx = e.clientX - _aiDragOX;
+          let ny = e.clientY - _aiDragOY;
+          // clamp to viewport
+          nx = Math.max(0, Math.min(window.innerWidth - panel.offsetWidth, nx));
+          ny = Math.max(0, Math.min(window.innerHeight - panel.offsetHeight, ny));
+          panel.style.left = nx + "px";
+          panel.style.top = ny + "px";
+        });
+
+        window.addEventListener("mouseup", function () {
+          if (!_aiDragging) return;
+          _aiDragging = false;
+          panel.classList.remove("dragging");
+        });
+      }
+
+      function aiTogglePanel() {
+        const panel = document.getElementById("ai-panel");
+        const btn = document.getElementById("ai-track-btn");
+        const isOpen = panel.classList.contains("open");
+        if (!isOpen) {
+          // reset to center before opening
+          panel.style.top = "50%";
+          panel.style.left = "50%";
+          panel.style.transform = "translate(-50%, -50%) scale(0.97)";
+          // force reflow so transition plays correctly
+          panel.offsetHeight;
+        }
+        panel.classList.toggle("open", !isOpen);
+        btn.classList.toggle("active", !isOpen);
+      }
+
+      aiInitDrag();
+
+      function aiSetStatus(msg) {
+        document.getElementById("ai-status").textContent = msg;
+      }
+
+      function aiShowImage(idx) {
+        _aiImgIdx = idx;
+        const img = document.getElementById("ai-result-img");
+        img.src = "data:image/png;base64," + _aiImages[idx].b64;
+        document.getElementById("ai-img-wrap").classList.add("visible");
+        document.getElementById("ai-dl-btn").classList.add("visible");
+      }
+
+      function aiDownload() {
+        if (!_aiImages.length) return;
+        const a = document.createElement("a");
+        a.href = "data:image/png;base64," + _aiImages[_aiImgIdx].b64;
+        a.download = "ai-image.png";
+        a.click();
+      }
+
+      async function aiGenerate() {
+        const provider = document.getElementById("ai-provider").value;
+        const key = document.getElementById("ai-key").value.trim();
+        const promptRaw = document.getElementById("ai-prompt").value.trim();
+        const style = document.getElementById("ai-style").value;
+
+        if (!key) { aiSetStatus("Insira a API Key"); return; }
+        if (!promptRaw) { aiSetStatus("Insira um prompt"); return; }
+
+        const prompt = style ? promptRaw + ", " + style + " style" : promptRaw;
+        const btn = document.getElementById("ai-generate-btn");
+        btn.disabled = true;
+        aiSetStatus("Gerando...");
+        _aiImages = [];
+
+        try {
+          if (provider === "gemini") {
+            await aiGemini(key, prompt);
+          } else {
+            aiSetStatus("OpenAI não implementado.");
+            btn.disabled = false;
+            return;
+          }
+          if (_aiImages.length) {
+            aiShowImage(0);
+            aiSetStatus("Pronto!");
+          } else {
+            aiSetStatus("Nenhuma imagem retornada.");
+          }
+        } catch (err) {
+          console.error(err);
+          aiSetStatus("Erro: " + err.message);
+        }
+        btn.disabled = false;
+      }
+
+      async function aiGemini(key, prompt) {
+        const model = "gemini-2.0-flash-exp";
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: { responseModalities: ["TEXT", "IMAGE"] },
+            }),
+          }
+        );
+        const data = await response.json();
+        if (!response.ok) throw new Error(data?.error?.message || "Gemini request failed");
+        const parts = data?.candidates?.[0]?.content?.parts || [];
+        for (const part of parts) {
+          if (part.inlineData?.data) _aiImages.push({ b64: part.inlineData.data });
+        }
+      }
+
+      // fechar painel ao clicar fora (ignora se estava arrastando)
+      document.addEventListener("click", function (e) {
+        if (_aiDragging) return;
+        const panel = document.getElementById("ai-panel");
+        const btn = document.getElementById("ai-track-btn");
+        if (panel.classList.contains("open") && !panel.contains(e.target) && !btn.contains(e.target)) {
+          panel.classList.remove("open");
+          btn.classList.remove("active");
+        }
+      });
     </script>
   </body>
 </html>
