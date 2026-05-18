@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <title>ARQOS — Archviz Explorer</title>
+    <title>Archviz Template — Archviz Explorer</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Mono:wght@300;400&family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet"
@@ -155,8 +155,10 @@
 
       #cover-bg {
         position: absolute;
-        inset: 0;
+        inset: -20px;
         background: url("images/BG_CAPA.png") center/cover no-repeat;
+        filter: blur(10px);
+        transform: scale(1.04);
       }
 
       #cover-bg::after {
@@ -164,10 +166,10 @@
         position: absolute;
         inset: 0;
         background: linear-gradient(
-          to bottom,
-          rgba(5, 5, 3, 0.3),
-          rgba(5, 5, 3, 0.15) 40%,
-          rgba(5, 5, 3, 0.55)
+          160deg,
+          rgba(5, 5, 3, 0.52) 0%,
+          rgba(5, 5, 3, 0.38) 50%,
+          rgba(5, 5, 3, 0.65) 100%
         );
       }
 
@@ -177,14 +179,25 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 36px;
+        gap: 0;
         animation: cin 1.1s var(--ease) both;
+        background: rgba(255, 255, 255, 0.055);
+        backdrop-filter: blur(24px) saturate(1.4);
+        -webkit-backdrop-filter: blur(24px) saturate(1.4);
+        border: 1px solid rgba(255, 255, 255, 0.11);
+        border-radius: 28px;
+        padding: 56px 72px 52px;
+        box-shadow:
+          0 2px 0 rgba(255, 255, 255, 0.08) inset,
+          0 32px 80px rgba(0, 0, 0, 0.45);
+        min-width: 340px;
+        text-align: center;
       }
 
       @keyframes cin {
         from {
           opacity: 0;
-          transform: translateY(20px);
+          transform: translateY(24px) scale(0.97);
         }
 
         to {
@@ -193,14 +206,26 @@
         }
       }
 
+      #cover-eyebrow {
+        font-size: 9px;
+        letter-spacing: 0.38em;
+        color: var(--warm);
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 20px;
+        opacity: 0.85;
+      }
+
       #cover-logo {
         font-family: "Cormorant Garamond", serif;
-        font-size: clamp(52px, 8vw, 100px);
+        font-size: clamp(44px, 6vw, 82px);
         font-weight: 300;
-        letter-spacing: 0.35em;
+        letter-spacing: 0.32em;
         color: var(--paper);
         text-transform: uppercase;
-        text-shadow: 0 2px 40px rgba(0, 0, 0, 0.3);
+        text-shadow: 0 2px 40px rgba(0, 0, 0, 0.2);
+        line-height: 1;
+        margin-bottom: 10px;
       }
 
       #cover-logo em {
@@ -210,70 +235,64 @@
 
       #cover-sub {
         font-size: 10px;
-        letter-spacing: 0.35em;
-        color: rgba(244, 240, 232, 0.5);
+        letter-spacing: 0.3em;
+        color: rgba(244, 240, 232, 0.38);
         text-transform: uppercase;
-        margin-top: -24px;
+        margin-bottom: 40px;
       }
 
       #cover-line {
-        width: 1px;
-        height: 44px;
+        width: 36px;
+        height: 1px;
         background: linear-gradient(
-          to bottom,
+          to right,
           transparent,
           var(--warm),
           transparent
         );
-        opacity: 0.6;
+        opacity: 0.55;
+        margin-bottom: 40px;
       }
 
       #btn-start {
         display: flex;
         align-items: center;
         gap: 14px;
-        padding: 18px 48px;
-        background: rgba(255, 255, 255, 0.14);
-        border: 1px solid rgba(255, 255, 255, 0.32);
+        padding: 16px 44px;
+        background: var(--warm);
+        border: none;
         border-radius: 999px;
         cursor: none;
         font-family:
           "Inter",
           -apple-system,
           sans-serif;
-        font-size: 13px;
-        font-weight: 500;
-        letter-spacing: 0.18em;
-        color: rgba(255, 255, 255, 0.95);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        color: rgba(10, 8, 5, 0.9);
         text-transform: uppercase;
-        backdrop-filter: blur(30px) saturate(1.5);
-        -webkit-backdrop-filter: blur(30px) saturate(1.5);
         transition:
           background 0.25s,
           transform 0.25s var(--ease),
           gap 0.25s,
           box-shadow 0.25s;
-        box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.18) inset,
-          0 8px 32px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 8px 28px rgba(162, 136, 88, 0.38);
       }
 
       #btn-start:hover {
-        background: rgba(255, 255, 255, 0.22);
-        border-color: rgba(255, 255, 255, 0.5);
-        transform: scale(1.04);
+        background: #cdb07e;
+        transform: scale(1.05);
         gap: 22px;
-        box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.22) inset,
-          0 12px 40px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 12px 36px rgba(162, 136, 88, 0.52);
       }
 
       #btn-start svg {
-        width: 14px;
-        height: 14px;
-        stroke: rgba(255, 255, 255, 0.9);
+        width: 13px;
+        height: 13px;
+        stroke: rgba(10, 8, 5, 0.8);
         fill: none;
-        stroke-width: 2;
+        stroke-width: 2.2;
         stroke-linecap: round;
         stroke-linejoin: round;
         transition: transform 0.25s;
@@ -2505,8 +2524,9 @@
     <div id="cover">
       <div id="cover-bg"></div>
       <div id="cover-content">
-        <div id="cover-logo">ARQ<em>O</em>S</div>
-        <div id="cover-sub">Archviz Explorer</div>
+        <div id="cover-eyebrow">Factory Interactive</div>
+        <div id="cover-logo">Archviz</div>
+        <div id="cover-sub">Ambiente Interativo</div>
         <div id="cover-line"></div>
         <button id="btn-start" onclick="startExperience()">
           <span>Explorar</span>
@@ -2525,7 +2545,7 @@
 
     <!-- TOPBAR -->
     <div id="topbar">
-      <div id="logo">ARQ<em>O</em>S</div>
+      <div id="logo">Factory Explorer</div>
       <div id="state-badge">
         <div id="state-dot"></div>
         <span id="state-lbl">panorâmica</span>
@@ -2567,7 +2587,7 @@
             <circle cx="12" cy="2.5" r="1" fill="#c8a96e" stroke="none" />
           </svg>
         </div>
-        <span id="neo-label">NEO</span>
+        <span id="neo-label">Bot</span>
       </div>
     </div>
 
@@ -2610,17 +2630,17 @@
             </svg>
           </div>
           <div id="neo-setup-titles">
-            <div id="neo-setup-name">NEO</div>
-            <div id="neo-setup-sub">Assistente de voz · ARQOS</div>
+            <div id="neo-setup-name">Bot</div>
+            <div id="neo-setup-sub">Assistente de voz · Archviz Template</div>
           </div>
         </div>
         <div id="neo-setup-desc">
-          NEO usa seu <strong>microfone</strong> para ouvir comandos e navega
+          O Bot usa seu <strong>microfone</strong> para ouvir comandos e navega
           automaticamente pelo empreendimento.<br /><br />
           Fale naturalmente: <strong>"Vista Norte"</strong>,
           <strong>"mostrar piscinas"</strong>,
           <strong>"o que tem na vista sul?"</strong><br /><br />
-          Para funcionar, NEO precisa de uma chave de API do Google Gemini — tem
+          Para funcionar, o Bot precisa de uma chave de API do Google Gemini — tem
           <strong>tier gratuito</strong>, sem cartão.
         </div>
         <div id="neo-setup-field">
@@ -2635,7 +2655,7 @@
         </div>
         <div id="neo-setup-actions">
           <button id="neo-setup-confirm" onclick="neoSaveKey()">
-            Ativar NEO
+            Ativar Bot
           </button>
           <button id="neo-setup-cancel" onclick="neoCloseSetup()">
             Cancelar
@@ -2759,7 +2779,7 @@
           index: 0,
           pinX: null,
           pinY: null,
-          tag: "Visão geral · ARQOS",
+          tag: "Visão geral · Archviz Template",
           title: "Panorâmica",
           desc: "Vista panorâmica do empreendimento. Uma visão completa do conjunto arquitetônico e sua relação com o entorno, a topografia e os acessos principais.",
           stats: [
@@ -2773,7 +2793,7 @@
         },
         {
           id: "vista-norte",
-          label: "Vista Norte",
+          label: "Vista 001",
           index: 1,
           pinX: 0.36,
           pinY: 0.3,
@@ -2791,7 +2811,7 @@
         },
         {
           id: "vista-sul",
-          label: "Vista Sul",
+          label: "Vista 002",
           index: 2,
           pinX: 0.54,
           pinY: 0.56,
@@ -2809,7 +2829,7 @@
         },
         {
           id: "vista-leste",
-          label: "Vista Leste",
+          label: "Vista 003",
           index: 3,
           pinX: 0.64,
           pinY: 0.42,
@@ -2827,7 +2847,7 @@
         },
         {
           id: "vista-oeste",
-          label: "Vista Oeste",
+          label: "Vista 004",
           index: 4,
           pinX: 0.28,
           pinY: 0.5,
@@ -2845,7 +2865,7 @@
         },
         {
           id: "vista-interna",
-          label: "Vista Interna",
+          label: "Vista 006",
           index: 5,
           pinX: 0.5,
           pinY: 0.38,
@@ -3544,16 +3564,10 @@
           if (activePopup && activePopup !== popup) {
             activePopup.classList.remove("open");
           }
-          // Reposiciona perto do marker
-          const rect = marker.getBoundingClientRect();
-          let left = rect.right + 12;
-          let top = rect.top - 60;
-          // Impede sair da tela
-          if (left + 300 > window.innerWidth) left = rect.left - 312;
-          if (top + 420 > window.innerHeight) top = window.innerHeight - 430;
-          if (top < 10) top = 10;
-          popup.style.left = left + "px";
-          popup.style.top = top + "px";
+          // Centraliza na tela
+          const popH = popup.offsetHeight || 420;
+          popup.style.left = Math.round((window.innerWidth - 300) / 2) + "px";
+          popup.style.top = Math.max(10, Math.round((window.innerHeight - popH) / 2)) + "px";
           popup.classList.add("open");
           activePopup = popup;
         }
@@ -3674,7 +3688,7 @@
       let neoRecognition = null;
 
       // Contexto do sistema para o Claude
-      const NEO_SYSTEM = `Você é NEO, assistente de voz do explorador arquitetônico ARQOS.
+      const NEO_SYSTEM = `Você é NEO, assistente de voz do explorador arquitetônico Archviz Template.
 
 AÇÃO OBRIGATÓRIA: responda SOMENTE com um objeto JSON usando exatamente um destes formatos:
 {"action":"goto","index":NUMBER}
@@ -3742,7 +3756,7 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
         localStorage.setItem("neo_api_key", val);
         NEO_GEMINI_MODEL = null; // força re-detecção com a nova chave
         neoCloseSetup();
-        neoBubble("NEO ativado! Clique no robô e fale um comando.", "");
+        neoBubble("Bot ativado! Clique no robô e fale um comando.", "");
       }
 
       // Estado visual do botão
