@@ -180,9 +180,12 @@
       .pf-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-auto-rows: 60vh;
+        grid-auto-rows: 36vh;
         gap: 3px;
       }
+
+      .pf-card-large { grid-row: span 2; }
+      .pf-card-wide  { grid-column: span 2; }
 
       /* ── CARD ── */
       .pf-card {
@@ -292,7 +295,8 @@
         inset: 0;
       }
 
-      .pf-slides img {
+      .pf-slides img,
+      .pf-slides video {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -304,11 +308,13 @@
           transform 0.85s var(--ease);
       }
 
-      .pf-slides img.pf-slide-active {
+      .pf-slides img.pf-slide-active,
+      .pf-slides video.pf-slide-active {
         opacity: 1;
       }
 
-      .pf-card:hover .pf-slides img.pf-slide-active {
+      .pf-card:hover .pf-slides img.pf-slide-active,
+      .pf-card:hover .pf-slides video.pf-slide-active {
         transform: scale(1.05);
       }
 
@@ -410,7 +416,12 @@
         }
         .pf-grid {
           grid-template-columns: 1fr;
-          grid-auto-rows: 50vh;
+          grid-auto-rows: 48vh;
+        }
+        .pf-card-large,
+        .pf-card-wide {
+          grid-row: span 1;
+          grid-column: span 1;
         }
       }
     </style>
@@ -420,11 +431,7 @@
     <!-- ── HEADER ── -->
     <header class="pf-header">
       <nav class="pf-nav">
-        <a
-          href="index.html"
-          class="pf-back"
-          aria-label="Voltar para home"
-        >
+        <a href="index.html" class="pf-back" aria-label="Voltar para home">
           <svg
             width="15"
             height="15"
@@ -459,72 +466,84 @@
       <button class="filter-btn" data-filter="landing">
         Landing Pages <span class="filter-count">2</span>
       </button>
-      <button class="filter-btn" data-filter="archviz">
-        Archviz <span class="filter-count">2</span>
+      <button class="filter-btn" data-filter="cgi">
+        CGI <span class="filter-count">2</span>
       </button>
       <button class="filter-btn" data-filter="realtime">
-        Realtime & Unreal <span class="filter-count">1</span>
+        Realtime Experience <span class="filter-count">1</span>
       </button>
     </nav>
 
     <!-- ── GRID FULL-WIDTH ── -->
     <main class="pf-grid" aria-label="Projetos">
-      <article class="pf-card" data-category="website" data-images="images/Portfolio_004.jpg,images/BG_placeholder.png">
+      <article
+        class="pf-card pf-card-large"
+        data-category="realtime"
+        data-images="images/final2025.mp4,images/CASE_001.jpg,images/CASE_002.jpg,images/CASE_003.jpg"
+      >
         <img
-          src="images/Portfolio_004.jpg"
-          alt="Modus Consulting — Website Miami FL 2026"
+          src="images/BG_placeholder.png"
+          alt="Littoral Escape — Realtime · Berlin - DE"
           loading="lazy"
         />
         <div class="pf-info">
           <div>
-            <div class="pf-label">Website · Miami — FL</div>
-            <div class="pf-name">Modus Consulting</div>
+            <div class="pf-label">Realtime · Berlin - DE</div>
+            <div class="pf-name">Littoral Escape</div>
+            <div class="pf-sub">2025</div>
+          </div>
+        </div>
+      </article>
+
+      <article
+        class="pf-card"
+        data-category="cgi"
+        data-images="images/NV_Pitch_05.jpg,images/NV_Pitch_04.jpg,images/NV_Pitch_03.jpg,images/NV_Pitch_01.jpg"
+      >
+        <img
+          src="images/NV_Pitch_05.jpg"
+          alt="CGI · North Yorkshire — UK 2026"
+          loading="lazy"
+        />
+        <div class="pf-info">
+          <div>
+            <div class="pf-label">CGI · North Yorkshire — UK</div>
+            <div class="pf-name">DKS Architects</div>
             <div class="pf-sub">2026</div>
           </div>
         </div>
       </article>
 
-      <article class="pf-card" data-category="archviz" data-images="images/Portfolio_005.jpg,images/BG_placeholder.png">
+      <article
+        class="pf-card"
+        data-category="cgi"
+        data-images="images/NV_DRONE_1.jpg,images/NV_DRONE_2.jpg,images/NV_DRONE_3.jpg,images/NV_DRONE_4.jpg"
+      >
         <img
-          src="images/Portfolio_005.jpg"
-          alt="La Terroir — Camila Dirani 2026"
+          src="images/NV_DRONE_1.png"
+          alt="NVision Studios — CGI · Newcastle Upon-Tyne — UK 2026"
           loading="lazy"
         />
         <div class="pf-info">
           <div>
-            <div class="pf-label">Archviz · Curitiba — PR</div>
-            <div class="pf-name">La Terroir</div>
-            <div class="pf-sub">Camila Dirani · 2026</div>
-          </div>
-        </div>
-      </article>
-
-      <article class="pf-card" data-category="landing">
-        <img
-          src="images/BG_placeholder.png"
-          alt="Dancon Empreendimentos — Landing Page Curitiba PR 2025"
-          loading="lazy"
-        />
-        <div class="pf-info">
-          <div>
-            <div class="pf-label">Landing Page · Curitiba — PR</div>
-            <div class="pf-name">Dancon Empreendimentos</div>
+            <div class="pf-label">CGI · Newcastle Upon-Tyne — UK</div>
+            <div class="pf-name">NVision Studios</div>
             <div class="pf-sub">2026</div>
           </div>
         </div>
       </article>
 
-      <article class="pf-card" data-category="archviz">
-        <img
-          src="images/BG_placeholder.png"
-          alt="Itaporã — Eduardo Rabachini 2025"
-          loading="lazy"
-        />
+      <article
+        class="pf-card"
+        data-category="cgi"
+        data-images="images/AD_002.jpg,images/AD_005.jpg,images/AD_003.jpg,images/AD_006.jpg,images/AD_004.jpg,images/AD_001.jpg"
+      >
+        <img src="images/AD_002.jpg" alt="Adman, CGI · — 2026" loading="lazy" />
         <div class="pf-info">
           <div>
-            <div class="pf-label">Archviz · Paraná — PR</div>
-            <div class="pf-name">Itaporã</div>
-            <div class="pf-sub">Eduardo Rabachini · 2026</div>
+            <div class="pf-label">CGI · São Paulo — SP</div>
+            <div class="pf-name">Adman</div>
+            <div class="pf-sub">2026</div>
           </div>
         </div>
       </article>
@@ -544,7 +563,7 @@
         </div>
       </article>
 
-      <article class="pf-card" data-category="website realtime">
+      <article class="pf-card pf-card-wide" data-category="website realtime">
         <img
           src="images/BG_placeholder.png"
           alt="Solicita Licitações — Website Brasil 2025"
@@ -614,12 +633,23 @@
         const slidesWrap = document.createElement("div");
         slidesWrap.className = "pf-slides";
         images.forEach(function (src, i) {
-          const img = document.createElement("img");
-          img.src = src;
-          img.alt = altText;
-          img.loading = "lazy";
-          if (i === 0) img.classList.add("pf-slide-active");
-          slidesWrap.appendChild(img);
+          var el;
+          if (src.endsWith(".mp4")) {
+            el = document.createElement("video");
+            el.src = src;
+            el.autoplay = true;
+            el.muted = true;
+            el.loop = true;
+            el.playsInline = true;
+            el.setAttribute("playsinline", "");
+          } else {
+            el = document.createElement("img");
+            el.src = src;
+            el.alt = altText;
+            el.loading = "lazy";
+          }
+          if (i === 0) el.classList.add("pf-slide-active");
+          slidesWrap.appendChild(el);
         });
         if (existing) existing.replaceWith(slidesWrap);
 
@@ -649,13 +679,15 @@
         card.appendChild(dotsEl);
 
         let current = 0;
-        const imgs = slidesWrap.querySelectorAll("img");
+        const slides = slidesWrap.children;
 
         function goTo(idx) {
-          imgs[current].classList.remove("pf-slide-active");
+          slides[current].classList.remove("pf-slide-active");
+          if (slides[current].tagName === "VIDEO") slides[current].pause();
           dots[current].classList.remove("active");
           current = ((idx % images.length) + images.length) % images.length;
-          imgs[current].classList.add("pf-slide-active");
+          slides[current].classList.add("pf-slide-active");
+          if (slides[current].tagName === "VIDEO") slides[current].play();
           dots[current].classList.add("active");
         }
 
