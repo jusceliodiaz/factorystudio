@@ -74,7 +74,7 @@
 - `border: 1px solid rgba(255,255,255,0.18)`
 - Ícone `.btn-wa-icon`: `48×48px; background: var(--gold); border-radius: 10px; color: #000`
 - Hover: icon rotaciona `rotate(12deg) scale(1.12)`, botão sobe `translateY(-3px)`
-- Link: `https://wa.me/5541992272317`
+- Link: `https://wa.me/5541987831394`
 
 ### Portfólio Horizontal (`.ph-wrap`)
 - `height: 300vh` — scroll vertical converte em horizontal via JS
@@ -172,7 +172,7 @@ Elementos começam `opacity: 0` e animam para visíveis com delays escalonados.
 
 ## Contato
 
-- WhatsApp: `https://wa.me/5541992272317` (+55 41 99227-2317)
+- WhatsApp: `https://wa.me/5541987831394` (+55 41 99227-2317)
 - E-mail: firsightstudio@gmail.com
 - Instagram: @umdesignerchato
 - Behance: firsightstudio
