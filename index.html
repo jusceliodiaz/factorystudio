@@ -184,7 +184,7 @@
       }
 
       h1 {
-        font-size: clamp(2.7rem, 6.3vw, 6.3rem);
+        font-size: clamp(2.16rem, 5.04vw, 5.04rem);
         line-height: 0.92;
         letter-spacing: -0.05em;
         max-width: 1100px;
@@ -939,6 +939,115 @@
         margin: 0 auto;
       }
 
+      /* ── CONTACT FORM ── */
+      .cf-wrap {
+        margin-top: 52px;
+        width: 100%;
+        max-width: 640px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: left;
+      }
+
+      .cf-divider {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 36px;
+        color: var(--muted);
+        font-size: 0.82rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .cf-divider::before,
+      .cf-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+      .cf label {
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: var(--muted);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+
+      .cf input,
+      .cf textarea {
+        width: 100%;
+        background: #121212;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px 16px;
+        color: var(--text);
+        font-family: inherit;
+        font-size: 0.95rem;
+        outline: none;
+        transition: border-color 0.2s var(--ease);
+        box-sizing: border-box;
+      }
+
+      .cf input:focus,
+      .cf textarea:focus {
+        border-color: var(--gold);
+      }
+
+      .cf input::placeholder,
+      .cf textarea::placeholder {
+        color: rgba(255, 255, 255, 0.2);
+      }
+
+      .cf textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      .cf .cf-row {
+        display: flex;
+        gap: 16px;
+      }
+
+      .cf .cf-row > div {
+        flex: 1;
+      }
+
+      .cf > div,
+      .cf .cf-row {
+        margin-bottom: 20px;
+      }
+
+      .sub-btn {
+        width: 100%;
+        padding: 16px;
+        background: var(--gold);
+        color: #1a1200;
+        font-family: inherit;
+        font-size: 0.95rem;
+        font-weight: 700;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background 0.2s var(--ease), transform 0.2s var(--ease);
+        letter-spacing: 0.04em;
+        margin-top: 4px;
+      }
+
+      .sub-btn:hover:not(:disabled) {
+        background: var(--gold-d);
+        transform: translateY(-2px);
+      }
+
+      .sub-btn:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+      }
+
       /* ── FOOTER ── */
       footer {
         padding: 40px var(--pad);
@@ -1248,6 +1357,20 @@
       }
 
       /* ── HERO TOP-RIGHT ── */
+      .hero-tl {
+        position: absolute;
+        top: 28px;
+        left: var(--pad);
+        display: flex;
+        align-items: center;
+        z-index: 10;
+      }
+
+      .hero-tl img {
+        height: 48px;
+        width: auto;
+      }
+
       .hero-tr {
         position: absolute;
         top: 28px;
@@ -1354,6 +1477,10 @@
       </video>
       <div class="hero-overlay"></div>
 
+      <div class="hero-tl">
+        <img src="images/logo_new_factory.png" alt="Factory Interactive" />
+      </div>
+
       <div class="hero-tr">
         <button
           class="btn-demo"
@@ -1382,12 +1509,6 @@
           </button>
         </div>
       </div>
-
-      <img
-        src="images/logo_site2.png"
-        alt="Factory Interactive — Studio de Experiências Digitais"
-        class="hero-logo"
-      />
 
       <h1 data-i18n="hero-h1">
         Interatividade, Design e Experiências Digitais.
@@ -1906,6 +2027,36 @@
         </span>
         Whatsapp
       </a>
+
+      <div class="cf-wrap">
+        <div class="cf-divider">ou envie uma mensagem</div>
+        <form class="cf" onsubmit="submitForm(event)" novalidate>
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+
+          <div class="cf-row">
+            <div>
+              <label for="f-nome">Nome</label>
+              <input type="text" id="f-nome" name="nome" autocomplete="name" placeholder="Seu nome" required />
+            </div>
+            <div>
+              <label for="f-tel">Telefone</label>
+              <input type="tel" id="f-tel" name="telefone" autocomplete="tel" placeholder="(41) 99999-9999" />
+            </div>
+          </div>
+
+          <div>
+            <label for="f-email">E-mail</label>
+            <input type="email" id="f-email" name="email" autocomplete="email" placeholder="seu@email.com" required />
+          </div>
+
+          <div>
+            <label for="f-projeto">Mensagem</label>
+            <textarea id="f-projeto" name="projeto" rows="5" placeholder="Sua mensagem..." required></textarea>
+          </div>
+
+          <button type="submit" class="sub-btn">Enviar Mensagem</button>
+        </form>
+      </div>
     </section>
 
     <!-- ── SIDE NAV ── -->
@@ -2327,6 +2478,37 @@
             window.open("fi-preview.html", "_blank");
           });
       })();
+    </script>
+
+    <script>
+      async function submitForm(e) {
+        e.preventDefault();
+        const form = e.target;
+        const btn = form.querySelector(".sub-btn");
+        btn.textContent = "Enviando...";
+        btn.disabled = true;
+        try {
+          const res = await fetch("https://formspree.io/f/mpqndyqd", {
+            method: "POST",
+            headers: { Accept: "application/json" },
+            body: new FormData(form),
+          });
+          if (res.ok) {
+            btn.textContent = "Mensagem Enviada ✓";
+            form.reset();
+            setTimeout(() => {
+              btn.textContent = "Enviar Mensagem";
+              btn.disabled = false;
+            }, 4000);
+          } else {
+            btn.textContent = "Erro ao enviar. Tente novamente.";
+            btn.disabled = false;
+          }
+        } catch {
+          btn.textContent = "Erro ao enviar. Tente novamente.";
+          btn.disabled = false;
+        }
+      }
     </script>
   </body>
 </html>
