@@ -2487,11 +2487,20 @@
         const btn = form.querySelector(".sub-btn");
         btn.textContent = "Enviando...";
         btn.disabled = true;
+        const data = {
+          nome: form.querySelector("[name=nome]").value.trim(),
+          telefone: form.querySelector("[name=telefone]").value.trim(),
+          email: form.querySelector("[name=email]").value.trim(),
+          projeto: form.querySelector("[name=projeto]").value.trim(),
+        };
         try {
           const res = await fetch("https://formspree.io/f/xeedjkjo", {
             method: "POST",
-            headers: { Accept: "application/json" },
-            body: new FormData(form),
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
           });
           if (res.ok) {
             btn.textContent = "Mensagem Enviada ✓";
