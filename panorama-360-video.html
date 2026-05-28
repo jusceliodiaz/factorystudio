@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex,nofollow" />
-    <title>Panorama 360° — Factory Interactive</title>
+    <title>Panorama 360° Vídeo — Factory Interactive</title>
     <link rel="icon" type="image/png" href="images/logo_site.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -35,7 +35,6 @@
         -webkit-font-smoothing: antialiased;
       }
 
-      /* canvas full-screen */
       #pano-canvas {
         display: block;
         width: 100%;
@@ -77,9 +76,7 @@
         animation: spin 0.8s linear infinite;
       }
       @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
+        to { transform: rotate(360deg); }
       }
       .pano-loading-label {
         font-size: 0.7rem;
@@ -100,11 +97,7 @@
         align-items: center;
         justify-content: space-between;
         padding: 36px 28px;
-        background: linear-gradient(
-          to bottom,
-          rgba(0, 0, 0, 0.7) 0%,
-          transparent 100%
-        );
+        background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
         pointer-events: none;
       }
       .hud-left {
@@ -136,9 +129,7 @@
         white-space: nowrap;
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        transition:
-          background 0.25s,
-          transform 0.25s;
+        transition: background 0.25s, transform 0.25s;
       }
       .btn-back:hover {
         background: rgba(255, 255, 255, 0.13);
@@ -158,7 +149,6 @@
       .btn-back:hover .btn-back-icon {
         transform: translateX(-3px);
       }
-
       #room-label {
         font-size: 0.68rem;
         font-weight: 700;
@@ -194,11 +184,9 @@
         pointer-events: none;
         transition: opacity 0.5s var(--ease);
       }
-      #hint.hidden {
-        opacity: 0;
-      }
+      #hint.hidden { opacity: 0; }
 
-      /* ── ROOM SELECTOR (bottom) ── */
+      /* ── ROOM SELECTOR ── */
       #room-selector {
         position: fixed;
         bottom: 28px;
@@ -225,20 +213,50 @@
         font-weight: 600;
         letter-spacing: 0.04em;
         cursor: pointer;
-        transition:
-          background 0.2s,
-          color 0.2s;
+        transition: background 0.2s, color 0.2s;
         white-space: nowrap;
       }
-      .room-btn:hover {
-        color: rgba(255, 255, 255, 0.8);
-      }
+      .room-btn:hover { color: rgba(255, 255, 255, 0.8); }
       .room-btn.active {
         background: var(--gold);
         color: #111;
       }
 
-      /* fade de transição */
+      /* ── BADGE VÍDEO ── */
+      #video-badge {
+        position: fixed;
+        top: 50%;
+        right: 24px;
+        transform: translateY(-50%);
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px 6px 8px;
+        background: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        pointer-events: none;
+      }
+      .video-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #e05555;
+        animation: vblink 1.2s ease-in-out infinite;
+      }
+      @keyframes vblink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.2; }
+      }
+
       #fade {
         position: fixed;
         inset: 0;
@@ -248,15 +266,13 @@
         pointer-events: none;
         transition: opacity 0.3s ease;
       }
-      #fade.show {
-        opacity: 1;
-      }
+      #fade.show { opacity: 1; }
     </style>
   </head>
   <body>
     <div id="pano-loading">
       <div class="pano-spinner"></div>
-      <span class="pano-loading-label">Carregando panorama</span>
+      <span class="pano-loading-label">Carregando vídeo 360°</span>
     </div>
 
     <div id="hud">
@@ -265,7 +281,7 @@
           <span class="btn-back-icon">←</span>
           Voltar
         </a>
-        <span id="room-label"></span>
+        <span id="room-label" style="display:none"></span>
       </div>
       <div class="hud-center">
         <img
@@ -280,21 +296,18 @@
 
     <div id="hint">Arraste para explorar · Scroll para zoom</div>
 
+
     <div id="fade"></div>
 
-    <div id="room-selector">
-      <button class="room-btn" data-room="quarto">Quarto</button>
-      <button class="room-btn" data-room="living">Living</button>
-      <button class="room-btn" data-room="sacada">Sacada</button>
-    </div>
+    <div id="room-selector" style="display:none"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <script>
       (function () {
+        // ── CONFIGURAÇÃO DOS VÍDEOS 360° ─────────────────────────
+        // Substitua os src pelos seus arquivos de vídeo equiretangular
         var TOUR = {
-          quarto: { label: "Quarto", src: "images/pano_quarto.jpg" },
-          living: { label: "Living", src: "images/pano_living.jpg" },
-          sacada: { label: "Sacada", src: "images/pano_sacada.jpg" },
+          animado: { label: "360° Animado", src: "images/360_animado.mp4" },
         };
 
         var canvas = document.getElementById("pano-canvas");
@@ -303,30 +316,20 @@
         var hintEl = document.getElementById("hint");
         var fadeEl = document.getElementById("fade");
 
-        // state
-        var lon = 180,
-          lat = 0,
-          velLon = 0,
-          velLat = 0;
-        var dragging = false,
-          px = 0,
-          py = 0;
+        var lon = 180, lat = 0, velLon = 0, velLat = 0;
+        var dragging = false, px = 0, py = 0;
         var transitioning = false;
         var currentRoom = null;
+        var currentVideo = null;
         var rafId = null;
 
-        // three.js objects
         var renderer, scene, camera, mesh;
 
-        // ── INIT RENDERER ───────────────────────────────────────
+        // ── INIT ─────────────────────────────────────────────────
         function init() {
-          var w = window.innerWidth,
-            h = window.innerHeight;
+          var w = window.innerWidth, h = window.innerHeight;
 
-          renderer = new THREE.WebGLRenderer({
-            canvas: canvas,
-            antialias: true,
-          });
+          renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
           renderer.setSize(w, h);
           renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
           renderer.toneMapping = THREE.NoToneMapping;
@@ -343,25 +346,46 @@
           scene.add(mesh);
 
           bindEvents();
-          loadRoom("living"); // abre no living por padrão
+          loadRoom("animado");
         }
 
-        // ── CARREGA QUARTO ──────────────────────────────────────
+        // ── CARREGA AMBIENTE COM VÍDEO 360° ──────────────────────
         function loadRoom(roomKey, withTransition) {
           if (!TOUR[roomKey] || transitioning) return;
           transitioning = true;
 
           function doLoad() {
             loadingEl.classList.remove("hidden");
-            new THREE.TextureLoader().load(
-              TOUR[roomKey].src,
-              function (tex) {
-                tex.colorSpace = THREE.LinearSRGBColorSpace;
+
+            // Para e descarta o vídeo anterior
+            if (currentVideo) {
+              currentVideo.pause();
+              currentVideo.removeAttribute("src");
+              currentVideo.load();
+              currentVideo = null;
+            }
+
+            var video = document.createElement("video");
+            video.src = TOUR[roomKey].src;
+            video.loop = true;
+            video.muted = true;
+            video.setAttribute("playsinline", "");
+            video.setAttribute("webkit-playsinline", "");
+            video.crossOrigin = "anonymous";
+
+            // VideoTexture atualiza a textura automaticamente a cada frame
+            var texture = new THREE.VideoTexture(video);
+            texture.colorSpace = THREE.LinearSRGBColorSpace;
+
+            function onCanPlay() {
+              video.removeEventListener("canplay", onCanPlay);
+              video.play().then(function () {
                 var old = mesh.material.map;
-                mesh.material.map = tex;
+                mesh.material.map = texture;
                 mesh.material.needsUpdate = true;
                 if (old) old.dispose();
 
+                currentVideo = video;
                 lon = 180;
                 lat = 0;
                 velLon = 0;
@@ -369,18 +393,33 @@
                 setRoomUI(roomKey);
                 loadingEl.classList.add("hidden");
 
-                if (withTransition) {
-                  fadeEl.classList.remove("show"); // fade in
-                }
+                if (withTransition) fadeEl.classList.remove("show");
                 transitioning = false;
-              },
-              undefined,
-              function () {
-                document.querySelector(".pano-loading-label").textContent =
-                  "Imagem não encontrada";
-                transitioning = false;
-              },
-            );
+              }).catch(function () {
+                // autoplay bloqueado — tenta sem interação
+                video.muted = true;
+                video.play().catch(function () {
+                  document.querySelector(".pano-loading-label").textContent =
+                    "Clique para iniciar o vídeo";
+                  canvas.addEventListener("click", function startOnClick() {
+                    canvas.removeEventListener("click", startOnClick);
+                    video.play();
+                    loadingEl.classList.add("hidden");
+                    transitioning = false;
+                  }, { once: true });
+                });
+              });
+            }
+
+            function onError() {
+              document.querySelector(".pano-loading-label").textContent =
+                "Vídeo não encontrado";
+              transitioning = false;
+            }
+
+            video.addEventListener("canplay", onCanPlay);
+            video.addEventListener("error", onError, { once: true });
+            video.load();
           }
 
           if (withTransition) {
@@ -399,18 +438,15 @@
           });
         }
 
-        // ── EVENTOS ─────────────────────────────────────────────
+        // ── EVENTOS ──────────────────────────────────────────────
         function bindEvents() {
-          // mouse
           canvas.addEventListener("mousedown", function (e) {
             dragging = true;
             px = e.clientX;
             py = e.clientY;
             velLon = velLat = 0;
           });
-          window.addEventListener("mouseup", function () {
-            dragging = false;
-          });
+          window.addEventListener("mouseup", function () { dragging = false; });
           canvas.addEventListener("mousemove", function (e) {
             if (!dragging) return;
             var dLon = (e.clientX - px) * 0.12;
@@ -424,129 +460,99 @@
             hintEl.classList.add("hidden");
           });
 
-          // touch
-          canvas.addEventListener(
-            "touchstart",
-            function (e) {
-              var t = e.touches[0];
-              dragging = true;
-              px = t.clientX;
-              py = t.clientY;
-              velLon = velLat = 0;
-            },
-            { passive: true },
-          );
-          canvas.addEventListener("touchend", function () {
-            dragging = false;
-          });
-          canvas.addEventListener(
-            "touchmove",
-            function (e) {
-              e.preventDefault();
-              var t = e.touches[0];
-              var dLon = (t.clientX - px) * 0.12;
-              var dLat = (py - t.clientY) * 0.12;
-              lon += dLon;
-              lat = Math.max(-80, Math.min(80, lat + dLat));
-              velLon = dLon;
-              velLat = dLat;
-              px = t.clientX;
-              py = t.clientY;
-              hintEl.classList.add("hidden");
-            },
-            { passive: false },
-          );
+          canvas.addEventListener("touchstart", function (e) {
+            var t = e.touches[0];
+            dragging = true;
+            px = t.clientX;
+            py = t.clientY;
+            velLon = velLat = 0;
+          }, { passive: true });
+          canvas.addEventListener("touchend", function () { dragging = false; });
+          canvas.addEventListener("touchmove", function (e) {
+            e.preventDefault();
+            var t = e.touches[0];
+            var dLon = (t.clientX - px) * 0.12;
+            var dLat = (py - t.clientY) * 0.12;
+            lon += dLon;
+            lat = Math.max(-80, Math.min(80, lat + dLat));
+            velLon = dLon;
+            velLat = dLat;
+            px = t.clientX;
+            py = t.clientY;
+            hintEl.classList.add("hidden");
+          }, { passive: false });
 
-          // pinch zoom
           var lastPinch = 0;
-          canvas.addEventListener(
-            "touchstart",
-            function (e) {
-              if (e.touches.length === 2)
-                lastPinch = Math.hypot(
-                  e.touches[0].clientX - e.touches[1].clientX,
-                  e.touches[0].clientY - e.touches[1].clientY,
-                );
-            },
-            { passive: true },
-          );
-          canvas.addEventListener(
-            "touchmove",
-            function (e) {
-              if (e.touches.length !== 2) return;
-              var d = Math.hypot(
+          canvas.addEventListener("touchstart", function (e) {
+            if (e.touches.length === 2)
+              lastPinch = Math.hypot(
                 e.touches[0].clientX - e.touches[1].clientX,
-                e.touches[0].clientY - e.touches[1].clientY,
+                e.touches[0].clientY - e.touches[1].clientY
               );
-              camera.fov = Math.max(
-                30,
-                Math.min(100, camera.fov - (d - lastPinch) * 0.1),
-              );
-              camera.updateProjectionMatrix();
-              lastPinch = d;
-            },
-            { passive: true },
-          );
+          }, { passive: true });
+          canvas.addEventListener("touchmove", function (e) {
+            if (e.touches.length !== 2) return;
+            var d = Math.hypot(
+              e.touches[0].clientX - e.touches[1].clientX,
+              e.touches[0].clientY - e.touches[1].clientY
+            );
+            camera.fov = Math.max(30, Math.min(100, camera.fov - (d - lastPinch) * 0.1));
+            camera.updateProjectionMatrix();
+            lastPinch = d;
+          }, { passive: true });
 
-          // scroll zoom
-          canvas.addEventListener(
-            "wheel",
-            function (e) {
-              e.preventDefault();
-              camera.fov = Math.max(
-                30,
-                Math.min(100, camera.fov + e.deltaY * 0.04),
-              );
-              camera.updateProjectionMatrix();
-            },
-            { passive: false },
-          );
+          canvas.addEventListener("wheel", function (e) {
+            e.preventDefault();
+            camera.fov = Math.max(30, Math.min(100, camera.fov + e.deltaY * 0.04));
+            camera.updateProjectionMatrix();
+          }, { passive: false });
 
-          // resize
           window.addEventListener("resize", function () {
-            var w = window.innerWidth,
-              h = window.innerHeight;
+            var w = window.innerWidth, h = window.innerHeight;
             renderer.setSize(w, h);
             camera.aspect = w / h;
             camera.updateProjectionMatrix();
           });
 
-          // botões de quarto
           document.querySelectorAll(".room-btn").forEach(function (btn) {
             btn.addEventListener("click", function () {
-              if (btn.dataset.room !== currentRoom) {
+              if (btn.dataset.room !== currentRoom)
                 loadRoom(btn.dataset.room, true);
-              }
             });
           });
 
-          // teclado esc → voltar
           document.addEventListener("keydown", function (e) {
             if (e.key === "Escape")
               window.location.href = "fi-preview.html#admin";
           });
         }
 
-        // ── RENDER LOOP ─────────────────────────────────────────
+        // ── RENDER LOOP ───────────────────────────────────────────
         function renderLoop() {
           rafId = requestAnimationFrame(renderLoop);
+
           if (!dragging) {
             lon += velLon;
             velLon *= 0.88;
             lat = Math.max(-80, Math.min(80, lat + velLat));
             velLat *= 0.88;
           }
+
+          // VideoTexture precisa de needsUpdate=true a cada frame novo do vídeo
+          if (mesh.material.map && currentVideo && !currentVideo.paused) {
+            mesh.material.map.needsUpdate = true;
+          }
+
           var phi = THREE.MathUtils.degToRad(90 - lat);
           var theta = THREE.MathUtils.degToRad(lon);
           camera.lookAt(
             Math.sin(phi) * Math.cos(theta),
             Math.cos(phi),
-            Math.sin(phi) * Math.sin(theta),
+            Math.sin(phi) * Math.sin(theta)
           );
           renderer.render(scene, camera);
         }
 
-        // ── START ───────────────────────────────────────────────
         init();
         renderLoop();
       })();
