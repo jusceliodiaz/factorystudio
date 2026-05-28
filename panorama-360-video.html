@@ -76,7 +76,9 @@
         animation: spin 0.8s linear infinite;
       }
       @keyframes spin {
-        to { transform: rotate(360deg); }
+        to {
+          transform: rotate(360deg);
+        }
       }
       .pano-loading-label {
         font-size: 0.7rem;
@@ -97,7 +99,11 @@
         align-items: center;
         justify-content: space-between;
         padding: 36px 28px;
-        background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.7) 0%,
+          transparent 100%
+        );
         pointer-events: none;
       }
       .hud-left {
@@ -129,7 +135,9 @@
         white-space: nowrap;
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        transition: background 0.25s, transform 0.25s;
+        transition:
+          background 0.25s,
+          transform 0.25s;
       }
       .btn-back:hover {
         background: rgba(255, 255, 255, 0.13);
@@ -184,7 +192,9 @@
         pointer-events: none;
         transition: opacity 0.5s var(--ease);
       }
-      #hint.hidden { opacity: 0; }
+      #hint.hidden {
+        opacity: 0;
+      }
 
       /* ── ROOM SELECTOR ── */
       #room-selector {
@@ -213,10 +223,14 @@
         font-weight: 600;
         letter-spacing: 0.04em;
         cursor: pointer;
-        transition: background 0.2s, color 0.2s;
+        transition:
+          background 0.2s,
+          color 0.2s;
         white-space: nowrap;
       }
-      .room-btn:hover { color: rgba(255, 255, 255, 0.8); }
+      .room-btn:hover {
+        color: rgba(255, 255, 255, 0.8);
+      }
       .room-btn.active {
         background: var(--gold);
         color: #111;
@@ -253,8 +267,13 @@
         animation: vblink 1.2s ease-in-out infinite;
       }
       @keyframes vblink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.2; }
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.2;
+        }
       }
 
       #fade {
@@ -266,7 +285,9 @@
         pointer-events: none;
         transition: opacity 0.3s ease;
       }
-      #fade.show { opacity: 1; }
+      #fade.show {
+        opacity: 1;
+      }
     </style>
   </head>
   <body>
@@ -281,7 +302,7 @@
           <span class="btn-back-icon">←</span>
           Voltar
         </a>
-        <span id="room-label" style="display:none"></span>
+        <span id="room-label" style="display: none"></span>
       </div>
       <div class="hud-center">
         <img
@@ -296,10 +317,9 @@
 
     <div id="hint">Arraste para explorar · Scroll para zoom</div>
 
-
     <div id="fade"></div>
 
-    <div id="room-selector" style="display:none"></div>
+    <div id="room-selector" style="display: none"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <script>
@@ -307,7 +327,10 @@
         // ── CONFIGURAÇÃO DOS VÍDEOS 360° ─────────────────────────
         // Substitua os src pelos seus arquivos de vídeo equiretangular
         var TOUR = {
-          animado: { label: "360° Animado", src: "images/360_animado.mp4" },
+          animado: {
+            label: "360° Animado",
+            src: "images/360_animado_prob4.mp4",
+          },
         };
 
         var canvas = document.getElementById("pano-canvas");
@@ -316,8 +339,13 @@
         var hintEl = document.getElementById("hint");
         var fadeEl = document.getElementById("fade");
 
-        var lon = 180, lat = 0, velLon = 0, velLat = 0;
-        var dragging = false, px = 0, py = 0;
+        var lon = 180,
+          lat = 0,
+          velLon = 0,
+          velLat = 0;
+        var dragging = false,
+          px = 0,
+          py = 0;
         var transitioning = false;
         var currentRoom = null;
         var currentVideo = null;
@@ -327,11 +355,15 @@
 
         // ── INIT ─────────────────────────────────────────────────
         function init() {
-          var w = window.innerWidth, h = window.innerHeight;
+          var w = window.innerWidth,
+            h = window.innerHeight;
 
-          renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+          renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true,
+          });
           renderer.setSize(w, h);
-          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+          renderer.setPixelRatio(window.devicePixelRatio);
           renderer.toneMapping = THREE.NoToneMapping;
           renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
           THREE.ColorManagement.enabled = false;
@@ -373,42 +405,51 @@
             video.setAttribute("webkit-playsinline", "");
             video.crossOrigin = "anonymous";
 
-            // VideoTexture atualiza a textura automaticamente a cada frame
             var texture = new THREE.VideoTexture(video);
             texture.colorSpace = THREE.LinearSRGBColorSpace;
+            texture.generateMipmaps = false;
+            texture.minFilter = THREE.LinearFilter;
+            texture.magFilter = THREE.LinearFilter;
 
             function onCanPlay() {
               video.removeEventListener("canplay", onCanPlay);
-              video.play().then(function () {
-                var old = mesh.material.map;
-                mesh.material.map = texture;
-                mesh.material.needsUpdate = true;
-                if (old) old.dispose();
+              video
+                .play()
+                .then(function () {
+                  var old = mesh.material.map;
+                  mesh.material.map = texture;
+                  mesh.material.needsUpdate = true;
+                  if (old) old.dispose();
 
-                currentVideo = video;
-                lon = 180;
-                lat = 0;
-                velLon = 0;
-                velLat = 0;
-                setRoomUI(roomKey);
-                loadingEl.classList.add("hidden");
+                  currentVideo = video;
+                  lon = 180;
+                  lat = 0;
+                  velLon = 0;
+                  velLat = 0;
+                  setRoomUI(roomKey);
+                  loadingEl.classList.add("hidden");
 
-                if (withTransition) fadeEl.classList.remove("show");
-                transitioning = false;
-              }).catch(function () {
-                // autoplay bloqueado — tenta sem interação
-                video.muted = true;
-                video.play().catch(function () {
-                  document.querySelector(".pano-loading-label").textContent =
-                    "Clique para iniciar o vídeo";
-                  canvas.addEventListener("click", function startOnClick() {
-                    canvas.removeEventListener("click", startOnClick);
-                    video.play();
-                    loadingEl.classList.add("hidden");
-                    transitioning = false;
-                  }, { once: true });
+                  if (withTransition) fadeEl.classList.remove("show");
+                  transitioning = false;
+                })
+                .catch(function () {
+                  // autoplay bloqueado — tenta sem interação
+                  video.muted = true;
+                  video.play().catch(function () {
+                    document.querySelector(".pano-loading-label").textContent =
+                      "Clique para iniciar o vídeo";
+                    canvas.addEventListener(
+                      "click",
+                      function startOnClick() {
+                        canvas.removeEventListener("click", startOnClick);
+                        video.play();
+                        loadingEl.classList.add("hidden");
+                        transitioning = false;
+                      },
+                      { once: true },
+                    );
+                  });
                 });
-              });
             }
 
             function onError() {
@@ -446,7 +487,9 @@
             py = e.clientY;
             velLon = velLat = 0;
           });
-          window.addEventListener("mouseup", function () { dragging = false; });
+          window.addEventListener("mouseup", function () {
+            dragging = false;
+          });
           canvas.addEventListener("mousemove", function (e) {
             if (!dragging) return;
             var dLon = (e.clientX - px) * 0.12;
@@ -460,55 +503,84 @@
             hintEl.classList.add("hidden");
           });
 
-          canvas.addEventListener("touchstart", function (e) {
-            var t = e.touches[0];
-            dragging = true;
-            px = t.clientX;
-            py = t.clientY;
-            velLon = velLat = 0;
-          }, { passive: true });
-          canvas.addEventListener("touchend", function () { dragging = false; });
-          canvas.addEventListener("touchmove", function (e) {
-            e.preventDefault();
-            var t = e.touches[0];
-            var dLon = (t.clientX - px) * 0.12;
-            var dLat = (py - t.clientY) * 0.12;
-            lon += dLon;
-            lat = Math.max(-80, Math.min(80, lat + dLat));
-            velLon = dLon;
-            velLat = dLat;
-            px = t.clientX;
-            py = t.clientY;
-            hintEl.classList.add("hidden");
-          }, { passive: false });
+          canvas.addEventListener(
+            "touchstart",
+            function (e) {
+              var t = e.touches[0];
+              dragging = true;
+              px = t.clientX;
+              py = t.clientY;
+              velLon = velLat = 0;
+            },
+            { passive: true },
+          );
+          canvas.addEventListener("touchend", function () {
+            dragging = false;
+          });
+          canvas.addEventListener(
+            "touchmove",
+            function (e) {
+              e.preventDefault();
+              var t = e.touches[0];
+              var dLon = (t.clientX - px) * 0.12;
+              var dLat = (py - t.clientY) * 0.12;
+              lon += dLon;
+              lat = Math.max(-80, Math.min(80, lat + dLat));
+              velLon = dLon;
+              velLat = dLat;
+              px = t.clientX;
+              py = t.clientY;
+              hintEl.classList.add("hidden");
+            },
+            { passive: false },
+          );
 
           var lastPinch = 0;
-          canvas.addEventListener("touchstart", function (e) {
-            if (e.touches.length === 2)
-              lastPinch = Math.hypot(
+          canvas.addEventListener(
+            "touchstart",
+            function (e) {
+              if (e.touches.length === 2)
+                lastPinch = Math.hypot(
+                  e.touches[0].clientX - e.touches[1].clientX,
+                  e.touches[0].clientY - e.touches[1].clientY,
+                );
+            },
+            { passive: true },
+          );
+          canvas.addEventListener(
+            "touchmove",
+            function (e) {
+              if (e.touches.length !== 2) return;
+              var d = Math.hypot(
                 e.touches[0].clientX - e.touches[1].clientX,
-                e.touches[0].clientY - e.touches[1].clientY
+                e.touches[0].clientY - e.touches[1].clientY,
               );
-          }, { passive: true });
-          canvas.addEventListener("touchmove", function (e) {
-            if (e.touches.length !== 2) return;
-            var d = Math.hypot(
-              e.touches[0].clientX - e.touches[1].clientX,
-              e.touches[0].clientY - e.touches[1].clientY
-            );
-            camera.fov = Math.max(30, Math.min(100, camera.fov - (d - lastPinch) * 0.1));
-            camera.updateProjectionMatrix();
-            lastPinch = d;
-          }, { passive: true });
+              camera.fov = Math.max(
+                30,
+                Math.min(100, camera.fov - (d - lastPinch) * 0.1),
+              );
+              camera.updateProjectionMatrix();
+              lastPinch = d;
+            },
+            { passive: true },
+          );
 
-          canvas.addEventListener("wheel", function (e) {
-            e.preventDefault();
-            camera.fov = Math.max(30, Math.min(100, camera.fov + e.deltaY * 0.04));
-            camera.updateProjectionMatrix();
-          }, { passive: false });
+          canvas.addEventListener(
+            "wheel",
+            function (e) {
+              e.preventDefault();
+              camera.fov = Math.max(
+                30,
+                Math.min(100, camera.fov + e.deltaY * 0.04),
+              );
+              camera.updateProjectionMatrix();
+            },
+            { passive: false },
+          );
 
           window.addEventListener("resize", function () {
-            var w = window.innerWidth, h = window.innerHeight;
+            var w = window.innerWidth,
+              h = window.innerHeight;
             renderer.setSize(w, h);
             camera.aspect = w / h;
             camera.updateProjectionMatrix();
@@ -548,7 +620,7 @@
           camera.lookAt(
             Math.sin(phi) * Math.cos(theta),
             Math.cos(phi),
-            Math.sin(phi) * Math.sin(theta)
+            Math.sin(phi) * Math.sin(theta),
           );
           renderer.render(scene, camera);
         }
@@ -558,9 +630,35 @@
       })();
     </script>
 
-    <div style="position:fixed;bottom:16px;right:20px;z-index:999;font-family:'Inter',sans-serif;font-size:0.62rem;letter-spacing:0.1em;color:rgba(255,255,255,0.22);pointer-events:none">
-      Powered by <a href="https://factorystudio.works/" rel="noopener" style="color:rgba(255,255,255,0.42);font-weight:600;text-decoration:none;font-family:'Silkscreen',sans-serif">Factory</a>
+    <div
+      style="
+        position: fixed;
+        bottom: 16px;
+        right: 20px;
+        z-index: 999;
+        font-family: &quot;Inter&quot;, sans-serif;
+        font-size: 0.62rem;
+        letter-spacing: 0.1em;
+        color: rgba(255, 255, 255, 0.22);
+        pointer-events: none;
+      "
+    >
+      Powered by
+      <a
+        href="https://factorystudio.works/"
+        rel="noopener"
+        style="
+          color: rgba(255, 255, 255, 0.42);
+          font-weight: 600;
+          text-decoration: none;
+          font-family: &quot;Silkscreen&quot;, sans-serif;
+        "
+        >Factory</a
+      >
     </div>
-  <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap"
+      rel="stylesheet"
+    />
   </body>
 </html>
