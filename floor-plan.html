@@ -104,12 +104,9 @@
       }
 
       /*
-     * Dual-slot video: dois <video> no mesmo espaço.
-     * Apenas o .active é visível (opacity 1); o outro fica em opacity 0.
-     * transition: none é explícito para impedir que Safari/WebKit
-     * aplique qualquer animação implícita de GPU ao trocar opacity.
-     * will-change: opacity força o Safari a pré-compor a camada GPU
-     * antes da troca, eliminando o micro-fade em iOS/iPadOS.
+     * bg-still: imagem estática do estado atual (sempre visível).
+     * seq-video: vídeo de transição que toca por cima ao navegar.
+     * Quando .active → opacity 1; sem .active → opacity 0 (fade CSS).
      */
       .vid {
         position: absolute;
@@ -119,6 +116,7 @@
         object-fit: cover;
         opacity: 0;
         z-index: 1;
+        pointer-events: none;
         transition: opacity 0.55s ease;
       }
 
@@ -2706,8 +2704,8 @@
 
     <!-- STAGE -->
     <div id="stage">
-      <img id="va" class="vid active" alt="" />
-      <img id="vb" class="vid" alt="" />
+      <img id="bg-still" class="vid active" alt="" />
+      <video id="seq-video" class="vid" muted playsinline preload="none"></video>
     </div>
 
     <!-- TOPBAR -->
@@ -3017,8 +3015,8 @@
         {
           id: "panoramica",
           label: "Panorâmica",
-          icon: `<svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="1"/><path d="M2 8h20M2 14h20M8 2v20M14 2v20"/></svg>`,
-          img: "images/floor_3d_01.jpg",
+          icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg>`,
+          img: "images/floor_3d_01-2.jpg",
           index: 0,
           pinX: null,
           pinY: null,
@@ -3037,8 +3035,8 @@
         {
           id: "vista-norte",
           label: "Vista 001",
-          icon: `<svg viewBox="0 0 24 24"><polyline points="13,2 6,13 12,13 11,22 18,9 12,9 13,2"/><path d="M3 19c1-2 2-3 4-3M17 19c-1-2-2-3-4-3"/></svg>`,
-          img: "images/floor_3d_02.jpg",
+          icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg>`,
+          img: "images/floor_3d_02-2.jpg",
           index: 1,
           pinX: 0.36,
           pinY: 0.3,
@@ -3057,8 +3055,8 @@
         {
           id: "vista-sul",
           label: "Vista 002",
-          icon: `<svg viewBox="0 0 24 24"><rect x="2" y="6" width="9" height="4" rx="0.5"/><rect x="13" y="6" width="9" height="4" rx="0.5"/><rect x="2" y="12" width="5" height="4" rx="0.5"/><rect x="9" y="12" width="6" height="4" rx="0.5"/><rect x="17" y="12" width="5" height="4" rx="0.5"/><rect x="2" y="18" width="9" height="4" rx="0.5"/><rect x="13" y="18" width="9" height="4" rx="0.5"/></svg>`,
-          img: "images/floor_3d_03.jpg",
+          icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg>`,
+          img: "images/floor_3d_03-2.jpg",
           index: 2,
           pinX: 0.54,
           pinY: 0.56,
@@ -3077,8 +3075,8 @@
         {
           id: "vista-leste",
           label: "Vista 003",
-          icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>`,
-          img: "images/floor_3d_04.jpg",
+          icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg>`,
+          img: "images/floor_3d_04-2.jpg",
           index: 3,
           pinX: 0.64,
           pinY: 0.42,
@@ -3095,36 +3093,16 @@
           sat: 18,
         },
         {
-          id: "vista-oeste",
+          id: "vista-quatro",
           label: "Vista 004",
-          icon: `<svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="3"/><path d="M3 21v-2a6 6 0 0 1 6-6h0a6 6 0 0 1 6 6v2"/><circle cx="17" cy="9" r="2"/><path d="M21 21v-1a4 4 0 0 0-4-4h0"/></svg>`,
-          img: "images/floor_3d_05.jpg",
+          icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg>`,
+          img: "images/floor_3d_06-2.jpg",
           index: 4,
-          pinX: 0.28,
-          pinY: 0.5,
-          tag: "Residencial · Bloco Oeste",
+          pinX: null,
+          pinY: null,
+          tag: "Residencial · Vista 004",
           title: "Vista\n004",
           desc: "Vista 004 do empreendimento.",
-          stats: [
-            { label: "Pavimentos", value: "—", unit: "" },
-            { label: "Unidades", value: "—", unit: "" },
-            { label: "A partir de", value: "—", unit: "R$" },
-            { label: "Disponíveis", value: "—", unit: "" },
-          ],
-          hue: 270,
-          sat: 14,
-        },
-        {
-          id: "vista-cinco",
-          label: "Vista 005",
-          icon: `<svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
-          img: "images/floor_3d_06.jpg",
-          index: 5,
-          pinX: 0.5,
-          pinY: 0.35,
-          tag: "Residencial · Bloco 5",
-          title: "Vista\n005",
-          desc: "Vista 005 do empreendimento.",
           stats: [
             { label: "Pavimentos", value: "—", unit: "" },
             { label: "Unidades", value: "—", unit: "" },
@@ -3141,42 +3119,78 @@
       // STATE
       // ══════════════════════════════════════════════════════
       let state = "idle";
-      let cur = 0; // índice do ponto atual
-      let q = []; // fila de passos [{from,to}]
-      let slot = "a"; // qual vídeo está ativo ('a' ou 'b')
+      let cur = 0;
 
-      const VA = document.getElementById("va");
-      const VB = document.getElementById("vb");
-      const V = (s) => (s === "a" ? VA : VB);
-      const ALT = (s) => (s === "a" ? "b" : "a");
+      const bgStill = document.getElementById("bg-still");
+      const seqVideo = document.getElementById("seq-video");
+
+      // avançar btn1→btn2: planta_1.mp4  (número do botão de ORIGEM)
+      // voltar  btn2→btn1: planta_1_retorno.mp4 (número do botão de DESTINO)
+      function getVideoSrc(from, to) {
+        return to > from
+          ? `images/planta_${from + 1}.mp4`
+          : `images/planta_${to + 1}_retorno.mp4`;
+      }
+
+      // caminho linear passo a passo (nunca pula estados)
+      function findPath(from, to) {
+        const steps = [];
+        const dir = to > from ? 1 : -1;
+        for (let i = from; i !== to; i += dir) steps.push([i, i + dir]);
+        return steps;
+      }
 
       // ══════════════════════════════════════════════════════
-      // NAVEGAÇÃO — crossfade de imagem
+      // NAVEGAÇÃO — vídeo de transição
       // ══════════════════════════════════════════════════════
       function goTo(idx) {
         if (idx === cur || state === "playing") return;
-        state = "playing";
+        const path = findPath(cur, idx);
+        if (!path.length) return;
         cur = idx;
+        state = "playing";
         updateUI();
+        playTransitions(path, 0);
+      }
 
-        const ns = ALT(slot);
-        const ni = V(ns);
-        const pi = V(slot);
-
-        ni.src = PTS[cur].img;
-        ni.onload = () => {
-          ni.onload = null;
-          pi.classList.remove("active");
-          ni.classList.add("active");
-          slot = ns;
+      function playTransitions(path, step) {
+        if (step >= path.length) {
+          seqVideo.onended = null;
+          seqVideo.onerror = null;
+          seqVideo.classList.remove("active");
+          seqVideo.pause();
+          bgStill.src = PTS[cur].img;
           state = "idle";
           updateUI();
-        };
-        ni.onerror = () => {
-          ni.onerror = null;
+          return;
+        }
+        const [from, to] = path[step];
+
+        function abort() {
+          seqVideo.onended = null;
+          seqVideo.onerror = null;
+          seqVideo.classList.remove("active");
+          bgStill.src = PTS[cur].img;
           state = "idle";
           updateUI();
+        }
+
+        seqVideo.oncanplay = () => {
+          seqVideo.oncanplay = null;
+          seqVideo.classList.add("active");
+          seqVideo.play().catch(abort);
         };
+        seqVideo.onended = () => {
+          seqVideo.onended = null;
+          playTransitions(path, step + 1);
+        };
+        seqVideo.onerror = () => {
+          seqVideo.onerror = null;
+          abort();
+        };
+
+        seqVideo.src = getVideoSrc(from, to);
+        seqVideo.load();
       }
 
       const WINDOW_SIZE = Infinity;
@@ -3319,7 +3333,7 @@
         document.getElementById("topbar").classList.add("show");
         document.getElementById("track").classList.add("show");
         document.getElementById("ai-bot-bar").classList.add("show");
-        VA.src = PTS[0].img;
+        bgStill.src = PTS[0].img;
         updateUI();
       }
       startExperience();
