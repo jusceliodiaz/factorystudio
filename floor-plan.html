@@ -104,9 +104,10 @@
       }
 
       /*
-     * bg-still: imagem estática do estado atual (sempre visível).
+     * bg-still: imagem estática do estado atual.
      * seq-video: vídeo de transição que toca por cima ao navegar.
-     * Quando .active → opacity 1; sem .active → opacity 0 (fade CSS).
+     * transition: none — corte seco igual ao archviz-explorer, sem fade.
+     * will-change: opacity — pré-compõe a camada GPU, elimina micro-fade Safari.
      */
       .vid {
         position: absolute;
@@ -117,7 +118,9 @@
         opacity: 0;
         z-index: 1;
         pointer-events: none;
-        transition: opacity 0.55s ease;
+        -webkit-transition: none;
+        transition: none;
+        will-change: opacity;
       }
 
       .vid.active {
@@ -2903,7 +2906,7 @@
         <div id="neo-setup-hint">
           Sua chave fica salva apenas neste browser e nunca é enviada a
           terceiros.<br />
-          <a href="https://aistudio.google.com/app/apikey" target="_blank"
+          <a href="https://aistudio.google.com/app/apikey"
             >Obter chave gratuita no Google AI Studio →</a
           >
         </div>
@@ -3166,9 +3169,12 @@
         }
         const [from, to] = path[step];
 
+        const expectedSrc = getVideoSrc(from, to);
+
         function abort() {
           seqVideo.onended = null;
           seqVideo.onerror = null;
+          seqVideo.oncanplay = null;
           seqVideo.classList.remove("active");
           bgStill.src = PTS[cur].img;
           state = "idle";
@@ -3176,6 +3182,9 @@
         }
 
         seqVideo.oncanplay = () => {
+          // ignora canplay se o src ainda não é o esperado (buffer do vídeo anterior)
+          const loaded = seqVideo.currentSrc || seqVideo.src;
+          if (!loaded.includes(expectedSrc.split("/").pop())) return;
           seqVideo.oncanplay = null;
           seqVideo.classList.add("active");
           seqVideo.play().catch(abort);
@@ -3189,7 +3198,7 @@
           abort();
         };
 
-        seqVideo.src = getVideoSrc(from, to);
+        seqVideo.src = expectedSrc;
         seqVideo.load();
       }
 
@@ -5264,7 +5273,7 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
         const linksHTML = det.links
           .map(
             (l) => `
-        <a class="pdi-link" href="${l.url}" target="_blank">
+        <a class="pdi-link" href="${l.url}">
           <span class="pdi-link-label">${l.label}</span>
           <span class="pdi-link-arr"><svg viewBox="0 0 9 9"><polyline points="3,1 7,5 3,9"/></svg></span>
         </a>`,
@@ -5295,7 +5304,7 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
             : ""
         }
         <div class="pdi-cta">
-          <a class="pdi-cta-primary" href="${det.cta.url}" target="_blank">${det.cta.label}</a>
+          <a class="pdi-cta-primary" href="${det.cta.url}">${det.cta.label}</a>
           <button class="pdi-cta-secondary" onclick="closePOIDetail()">Fechar</button>
         </div>
         ${
@@ -5520,7 +5529,7 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
       Powered by
       <a
         href="https://factorystudio-one.vercel.app/"
-        target="_blank"
+       
         rel="noopener"
         style="
           color: rgba(255, 255, 255, 0.42);
