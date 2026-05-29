@@ -324,13 +324,14 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <script>
       (function () {
-        // ── CONFIGURAÇÃO DOS VÍDEOS 360° ─────────────────────────
-        // Substitua os src pelos seus arquivos de vídeo equiretangular
+        // ── TOUR — adicione entradas aqui ────────────────────────
+        // type: "video" → usa VideoTexture (mp4/webm)
+        // type: "image" → usa TextureLoader (jpg/png)
         var TOUR = {
-          animado: {
-            label: "360° Animado",
-            src: "images/360_animado_prob4.mp4",
-          },
+          animado:  { label: "360° Animado", type: "video", src: "images/360_animado_prob4.mp4" },
+          living:   { label: "Living",        type: "image", src: "images/pano_living.jpg" },
+          quarto:   { label: "Quarto",         type: "image", src: "images/pano_quarto.jpg" },
+          sacada:   { label: "Sacada",         type: "image", src: "images/pano_sacada.jpg" },
         };
 
         var canvas = document.getElementById("pano-canvas");
@@ -377,11 +378,29 @@
           mesh = new THREE.Mesh(geo, mat);
           scene.add(mesh);
 
+          buildRoomSelector();
           bindEvents();
           loadRoom("animado");
         }
 
-        // ── CARREGA AMBIENTE COM VÍDEO 360° ──────────────────────
+        // ── CONSTRÓI BOTÕES DO SELETOR ────────────────────────────
+        function buildRoomSelector() {
+          var sel = document.getElementById("room-selector");
+          Object.keys(TOUR).forEach(function (key) {
+            var btn = document.createElement("button");
+            btn.className = "room-btn";
+            btn.dataset.room = key;
+            btn.textContent = TOUR[key].label;
+            // badge de vídeo no primeiro item
+            if (TOUR[key].type === "video") {
+              btn.innerHTML = '<span class="video-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#e05555;margin-right:6px;vertical-align:middle;animation:vblink 1.2s ease-in-out infinite"></span>' + TOUR[key].label;
+            }
+            sel.appendChild(btn);
+          });
+          if (Object.keys(TOUR).length > 1) sel.style.display = "";
+        }
+
+        // ── CARREGA AMBIENTE (vídeo ou imagem) ────────────────────
         function loadRoom(roomKey, withTransition) {
           if (!TOUR[roomKey] || transitioning) return;
           transitioning = true;
@@ -389,7 +408,7 @@
           function doLoad() {
             loadingEl.classList.remove("hidden");
 
-            // Para e descarta o vídeo anterior
+            // Para e descarta vídeo anterior
             if (currentVideo) {
               currentVideo.pause();
               currentVideo.removeAttribute("src");
@@ -397,70 +416,82 @@
               currentVideo = null;
             }
 
-            var video = document.createElement("video");
-            video.src = TOUR[roomKey].src;
-            video.loop = true;
-            video.muted = true;
-            video.setAttribute("playsinline", "");
-            video.setAttribute("webkit-playsinline", "");
-            video.crossOrigin = "anonymous";
+            var room = TOUR[roomKey];
 
-            var texture = new THREE.VideoTexture(video);
-            texture.colorSpace = THREE.LinearSRGBColorSpace;
-            texture.generateMipmaps = false;
-            texture.minFilter = THREE.LinearFilter;
-            texture.magFilter = THREE.LinearFilter;
-
-            function onCanPlay() {
-              video.removeEventListener("canplay", onCanPlay);
-              video
-                .play()
-                .then(function () {
+            if (room.type === "image") {
+              // ── Imagem estática ──────────────────────────────────
+              new THREE.TextureLoader().load(
+                room.src,
+                function (tex) {
+                  tex.colorSpace = THREE.LinearSRGBColorSpace;
                   var old = mesh.material.map;
-                  mesh.material.map = texture;
+                  mesh.material.map = tex;
                   mesh.material.needsUpdate = true;
                   if (old) old.dispose();
-
-                  currentVideo = video;
-                  lon = 180;
-                  lat = 0;
-                  velLon = 0;
-                  velLat = 0;
+                  lon = 180; lat = 0; velLon = 0; velLat = 0;
                   setRoomUI(roomKey);
                   loadingEl.classList.add("hidden");
-
                   if (withTransition) fadeEl.classList.remove("show");
                   transitioning = false;
-                })
-                .catch(function () {
-                  // autoplay bloqueado — tenta sem interação
-                  video.muted = true;
-                  video.play().catch(function () {
-                    document.querySelector(".pano-loading-label").textContent =
-                      "Clique para iniciar o vídeo";
-                    canvas.addEventListener(
-                      "click",
-                      function startOnClick() {
+                },
+                undefined,
+                function () {
+                  document.querySelector(".pano-loading-label").textContent = "Imagem não encontrada";
+                  transitioning = false;
+                }
+              );
+            } else {
+              // ── Vídeo ────────────────────────────────────────────
+              var video = document.createElement("video");
+              video.src = room.src;
+              video.loop = true;
+              video.muted = true;
+              video.setAttribute("playsinline", "");
+              video.setAttribute("webkit-playsinline", "");
+              video.crossOrigin = "anonymous";
+
+              var texture = new THREE.VideoTexture(video);
+              texture.colorSpace = THREE.LinearSRGBColorSpace;
+              texture.generateMipmaps = false;
+              texture.minFilter = THREE.LinearFilter;
+              texture.magFilter = THREE.LinearFilter;
+
+              function onCanPlay() {
+                video.removeEventListener("canplay", onCanPlay);
+                video.play()
+                  .then(function () {
+                    var old = mesh.material.map;
+                    mesh.material.map = texture;
+                    mesh.material.needsUpdate = true;
+                    if (old) old.dispose();
+                    currentVideo = video;
+                    lon = 180; lat = 0; velLon = 0; velLat = 0;
+                    setRoomUI(roomKey);
+                    loadingEl.classList.add("hidden");
+                    if (withTransition) fadeEl.classList.remove("show");
+                    transitioning = false;
+                  })
+                  .catch(function () {
+                    video.muted = true;
+                    video.play().catch(function () {
+                      document.querySelector(".pano-loading-label").textContent = "Clique para iniciar o vídeo";
+                      canvas.addEventListener("click", function startOnClick() {
                         canvas.removeEventListener("click", startOnClick);
                         video.play();
                         loadingEl.classList.add("hidden");
                         transitioning = false;
-                      },
-                      { once: true },
-                    );
+                      }, { once: true });
+                    });
                   });
-                });
-            }
+              }
 
-            function onError() {
-              document.querySelector(".pano-loading-label").textContent =
-                "Vídeo não encontrado";
-              transitioning = false;
+              video.addEventListener("canplay", onCanPlay);
+              video.addEventListener("error", function () {
+                document.querySelector(".pano-loading-label").textContent = "Vídeo não encontrado";
+                transitioning = false;
+              }, { once: true });
+              video.load();
             }
-
-            video.addEventListener("canplay", onCanPlay);
-            video.addEventListener("error", onError, { once: true });
-            video.load();
           }
 
           if (withTransition) {

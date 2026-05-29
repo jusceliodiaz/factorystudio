@@ -664,6 +664,34 @@
         color: var(--gold);
         letter-spacing: 0.03em;
       }
+      .pcard--disabled {
+        cursor: default;
+        pointer-events: none;
+        opacity: 0.6;
+        text-decoration: none;
+        display: block;
+      }
+      .pcard-link--disabled {
+        color: rgba(255, 255, 255, 0.35);
+        font-style: italic;
+        letter-spacing: 0.06em;
+      }
+      .pcard-soon {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: rgba(0, 0, 0, 0.62);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border-radius: 20px;
+      }
       @media (max-width: 640px) {
         .prod-nav {
           flex-wrap: wrap;
@@ -896,6 +924,31 @@
           </div>
         </a>
 
+        <a class="pcard" href="floor-plan.html">
+          <div class="pcard-thumb">
+            <img
+              src="images/floor_3d_04-2.jpg"
+              alt="Planta Humanizada"
+              width="800"
+              height="500"
+              loading="lazy"
+            />
+            <span class="pcard-badge">Planta</span>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-title" data-i18n="card-floor-title">
+              Planta Humanizada
+            </div>
+            <div class="pcard-desc" data-i18n="card-floor-desc">
+              Planta baixa animada com mobiliário, texturas e elementos humanos
+              que revelam progressivamente os ambientes do imóvel.
+            </div>
+            <div class="pcard-link" data-i18n="link-explore">
+              Explorar demo →
+            </div>
+          </div>
+        </a>
+
         <a class="pcard" href="panorama-360.html">
           <div class="pcard-thumb">
             <img
@@ -943,7 +996,7 @@
           </div>
         </a>
 
-        <a class="pcard" href="3d-viewer.html">
+        <div class="pcard pcard--disabled">
           <div class="pcard-thumb">
             <img
               src="images/Portfolio_003.jpg"
@@ -953,6 +1006,7 @@
               loading="lazy"
             />
             <span class="pcard-badge">3D</span>
+            <span class="pcard-soon" data-i18n="label-soon">Em Breve</span>
           </div>
           <div class="pcard-body">
             <div class="pcard-title" data-i18n="card-3d-title">
@@ -962,36 +1016,11 @@
               Modelo tridimensional interativo do edifício com rotação livre,
               zoom e seleção de pavimentos diretamente no navegador.
             </div>
-            <div class="pcard-link" data-i18n="link-explore">
-              Explorar demo →
+            <div class="pcard-link pcard-link--disabled" data-i18n="label-soon">
+              Em Breve
             </div>
           </div>
-        </a>
-
-        <a class="pcard" href="floor-plan.html">
-          <div class="pcard-thumb">
-            <img
-              src="images/floor_3d_04-2.jpg"
-              alt="Planta Humanizada"
-              width="800"
-              height="500"
-              loading="lazy"
-            />
-            <span class="pcard-badge">Planta</span>
-          </div>
-          <div class="pcard-body">
-            <div class="pcard-title" data-i18n="card-floor-title">
-              Planta Humanizada
-            </div>
-            <div class="pcard-desc" data-i18n="card-floor-desc">
-              Planta baixa animada com mobiliário, texturas e elementos humanos
-              que revelam progressivamente os ambientes do imóvel.
-            </div>
-            <div class="pcard-link" data-i18n="link-explore">
-              Explorar demo →
-            </div>
-          </div>
-        </a>
+        </div>
 
         <a class="pcard" href="#" style="display: none">
           <div class="pcard-thumb">
@@ -1014,7 +1043,7 @@
           </div>
         </a>
 
-        <a class="pcard" href="#">
+        <div class="pcard pcard--disabled">
           <div class="pcard-thumb">
             <img
               src="images/pano_quarto.jpg"
@@ -1024,6 +1053,7 @@
               loading="lazy"
             />
             <span class="pcard-badge">Configurador</span>
+            <span class="pcard-soon">Em Breve</span>
           </div>
           <div class="pcard-body">
             <div class="pcard-title" data-i18n="card-config-title">
@@ -1034,11 +1064,11 @@
               revestimentos e mobiliário com visualização em tempo real do
               resultado.
             </div>
-            <div class="pcard-link" data-i18n="link-soon">Em breve →</div>
+            <div class="pcard-link pcard-link--disabled">Em Breve</div>
           </div>
-        </a>
+        </div>
 
-        <a class="pcard" href="#">
+        <div class="pcard pcard--disabled">
           <div class="pcard-thumb">
             <img
               src="images/pano_sacada.jpg"
@@ -1048,6 +1078,7 @@
               loading="lazy"
             />
             <span class="pcard-badge">AR / VR</span>
+            <span class="pcard-soon">Em Breve</span>
           </div>
           <div class="pcard-body">
             <div class="pcard-title">AR / VR</div>
@@ -1055,9 +1086,9 @@
               Experiência imersiva em realidade aumentada e virtual — visualize
               o empreendimento em escala real pelo celular ou headset VR.
             </div>
-            <div class="pcard-link" data-i18n="link-soon">Em breve →</div>
+            <div class="pcard-link pcard-link--disabled">Em Breve</div>
           </div>
-        </a>
+        </div>
       </div>
     </section>
 
