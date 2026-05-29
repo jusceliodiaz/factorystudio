@@ -546,14 +546,14 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.28s var(--ease), transform 0.28s var(--ease);
-      background: rgba(8,8,8,0.9);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 14px;
-      padding: 16px 18px;
-      min-width: 210px;
-      max-width: 250px;
+      background: rgba(14,12,10,0.92);
+      backdrop-filter: blur(40px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      overflow: hidden;
+      width: 260px;
       white-space: normal;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     }
     .poi-popup::after {
       content: "";
@@ -562,25 +562,67 @@
       left: 50%;
       transform: translateX(-50%);
       border: 7px solid transparent;
-      border-top-color: rgba(8,8,8,0.9);
+      border-top-color: rgba(14,12,10,0.92);
     }
     .poi-pin.active .poi-popup {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
       pointer-events: auto;
     }
-    .poi-popup-title {
-      font-size: 0.78rem;
-      font-weight: 700;
+    .poi-popup-img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+      position: relative;
+    }
+    .poi-popup-img-wrap {
+      position: relative;
+      width: 100%;
+      height: 150px;
+      overflow: hidden;
+    }
+    .poi-popup-close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      z-index: 2;
+    }
+    .poi-popup-close svg { width:9px;height:9px;stroke:rgba(255,255,255,0.85);stroke-width:1.8;fill:none;stroke-linecap:round; }
+    .poi-popup-body {
+      padding: 14px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .poi-popup-tag {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
       color: var(--gold);
-      letter-spacing: 0.05em;
-      margin-bottom: 7px;
       text-transform: uppercase;
     }
+    .poi-popup-title {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.95);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
     .poi-popup-desc {
-      font-size: 0.7rem;
-      color: rgba(255,255,255,0.58);
-      line-height: 1.55;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
     }
 
     /* ── POI 360° BUTTON ── */
@@ -612,7 +654,7 @@
     .seq-scrub {
       position: absolute;
       left: 50%;
-      bottom: 44px;
+      top: 24px;
       transform: translateX(-50%);
       display: flex;
       flex-direction: column;
@@ -652,20 +694,10 @@
 
     /* ── POI CARDS BAR ── */
     #poi-cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      max-width: 560px;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
-      pointer-events: none;
+      display: none;
     }
     #poi-cards.visible {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
+      display: none;
     }
     .poi-card {
       display: none;
@@ -1151,15 +1183,15 @@
 
     /* ── IMAGE SEQUENCER ── */
     (function () {
-      const FRAME_COUNT = 121;
-      const BASE_PATH = "images/seq/seq_teste_";
+      const FRAME_COUNT = 119;
+      const BASE_PATH = "images/seq/launch_";
       const PAD = 3;
       const wrap = document.querySelector(".seq-wrap");
       const canvas = document.querySelector(".seq-canvas");
       if (!wrap || !canvas) return;
       const ctx = canvas.getContext("2d");
       let currentFrame = 0, activeGroup = null, isAnimating = false, animRaf = null, scrollRafPending = false;
-      function frameSrc(i) { return BASE_PATH + String(i).padStart(PAD, "0") + ".webp"; }
+      function frameSrc(i) { return BASE_PATH + String(i).padStart(PAD, "0") + ".jpg"; }
       const images = Array.from({ length: FRAME_COUNT }, () => new Image());
       function ensureFrame(i) { if (!images[i].src) images[i].src = frameSrc(i); }
       ensureFrame(0);
@@ -1176,21 +1208,43 @@
       }
       const POI_DATA = {
         aerial: [
-          { px: 49.8, py: 29.2, title: "Torre Residencial", desc: "Empreendimento de alto padrão com piscina no rooftop e vista 360° para a baía e a cidade." },
-          { px: 28.7, py: 36.0, title: "Baía Norte", desc: "Vista privilegiada para a baía e as ilhas naturais ao redor da capital catarinense." },
-          { px: 87.9, py: 62.6, title: "Ponte Hercílio Luz", desc: "Ícone histórico e cartão-postal de Florianópolis, conectando a ilha ao continente." },
-          { px: 57.2, py: 14.1, title: "Morro da Cruz", desc: "Ponto mais alto da Ilha, com vista panorâmica de toda a cidade e do oceano Atlântico." },
+          { px: 49.8, py: 29.2, title: "Torre Residencial", tag: "Residencial · Rooftop",  desc: "Empreendimento de alto padrão com piscina no rooftop e vista 360° para a baía e a cidade.", img: "images/seq/launch_001.jpg", pano: "aerial" },
+          { px: 28.7, py: 36.0, title: "Baía Norte",         tag: "Vista · Entorno",        desc: "Vista privilegiada para a baía e as ilhas naturais ao redor da capital catarinense.",        img: "images/seq/launch_001.jpg", pano: "aerial" },
+          { px: 87.9, py: 62.6, title: "Ponte Hercílio Luz", tag: "Cartão-postal · Ícone",  desc: "Ícone histórico e cartão-postal de Florianópolis, conectando a ilha ao continente.",         img: "images/seq/launch_001.jpg", pano: "aerial" },
+          { px: 57.2, py: 14.1, title: "Morro da Cruz",      tag: "Paisagem · 360°",        desc: "Ponto mais alto da Ilha, com vista panorâmica de toda a cidade e do oceano Atlântico.",      img: "images/seq/launch_001.jpg", pano: "aerial" },
         ],
         living: [
-          { px: 55.6, py: 46.4, title: "Área de Estar", desc: "Sofás de design italiano com acabamentos premium e integração total com a varanda.", pano: "living" },
+          { px: 55.6, py: 46.4, title: "Área de Estar", tag: "Interior · Living", desc: "Sofás de design italiano com acabamentos premium e integração total com a varanda.", img: "images/POI_001.jpg", pano: "living" },
         ],
       };
       const seqPinsEl = document.querySelector(".seq-pins");
       const poiCardsEl = document.getElementById("poi-cards");
       Object.entries(POI_DATA).forEach(([group, pins]) => {
-        pins.forEach(({ px, py, title, desc, pano }) => {
-          const panoBtn = pano ? `<button class="poi-pano-btn" onclick="openPanoModal('${pano}')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12c3-4 5-6 10-6s7 2 10 6"/><path d="M2 12c3 4 5 6 10 6s7-2 10-6"/></svg> Ver 360°</button>` : "";
-          seqPinsEl.insertAdjacentHTML("beforeend", `<div class="poi-pin" data-group="${group}" style="--px:${px}%;--py:${py}%"><button class="poi-dot" aria-label="${title}"></button><div class="poi-popup"><div class="poi-popup-title">${title}</div><div class="poi-popup-desc">${desc}</div>${panoBtn}</div></div>`);
+        pins.forEach(({ px, py, title, tag, desc, img, pano }) => {
+          const imgSrc = img || "images/POI_001.jpg";
+          const panoSrc = pano || "images/XP_NPL_360_2.jpg";
+          const tagHtml = tag ? `<div class="poi-popup-tag">${tag}</div>` : "";
+          seqPinsEl.insertAdjacentHTML("beforeend", `
+            <div class="poi-pin" data-group="${group}" style="--px:${px}%;--py:${py}%">
+              <button class="poi-dot" aria-label="${title}"></button>
+              <div class="poi-popup">
+                <div class="poi-popup-img-wrap">
+                  <img class="poi-popup-img" src="${imgSrc}" alt="${title}">
+                  <button class="poi-popup-close" onclick="event.stopPropagation();this.closest('.poi-pin').classList.remove('active')">
+                    <svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7"/><line x1="7" y1="1" x2="1" y2="7"/></svg>
+                  </button>
+                </div>
+                <div class="poi-popup-body">
+                  ${tagHtml}
+                  <div class="poi-popup-title">${title}</div>
+                  <div class="poi-popup-desc">${desc}</div>
+                  <button class="poi-pano-btn" onclick="openPanoModal('${panoSrc}')">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12c3-4 5-6 10-6s7 2 10 6"/><path d="M2 12c3 4 5 6 10 6s7-2 10-6"/></svg>
+                    Ver 360°
+                  </button>
+                </div>
+              </div>
+            </div>`);
           poiCardsEl.insertAdjacentHTML("beforeend", `<div class="poi-card" data-group="${group}"><span class="poi-card-dot"></span>${title}</div>`);
         });
       });
@@ -1282,6 +1336,7 @@
     let _panoDragging = false, _panoPX = 0, _panoPY = 0;
     let _panoCurrentRoom = null, _panoTransitioning = false;
     const TOUR = {
+      aerial: { label: "Aéreo 360°", src: "images/XP_NPL_360_2.jpg", hotspots: [] },
       quarto: { label: "Quarto", src: "images/pano_quarto.jpg", hotspots: [{ lon: 45, lat: 5, label: "Living", leadsTo: "living" }, { lon: 200, lat: -5, label: "Sacada", leadsTo: "sacada" }] },
       living: { label: "Living", src: "images/pano_living.jpg", hotspots: [{ lon: 180, lat: 0, label: "Quarto", leadsTo: "quarto" }, { lon: 60, lat: -10, label: "Sacada", leadsTo: "sacada" }] },
       sacada: { label: "Sacada", src: "images/pano_sacada.jpg", hotspots: [{ lon: 200, lat: 5, label: "Living", leadsTo: "living" }, { lon: 300, lat: 0, label: "Quarto", leadsTo: "quarto" }] },
@@ -1313,6 +1368,9 @@
       _panoCurrentRoom = roomKey; window._panoCurrentRoom = roomKey;
       document.getElementById("pano-room-label").textContent = TOUR[roomKey].label;
       document.querySelectorAll(".pano-room-btn").forEach(b => b.classList.toggle("active", b.dataset.room === roomKey));
+      // Esconde seletor de salas quando não há hotspots (360° simples)
+      const hasRooms = TOUR[roomKey].hotspots && TOUR[roomKey].hotspots.length > 0;
+      document.getElementById("pano-rooms").style.display = hasRooms ? "" : "none";
       const container = document.getElementById("pano-hotspots");
       container.innerHTML = "";
       TOUR[roomKey].hotspots.forEach(h => {
