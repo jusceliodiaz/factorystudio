@@ -328,10 +328,26 @@
         // type: "video" → usa VideoTexture (mp4/webm)
         // type: "image" → usa TextureLoader (jpg/png)
         var TOUR = {
-          animado:  { label: "360° Animado", type: "video", src: "images/360_animado_prob4.mp4" },
-          living:   { label: "Living",        type: "image", src: "images/pano_living.jpg" },
-          quarto:   { label: "Quarto",         type: "image", src: "images/pano_quarto.jpg" },
-          sacada:   { label: "Sacada",         type: "image", src: "images/pano_sacada.jpg" },
+          animado: {
+            label: "360° Animado",
+            type: "video",
+            src: "images/360_animado.mp4",
+          },
+          living: {
+            label: "Living",
+            type: "image",
+            src: "images/pano_living.jpg",
+          },
+          quarto: {
+            label: "Quarto",
+            type: "image",
+            src: "images/pano_quarto.jpg",
+          },
+          sacada: {
+            label: "Sacada",
+            type: "image",
+            src: "images/pano_sacada.jpg",
+          },
         };
 
         var canvas = document.getElementById("pano-canvas");
@@ -393,7 +409,9 @@
             btn.textContent = TOUR[key].label;
             // badge de vídeo no primeiro item
             if (TOUR[key].type === "video") {
-              btn.innerHTML = '<span class="video-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#e05555;margin-right:6px;vertical-align:middle;animation:vblink 1.2s ease-in-out infinite"></span>' + TOUR[key].label;
+              btn.innerHTML =
+                '<span class="video-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#e05555;margin-right:6px;vertical-align:middle;animation:vblink 1.2s ease-in-out infinite"></span>' +
+                TOUR[key].label;
             }
             sel.appendChild(btn);
           });
@@ -428,7 +446,10 @@
                   mesh.material.map = tex;
                   mesh.material.needsUpdate = true;
                   if (old) old.dispose();
-                  lon = 180; lat = 0; velLon = 0; velLat = 0;
+                  lon = 180;
+                  lat = 0;
+                  velLon = 0;
+                  velLat = 0;
                   setRoomUI(roomKey);
                   loadingEl.classList.add("hidden");
                   if (withTransition) fadeEl.classList.remove("show");
@@ -436,9 +457,10 @@
                 },
                 undefined,
                 function () {
-                  document.querySelector(".pano-loading-label").textContent = "Imagem não encontrada";
+                  document.querySelector(".pano-loading-label").textContent =
+                    "Imagem não encontrada";
                   transitioning = false;
-                }
+                },
               );
             } else {
               // ── Vídeo ────────────────────────────────────────────
@@ -458,14 +480,18 @@
 
               function onCanPlay() {
                 video.removeEventListener("canplay", onCanPlay);
-                video.play()
+                video
+                  .play()
                   .then(function () {
                     var old = mesh.material.map;
                     mesh.material.map = texture;
                     mesh.material.needsUpdate = true;
                     if (old) old.dispose();
                     currentVideo = video;
-                    lon = 180; lat = 0; velLon = 0; velLat = 0;
+                    lon = 180;
+                    lat = 0;
+                    velLon = 0;
+                    velLat = 0;
                     setRoomUI(roomKey);
                     loadingEl.classList.add("hidden");
                     if (withTransition) fadeEl.classList.remove("show");
@@ -474,22 +500,33 @@
                   .catch(function () {
                     video.muted = true;
                     video.play().catch(function () {
-                      document.querySelector(".pano-loading-label").textContent = "Clique para iniciar o vídeo";
-                      canvas.addEventListener("click", function startOnClick() {
-                        canvas.removeEventListener("click", startOnClick);
-                        video.play();
-                        loadingEl.classList.add("hidden");
-                        transitioning = false;
-                      }, { once: true });
+                      document.querySelector(
+                        ".pano-loading-label",
+                      ).textContent = "Clique para iniciar o vídeo";
+                      canvas.addEventListener(
+                        "click",
+                        function startOnClick() {
+                          canvas.removeEventListener("click", startOnClick);
+                          video.play();
+                          loadingEl.classList.add("hidden");
+                          transitioning = false;
+                        },
+                        { once: true },
+                      );
                     });
                   });
               }
 
               video.addEventListener("canplay", onCanPlay);
-              video.addEventListener("error", function () {
-                document.querySelector(".pano-loading-label").textContent = "Vídeo não encontrado";
-                transitioning = false;
-              }, { once: true });
+              video.addEventListener(
+                "error",
+                function () {
+                  document.querySelector(".pano-loading-label").textContent =
+                    "Vídeo não encontrado";
+                  transitioning = false;
+                },
+                { once: true },
+              );
               video.load();
             }
           }
