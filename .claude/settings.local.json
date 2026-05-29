@@ -17,7 +17,8 @@
       "Bash(git push *)",
       "Bash(python -c ' *)",
       "Bash(xargs -I{} sh -c 'echo \"$\\(du -sh {} | cut -f1\\) {}\"')",
-      "PowerShell(\\(Get-Content \"c:\\\\Users\\\\saant\\\\Desktop\\\\factorystudio\\\\archviz-seq.html\" | Measure-Object -Line\\).Lines)"
+      "PowerShell(\\(Get-Content \"c:\\\\Users\\\\saant\\\\Desktop\\\\factorystudio\\\\archviz-seq.html\" | Measure-Object -Line\\).Lines)",
+      "Bash(node -e ' *)"
     ]
   }
 }
