@@ -23,9 +23,17 @@
 
       *,
       *:focus,
-      *:focus-visible {
+      *:focus-visible,
+      *:focus-within {
         outline: none !important;
-        -webkit-tap-highlight-color: transparent;
+        -webkit-tap-highlight-color: transparent !important;
+      }
+
+      div[onclick], div[tabindex] {
+        -webkit-tap-highlight-color: transparent !important;
+        outline: none !important;
+        user-select: none;
+        -webkit-user-select: none;
       }
 
       :root {
@@ -176,6 +184,10 @@
           opacity 0.25s var(--ease),
           background 0.25s var(--ease);
         flex-shrink: 0;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        -webkit-user-select: none;
       }
       #ai-track-btn:hover,
       #neo-track-btn:hover {
@@ -296,6 +308,10 @@
           opacity 0.25s var(--ease),
           background 0.25s var(--ease);
         flex-shrink: 0;
+        outline: none;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        -webkit-user-select: none;
       }
       .light-btn:hover {
         opacity: 0.72;
@@ -350,6 +366,8 @@
         align-items: center;
         justify-content: space-between;
         cursor: grab;
+        touch-action: none;
+        user-select: none;
       }
       #ai-panel-header:active {
         cursor: grabbing;
@@ -1575,7 +1593,7 @@
 
     <!-- AI + BOT DOCK — top center -->
     <div id="ai-bot-bar">
-      <div id="ai-track-btn" onclick="aiTogglePanel()">
+      <div id="ai-track-btn" tabindex="-1" onclick="aiTogglePanel()">
         <div class="ab-icon">
           <svg viewBox="0 0 24 24">
             <path
@@ -1588,7 +1606,7 @@
         </div>
         <span class="ab-label">IA</span>
       </div>
-      <div id="neo-track-btn" onclick="neoClick()">
+      <div id="neo-track-btn" tabindex="-1" onclick="neoClick()">
         <div class="ab-icon">
           <svg viewBox="0 0 24 24">
             <rect x="3" y="11" width="18" height="10" rx="2" />
@@ -1604,7 +1622,7 @@
 
       <div id="track-sep"></div>
 
-      <div class="light-btn active" id="light-day" onclick="setLight('day')">
+      <div class="light-btn active" id="light-day" tabindex="-1" onclick="setLight('day')">
         <div class="ab-icon">
           <svg viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="4" />
@@ -1621,7 +1639,7 @@
         <span class="ab-label">Sol</span>
       </div>
 
-      <div class="light-btn" id="light-sunset" onclick="setLight('sunset')">
+      <div class="light-btn" id="light-sunset" tabindex="-1" onclick="setLight('sunset')">
         <div class="ab-icon">
           <svg viewBox="0 0 24 24">
             <path
@@ -1635,7 +1653,7 @@
         <span class="ab-label">Sunset</span>
       </div>
 
-      <div class="light-btn" id="light-night" onclick="setLight('night')">
+      <div class="light-btn" id="light-night" tabindex="-1" onclick="setLight('night')">
         <div class="ab-icon">
           <svg viewBox="0 0 24 24">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
@@ -1649,7 +1667,7 @@
     <div id="ai-panel">
       <div id="ai-panel-header">
         <div id="ai-panel-title">AI Image Generator</div>
-        <div id="ai-panel-close" onclick="aiTogglePanel()">
+        <div id="ai-panel-close" tabindex="-1" onclick="aiTogglePanel()">
           <svg viewBox="0 0 10 10">
             <line x1="2" y1="2" x2="8" y2="8" />
             <line x1="8" y1="2" x2="2" y2="8" />
@@ -3615,39 +3633,31 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
         const panel = document.getElementById("ai-panel");
         const header = document.getElementById("ai-panel-header");
 
-        header.addEventListener("mousedown", function (e) {
+        header.addEventListener("pointerdown", function (e) {
           if (e.target.closest("#ai-panel-close")) return;
+          e.preventDefault();
+          header.setPointerCapture(e.pointerId);
           _aiDragging = true;
           panel.classList.add("dragging");
-          // switch from translate(-50%,-50%) to absolute pixel position
           const r = panel.getBoundingClientRect();
-          panel.style.top = r.top + "px";
-          panel.style.left = r.left + "px";
+          panel.style.top       = r.top  + "px";
+          panel.style.left      = r.left + "px";
           panel.style.transform = "none";
           _aiDragOX = e.clientX - r.left;
           _aiDragOY = e.clientY - r.top;
-          if (e.cancelable) e.preventDefault();
         });
 
-        window.addEventListener("mousemove", function (e) {
+        header.addEventListener("pointermove", function (e) {
           if (!_aiDragging) return;
-          let nx = e.clientX - _aiDragOX;
-          let ny = e.clientY - _aiDragOY;
-          // clamp to viewport
-          nx = Math.max(0, Math.min(window.innerWidth - panel.offsetWidth, nx));
-          ny = Math.max(
-            0,
-            Math.min(window.innerHeight - panel.offsetHeight, ny),
-          );
+          e.preventDefault();
+          const nx = Math.max(0, Math.min(window.innerWidth  - panel.offsetWidth,  e.clientX - _aiDragOX));
+          const ny = Math.max(0, Math.min(window.innerHeight - panel.offsetHeight, e.clientY - _aiDragOY));
           panel.style.left = nx + "px";
-          panel.style.top = ny + "px";
+          panel.style.top  = ny + "px";
         });
 
-        window.addEventListener("mouseup", function () {
-          if (!_aiDragging) return;
-          _aiDragging = false;
-          panel.classList.remove("dragging");
-        });
+        header.addEventListener("pointerup",     function () { _aiDragging = false; panel.classList.remove("dragging"); });
+        header.addEventListener("pointercancel", function () { _aiDragging = false; panel.classList.remove("dragging"); });
       }
 
       function aiTogglePanel() {
