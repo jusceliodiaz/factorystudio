@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="pt-BR">
   <head>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3K51DFTX3J"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -10,431 +9,293 @@
       gtag('config', 'G-3K51DFTX3J');
     </script>
     <meta charset="UTF-8" />
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Configurador de Banheiros — Factory Interactive</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
       *, *:focus, *:focus-visible, *:focus-within {
         outline: none !important;
         -webkit-tap-highlight-color: transparent !important;
       }
 
       :root {
-        --ink:  #0d0d0b;
-        --warm: #c8a96e;
-        --muted: #7a7568;
-        --ease: cubic-bezier(0.87, 0, 0.13, 1);
+        --ink:         #0d0d0b;
+        --warm:        #c8a96e;
+        --green:       #30d158;
+        --ease:        cubic-bezier(0.4, 0, 0.2, 1);
+        --vp-bg:       rgba(195, 195, 195, 0.32);
+        --vp-border:   rgba(255, 255, 255, 0.35);
+        --vp-blur:     40px;
+        --text:        #1a1a1a;
+        --text-muted:  rgba(80, 80, 80, 0.8);
       }
 
       html, body {
         width: 100%; height: 100%;
         overflow: hidden;
         background: var(--ink);
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-        cursor: none;
-      }
-
-      /* ── CURSOR ── */
-      #cursor {
-        position: fixed; width: 8px; height: 8px;
-        background: var(--warm); border-radius: 50%;
-        pointer-events: none; z-index: 9999;
-        transform: translate(-50%, -50%);
-        transition: width .3s var(--ease), height .3s var(--ease), background .3s;
-      }
-      #cursor.on {
-        width: 36px; height: 36px;
-        background: transparent; border: 1px solid var(--warm);
-      }
-      #ring {
-        position: fixed; width: 28px; height: 28px;
-        border: 1px solid rgba(200,169,110,.3); border-radius: 50%;
-        pointer-events: none; z-index: 9998;
-        transform: translate(-50%, -50%);
-      }
-      @media (hover: none) {
-        html, body { cursor: auto; }
-        #cursor, #ring { display: none !important; }
+        font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       }
 
       /* ── STAGE ── */
       #stage {
-        position: fixed; inset: 0;
+        position: fixed; inset: 0; z-index: 0;
         background: url("images/conf/capa_config.jpg") center/cover no-repeat;
       }
       #stage::after {
         content: ""; position: absolute; inset: 0; z-index: 2;
         pointer-events: none;
-        background: radial-gradient(ellipse at 50% 55%, transparent 30%, rgba(5,5,3,.55) 100%);
+        background: radial-gradient(ellipse at 50% 55%, transparent 30%, rgba(5,5,3,.32) 100%);
       }
 
-
-      /* ── TRACK ── */
-      #track {
-        position: fixed; bottom: 36px; left: 50%;
+      /* ── LOGOS ── */
+      #cover-logo {
+        height: 80px; width: auto; display: block;
+        margin-bottom: 40px;
+        filter: drop-shadow(0 2px 16px rgba(0,0,0,0.22));
+      }
+      #exp-logo-wrap {
+        position: fixed; top: 28px; left: 50%;
         transform: translateX(-50%);
-        z-index: 10;
-        display: flex; align-items: center; gap: 6px;
-        background: rgba(52,52,50,.92);
-        backdrop-filter: blur(24px) saturate(1.6);
-        -webkit-backdrop-filter: blur(24px) saturate(1.6);
-        border-radius: 999px; padding: 10px 14px;
-        box-shadow: 0 12px 40px rgba(0,0,0,.5);
-        opacity: 0;
+        z-index: 20; opacity: 0; pointer-events: none;
+        transition: opacity 400ms var(--ease);
       }
-      #track.show { opacity: 1; }
-
-      .t-pt {
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        gap: 2px;
-        padding: 10px 22px; border-radius: 999px;
-        border: 1.5px solid rgba(255,255,255,.14);
-        background: transparent; cursor: pointer;
-        touch-action: manipulation;
-        transition: background .25s ease, border-color .25s ease, color .25s ease;
-      }
-      .t-pt-label {
-        font-family: "Inter", sans-serif;
-        font-size: 11px; font-weight: 700;
-        letter-spacing: .12em; text-transform: uppercase;
-        color: rgba(255,255,255,.65); white-space: nowrap;
-        transition: color .25s ease;
-      }
-      .t-pt-sub {
-        font-family: "Inter", sans-serif;
-        font-size: 9px; font-weight: 400;
-        letter-spacing: .06em;
-        color: rgba(255,255,255,.3); white-space: nowrap;
-        transition: color .25s ease;
-      }
-      .t-pt.active { background: #c8a96e; border-color: #c8a96e; }
-      .t-pt.active .t-pt-label { color: #1a1200; }
-      .t-pt.active .t-pt-sub   { color: rgba(26,18,0,.55); }
-      .t-pt:not(.active):hover { border-color: rgba(255,255,255,.38); }
-      .t-pt:not(.active):hover .t-pt-label { color: rgba(255,255,255,.9); }
-      @media (max-width: 600px) {
-        .t-pt { padding: 9px 14px; }
-        .t-pt-sub { display: none; }
-      }
-
-      /* ── POIs ── */
-      .poi {
-        position: fixed; z-index: 9;
-        transform: translate(-50%, -50%);
-        cursor: none; opacity: 1;
-        transition: opacity .4s ease, transform .4s var(--ease);
-        display: flex; flex-direction: column; align-items: center; gap: 6px;
-      }
-      .poi.hidden {
-        opacity: 0; pointer-events: none;
-        transform: translate(-50%, -50%) scale(.5);
-      }
-      .poi-actions { display: flex; align-items: center; gap: 5px; position: relative; z-index: 1; }
-      .poi-btn {
-        width: 28px; height: 28px; border-radius: 50%;
-        background: rgba(255,255,255,.92); border: none;
-        display: flex; align-items: center; justify-content: center;
-        cursor: none; position: relative;
-        transition: background .25s, transform .25s;
-        box-shadow: 0 2px 12px rgba(0,0,0,.3); flex-shrink: 0;
-      }
-      .poi-btn::before, .poi-btn::after {
-        content: ""; position: absolute; background: var(--ink); border-radius: 2px;
-      }
-      .poi-btn::before { width: 10px; height: 1.5px; }
-      .poi-btn::after  { width: 1.5px; height: 10px; }
-      .poi-btn:hover { background: #fff; transform: scale(1.18); }
-      .poi-pulse {
-        position: absolute; top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        width: 56px; height: 56px;
-        border: 1px solid rgba(255,255,255,.3); border-radius: 50%;
-        animation: poipulse 3s ease-in-out infinite; pointer-events: none;
-      }
-      @keyframes poipulse {
-        0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: .5; }
-        50%       { transform: translate(-50%,-50%) scale(1.6); opacity: 0; }
-      }
-      .poi-name {
-        font-size: 8px; letter-spacing: .16em;
-        color: rgba(255,255,255,.9); text-transform: uppercase; white-space: nowrap;
-        text-shadow: 0 1px 6px rgba(0,0,0,.8);
-        background: rgba(0,0,0,.35); padding: 3px 7px; border-radius: 4px;
-        pointer-events: none;
-      }
-      @media (hover: none) {
-        .poi { touch-action: manipulation; cursor: pointer; }
-        .poi::before { content: ""; position: absolute; inset: -12px; }
-        .poi-btn { cursor: pointer; }
-      }
-
-      /* ── POI POPUP ── */
-      .poi-popup {
-        position: fixed; z-index: 50; width: 300px;
-        background: rgba(14,12,10,.92);
-        border: 1px solid rgba(255,255,255,.14);
-        border-radius: 20px; overflow: hidden;
-        backdrop-filter: blur(48px) saturate(1.6);
-        -webkit-backdrop-filter: blur(48px) saturate(1.6);
-        box-shadow: 0 24px 64px rgba(0,0,0,.45);
-        opacity: 0; pointer-events: none;
-        transform: translateY(10px) scale(.96);
-        transition: opacity .3s ease, transform .3s var(--ease);
-        user-select: none;
-      }
-      .poi-popup.open { opacity: 1; pointer-events: auto; transform: none; }
-
-      .popup-img-wrap { width: 100%; height: 180px; overflow: hidden; position: relative; }
-      .popup-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-      .popup-img-placeholder {
-        width: 100%; height: 180px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 9px; letter-spacing: .18em;
-        color: rgba(255,255,255,.25); text-transform: uppercase;
-        background: rgba(255,255,255,.04);
-      }
-      .popup-close-btn {
-        position: absolute; top: 10px; right: 10px;
-        width: 28px; height: 28px; border-radius: 50%;
-        background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.2);
-        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-        display: flex; align-items: center; justify-content: center;
-        cursor: none; transition: background .2s; z-index: 2;
-      }
-      .popup-close-btn:hover { background: rgba(0,0,0,.65); }
-      .popup-close-btn svg {
-        width: 9px; height: 9px;
-        stroke: rgba(255,255,255,.9); stroke-width: 1.8;
-        fill: none; stroke-linecap: round;
-      }
-      .popup-body { padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 8px; }
-      .popup-tag {
-        font-size: 10px; font-weight: 500; letter-spacing: .16em;
-        color: var(--warm); text-transform: uppercase;
-      }
-      .popup-title {
-        font-size: 22px; font-weight: 300;
-        color: rgba(255,255,255,.95); line-height: 1.2; letter-spacing: -.02em;
-      }
-      .popup-desc {
-        font-size: 12px; font-weight: 300;
-        line-height: 1.65; color: rgba(255,255,255,.5);
-      }
-
-      @media (hover: none) {
-        #track { bottom: max(20px, env(safe-area-inset-bottom, 20px)); }
-        .poi-popup { width: min(300px, 88vw); }
-        #track, #ai-bot-bar {
-          backdrop-filter: none; -webkit-backdrop-filter: none;
-        }
-        .poi-popup {
-          backdrop-filter: none; -webkit-backdrop-filter: none;
-          background: rgba(10,9,7,.97);
-        }
+      #exp-logo-wrap.show { opacity: 1; }
+      #exp-logo-wrap img {
+        height: 38px; width: auto; display: block;
+        filter: drop-shadow(0 2px 10px rgba(0,0,0,0.45));
       }
 
       /* ══ COVER ══ */
       #cover {
         position: fixed; inset: 0; z-index: 100;
         display: flex; align-items: center; justify-content: center;
-        transition: opacity 0.7s var(--ease), visibility 0.7s;
+        transition: opacity 400ms var(--ease), visibility 400ms;
       }
       #cover.out { opacity: 0; visibility: hidden; pointer-events: none; }
-      #cover-bg { display: none; }
       #cover-card {
         position: relative; z-index: 1;
-        display: flex; flex-direction: column; align-items: center; gap: 0;
-        background: rgba(255,255,255,.1);
-        backdrop-filter: blur(28px) saturate(1.6);
-        -webkit-backdrop-filter: blur(28px) saturate(1.6);
-        border: 1px solid rgba(255,255,255,.18);
-        border-radius: 28px;
-        padding: 52px 68px 48px;
+        display: flex; flex-direction: column; align-items: center;
+        background: rgba(200, 200, 200, 0.28);
+        backdrop-filter: blur(40px) saturate(1.8);
+        -webkit-backdrop-filter: blur(40px) saturate(1.8);
+        border: 1px solid rgba(255,255,255,0.35);
+        border-radius: 28px; padding: 52px 68px 48px;
         text-align: center;
-        box-shadow: 0 2px 0 rgba(255,255,255,.08) inset, 0 28px 72px rgba(0,0,0,.4);
-        animation: coverIn 1s var(--ease) both;
+        box-shadow: 0 0 0 0.5px rgba(255,255,255,0.5) inset, 0 20px 60px rgba(0,0,0,0.22);
+        animation: coverIn 400ms var(--ease) both;
       }
       @keyframes coverIn {
-        from { opacity: 0; transform: translateY(20px) scale(.97); }
+        from { opacity: 0; transform: translateY(8px); }
         to   { opacity: 1; transform: none; }
       }
-      #cover-eyebrow {
-        font-size: 9px; font-weight: 600; letter-spacing: .32em;
-        text-transform: uppercase; color: var(--warm);
-        margin-bottom: 16px; opacity: .9;
-      }
-      #cover-title {
-        font-size: clamp(32px, 5vw, 56px); font-weight: 300;
-        letter-spacing: .06em; color: rgba(244,240,232,.96);
-        text-transform: uppercase; line-height: 1.1;
-        margin-bottom: 8px;
-      }
-      #cover-sub {
-        font-size: 10px; letter-spacing: .28em;
-        color: rgba(244,240,232,.32); text-transform: uppercase;
-        margin-bottom: 40px;
-      }
-      #cover-line {
-        width: 36px; height: 1px;
-        background: linear-gradient(to right, transparent, var(--warm), transparent);
-        opacity: .5; margin-bottom: 40px;
-      }
       #btn-start {
-        display: flex; align-items: center; gap: 14px;
-        padding: 16px 44px;
-        background: var(--warm); border: none; border-radius: 999px;
-        cursor: pointer;
-        font-family: "Inter", sans-serif;
-        font-size: 11px; font-weight: 700; letter-spacing: .22em;
-        color: rgba(10,8,5,.9); text-transform: uppercase;
-        transition: background .25s, transform .25s var(--ease), gap .25s, box-shadow .25s;
-        box-shadow: 0 8px 28px rgba(162,136,88,.38);
+        display: flex; align-items: center; gap: 10px;
+        padding: 14px 36px;
+        background: var(--green); border: none; border-radius: 999px; cursor: pointer;
+        font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+        color: white;
+        transition: all 220ms var(--ease);
+        box-shadow: 0 6px 20px rgba(48,209,88,0.32);
       }
-      #btn-start:hover {
-        background: #cdb07e; transform: scale(1.05); gap: 22px;
-        box-shadow: 0 12px 36px rgba(162,136,88,.52);
+      #btn-start:hover { background: #34e85c; transform: scale(1.015); box-shadow: 0 8px 28px rgba(48,209,88,0.42); }
+      #btn-start svg { width: 13px; height: 13px; stroke: rgba(255,255,255,0.9); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 220ms var(--ease); }
+      #btn-start:hover svg { transform: translateX(3px); }
+      @media (max-width: 480px) { #cover-card { padding: 40px 28px 36px; } }
+
+      /* ══ POIs ══ */
+      .poi { position: fixed; z-index: 9; transform: translate(-50%,-50%); transition: opacity 280ms var(--ease), transform 280ms var(--ease); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+      .poi.hidden { opacity: 0; pointer-events: none; transform: translate(-50%,-50%) scale(.5); }
+      .poi-actions { display: flex; align-items: center; gap: 5px; position: relative; z-index: 1; }
+      .poi-btn { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.92); border: none; display: flex; align-items: center; justify-content: center; position: relative; transition: all 220ms var(--ease); box-shadow: 0 2px 12px rgba(0,0,0,.25); flex-shrink: 0; }
+      .poi-btn::before, .poi-btn::after { content: ""; position: absolute; background: var(--ink); border-radius: 2px; }
+      .poi-btn::before { width: 10px; height: 1.5px; }
+      .poi-btn::after  { width: 1.5px; height: 10px; }
+      .poi-btn:hover { background: #fff; transform: scale(1.12); }
+      .poi-pulse { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 56px; height: 56px; border: 1px solid rgba(255,255,255,.3); border-radius: 50%; animation: poipulse 3s ease-in-out infinite; pointer-events: none; }
+      @keyframes poipulse { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.5} 50%{transform:translate(-50%,-50%) scale(1.6);opacity:0} }
+      .poi-name { font-size: 8px; letter-spacing: .16em; color: rgba(255,255,255,.9); text-transform: uppercase; white-space: nowrap; text-shadow: 0 1px 6px rgba(0,0,0,.8); background: rgba(0,0,0,.32); padding: 3px 7px; border-radius: 4px; pointer-events: none; }
+      @media (hover: none) { .poi { touch-action: manipulation; } .poi::before { content: ""; position: absolute; inset: -12px; } }
+
+      /* ══ POI POPUP ══ */
+      .poi-popup { position: fixed; z-index: 50; width: 300px; background: rgba(30,30,28,0.88); border: 1px solid rgba(255,255,255,.14); border-radius: 16px; overflow: hidden; backdrop-filter: blur(40px) saturate(1.6); -webkit-backdrop-filter: blur(40px) saturate(1.6); box-shadow: 0 20px 60px rgba(0,0,0,.3); opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity 220ms var(--ease), transform 220ms var(--ease); user-select: none; }
+      .poi-popup.open { opacity: 1; pointer-events: auto; transform: none; }
+      .popup-img-wrap { width: 100%; height: 180px; overflow: hidden; position: relative; }
+      .popup-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .popup-img-placeholder { width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; font-size: 9px; letter-spacing: .18em; color: rgba(255,255,255,.25); text-transform: uppercase; background: rgba(255,255,255,.04); }
+      .popup-close-btn { position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; border-radius: 50%; background: rgba(40,40,40,0.65); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; transition: background 220ms var(--ease); z-index: 2; }
+      .popup-close-btn:hover { background: rgba(60,60,60,0.85); }
+      .popup-close-btn svg { width: 9px; height: 9px; stroke: rgba(255,255,255,.85); stroke-width: 1.8; fill: none; stroke-linecap: round; }
+      .popup-body { padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 8px; }
+      .popup-tag { font-size: 10px; font-weight: 600; letter-spacing: .16em; color: rgba(255,255,255,0.45); text-transform: uppercase; }
+      .popup-title { font-size: 20px; font-weight: 300; color: rgba(255,255,255,.95); line-height: 1.3; letter-spacing: -.01em; }
+      .popup-desc { font-size: 12px; font-weight: 300; line-height: 1.65; color: rgba(255,255,255,.48); }
+      @media (hover: none) { .poi-popup { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(25,25,23,.97); } }
+
+      /* ══ SIDEBAR ══ */
+      #sidebar {
+        position: fixed; top: calc(15vh + 14px); right: 20px; bottom: calc(15vh + 14px);
+        width: 288px; z-index: 30;
+        display: flex; flex-direction: column;
+        padding: 24px 20px 20px;
+        background: var(--vp-bg);
+        border: 1px solid var(--vp-border);
+        border-radius: 20px;
+        backdrop-filter: blur(var(--vp-blur)) saturate(1.8);
+        -webkit-backdrop-filter: blur(var(--vp-blur)) saturate(1.8);
+        box-shadow: 0 0 0 0.5px rgba(255,255,255,0.5) inset, 0 20px 60px rgba(0,0,0,0.2);
+        transform: translateX(calc(100% + 20px));
+        transition: transform 300ms var(--ease);
+        overflow-y: auto; overflow-x: hidden;
+        scrollbar-width: none;
+        gap: 20px;
       }
-      #btn-start svg {
-        width: 13px; height: 13px; stroke: rgba(10,8,5,.8);
-        fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
-        transition: transform .25s;
+      #sidebar::-webkit-scrollbar { display: none; }
+      #sidebar.open { transform: translateX(0); }
+
+      .sb-brand { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); }
+      .sb-title { font-size: 24px; font-weight: 300; color: var(--text); line-height: 1.2; letter-spacing: -0.01em; }
+      .sb-divider { height: 1px; background: rgba(120,120,120,0.2); flex-shrink: 0; }
+      .sb-label { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); }
+
+      /* Mode tabs */
+      .sb-modes { display: flex; gap: 4px; background: rgba(160,160,160,0.22); padding: 4px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.28); }
+      .sb-mode-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 9px 5px; border-radius: 999px; border: none; background: transparent; cursor: pointer; transition: all 220ms var(--ease); }
+      .sb-mode-btn.active { background: rgba(255,255,255,0.85); box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+      .sb-mode-icon { font-size: 16px; line-height: 1; }
+      .sb-mode-name { font-size: 10px; font-weight: 500; color: rgba(60,60,60,0.52); transition: color 220ms var(--ease); }
+      .sb-mode-btn.active .sb-mode-name { color: var(--text); }
+
+      /* Option cards */
+      .sb-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      .sb-cards .opt-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+      .sb-cards .opt-card:last-child:nth-child(odd) .opt-swatch { aspect-ratio: 2.4; }
+      .opt-card {
+        position: relative; border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.4);
+        background: rgba(255,255,255,0.22);
+        overflow: hidden; cursor: pointer;
+        transition: all 220ms var(--ease);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
       }
-      #btn-start:hover svg { transform: translateX(4px); }
-      @media (max-width: 480px) {
-        #cover-card { padding: 40px 28px 36px; }
+      .opt-card:hover {
+        transform: scale(1.015);
+        border-color: rgba(255,255,255,0.65);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.11);
+      }
+      .opt-card.selected {
+        border-color: rgba(255,255,255,0.78);
+        box-shadow: 0 0 0 2px rgba(255,255,255,0.45), 0 6px 20px rgba(0,0,0,0.11);
+        background: rgba(255,255,255,0.38);
       }
 
-      /* ══ OPTION PANEL ══ */
-      #option-panel {
-        position: fixed;
-        bottom: 130px;
-        left: 50%;
-        transform: translateX(-50%) translateY(24px);
-        z-index: 30;
-        width: min(520px, 92vw);
-        background: rgba(255, 255, 255, 0.18);
-        backdrop-filter: blur(48px) saturate(2) brightness(1.35);
-        -webkit-backdrop-filter: blur(48px) saturate(2) brightness(1.35);
-        border: 1px solid rgba(255, 255, 255, 0.45);
-        border-radius: 28px;
-        padding: 20px 20px 16px;
-        box-shadow:
-          0 0 0 1px rgba(255,255,255,0.2) inset,
-          0 16px 48px rgba(0,0,0,0.28);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease, transform 0.38s cubic-bezier(0.34,1.4,0.64,1);
+      /* Swatch */
+      .opt-swatch { width: 100%; aspect-ratio: 1.1; position: relative; overflow: hidden; }
+
+      .sw-marble {
+        background:
+          repeating-linear-gradient(125deg, rgba(180,170,155,.18) 0px, transparent 2px, transparent 12px),
+          repeating-linear-gradient(55deg,  rgba(160,150,135,.12) 0px, transparent 1px, transparent 8px),
+          linear-gradient(160deg, #f4f0ea 0%, #ede5d8 50%, #f2ece2 100%);
       }
-      #option-panel.open {
-        opacity: 1;
-        pointer-events: auto;
-        transform: translateX(-50%) translateY(0);
+      .sw-porcelanato {
+        background:
+          repeating-linear-gradient(0deg,  rgba(0,0,0,.06) 0px, transparent 1px, transparent 24px),
+          repeating-linear-gradient(90deg, rgba(0,0,0,.06) 0px, transparent 1px, transparent 24px),
+          linear-gradient(160deg, #cfc0a8 0%, #bfae95 50%, #cdc0a6 100%);
+      }
+      .sw-ardosia {
+        background:
+          repeating-linear-gradient(30deg, rgba(255,255,255,.04) 0px, transparent 2px, transparent 10px),
+          linear-gradient(160deg, #6a6460 0%, #585450 50%, #646060 100%);
+      }
+      .sw-cromado { background: linear-gradient(135deg, #b0b8c8 0%, #e8ecf4 30%, #c0c8d8 55%, #f0f2f8 75%, #b8c0d0 100%); }
+      .sw-dourado { background: linear-gradient(135deg, #b8922a 0%, #e0bb6a 30%, #c8a040 55%, #f0d080 75%, #c0982e 100%); }
+      .sw-preto-mat {
+        background:
+          repeating-linear-gradient(45deg, rgba(255,255,255,.025) 0px, transparent 1px, transparent 5px),
+          linear-gradient(135deg, #242424 0%, #303030 50%, #1c1c1c 100%);
+      }
+      .sw-louca { background: linear-gradient(160deg, #fafaf8 0%, #f0f0ec 50%, #f8f8f4 100%); }
+      .sw-pedra {
+        background:
+          repeating-linear-gradient(110deg, rgba(255,255,255,.06) 0px, transparent 2px, transparent 14px),
+          linear-gradient(160deg, #9c9088 0%, #8a807a 50%, #988c85 100%);
+      }
+      .sw-concreto {
+        background:
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23706e68'/%3E%3Crect x='0' y='0' width='1' height='1' fill='rgba(255,255,255,.04)'/%3E%3Crect x='2' y='2' width='1' height='1' fill='rgba(0,0,0,.04)'/%3E%3C/svg%3E") repeat,
+          linear-gradient(160deg, #706e68 0%, #686660 50%, #747270 100%);
       }
 
-      #panel-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 14px;
-      }
-      #panel-category {
-        font-size: 9px;
-        font-weight: 600;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-        color: var(--warm);
-      }
-      #panel-title {
-        font-size: 15px;
-        font-weight: 600;
-        letter-spacing: -0.01em;
-        color: rgba(10,8,5,0.88);
-      }
-      #panel-close {
-        width: 28px; height: 28px;
-        border-radius: 50%;
-        background: rgba(0,0,0,0.08);
+      /* Check badge — branco com checkmark escuro */
+      .opt-check {
+        position: absolute; top: 7px; right: 7px;
+        width: 20px; height: 20px; border-radius: 50%;
+        background: rgba(255,255,255,0.92);
         border: 1px solid rgba(0,0,0,0.1);
         display: flex; align-items: center; justify-content: center;
-        cursor: none; flex-shrink: 0;
-        transition: background 0.2s;
+        opacity: 0; transform: scale(0.4);
+        transition: all 220ms var(--ease);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        z-index: 2;
       }
-      #panel-close:hover { background: rgba(0,0,0,0.15); }
-      #panel-close svg {
-        width: 9px; height: 9px;
-        stroke: rgba(0,0,0,0.6); stroke-width: 2;
-        fill: none; stroke-linecap: round;
-      }
+      .opt-card.selected .opt-check { opacity: 1; transform: scale(1); }
+      .opt-check svg { width: 9px; height: 9px; }
 
-      #panel-canvas-wrap {
-        position: relative;
-        width: 100%; height: 170px;
-        border-radius: 16px;
-        overflow: hidden;
-        background: rgba(0,0,0,0.04);
-      }
-      #option-canvas {
-        width: 100% !important;
-        height: 100% !important;
-        display: block;
-        cursor: none;
-      }
+      .opt-info { padding: 9px 10px; }
+      .opt-name { font-size: 11px; font-weight: 500; color: var(--text); letter-spacing: 0.01em; }
+      .opt-sub  { font-size: 10px; font-weight: 300; color: var(--text-muted); margin-top: 2px; }
 
-      #sphere-labels {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 8px;
-        margin-top: 12px;
+      /* Summary */
+      .sb-summary { display: flex; flex-direction: column; gap: 7px; }
+      .sb-sum-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 11px; background: rgba(255,255,255,0.18); border-radius: 11px; border: 1px solid rgba(255,255,255,0.32); transition: all 220ms var(--ease); }
+      .sb-sum-row.filled { background: rgba(255,255,255,0.28); border-color: rgba(255,255,255,0.5); }
+      .sb-sum-mode   { font-size: 12px; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+      .sb-sum-choice { font-size: 11px; font-weight: 400; color: var(--text); }
+      .sb-sum-empty  { font-size: 11px; color: rgba(80,80,80,0.38); font-style: italic; }
+
+      /* CTA */
+      .sb-cta {
+        margin-top: auto; width: 100%; padding: 14px;
+        border-radius: 999px; border: none;
+        background: var(--green);
+        color: white; font-family: 'DM Sans', sans-serif;
+        font-size: 13px; font-weight: 600;
+        cursor: pointer; transition: all 220ms var(--ease);
+        box-shadow: 0 6px 20px rgba(48,209,88,0.28);
       }
-      .sphere-label {
-        text-align: center;
-        font-size: 10px;
-        font-weight: 500;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: rgba(10,8,5,0.45);
-        padding: 7px 8px;
-        border-radius: 10px;
-        border: 1.5px solid transparent;
-        transition: color 0.2s, border-color 0.2s, background 0.2s;
-        cursor: none;
+      .sb-cta:hover { background: #34e85c; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(48,209,88,0.38); }
+      .sb-cta:active { transform: translateY(0); }
+
+      /* Mobile bottom sheet */
+      @media (max-width: 640px) {
+        #sidebar {
+          top: auto; right: 0; left: 0; bottom: 0;
+          width: 100%; border-radius: 20px 20px 0 0;
+          padding: 18px 16px 28px; max-height: 75vh;
+          transform: translateY(calc(100% + 20px));
+          box-shadow: 0 -8px 40px rgba(0,0,0,0.18); gap: 16px;
+        }
+        #sidebar.open { transform: translateY(0); }
       }
-      .sphere-label.active {
-        color: rgba(10,8,5,0.88);
-        border-color: var(--warm);
-        background: rgba(200,169,110,0.12);
-      }
-      @media (hover: none) {
-        #option-panel { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(245,242,236,0.97); }
-        .sphere-label, #panel-close { cursor: pointer; }
-      }
-      @media (max-width: 600px) {
-        #option-panel { bottom: 110px; }
-        #panel-canvas-wrap { height: 140px; }
-      }
+      @media (hover: none) { #sidebar { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(240,240,240,0.97); } }
     </style>
   </head>
 
   <body>
-    <div id="cursor"></div>
-    <div id="ring"></div>
-
     <div id="stage"></div>
+
+    <!-- LOGO EXPERIÊNCIA -->
+    <div id="exp-logo-wrap">
+      <img src="images/conf/showroom-plus-logo.svg" alt="Showroom Plus" />
+    </div>
 
     <!-- COVER -->
     <div id="cover">
-      <div id="cover-bg"></div>
       <div id="cover-card">
-        <div id="cover-eyebrow">Factory Interactive</div>
-        <div id="cover-title">Configurador</div>
-        <div id="cover-sub">Banheiros · Bathroom</div>
-        <div id="cover-line"></div>
+        <img id="cover-logo" src="images/conf/showroom-plus-logo.svg" alt="Showroom Plus" />
         <button id="btn-start" onclick="startExperience()">
           Explorar
           <svg viewBox="0 0 14 14"><polyline points="3,1 11,7 3,13"/></svg>
@@ -442,153 +303,175 @@
       </div>
     </div>
 
-<!-- OPTION PANEL -->
-    <div id="option-panel">
-      <div id="panel-header">
-        <div>
-          <div id="panel-category">Configurador</div>
-          <div id="panel-title">Piso</div>
-        </div>
-        <button id="panel-close" onclick="closePanel()">
-          <svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7"/><line x1="7" y1="1" x2="1" y2="7"/></svg>
-        </button>
-      </div>
-      <div id="panel-canvas-wrap">
-        <canvas id="option-canvas"></canvas>
-      </div>
-      <div id="sphere-labels">
-        <div class="sphere-label active" data-idx="0">—</div>
-        <div class="sphere-label"        data-idx="1">—</div>
-        <div class="sphere-label"        data-idx="2">—</div>
-      </div>
-    </div>
+    <!-- SIDEBAR -->
+    <div id="sidebar">
+      <div class="sb-brand">Factory Interactive</div>
+      <div class="sb-title" id="sb-title">Configurador</div>
+      <div class="sb-divider"></div>
 
-    <!-- TRACK -->
-    <div id="track">
-      <!-- botões inseridos pelo JS -->
+      <div>
+        <div class="sb-label" style="margin-bottom:10px">Modo</div>
+        <div class="sb-modes" id="sb-modes"></div>
+      </div>
+
+      <div>
+        <div class="sb-label" style="margin-bottom:10px">Revestimento</div>
+        <div class="sb-cards" id="sb-cards"></div>
+      </div>
+
+      <div>
+        <div class="sb-label" style="margin-bottom:10px">Sua Seleção</div>
+        <div class="sb-summary" id="sb-summary"></div>
+      </div>
+
+      <button class="sb-cta" id="sb-cta-btn" onclick="confirmConfig()">
+        ✦ Confirmar Configuração
+      </button>
     </div>
 
     <script>
       // ── CENÁRIOS ──────────────────────────────────────────
       const PTS = [
-        { id: "piso",     label: "Piso",      sub: "Floor Tile"                  },
-        { id: "torneira", label: "Torneira 1", sub: "Wall-mounted Washbasin Taps" },
-        { id: "pia",      label: "Pia",        sub: "Bathroom Sink"               },
+        { id: "piso",     label: "Piso",     sub: "Floor Tile",                  icon: "🪨" },
+        { id: "torneira", label: "Torneira", sub: "Wall-mounted Washbasin Taps",  icon: "🚰" },
+        { id: "pia",      label: "Pia",      sub: "Bathroom Sink",                icon: "🚿" },
       ];
 
+      // ── OPTIONS ───────────────────────────────────────────
+      const OPTIONS = {
+        0: [
+          { label: "Mármore Branco", sub: "Pedra natural · Polido",  swatch: "sw-marble",      seq: "images/conf/piso1_to_piso2_" },
+          { label: "Porcelanato",    sub: "Cerâmica · Acetinado",    swatch: "sw-porcelanato", seq: "images/conf/piso1_to_piso3_" },
+          { label: "Ardósia",        sub: "Pedra natural · Fosco",   swatch: "sw-ardosia"                                         },
+        ],
+        1: [
+          { label: "Cromado",       sub: "Aço · Alto brilho",       swatch: "sw-cromado"  },
+          { label: "Dourado",       sub: "Aço · PVD Gold",          swatch: "sw-dourado"  },
+        ],
+        2: [
+          { label: "Louça Branca",  sub: "Cerâmica · Vitrificado",  swatch: "sw-louca"   },
+          { label: "Pedra Natural", sub: "Quartzito · Escovado",    swatch: "sw-pedra"   },
+        ],
+      };
+
       // ── ESTADO ────────────────────────────────────────────
-      let cur = -1; // -1 = capa
+      let cur = -1;
+      let currentPanelConfig = -1;
+      const selections = { 0: null, 1: null, 2: null };
 
       // ── NAVEGAÇÃO ─────────────────────────────────────────
       function jumpTo(idx) {
         if (idx === cur) return;
         cur = idx;
-        updateUI();
-        openPanel(idx);
+        document.getElementById("sb-title").textContent = PTS[idx].label;
+        document.querySelectorAll(".sb-mode-btn").forEach(el => el.classList.toggle("active", parseInt(el.dataset.i) === idx));
+        renderCards(idx);
+        updatePOIs();
+        if (idx === 0) loadSeq();
       }
 
       function startExperience() {
-        document.getElementById("cover").style.display = "none";
+        document.getElementById("cover").classList.add("out");
+        document.getElementById("exp-logo-wrap").classList.add("show");
+        setTimeout(() => { document.getElementById("cover").style.display = "none"; }, 500);
+        document.getElementById("sidebar").classList.add("open");
         cur = 0;
-        document.getElementById("track").classList.add("show");
-        document.getElementById("option-panel").classList.add("open");
-        updateUI();
-        openPanel(0);
-      }
-
-      // ══════════════════════════════════════════════════════
-      // UI — TRACK
-      // ══════════════════════════════════════════════════════
-      function buildTrack() {
-        const track = document.getElementById("track");
-        PTS.forEach((pt, idx) => {
-          const el = document.createElement("div");
-          el.className = "t-pt";
-          el.dataset.i = idx;
-          el.innerHTML = `<span class="t-pt-label">${pt.label}</span><span class="t-pt-sub">${pt.sub}</span>`;
-          el.addEventListener("click", () => { jumpTo(idx); openPanel(idx); });
-          el.addEventListener("touchstart", (e) => {
-            if (e.cancelable) e.preventDefault();
-            jumpTo(idx); openPanel(idx);
-          }, { passive: false });
-          track.appendChild(el);
-        });
-      }
-
-      function updateUI() {
-        document.querySelectorAll(".t-pt").forEach(el => {
-          el.classList.toggle("active", parseInt(el.dataset.i) === cur);
-        });
+        document.getElementById("sb-title").textContent = PTS[0].label;
+        renderCards(0);
+        buildSummary();
         updatePOIs();
+        loadSeq();
       }
 
-      // ══════════════════════════════════════════════════════
-      // POIs
-      // ══════════════════════════════════════════════════════
-      // x e y em % da viewport (0–100). img: caminho ou null.
+      // ── BUILD MODES ───────────────────────────────────────
+      function buildModes() {
+        const wrap = document.getElementById("sb-modes");
+        PTS.forEach((pt, idx) => {
+          const btn = document.createElement("button");
+          btn.className = "sb-mode-btn" + (idx === 0 ? " active" : "");
+          btn.dataset.i = idx;
+          btn.innerHTML = `<div class="sb-mode-icon">${pt.icon}</div><div class="sb-mode-name">${pt.label}</div>`;
+          btn.addEventListener("click", () => jumpTo(idx));
+          btn.addEventListener("touchstart", e => { if (e.cancelable) e.preventDefault(); jumpTo(idx); }, { passive: false });
+          wrap.appendChild(btn);
+        });
+      }
+
+      // ── RENDER CARDS ──────────────────────────────────────
+      function renderCards(modeIdx) {
+        const wrap = document.getElementById("sb-cards");
+        wrap.innerHTML = "";
+        OPTIONS[modeIdx].forEach((opt, i) => {
+          const card = document.createElement("div");
+          card.className = "opt-card" + (selections[modeIdx] === i ? " selected" : "");
+          card.dataset.idx = i;
+          card.innerHTML = `
+            <div class="opt-swatch ${opt.swatch}">
+              <div class="opt-check">
+                <svg viewBox="0 0 10 8" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,4 3.5,7 9,1"/></svg>
+              </div>
+            </div>
+            <div class="opt-info">
+              <div class="opt-name">${opt.label}</div>
+              <div class="opt-sub">${opt.sub}</div>
+            </div>
+          `;
+          card.addEventListener("click", () => selectOption(modeIdx, i));
+          card.addEventListener("touchstart", e => { if (e.cancelable) e.preventDefault(); selectOption(modeIdx, i); }, { passive: false });
+          wrap.appendChild(card);
+        });
+        currentPanelConfig = modeIdx;
+      }
+
+      // ── SELECT OPTION ─────────────────────────────────────
+      function selectOption(modeIdx, optIdx) {
+        selections[modeIdx] = optIdx;
+        document.querySelectorAll(".opt-card").forEach((c, i) => c.classList.toggle("selected", i === optIdx));
+        updateSummary(modeIdx, OPTIONS[modeIdx][optIdx].label);
+        if (modeIdx === 0) {
+          const opt = OPTIONS[0][optIdx];
+          if (opt.seq) playStageFrames(loadSeqByPrefix(opt.seq), SEQ_FPS);
+        }
+      }
+
+      // ── SUMMARY ───────────────────────────────────────────
+      function buildSummary() {
+        const wrap = document.getElementById("sb-summary");
+        wrap.innerHTML = "";
+        PTS.forEach((pt, idx) => {
+          const row = document.createElement("div");
+          row.className = "sb-sum-row";
+          row.id = "sum-" + idx;
+          row.innerHTML = `<div class="sb-sum-mode">${pt.icon} ${pt.label}</div><div class="sb-sum-empty">não selecionado</div>`;
+          wrap.appendChild(row);
+        });
+      }
+
+      function updateSummary(modeIdx, label) {
+        const row = document.getElementById("sum-" + modeIdx);
+        if (!row) return;
+        row.classList.add("filled");
+        const el = row.querySelector(".sb-sum-empty, .sb-sum-choice");
+        if (el) el.remove();
+        const choice = document.createElement("div");
+        choice.className = "sb-sum-choice";
+        choice.textContent = label;
+        row.appendChild(choice);
+      }
+
+      // ── POIs ──────────────────────────────────────────────
       const POIS = {
-        // ── PISO (cenário 0) ──────────────────────────────
         0: [
-          {
-            id: "piso-poi-1",
-            label: "Opção 1",
-            x: 38, y: 55,
-            tag: "Piso · Floor Tile",
-            title: "Opção 1",
-            desc: "Descrição da primeira opção de revestimento de piso.",
-            img: null,
-          },
-          {
-            id: "piso-poi-2",
-            label: "Opção 2",
-            x: 62, y: 55,
-            tag: "Piso · Floor Tile",
-            title: "Opção 2",
-            desc: "Descrição da segunda opção de revestimento de piso.",
-            img: null,
-          },
+          { id:"piso-1", label:"Opção 1", x:38, y:55, tag:"Piso · Floor Tile",            title:"Opção 1", desc:"Descrição da primeira opção de revestimento de piso.", img:null },
+          { id:"piso-2", label:"Opção 2", x:62, y:55, tag:"Piso · Floor Tile",            title:"Opção 2", desc:"Descrição da segunda opção de revestimento de piso.",  img:null },
         ],
-        // ── TORNEIRA 1 (cenário 1) ────────────────────────
         1: [
-          {
-            id: "torn-poi-1",
-            label: "Modelo A",
-            x: 40, y: 42,
-            tag: "Torneira · Wall-mounted Taps",
-            title: "Modelo A",
-            desc: "Descrição do primeiro modelo de torneira de parede.",
-            img: null,
-          },
-          {
-            id: "torn-poi-2",
-            label: "Modelo B",
-            x: 60, y: 42,
-            tag: "Torneira · Wall-mounted Taps",
-            title: "Modelo B",
-            desc: "Descrição do segundo modelo de torneira de parede.",
-            img: null,
-          },
+          { id:"torn-1", label:"Modelo A", x:40, y:42, tag:"Torneira · Wall-mounted Taps", title:"Modelo A", desc:"Descrição do primeiro modelo de torneira de parede.",  img:null },
+          { id:"torn-2", label:"Modelo B", x:60, y:42, tag:"Torneira · Wall-mounted Taps", title:"Modelo B", desc:"Descrição do segundo modelo de torneira de parede.",   img:null },
         ],
-        // ── PIA (cenário 2) ───────────────────────────────
         2: [
-          {
-            id: "pia-poi-1",
-            label: "Modelo A",
-            x: 38, y: 48,
-            tag: "Pia · Bathroom Sink",
-            title: "Modelo A",
-            desc: "Descrição do primeiro modelo de pia de banheiro.",
-            img: null,
-          },
-          {
-            id: "pia-poi-2",
-            label: "Modelo B",
-            x: 62, y: 48,
-            tag: "Pia · Bathroom Sink",
-            title: "Modelo B",
-            desc: "Descrição do segundo modelo de pia de banheiro.",
-            img: null,
-          },
+          { id:"pia-1",  label:"Modelo A", x:38, y:48, tag:"Pia · Bathroom Sink",           title:"Modelo A", desc:"Descrição do primeiro modelo de pia de banheiro.",     img:null },
+          { id:"pia-2",  label:"Modelo B", x:62, y:48, tag:"Pia · Bathroom Sink",           title:"Modelo B", desc:"Descrição do segundo modelo de pia de banheiro.",      img:null },
         ],
       };
 
@@ -597,256 +480,77 @@
       function buildPOIs() {
         Object.entries(POIS).forEach(([ptIdx, pois]) => {
           pois.forEach(poi => {
-            // Marker
             const marker = document.createElement("div");
             marker.className = "poi hidden";
             marker.id = "poi-" + poi.id;
             marker.dataset.pt = ptIdx;
             marker.style.left = poi.x + "%";
             marker.style.top  = poi.y + "%";
-            marker.innerHTML = `
-              <div class="poi-actions">
-                <div class="poi-pulse"></div>
-                <div class="poi-btn"></div>
-              </div>
-              <div class="poi-name">${poi.label}</div>
-            `;
-            marker.querySelector(".poi-btn").addEventListener("click", e => {
-              e.stopPropagation();
-              togglePopup(poi, marker);
-            });
-            marker.querySelector(".poi-btn").addEventListener("touchstart", e => {
-              if (e.cancelable) e.preventDefault();
-              e.stopPropagation();
-              togglePopup(poi, marker);
-            }, { passive: false });
+            marker.innerHTML = `<div class="poi-actions"><div class="poi-pulse"></div><div class="poi-btn"></div></div><div class="poi-name">${poi.label}</div>`;
+            marker.querySelector(".poi-btn").addEventListener("click", e => { e.stopPropagation(); togglePopup(poi); });
+            marker.querySelector(".poi-btn").addEventListener("touchstart", e => { if (e.cancelable) e.preventDefault(); e.stopPropagation(); togglePopup(poi); }, { passive: false });
             document.body.appendChild(marker);
 
-            // Popup
             const popup = document.createElement("div");
             popup.className = "poi-popup";
             popup.id = "popup-" + poi.id;
-            popup.style.left = Math.min(poi.x + 4, 68) + "%";
+            popup.style.left = Math.min(poi.x + 4, 52) + "%";
             popup.style.top  = Math.max(poi.y - 32, 5) + "%";
             popup.innerHTML = `
               <div class="popup-img-wrap">
-                ${poi.img
-                  ? `<img class="popup-img" src="${poi.img}" alt="${poi.title}">`
-                  : `<div class="popup-img-placeholder">Imagem em breve</div>`}
-                <button class="popup-close-btn" onclick="closePopup('${poi.id}')">
-                  <svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7"/><line x1="7" y1="1" x2="1" y2="7"/></svg>
-                </button>
+                ${poi.img ? `<img class="popup-img" src="${poi.img}" alt="${poi.title}">` : `<div class="popup-img-placeholder">Imagem em breve</div>`}
+                <button class="popup-close-btn" onclick="closePopup('${poi.id}')"><svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7"/><line x1="7" y1="1" x2="1" y2="7"/></svg></button>
               </div>
               <div class="popup-body">
                 <div class="popup-tag">${poi.tag}</div>
                 <div class="popup-title">${poi.title}</div>
                 <div class="popup-desc">${poi.desc}</div>
-              </div>
-            `;
+              </div>`;
             document.body.appendChild(popup);
           });
         });
       }
 
-      function togglePopup(poi, marker) {
+      function togglePopup(poi) {
         const popup = document.getElementById("popup-" + poi.id);
         const isOpen = popup.classList.contains("open");
         closeAllPopups();
         if (!isOpen) { popup.classList.add("open"); activePopup = poi.id; }
       }
-
-      function closePopup(id) {
-        const popup = document.getElementById("popup-" + id);
-        if (popup) { popup.classList.remove("open"); }
-        if (activePopup === id) activePopup = null;
-      }
-
-      function closeAllPopups() {
-        document.querySelectorAll(".poi-popup.open").forEach(p => p.classList.remove("open"));
-        activePopup = null;
-      }
-
+      function closePopup(id) { const p = document.getElementById("popup-"+id); if(p) p.classList.remove("open"); if(activePopup===id) activePopup=null; }
+      function closeAllPopups() { document.querySelectorAll(".poi-popup.open").forEach(p=>p.classList.remove("open")); activePopup=null; }
       function updatePOIs() {
         Object.entries(POIS).forEach(([ptIdx, pois]) => {
           const visible = parseInt(ptIdx) === cur;
           pois.forEach(poi => {
-            const marker = document.getElementById("poi-" + poi.id);
-            if (marker) marker.classList.toggle("hidden", !visible);
+            const m = document.getElementById("poi-"+poi.id);
+            if (m) m.classList.toggle("hidden", !visible);
             if (!visible) closePopup(poi.id);
           });
         });
       }
 
-      // ══════════════════════════════════════════════════════
-      // OPTION PANEL — opções de cada cenário
-      // ══════════════════════════════════════════════════════
-      // texture: caminho da imagem ou null (usa só a cor PBR)
-      const OPTIONS = {
-        0: [ // Piso — Floor Tile
-          { label: "Mármore Branco", color: 0xf0ece4, roughness: 0.12, metalness: 0.04, texture: null },
-          { label: "Porcelanato", color: 0xc4b49a, roughness: 0.28, metalness: 0.02, texture: null },
-          { label: "Ardósia",     color: 0x6a6460, roughness: 0.88, metalness: 0.0,  texture: null },
-        ],
-        1: [ // Torneira — Wall-mounted Taps
-          { label: "Cromado",   color: 0xbecad2, roughness: 0.04, metalness: 0.98, texture: null },
-          { label: "Dourado",   color: 0xc8a96e, roughness: 0.08, metalness: 0.90, texture: null },
-          { label: "Preto Mat", color: 0x1c1c1c, roughness: 0.88, metalness: 0.12, texture: null },
-        ],
-        2: [ // Pia — Bathroom Sink
-          { label: "Louça",    color: 0xfafaf8, roughness: 0.08, metalness: 0.0,  texture: null },
-          { label: "Pedra",    color: 0x9c9088, roughness: 0.82, metalness: 0.0,  texture: null },
-          { label: "Concreto", color: 0x706e68, roughness: 0.92, metalness: 0.05, texture: null },
-        ],
-      };
-
-      // ── Three.js scene (criada uma vez, reutilizada) ──
-      let threeReady = false;
-      let threeRenderer, threeScene, threeCamera, threeAnim;
-      let sphereMeshes = [], ringMeshes = [];
-      let selectedSphere = 0;
-      let hoveredSphere  = -1;
-
-      function initThree() {
-        if (threeReady) return;
-        threeReady = true;
-
-        const canvas = document.getElementById("option-canvas");
-        const wrap   = document.getElementById("panel-canvas-wrap");
-        const W = wrap.clientWidth, H = wrap.clientHeight;
-
-        threeRenderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-        threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        threeRenderer.setSize(W, H);
-        threeRenderer.outputColorSpace = THREE.SRGBColorSpace;
-        threeRenderer.toneMapping = THREE.ACESFilmicToneMapping;
-        threeRenderer.toneMappingExposure = 1.2;
-
-        threeScene  = new THREE.Scene();
-        threeCamera = new THREE.PerspectiveCamera(42, W / H, 0.1, 50);
-        threeCamera.position.set(0, 0, 7.5);
-
-        // Lights
-        const ambient = new THREE.AmbientLight(0xffffff, 1.2);
-        threeScene.add(ambient);
-        const key = new THREE.DirectionalLight(0xffffff, 2.8);
-        key.position.set(3, 4, 5);
-        threeScene.add(key);
-        const fill = new THREE.DirectionalLight(0xd0e8ff, 0.8);
-        fill.position.set(-4, 2, 3);
-        threeScene.add(fill);
-        const rim = new THREE.DirectionalLight(0xffe8c0, 0.6);
-        rim.position.set(0, -3, -4);
-        threeScene.add(rim);
-
-        // Spheres
-        const geo  = new THREE.SphereGeometry(1, 64, 64);
-        const ringGeo = new THREE.TorusGeometry(1.28, 0.045, 16, 80);
-        const positions = [-2.4, 0, 2.4];
-
-        positions.forEach((x, i) => {
-          const mat = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, roughness: 0.3, metalness: 0.1 });
-          const mesh = new THREE.Mesh(geo, mat);
-          mesh.position.set(x, 0, 0);
-          mesh.userData.idx = i;
-          threeScene.add(mesh);
-          sphereMeshes.push(mesh);
-
-          const ringMat = new THREE.MeshBasicMaterial({
-            color: 0xc8a96e, transparent: true, opacity: 0,
-          });
-          const ring = new THREE.Mesh(ringGeo, ringMat);
-          ring.position.set(x, 0, -0.1);
-          threeScene.add(ring);
-          ringMeshes.push(ring);
-        });
-
-        // Raycaster
-        const raycaster = new THREE.Raycaster();
-        const pointer    = new THREE.Vector2(-999, -999);
-
-        function toNDC(clientX, clientY) {
-          const rect = canvas.getBoundingClientRect();
-          pointer.x = ((clientX - rect.left) / rect.width)  *  2 - 1;
-          pointer.y = ((clientY - rect.top)  / rect.height) * -2 + 1;
-        }
-
-        canvas.addEventListener("mousemove", e => {
-          toNDC(e.clientX, e.clientY);
-          raycaster.setFromCamera(pointer, threeCamera);
-          const hits = raycaster.intersectObjects(sphereMeshes);
-          hoveredSphere = hits.length ? hits[0].object.userData.idx : -1;
-          canvas.style.cursor = hoveredSphere >= 0 ? "pointer" : "none";
-        });
-
-        canvas.addEventListener("click", e => {
-          toNDC(e.clientX, e.clientY);
-          raycaster.setFromCamera(pointer, threeCamera);
-          const hits = raycaster.intersectObjects(sphereMeshes);
-          if (hits.length) selectSphere(hits[0].object.userData.idx);
-        });
-
-        canvas.addEventListener("touchend", e => {
-          const t = e.changedTouches[0];
-          toNDC(t.clientX, t.clientY);
-          raycaster.setFromCamera(pointer, threeCamera);
-          const hits = raycaster.intersectObjects(sphereMeshes);
-          if (hits.length) selectSphere(hits[0].object.userData.idx);
-        }, { passive: true });
-
-        // Resize
-        window.addEventListener("resize", () => {
-          const W2 = wrap.clientWidth, H2 = wrap.clientHeight;
-          threeRenderer.setSize(W2, H2);
-          threeCamera.aspect = W2 / H2;
-          threeCamera.updateProjectionMatrix();
-        });
-      }
-
-      function applySphereOptions(configIdx) {
-        const opts = OPTIONS[configIdx];
-        const loader = new THREE.TextureLoader();
-        opts.forEach((opt, i) => {
-          const mat = sphereMeshes[i].material;
-          mat.color.set(opt.color);
-          mat.roughness  = opt.roughness;
-          mat.metalness  = opt.metalness;
-          if (opt.texture) {
-            loader.load(opt.texture, tex => {
-              tex.colorSpace = THREE.SRGBColorSpace;
-              mat.map = tex;
-              mat.needsUpdate = true;
-            });
-          } else {
-            mat.map = null;
-            mat.needsUpdate = true;
-          }
-        });
-        // Update labels
-        const labels = document.querySelectorAll(".sphere-label");
-        opts.forEach((opt, i) => { labels[i].textContent = opt.label; });
-        selectSphere(0);
-      }
-
-      // ── FRAME SEQUENCE ANIMATION ──────────────────────────
-      const STAGE_DEFAULT = 'images/conf/capa_config.jpg';
-      const SEQ_PREFIX    = 'images/conf/piso1_to_piso2_';
-      const SEQ_COUNT     = 54; // frames 00–53
-      const SEQ_FPS       = 30;
-
+      // ── FRAME SEQUENCE ────────────────────────────────────
+      const SEQ_COUNT    = 54;
+      const SEQ_FPS      = 30;
       let stageFrameAnim = null;
-      let seqFrames = null; // lazy-loaded
+      const seqCache     = {};
 
       function padN(n) { return String(n).padStart(2, '0'); }
 
-      function loadSeq() {
-        if (seqFrames) return seqFrames;
-        seqFrames = [];
+      function loadSeqByPrefix(prefix) {
+        if (seqCache[prefix]) return seqCache[prefix];
+        const arr = [];
         for (let i = 0; i < SEQ_COUNT; i++) {
-          const img = new Image();
-          img.src = SEQ_PREFIX + padN(i) + '.jpg';
-          seqFrames.push(img);
+          const img = new Image(); img.src = prefix + padN(i) + '.jpg';
+          arr.push(img);
         }
-        return seqFrames;
+        seqCache[prefix] = arr;
+        return arr;
+      }
+
+      function loadSeq() {
+        OPTIONS[0].forEach(opt => { if (opt.seq) loadSeqByPrefix(opt.seq); });
       }
 
       function playStageFrames(frames, fps) {
@@ -856,8 +560,12 @@
         let i = 0, last = 0;
         function tick(ts) {
           if (!last || ts - last >= dur) {
-            stage.style.background = `url("${frames[i].src}") center/cover no-repeat`;
-            last = ts; i++;
+            const img = frames[i];
+            if (img && img.complete && img.naturalWidth > 0) {
+              stage.style.background = `url("${img.src}") center/100% 100% no-repeat`;
+            }
+            last = ts;
+            i++;
           }
           if (i < frames.length) stageFrameAnim = requestAnimationFrame(tick);
           else stageFrameAnim = null;
@@ -865,111 +573,30 @@
         stageFrameAnim = requestAnimationFrame(tick);
       }
 
-      function selectSphere(idx) {
-        selectedSphere = idx;
-        // Labels
-        document.querySelectorAll(".sphere-label").forEach((el, i) => {
-          el.classList.toggle("active", i === idx);
-        });
-        // Ring visibility
-        ringMeshes.forEach((r, i) => { r.material.opacity = i === idx ? 0.9 : 0; });
-
-        // Piso frame animation
-        if (currentPanelConfig === 0) {
-          const frames = loadSeq();
-          if (idx === 0) {
-            // Mármore Branco — forward (piso1 → piso2)
-            playStageFrames(frames, SEQ_FPS);
-          } else {
-            // Outro piso — reverse (piso2 → piso1)
-            playStageFrames([...frames].reverse(), SEQ_FPS);
-          }
+      // ── CONFIRM ───────────────────────────────────────────
+      function confirmConfig() {
+        const btn = document.getElementById("sb-cta-btn");
+        const hasAny = Object.values(selections).some(v => v !== null);
+        if (!hasAny) {
+          btn.style.transform = 'translateX(-4px)';
+          setTimeout(()=>btn.style.transform='translateX(4px)',80);
+          setTimeout(()=>btn.style.transform='translateX(-2px)',160);
+          setTimeout(()=>btn.style.transform='',240);
+          return;
         }
+        const orig = btn.textContent;
+        btn.textContent = '✓ Configuração Salva!';
+        btn.style.background = '#22c55e';
+        setTimeout(()=>{ btn.textContent=orig; btn.style.background=''; }, 2500);
       }
 
-      function startThreeLoop() {
-        if (threeAnim) return;
-        function loop() {
-          threeAnim = requestAnimationFrame(loop);
-          const t = performance.now() * 0.001;
-          sphereMeshes.forEach((mesh, i) => {
-            mesh.rotation.y += 0.006;
-            const isSelected = i === selectedSphere;
-            const isHovered  = i === hoveredSphere;
-            const target = isSelected ? 1.12 : isHovered ? 1.06 : 1.0;
-            mesh.scale.lerp(new THREE.Vector3(target, target, target), 0.1);
-            // bob selected sphere gently
-            mesh.position.y += (isSelected ? Math.sin(t * 1.4) * 0.04 - mesh.position.y : -mesh.position.y) * 0.08;
-          });
-          threeRenderer.render(threeScene, threeCamera);
-        }
-        loop();
-      }
+      // ── FECHAR POPUPS ─────────────────────────────────────
+      document.addEventListener("click", e => { if (!e.target.closest(".poi-popup, .poi-btn")) closeAllPopups(); });
+      window.addEventListener("keydown", e => { if (e.key === "Escape") closeAllPopups(); });
 
-      function stopThreeLoop() {
-        if (threeAnim) { cancelAnimationFrame(threeAnim); threeAnim = null; }
-      }
-
-      // ── Panel open / close ──
-      let panelOpen = false;
-      let currentPanelConfig = -1;
-
-      function openPanel(configIdx) {
-        try { initThree(); } catch(e) { console.warn("Three.js:", e); }
-        if (configIdx === 0) loadSeq(); // preload piso frames
-        if (currentPanelConfig !== configIdx) {
-          currentPanelConfig = configIdx;
-          try { applySphereOptions(configIdx); } catch(e) {}
-          document.getElementById("panel-title").textContent = PTS[configIdx].label;
-        }
-        document.getElementById("option-panel").classList.add("open");
-        panelOpen = true;
-        try { startThreeLoop(); } catch(e) {}
-      }
-
-      function closePanel() {
-        document.getElementById("option-panel").classList.remove("open");
-        panelOpen = false;
-        stopThreeLoop();
-      }
-
-      // Label clicks
-      document.querySelectorAll(".sphere-label").forEach(el => {
-        el.addEventListener("click", () => selectSphere(parseInt(el.dataset.idx)));
-      });
-
-      // ══════════════════════════════════════════════════════
-      // INIT
-      // ══════════════════════════════════════════════════════
-      buildTrack();
+      // ── INIT ──────────────────────────────────────────────
+      buildModes();
       buildPOIs();
-      updateUI();
-
-
-      // Clica fora fecha popup
-      document.addEventListener("click", e => {
-        if (!e.target.closest(".poi-popup, .poi-btn")) closeAllPopups();
-      });
-      window.addEventListener("keydown", e => {
-        if (e.key === "Escape") closeAllPopups();
-      });
-
-      // ══════════════════════════════════════════════════════
-      // CURSOR
-      // ══════════════════════════════════════════════════════
-      const cursor = document.getElementById("cursor");
-      const ring   = document.getElementById("ring");
-      let mx = 0, my = 0, rx = 0, ry = 0;
-      document.addEventListener("mousemove", e => { mx = e.clientX; my = e.clientY; });
-      (function loop() {
-        cursor.style.left = mx + "px"; cursor.style.top = my + "px";
-        rx += (mx - rx) * .1; ry += (my - ry) * .1;
-        ring.style.left = rx + "px"; ring.style.top = ry + "px";
-        requestAnimationFrame(loop);
-      })();
-      document.addEventListener("mouseover", e => {
-        cursor.classList.toggle("on", !!e.target.closest("button, .t-pt, .poi, .poi-btn"));
-      });
     </script>
   </body>
 </html>
