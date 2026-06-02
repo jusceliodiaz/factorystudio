@@ -20,15 +20,14 @@
       }
 
       :root {
-        --ink:         #0d0d0b;
-        --warm:        #c8a96e;
-        --green:       #30d158;
-        --ease:        cubic-bezier(0.4, 0, 0.2, 1);
-        --vp-bg:       rgba(195, 195, 195, 0.32);
-        --vp-border:   rgba(255, 255, 255, 0.35);
-        --vp-blur:     40px;
-        --text:        #1a1a1a;
-        --text-muted:  rgba(80, 80, 80, 0.8);
+        --ink:        #0d0d0b;
+        --green:      #30d158;
+        --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+        --vp-bg:      rgba(195, 195, 195, 0.32);
+        --vp-border:  rgba(255, 255, 255, 0.35);
+        --vp-blur:    40px;
+        --text:       #1a1a1a;
+        --text-muted: rgba(80, 80, 80, 0.8);
       }
 
       html, body {
@@ -48,13 +47,12 @@
         pointer-events: none;
         background: radial-gradient(ellipse at 50% 55%, transparent 30%, rgba(5,5,3,.32) 100%);
       }
-
-      /* ── LOGOS ── */
-      #cover-logo {
-        height: 80px; width: auto; display: block;
-        margin-bottom: 40px;
-        filter: drop-shadow(0 2px 16px rgba(0,0,0,0.22));
+      #seq-canvas {
+        position: absolute; inset: 0; z-index: 1;
+        width: 100%; height: 100%; display: block;
       }
+
+      /* ── LOGO EXPERIÊNCIA ── */
       #exp-logo-wrap {
         position: fixed; top: 28px; left: 50%;
         transform: translateX(-50%);
@@ -62,12 +60,9 @@
         transition: opacity 400ms var(--ease);
       }
       #exp-logo-wrap.show { opacity: 1; }
-      #exp-logo-wrap img {
-        height: 38px; width: auto; display: block;
-        filter: drop-shadow(0 2px 10px rgba(0,0,0,0.45));
-      }
+      #exp-logo-wrap img { height: 38px; width: auto; display: block; filter: drop-shadow(0 2px 10px rgba(0,0,0,0.45)); }
 
-      /* ══ COVER ══ */
+      /* ── COVER ── */
       #cover {
         position: fixed; inset: 0; z-index: 100;
         display: flex; align-items: center; justify-content: center;
@@ -90,12 +85,12 @@
         from { opacity: 0; transform: translateY(8px); }
         to   { opacity: 1; transform: none; }
       }
+      #cover-logo { height: 80px; width: auto; display: block; margin-bottom: 40px; filter: drop-shadow(0 2px 16px rgba(0,0,0,0.22)); }
       #btn-start {
         display: flex; align-items: center; gap: 10px;
         padding: 14px 36px;
         background: var(--green); border: none; border-radius: 999px; cursor: pointer;
-        font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
-        color: white;
+        font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: white;
         transition: all 220ms var(--ease);
         box-shadow: 0 6px 20px rgba(48,209,88,0.32);
       }
@@ -104,40 +99,11 @@
       #btn-start:hover svg { transform: translateX(3px); }
       @media (max-width: 480px) { #cover-card { padding: 40px 28px 36px; } }
 
-      /* ══ POIs ══ */
-      .poi { position: fixed; z-index: 9; transform: translate(-50%,-50%); transition: opacity 280ms var(--ease), transform 280ms var(--ease); display: flex; flex-direction: column; align-items: center; gap: 6px; }
-      .poi.hidden { opacity: 0; pointer-events: none; transform: translate(-50%,-50%) scale(.5); }
-      .poi-actions { display: flex; align-items: center; gap: 5px; position: relative; z-index: 1; }
-      .poi-btn { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.92); border: none; display: flex; align-items: center; justify-content: center; position: relative; transition: all 220ms var(--ease); box-shadow: 0 2px 12px rgba(0,0,0,.25); flex-shrink: 0; }
-      .poi-btn::before, .poi-btn::after { content: ""; position: absolute; background: var(--ink); border-radius: 2px; }
-      .poi-btn::before { width: 10px; height: 1.5px; }
-      .poi-btn::after  { width: 1.5px; height: 10px; }
-      .poi-btn:hover { background: #fff; transform: scale(1.12); }
-      .poi-pulse { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 56px; height: 56px; border: 1px solid rgba(255,255,255,.3); border-radius: 50%; animation: poipulse 3s ease-in-out infinite; pointer-events: none; }
-      @keyframes poipulse { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.5} 50%{transform:translate(-50%,-50%) scale(1.6);opacity:0} }
-      .poi-name { font-size: 8px; letter-spacing: .16em; color: rgba(255,255,255,.9); text-transform: uppercase; white-space: nowrap; text-shadow: 0 1px 6px rgba(0,0,0,.8); background: rgba(0,0,0,.32); padding: 3px 7px; border-radius: 4px; pointer-events: none; }
-      @media (hover: none) { .poi { touch-action: manipulation; } .poi::before { content: ""; position: absolute; inset: -12px; } }
-
-      /* ══ POI POPUP ══ */
-      .poi-popup { position: fixed; z-index: 50; width: 300px; background: rgba(30,30,28,0.88); border: 1px solid rgba(255,255,255,.14); border-radius: 16px; overflow: hidden; backdrop-filter: blur(40px) saturate(1.6); -webkit-backdrop-filter: blur(40px) saturate(1.6); box-shadow: 0 20px 60px rgba(0,0,0,.3); opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity 220ms var(--ease), transform 220ms var(--ease); user-select: none; }
-      .poi-popup.open { opacity: 1; pointer-events: auto; transform: none; }
-      .popup-img-wrap { width: 100%; height: 180px; overflow: hidden; position: relative; }
-      .popup-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-      .popup-img-placeholder { width: 100%; height: 180px; display: flex; align-items: center; justify-content: center; font-size: 9px; letter-spacing: .18em; color: rgba(255,255,255,.25); text-transform: uppercase; background: rgba(255,255,255,.04); }
-      .popup-close-btn { position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; border-radius: 50%; background: rgba(40,40,40,0.65); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; transition: background 220ms var(--ease); z-index: 2; }
-      .popup-close-btn:hover { background: rgba(60,60,60,0.85); }
-      .popup-close-btn svg { width: 9px; height: 9px; stroke: rgba(255,255,255,.85); stroke-width: 1.8; fill: none; stroke-linecap: round; }
-      .popup-body { padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 8px; }
-      .popup-tag { font-size: 10px; font-weight: 600; letter-spacing: .16em; color: rgba(255,255,255,0.45); text-transform: uppercase; }
-      .popup-title { font-size: 20px; font-weight: 300; color: rgba(255,255,255,.95); line-height: 1.3; letter-spacing: -.01em; }
-      .popup-desc { font-size: 12px; font-weight: 300; line-height: 1.65; color: rgba(255,255,255,.48); }
-      @media (hover: none) { .poi-popup { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(25,25,23,.97); } }
-
-      /* ══ SIDEBAR ══ */
+      /* ── SIDEBAR ── */
       #sidebar {
-        position: fixed; top: calc(15vh + 14px); right: 20px; bottom: calc(15vh + 14px);
+        position: fixed; top: calc(15vh + 14px); right: 84px; bottom: calc(15vh + 14px);
         width: 288px; z-index: 30;
-        display: flex; flex-direction: column;
+        display: flex; flex-direction: column; gap: 20px;
         padding: 24px 20px 20px;
         background: var(--vp-bg);
         border: 1px solid var(--vp-border);
@@ -145,25 +111,24 @@
         backdrop-filter: blur(var(--vp-blur)) saturate(1.8);
         -webkit-backdrop-filter: blur(var(--vp-blur)) saturate(1.8);
         box-shadow: 0 0 0 0.5px rgba(255,255,255,0.5) inset, 0 20px 60px rgba(0,0,0,0.2);
-        transform: translateX(calc(100% + 20px));
+        overflow-y: auto; overflow-x: hidden; scrollbar-width: none;
+        transform: translateX(calc(100% + 84px));
         transition: transform 300ms var(--ease);
-        overflow-y: auto; overflow-x: hidden;
-        scrollbar-width: none;
-        gap: 20px;
       }
       #sidebar::-webkit-scrollbar { display: none; }
       #sidebar.open { transform: translateX(0); }
 
-      .sb-brand { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); }
-      .sb-title { font-size: 24px; font-weight: 300; color: var(--text); line-height: 1.2; letter-spacing: -0.01em; }
-      .sb-divider { height: 1px; background: rgba(120,120,120,0.2); flex-shrink: 0; }
-      .sb-label { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); }
+      .sb-brand  { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); }
+      .sb-title  { font-size: 24px; font-weight: 300; color: var(--text); line-height: 1.2; letter-spacing: -0.01em; }
+      .sb-divider{ height: 1px; background: rgba(120,120,120,0.2); flex-shrink: 0; }
+      .sb-label  { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
 
       /* Mode tabs */
       .sb-modes { display: flex; gap: 4px; background: rgba(160,160,160,0.22); padding: 4px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.28); }
       .sb-mode-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 9px 5px; border-radius: 999px; border: none; background: transparent; cursor: pointer; transition: all 220ms var(--ease); }
       .sb-mode-btn.active { background: rgba(255,255,255,0.85); box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
-      .sb-mode-icon { font-size: 16px; line-height: 1; }
+      .sb-mode-icon { display: flex; align-items: center; justify-content: center; color: rgba(40,40,40,0.55); transition: color 220ms var(--ease); }
+      .sb-mode-btn.active .sb-mode-icon { color: var(--text); }
       .sb-mode-name { font-size: 10px; font-weight: 500; color: rgba(60,60,60,0.52); transition: color 220ms var(--ease); }
       .sb-mode-btn.active .sb-mode-name { color: var(--text); }
 
@@ -179,25 +144,16 @@
         transition: all 220ms var(--ease);
         box-shadow: 0 2px 8px rgba(0,0,0,0.07);
       }
-      .opt-card:hover {
-        transform: scale(1.015);
-        border-color: rgba(255,255,255,0.65);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.11);
-      }
-      .opt-card.selected {
-        border-color: rgba(255,255,255,0.78);
-        box-shadow: 0 0 0 2px rgba(255,255,255,0.45), 0 6px 20px rgba(0,0,0,0.11);
-        background: rgba(255,255,255,0.38);
-      }
+      .opt-card:hover { transform: scale(1.015); border-color: rgba(255,255,255,0.65); box-shadow: 0 6px 20px rgba(0,0,0,0.11); }
+      .opt-card.selected { border-color: rgba(255,255,255,0.78); box-shadow: 0 0 0 2px rgba(255,255,255,0.45), 0 6px 20px rgba(0,0,0,0.11); background: rgba(255,255,255,0.38); }
 
-      /* Swatch */
+      /* Swatches */
       .opt-swatch { width: 100%; aspect-ratio: 1.1; position: relative; overflow: hidden; }
-
       .sw-marble {
         background:
-          repeating-linear-gradient(125deg, rgba(180,170,155,.18) 0px, transparent 2px, transparent 12px),
-          repeating-linear-gradient(55deg,  rgba(160,150,135,.12) 0px, transparent 1px, transparent 8px),
-          linear-gradient(160deg, #f4f0ea 0%, #ede5d8 50%, #f2ece2 100%);
+          repeating-linear-gradient(125deg, rgba(255,255,255,.15) 0px, transparent 2px, transparent 12px),
+          repeating-linear-gradient(55deg,  rgba(0,60,20,.12) 0px, transparent 1px, transparent 8px),
+          linear-gradient(160deg, #6b8f6e 0%, #4a7a52 50%, #5e8c62 100%);
       }
       .sw-porcelanato {
         background:
@@ -212,34 +168,22 @@
       }
       .sw-cromado { background: linear-gradient(135deg, #b0b8c8 0%, #e8ecf4 30%, #c0c8d8 55%, #f0f2f8 75%, #b8c0d0 100%); }
       .sw-dourado { background: linear-gradient(135deg, #b8922a 0%, #e0bb6a 30%, #c8a040 55%, #f0d080 75%, #c0982e 100%); }
-      .sw-preto-mat {
-        background:
-          repeating-linear-gradient(45deg, rgba(255,255,255,.025) 0px, transparent 1px, transparent 5px),
-          linear-gradient(135deg, #242424 0%, #303030 50%, #1c1c1c 100%);
-      }
-      .sw-louca { background: linear-gradient(160deg, #fafaf8 0%, #f0f0ec 50%, #f8f8f4 100%); }
+      .sw-louca   { background: linear-gradient(160deg, #fafaf8 0%, #f0f0ec 50%, #f8f8f4 100%); }
       .sw-pedra {
         background:
           repeating-linear-gradient(110deg, rgba(255,255,255,.06) 0px, transparent 2px, transparent 14px),
           linear-gradient(160deg, #9c9088 0%, #8a807a 50%, #988c85 100%);
       }
-      .sw-concreto {
-        background:
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23706e68'/%3E%3Crect x='0' y='0' width='1' height='1' fill='rgba(255,255,255,.04)'/%3E%3Crect x='2' y='2' width='1' height='1' fill='rgba(0,0,0,.04)'/%3E%3C/svg%3E") repeat,
-          linear-gradient(160deg, #706e68 0%, #686660 50%, #747270 100%);
-      }
 
-      /* Check badge — branco com checkmark escuro */
+      /* Check badge */
       .opt-check {
         position: absolute; top: 7px; right: 7px;
         width: 20px; height: 20px; border-radius: 50%;
-        background: rgba(255,255,255,0.92);
-        border: 1px solid rgba(0,0,0,0.1);
+        background: rgba(255,255,255,0.92); border: 1px solid rgba(0,0,0,0.1);
         display: flex; align-items: center; justify-content: center;
         opacity: 0; transform: scale(0.4);
         transition: all 220ms var(--ease);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-        z-index: 2;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.18); z-index: 2;
       }
       .opt-card.selected .opt-check { opacity: 1; transform: scale(1); }
       .opt-check svg { width: 9px; height: 9px; }
@@ -260,39 +204,40 @@
       .sb-cta {
         margin-top: auto; width: 100%; padding: 14px;
         border-radius: 999px; border: none;
-        background: var(--green);
-        color: white; font-family: 'DM Sans', sans-serif;
-        font-size: 13px; font-weight: 600;
+        background: var(--green); color: white;
+        font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
         cursor: pointer; transition: all 220ms var(--ease);
         box-shadow: 0 6px 20px rgba(48,209,88,0.28);
       }
-      .sb-cta:hover { background: #34e85c; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(48,209,88,0.38); }
+      .sb-cta:hover  { background: #34e85c; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(48,209,88,0.38); }
       .sb-cta:active { transform: translateY(0); }
 
-      /* Mobile bottom sheet */
+      /* Mobile */
       @media (max-width: 640px) {
         #sidebar {
           top: auto; right: 0; left: 0; bottom: 0;
           width: 100%; border-radius: 20px 20px 0 0;
           padding: 18px 16px 28px; max-height: 75vh;
           transform: translateY(calc(100% + 20px));
-          box-shadow: 0 -8px 40px rgba(0,0,0,0.18); gap: 16px;
+          box-shadow: 0 -8px 40px rgba(0,0,0,0.18);
         }
         #sidebar.open { transform: translateY(0); }
       }
-      @media (hover: none) { #sidebar { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(240,240,240,0.97); } }
+      @media (hover: none) {
+        #sidebar { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(240,240,240,0.97); }
+      }
     </style>
   </head>
 
   <body>
-    <div id="stage"></div>
+    <div id="stage">
+      <canvas id="seq-canvas"></canvas>
+    </div>
 
-    <!-- LOGO EXPERIÊNCIA -->
     <div id="exp-logo-wrap">
       <img src="images/conf/showroom-plus-logo.svg" alt="Showroom Plus" />
     </div>
 
-    <!-- COVER -->
     <div id="cover">
       <div id="cover-card">
         <img id="cover-logo" src="images/conf/showroom-plus-logo.svg" alt="Showroom Plus" />
@@ -303,24 +248,23 @@
       </div>
     </div>
 
-    <!-- SIDEBAR -->
     <div id="sidebar">
       <div class="sb-brand">Factory Interactive</div>
       <div class="sb-title" id="sb-title">Configurador</div>
       <div class="sb-divider"></div>
 
       <div>
-        <div class="sb-label" style="margin-bottom:10px">Modo</div>
+        <div class="sb-label">Modo</div>
         <div class="sb-modes" id="sb-modes"></div>
       </div>
 
       <div>
-        <div class="sb-label" style="margin-bottom:10px">Revestimento</div>
+        <div class="sb-label">Revestimento</div>
         <div class="sb-cards" id="sb-cards"></div>
       </div>
 
       <div>
-        <div class="sb-label" style="margin-bottom:10px">Sua Seleção</div>
+        <div class="sb-label">Sua Seleção</div>
         <div class="sb-summary" id="sb-summary"></div>
       </div>
 
@@ -330,44 +274,130 @@
     </div>
 
     <script>
-      // ── CENÁRIOS ──────────────────────────────────────────
+      const ICONS = {
+        piso: `<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="7" height="7" rx="1"/>
+          <rect x="11" y="2" width="7" height="7" rx="1"/>
+          <rect x="2" y="11" width="7" height="7" rx="1"/>
+          <rect x="11" y="11" width="7" height="7" rx="1"/>
+        </svg>`,
+        torneira: `<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="1" y1="9" x2="7" y2="9"/>
+          <line x1="7" y1="6" x2="7" y2="12"/>
+          <path d="M7 9h5a2 2 0 0 1 2 2v2"/>
+          <line x1="14" y1="13" x2="14" y2="18"/>
+          <line x1="12" y1="18" x2="16" y2="18"/>
+        </svg>`,
+        pia: `<svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 7h16v4a6 6 0 0 1-6 6H8a6 6 0 0 1-6-6V7z"/>
+          <line x1="2" y1="7" x2="18" y2="7"/>
+          <line x1="10" y1="17" x2="10" y2="20"/>
+          <circle cx="10" cy="11" r="1.5" fill="currentColor" stroke="none"/>
+        </svg>`,
+      };
+
       const PTS = [
-        { id: "piso",     label: "Piso",     sub: "Floor Tile",                  icon: "🪨" },
-        { id: "torneira", label: "Torneira", sub: "Wall-mounted Washbasin Taps",  icon: "🚰" },
-        { id: "pia",      label: "Pia",      sub: "Bathroom Sink",                icon: "🚿" },
+        { id: "piso",     label: "Piso",     icon: ICONS.piso     },
+        { id: "torneira", label: "Torneira", icon: ICONS.torneira },
+        { id: "pia",      label: "Pia",      icon: ICONS.pia      },
       ];
 
-      // ── OPTIONS ───────────────────────────────────────────
       const OPTIONS = {
         0: [
-          { label: "Mármore Branco", sub: "Pedra natural · Polido",  swatch: "sw-marble",      seq: "images/conf/piso1_to_piso2_" },
-          { label: "Porcelanato",    sub: "Cerâmica · Acetinado",    swatch: "sw-porcelanato", seq: "images/conf/piso1_to_piso3_" },
-          { label: "Ardósia",        sub: "Pedra natural · Fosco",   swatch: "sw-ardosia"                                         },
+          { label: "Mármore Verde",  sub: "Pedra natural · Polido", swatch: "sw-marble"      },
+          { label: "Porcelanato",    sub: "Cerâmica · Acetinado",   swatch: "sw-porcelanato" },
+          { label: "Ardósia",        sub: "Pedra natural · Fosco",  swatch: "sw-ardosia"     },
         ],
         1: [
-          { label: "Cromado",       sub: "Aço · Alto brilho",       swatch: "sw-cromado"  },
-          { label: "Dourado",       sub: "Aço · PVD Gold",          swatch: "sw-dourado"  },
+          { label: "Cromado", sub: "Aço · Alto brilho", swatch: "sw-cromado" },
+          { label: "Dourado", sub: "Aço · PVD Gold",    swatch: "sw-dourado" },
         ],
         2: [
-          { label: "Louça Branca",  sub: "Cerâmica · Vitrificado",  swatch: "sw-louca"   },
-          { label: "Pedra Natural", sub: "Quartzito · Escovado",    swatch: "sw-pedra"   },
+          { label: "Louça Branca",  sub: "Cerâmica · Vitrificado", swatch: "sw-louca" },
+          { label: "Pedra Natural", sub: "Quartzito · Escovado",   swatch: "sw-pedra" },
         ],
       };
 
-      // ── ESTADO ────────────────────────────────────────────
+      // ── CANVAS / FRAME SEQUENCE ──────────────────────────
+      const seqCanvas = document.getElementById('seq-canvas');
+      const seqCtx    = seqCanvas.getContext('2d');
+      let seqRaf   = null;
+      const seqCaches = {};
+
+      function resizeCanvas() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        seqCanvas.width  = window.innerWidth  * dpr;
+        seqCanvas.height = window.innerHeight * dpr;
+        seqCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      function drawSeqFrame(img) {
+        if (!img || !img.naturalWidth) return;
+        const w = window.innerWidth, h = window.innerHeight;
+        const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+        const dw = img.naturalWidth  * scale;
+        const dh = img.naturalHeight * scale;
+        seqCtx.clearRect(0, 0, w, h);
+        seqCtx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+      }
+
+      function clearSeqCanvas() {
+        if (seqRaf) { cancelAnimationFrame(seqRaf); seqRaf = null; }
+        seqCtx.clearRect(0, 0, seqCanvas.width, seqCanvas.height);
+      }
+
+      function loadFrames(key, prefix, count) {
+        if (seqCaches[key]) return seqCaches[key];
+        const frames = [];
+        for (let i = 0; i < count; i++) {
+          const img = new Image();
+          img.src = prefix + String(i).padStart(2, '0') + '.jpg';
+          frames.push(img);
+        }
+        seqCaches[key] = frames;
+        return frames;
+      }
+
+      function playSeq(frames, fps = 24) {
+        if (seqRaf) { cancelAnimationFrame(seqRaf); seqRaf = null; }
+        const interval = 1000 / fps;
+        let idx = 0, last = 0;
+
+        function tick(ts) {
+          if (!last) last = ts;
+          if (ts - last >= interval) {
+            last = ts;
+            const img = frames[idx];
+            if (img && img.complete && img.naturalWidth) {
+              drawSeqFrame(img);
+              idx++;
+            }
+          }
+          if (idx < frames.length) seqRaf = requestAnimationFrame(tick);
+          else seqRaf = null;
+        }
+
+        function start() { seqRaf = requestAnimationFrame(tick); }
+
+        if (frames[0]?.complete && frames[0].naturalWidth) start();
+        else frames[0].onload = start;
+      }
+
+      // ── ESTADO ───────────────────────────────────────────
       let cur = -1;
-      let currentPanelConfig = -1;
       const selections = { 0: null, 1: null, 2: null };
 
-      // ── NAVEGAÇÃO ─────────────────────────────────────────
       function jumpTo(idx) {
         if (idx === cur) return;
+        if (idx !== 0) clearSeqCanvas();
         cur = idx;
         document.getElementById("sb-title").textContent = PTS[idx].label;
-        document.querySelectorAll(".sb-mode-btn").forEach(el => el.classList.toggle("active", parseInt(el.dataset.i) === idx));
+        document.querySelectorAll(".sb-mode-btn").forEach(el =>
+          el.classList.toggle("active", parseInt(el.dataset.i) === idx)
+        );
         renderCards(idx);
-        updatePOIs();
-        if (idx === 0) loadSeq();
       }
 
       function startExperience() {
@@ -375,15 +405,10 @@
         document.getElementById("exp-logo-wrap").classList.add("show");
         setTimeout(() => { document.getElementById("cover").style.display = "none"; }, 500);
         document.getElementById("sidebar").classList.add("open");
-        cur = 0;
-        document.getElementById("sb-title").textContent = PTS[0].label;
-        renderCards(0);
+        jumpTo(0);
         buildSummary();
-        updatePOIs();
-        loadSeq();
       }
 
-      // ── BUILD MODES ───────────────────────────────────────
       function buildModes() {
         const wrap = document.getElementById("sb-modes");
         PTS.forEach((pt, idx) => {
@@ -397,14 +422,12 @@
         });
       }
 
-      // ── RENDER CARDS ──────────────────────────────────────
       function renderCards(modeIdx) {
         const wrap = document.getElementById("sb-cards");
         wrap.innerHTML = "";
         OPTIONS[modeIdx].forEach((opt, i) => {
           const card = document.createElement("div");
           card.className = "opt-card" + (selections[modeIdx] === i ? " selected" : "");
-          card.dataset.idx = i;
           card.innerHTML = `
             <div class="opt-swatch ${opt.swatch}">
               <div class="opt-check">
@@ -414,27 +437,46 @@
             <div class="opt-info">
               <div class="opt-name">${opt.label}</div>
               <div class="opt-sub">${opt.sub}</div>
-            </div>
-          `;
+            </div>`;
           card.addEventListener("click", () => selectOption(modeIdx, i));
           card.addEventListener("touchstart", e => { if (e.cancelable) e.preventDefault(); selectOption(modeIdx, i); }, { passive: false });
           wrap.appendChild(card);
         });
-        currentPanelConfig = modeIdx;
       }
 
-      // ── SELECT OPTION ─────────────────────────────────────
       function selectOption(modeIdx, optIdx) {
+        const prev = selections[modeIdx];
         selections[modeIdx] = optIdx;
         document.querySelectorAll(".opt-card").forEach((c, i) => c.classList.toggle("selected", i === optIdx));
         updateSummary(modeIdx, OPTIONS[modeIdx][optIdx].label);
+
         if (modeIdx === 0) {
-          const opt = OPTIONS[0][optIdx];
-          if (opt.seq) playStageFrames(loadSeqByPrefix(opt.seq), SEQ_FPS);
+          if (optIdx === 0) { // Mármore Verde
+            if (prev === 2) { // veio da Ardósia → piso2_to_piso3 reverso (72→00)
+              playSeq([...loadFrames('marmore_to_ardosia', 'images/conf/piso2_to_piso3_', 73)].reverse(), 24);
+            } else { // veio de outro lugar → piso1_to_piso2 (54 frames: 00–53)
+              playSeq(loadFrames('marmore', 'images/conf/piso1_to_piso2_', 54), 24);
+            }
+          } else if (optIdx === 2) { // Ardósia
+            if (prev === 0) { // veio do Mármore Verde → piso2_to_piso3 (73 frames: 00–72)
+              playSeq(loadFrames('marmore_to_ardosia', 'images/conf/piso2_to_piso3_', 73), 24);
+            } else { // veio de outro lugar → piso1_to_piso3 (49 frames: 00–48)
+              playSeq(loadFrames('ardosia', 'images/conf/piso1_to_piso3_', 49), 24);
+            }
+          } else if (optIdx === 1) { // Porcelanato
+            if (prev === 2) { // veio da Ardósia → piso1_to_piso3 reverso (48→00)
+              playSeq([...loadFrames('ardosia', 'images/conf/piso1_to_piso3_', 49)].reverse(), 24);
+            } else if (prev === 0) { // veio do Mármore Verde → piso1_to_piso2 reverso (53→00)
+              playSeq([...loadFrames('marmore', 'images/conf/piso1_to_piso2_', 54)].reverse(), 24);
+            } else {
+              clearSeqCanvas();
+            }
+          } else {
+            clearSeqCanvas();
+          }
         }
       }
 
-      // ── SUMMARY ───────────────────────────────────────────
       function buildSummary() {
         const wrap = document.getElementById("sb-summary");
         wrap.innerHTML = "";
@@ -451,152 +493,28 @@
         const row = document.getElementById("sum-" + modeIdx);
         if (!row) return;
         row.classList.add("filled");
-        const el = row.querySelector(".sb-sum-empty, .sb-sum-choice");
-        if (el) el.remove();
+        row.querySelector(".sb-sum-empty, .sb-sum-choice")?.remove();
         const choice = document.createElement("div");
         choice.className = "sb-sum-choice";
         choice.textContent = label;
         row.appendChild(choice);
       }
 
-      // ── POIs ──────────────────────────────────────────────
-      const POIS = {
-        0: [
-          { id:"piso-1", label:"Opção 1", x:38, y:55, tag:"Piso · Floor Tile",            title:"Opção 1", desc:"Descrição da primeira opção de revestimento de piso.", img:null },
-          { id:"piso-2", label:"Opção 2", x:62, y:55, tag:"Piso · Floor Tile",            title:"Opção 2", desc:"Descrição da segunda opção de revestimento de piso.",  img:null },
-        ],
-        1: [
-          { id:"torn-1", label:"Modelo A", x:40, y:42, tag:"Torneira · Wall-mounted Taps", title:"Modelo A", desc:"Descrição do primeiro modelo de torneira de parede.",  img:null },
-          { id:"torn-2", label:"Modelo B", x:60, y:42, tag:"Torneira · Wall-mounted Taps", title:"Modelo B", desc:"Descrição do segundo modelo de torneira de parede.",   img:null },
-        ],
-        2: [
-          { id:"pia-1",  label:"Modelo A", x:38, y:48, tag:"Pia · Bathroom Sink",           title:"Modelo A", desc:"Descrição do primeiro modelo de pia de banheiro.",     img:null },
-          { id:"pia-2",  label:"Modelo B", x:62, y:48, tag:"Pia · Bathroom Sink",           title:"Modelo B", desc:"Descrição do segundo modelo de pia de banheiro.",      img:null },
-        ],
-      };
-
-      let activePopup = null;
-
-      function buildPOIs() {
-        Object.entries(POIS).forEach(([ptIdx, pois]) => {
-          pois.forEach(poi => {
-            const marker = document.createElement("div");
-            marker.className = "poi hidden";
-            marker.id = "poi-" + poi.id;
-            marker.dataset.pt = ptIdx;
-            marker.style.left = poi.x + "%";
-            marker.style.top  = poi.y + "%";
-            marker.innerHTML = `<div class="poi-actions"><div class="poi-pulse"></div><div class="poi-btn"></div></div><div class="poi-name">${poi.label}</div>`;
-            marker.querySelector(".poi-btn").addEventListener("click", e => { e.stopPropagation(); togglePopup(poi); });
-            marker.querySelector(".poi-btn").addEventListener("touchstart", e => { if (e.cancelable) e.preventDefault(); e.stopPropagation(); togglePopup(poi); }, { passive: false });
-            document.body.appendChild(marker);
-
-            const popup = document.createElement("div");
-            popup.className = "poi-popup";
-            popup.id = "popup-" + poi.id;
-            popup.style.left = Math.min(poi.x + 4, 52) + "%";
-            popup.style.top  = Math.max(poi.y - 32, 5) + "%";
-            popup.innerHTML = `
-              <div class="popup-img-wrap">
-                ${poi.img ? `<img class="popup-img" src="${poi.img}" alt="${poi.title}">` : `<div class="popup-img-placeholder">Imagem em breve</div>`}
-                <button class="popup-close-btn" onclick="closePopup('${poi.id}')"><svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7"/><line x1="7" y1="1" x2="1" y2="7"/></svg></button>
-              </div>
-              <div class="popup-body">
-                <div class="popup-tag">${poi.tag}</div>
-                <div class="popup-title">${poi.title}</div>
-                <div class="popup-desc">${poi.desc}</div>
-              </div>`;
-            document.body.appendChild(popup);
-          });
-        });
-      }
-
-      function togglePopup(poi) {
-        const popup = document.getElementById("popup-" + poi.id);
-        const isOpen = popup.classList.contains("open");
-        closeAllPopups();
-        if (!isOpen) { popup.classList.add("open"); activePopup = poi.id; }
-      }
-      function closePopup(id) { const p = document.getElementById("popup-"+id); if(p) p.classList.remove("open"); if(activePopup===id) activePopup=null; }
-      function closeAllPopups() { document.querySelectorAll(".poi-popup.open").forEach(p=>p.classList.remove("open")); activePopup=null; }
-      function updatePOIs() {
-        Object.entries(POIS).forEach(([ptIdx, pois]) => {
-          const visible = parseInt(ptIdx) === cur;
-          pois.forEach(poi => {
-            const m = document.getElementById("poi-"+poi.id);
-            if (m) m.classList.toggle("hidden", !visible);
-            if (!visible) closePopup(poi.id);
-          });
-        });
-      }
-
-      // ── FRAME SEQUENCE ────────────────────────────────────
-      const SEQ_COUNT    = 54;
-      const SEQ_FPS      = 30;
-      let stageFrameAnim = null;
-      const seqCache     = {};
-
-      function padN(n) { return String(n).padStart(2, '0'); }
-
-      function loadSeqByPrefix(prefix) {
-        if (seqCache[prefix]) return seqCache[prefix];
-        const arr = [];
-        for (let i = 0; i < SEQ_COUNT; i++) {
-          const img = new Image(); img.src = prefix + padN(i) + '.jpg';
-          arr.push(img);
-        }
-        seqCache[prefix] = arr;
-        return arr;
-      }
-
-      function loadSeq() {
-        OPTIONS[0].forEach(opt => { if (opt.seq) loadSeqByPrefix(opt.seq); });
-      }
-
-      function playStageFrames(frames, fps) {
-        if (stageFrameAnim) { cancelAnimationFrame(stageFrameAnim); stageFrameAnim = null; }
-        const stage = document.getElementById('stage');
-        const dur = 1000 / fps;
-        let i = 0, last = 0;
-        function tick(ts) {
-          if (!last || ts - last >= dur) {
-            const img = frames[i];
-            if (img && img.complete && img.naturalWidth > 0) {
-              stage.style.background = `url("${img.src}") center/100% 100% no-repeat`;
-            }
-            last = ts;
-            i++;
-          }
-          if (i < frames.length) stageFrameAnim = requestAnimationFrame(tick);
-          else stageFrameAnim = null;
-        }
-        stageFrameAnim = requestAnimationFrame(tick);
-      }
-
-      // ── CONFIRM ───────────────────────────────────────────
       function confirmConfig() {
         const btn = document.getElementById("sb-cta-btn");
-        const hasAny = Object.values(selections).some(v => v !== null);
-        if (!hasAny) {
-          btn.style.transform = 'translateX(-4px)';
-          setTimeout(()=>btn.style.transform='translateX(4px)',80);
-          setTimeout(()=>btn.style.transform='translateX(-2px)',160);
-          setTimeout(()=>btn.style.transform='',240);
+        if (!Object.values(selections).some(v => v !== null)) {
+          ['-4px','4px','-2px',''].forEach((x, i) =>
+            setTimeout(() => btn.style.transform = x ? `translateX(${x})` : '', i * 80)
+          );
           return;
         }
         const orig = btn.textContent;
         btn.textContent = '✓ Configuração Salva!';
         btn.style.background = '#22c55e';
-        setTimeout(()=>{ btn.textContent=orig; btn.style.background=''; }, 2500);
+        setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 2500);
       }
 
-      // ── FECHAR POPUPS ─────────────────────────────────────
-      document.addEventListener("click", e => { if (!e.target.closest(".poi-popup, .poi-btn")) closeAllPopups(); });
-      window.addEventListener("keydown", e => { if (e.key === "Escape") closeAllPopups(); });
-
-      // ── INIT ──────────────────────────────────────────────
       buildModes();
-      buildPOIs();
     </script>
   </body>
 </html>
