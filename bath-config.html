@@ -1,0 +1,924 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3K51DFTX3J"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3K51DFTX3J');
+    </script>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Configurador de Banheiros — Factory Interactive</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      *, *:focus, *:focus-visible, *:focus-within {
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+      }
+
+      :root {
+        --ink:  #0d0d0b;
+        --warm: #c8a96e;
+        --muted: #7a7568;
+        --ease: cubic-bezier(0.87, 0, 0.13, 1);
+      }
+
+      html, body {
+        width: 100%; height: 100%;
+        overflow: hidden;
+        background: var(--ink);
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        cursor: none;
+      }
+
+      /* ── CURSOR ── */
+      #cursor {
+        position: fixed; width: 8px; height: 8px;
+        background: var(--warm); border-radius: 50%;
+        pointer-events: none; z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: width .3s var(--ease), height .3s var(--ease), background .3s;
+      }
+      #cursor.on {
+        width: 36px; height: 36px;
+        background: transparent; border: 1px solid var(--warm);
+      }
+      #ring {
+        position: fixed; width: 28px; height: 28px;
+        border: 1px solid rgba(200,169,110,.3); border-radius: 50%;
+        pointer-events: none; z-index: 9998;
+        transform: translate(-50%, -50%);
+      }
+      @media (hover: none) {
+        html, body { cursor: auto; }
+        #cursor, #ring { display: none !important; }
+      }
+
+      /* ── STAGE ── */
+      #stage {
+        position: fixed; inset: 0;
+        background: url("images/conf/capa_config.jpg") center/cover no-repeat;
+      }
+      #stage::after {
+        content: ""; position: absolute; inset: 0; z-index: 2;
+        pointer-events: none;
+        background: radial-gradient(ellipse at 50% 55%, transparent 30%, rgba(5,5,3,.55) 100%);
+      }
+
+
+      /* ── TRACK ── */
+      #track {
+        position: fixed; bottom: 36px; left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        display: flex; align-items: center; gap: 6px;
+        background: rgba(52,52,50,.92);
+        backdrop-filter: blur(24px) saturate(1.6);
+        -webkit-backdrop-filter: blur(24px) saturate(1.6);
+        border-radius: 999px; padding: 10px 14px;
+        box-shadow: 0 12px 40px rgba(0,0,0,.5);
+        opacity: 0;
+      }
+      #track.show { opacity: 1; }
+
+      .t-pt {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 2px;
+        padding: 10px 22px; border-radius: 999px;
+        border: 1.5px solid rgba(255,255,255,.14);
+        background: transparent; cursor: pointer;
+        touch-action: manipulation;
+        transition: background .25s ease, border-color .25s ease, color .25s ease;
+      }
+      .t-pt-label {
+        font-family: "Inter", sans-serif;
+        font-size: 11px; font-weight: 700;
+        letter-spacing: .12em; text-transform: uppercase;
+        color: rgba(255,255,255,.65); white-space: nowrap;
+        transition: color .25s ease;
+      }
+      .t-pt-sub {
+        font-family: "Inter", sans-serif;
+        font-size: 9px; font-weight: 400;
+        letter-spacing: .06em;
+        color: rgba(255,255,255,.3); white-space: nowrap;
+        transition: color .25s ease;
+      }
+      .t-pt.active { background: #c8a96e; border-color: #c8a96e; }
+      .t-pt.active .t-pt-label { color: #1a1200; }
+      .t-pt.active .t-pt-sub   { color: rgba(26,18,0,.55); }
+      .t-pt:not(.active):hover { border-color: rgba(255,255,255,.38); }
+      .t-pt:not(.active):hover .t-pt-label { color: rgba(255,255,255,.9); }
+      @media (max-width: 600px) {
+        .t-pt { padding: 9px 14px; }
+        .t-pt-sub { display: none; }
+      }
+
+      /* ── POIs ── */
+      .poi {
+        position: fixed; z-index: 9;
+        transform: translate(-50%, -50%);
+        cursor: none; opacity: 1;
+        transition: opacity .4s ease, transform .4s var(--ease);
+        display: flex; flex-direction: column; align-items: center; gap: 6px;
+      }
+      .poi.hidden {
+        opacity: 0; pointer-events: none;
+        transform: translate(-50%, -50%) scale(.5);
+      }
+      .poi-actions { display: flex; align-items: center; gap: 5px; position: relative; z-index: 1; }
+      .poi-btn {
+        width: 28px; height: 28px; border-radius: 50%;
+        background: rgba(255,255,255,.92); border: none;
+        display: flex; align-items: center; justify-content: center;
+        cursor: none; position: relative;
+        transition: background .25s, transform .25s;
+        box-shadow: 0 2px 12px rgba(0,0,0,.3); flex-shrink: 0;
+      }
+      .poi-btn::before, .poi-btn::after {
+        content: ""; position: absolute; background: var(--ink); border-radius: 2px;
+      }
+      .poi-btn::before { width: 10px; height: 1.5px; }
+      .poi-btn::after  { width: 1.5px; height: 10px; }
+      .poi-btn:hover { background: #fff; transform: scale(1.18); }
+      .poi-pulse {
+        position: absolute; top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 56px; height: 56px;
+        border: 1px solid rgba(255,255,255,.3); border-radius: 50%;
+        animation: poipulse 3s ease-in-out infinite; pointer-events: none;
+      }
+      @keyframes poipulse {
+        0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: .5; }
+        50%       { transform: translate(-50%,-50%) scale(1.6); opacity: 0; }
+      }
+      .poi-name {
+        font-size: 8px; letter-spacing: .16em;
+        color: rgba(255,255,255,.9); text-transform: uppercase; white-space: nowrap;
+        text-shadow: 0 1px 6px rgba(0,0,0,.8);
+        background: rgba(0,0,0,.35); padding: 3px 7px; border-radius: 4px;
+        pointer-events: none;
+      }
+      @media (hover: none) {
+        .poi { touch-action: manipulation; cursor: pointer; }
+        .poi::before { content: ""; position: absolute; inset: -12px; }
+        .poi-btn { cursor: pointer; }
+      }
+
+      /* ── POI POPUP ── */
+      .poi-popup {
+        position: fixed; z-index: 50; width: 300px;
+        background: rgba(14,12,10,.92);
+        border: 1px solid rgba(255,255,255,.14);
+        border-radius: 20px; overflow: hidden;
+        backdrop-filter: blur(48px) saturate(1.6);
+        -webkit-backdrop-filter: blur(48px) saturate(1.6);
+        box-shadow: 0 24px 64px rgba(0,0,0,.45);
+        opacity: 0; pointer-events: none;
+        transform: translateY(10px) scale(.96);
+        transition: opacity .3s ease, transform .3s var(--ease);
+        user-select: none;
+      }
+      .poi-popup.open { opacity: 1; pointer-events: auto; transform: none; }
+
+      .popup-img-wrap { width: 100%; height: 180px; overflow: hidden; position: relative; }
+      .popup-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .popup-img-placeholder {
+        width: 100%; height: 180px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 9px; letter-spacing: .18em;
+        color: rgba(255,255,255,.25); text-transform: uppercase;
+        background: rgba(255,255,255,.04);
+      }
+      .popup-close-btn {
+        position: absolute; top: 10px; right: 10px;
+        width: 28px; height: 28px; border-radius: 50%;
+        background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.2);
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        display: flex; align-items: center; justify-content: center;
+        cursor: none; transition: background .2s; z-index: 2;
+      }
+      .popup-close-btn:hover { background: rgba(0,0,0,.65); }
+      .popup-close-btn svg {
+        width: 9px; height: 9px;
+        stroke: rgba(255,255,255,.9); stroke-width: 1.8;
+        fill: none; stroke-linecap: round;
+      }
+      .popup-body { padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 8px; }
+      .popup-tag {
+        font-size: 10px; font-weight: 500; letter-spacing: .16em;
+        color: var(--warm); text-transform: uppercase;
+      }
+      .popup-title {
+        font-size: 22px; font-weight: 300;
+        color: rgba(255,255,255,.95); line-height: 1.2; letter-spacing: -.02em;
+      }
+      .popup-desc {
+        font-size: 12px; font-weight: 300;
+        line-height: 1.65; color: rgba(255,255,255,.5);
+      }
+
+      @media (hover: none) {
+        #track { bottom: max(20px, env(safe-area-inset-bottom, 20px)); }
+        .poi-popup { width: min(300px, 88vw); }
+        #track, #ai-bot-bar {
+          backdrop-filter: none; -webkit-backdrop-filter: none;
+        }
+        .poi-popup {
+          backdrop-filter: none; -webkit-backdrop-filter: none;
+          background: rgba(10,9,7,.97);
+        }
+      }
+
+      /* ══ COVER ══ */
+      #cover {
+        position: fixed; inset: 0; z-index: 100;
+        display: flex; align-items: center; justify-content: center;
+        transition: opacity 0.7s var(--ease), visibility 0.7s;
+      }
+      #cover.out { opacity: 0; visibility: hidden; pointer-events: none; }
+      #cover-bg { display: none; }
+      #cover-card {
+        position: relative; z-index: 1;
+        display: flex; flex-direction: column; align-items: center; gap: 0;
+        background: rgba(255,255,255,.1);
+        backdrop-filter: blur(28px) saturate(1.6);
+        -webkit-backdrop-filter: blur(28px) saturate(1.6);
+        border: 1px solid rgba(255,255,255,.18);
+        border-radius: 28px;
+        padding: 52px 68px 48px;
+        text-align: center;
+        box-shadow: 0 2px 0 rgba(255,255,255,.08) inset, 0 28px 72px rgba(0,0,0,.4);
+        animation: coverIn 1s var(--ease) both;
+      }
+      @keyframes coverIn {
+        from { opacity: 0; transform: translateY(20px) scale(.97); }
+        to   { opacity: 1; transform: none; }
+      }
+      #cover-eyebrow {
+        font-size: 9px; font-weight: 600; letter-spacing: .32em;
+        text-transform: uppercase; color: var(--warm);
+        margin-bottom: 16px; opacity: .9;
+      }
+      #cover-title {
+        font-size: clamp(32px, 5vw, 56px); font-weight: 300;
+        letter-spacing: .06em; color: rgba(244,240,232,.96);
+        text-transform: uppercase; line-height: 1.1;
+        margin-bottom: 8px;
+      }
+      #cover-sub {
+        font-size: 10px; letter-spacing: .28em;
+        color: rgba(244,240,232,.32); text-transform: uppercase;
+        margin-bottom: 40px;
+      }
+      #cover-line {
+        width: 36px; height: 1px;
+        background: linear-gradient(to right, transparent, var(--warm), transparent);
+        opacity: .5; margin-bottom: 40px;
+      }
+      #btn-start {
+        display: flex; align-items: center; gap: 14px;
+        padding: 16px 44px;
+        background: var(--warm); border: none; border-radius: 999px;
+        cursor: pointer;
+        font-family: "Inter", sans-serif;
+        font-size: 11px; font-weight: 700; letter-spacing: .22em;
+        color: rgba(10,8,5,.9); text-transform: uppercase;
+        transition: background .25s, transform .25s var(--ease), gap .25s, box-shadow .25s;
+        box-shadow: 0 8px 28px rgba(162,136,88,.38);
+      }
+      #btn-start:hover {
+        background: #cdb07e; transform: scale(1.05); gap: 22px;
+        box-shadow: 0 12px 36px rgba(162,136,88,.52);
+      }
+      #btn-start svg {
+        width: 13px; height: 13px; stroke: rgba(10,8,5,.8);
+        fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+        transition: transform .25s;
+      }
+      #btn-start:hover svg { transform: translateX(4px); }
+      @media (max-width: 480px) {
+        #cover-card { padding: 40px 28px 36px; }
+      }
+
+      /* ══ OPTION PANEL ══ */
+      #option-panel {
+        position: fixed;
+        bottom: 130px;
+        left: 50%;
+        transform: translateX(-50%) translateY(24px);
+        z-index: 30;
+        width: min(520px, 92vw);
+        background: rgba(255, 255, 255, 0.18);
+        backdrop-filter: blur(48px) saturate(2) brightness(1.35);
+        -webkit-backdrop-filter: blur(48px) saturate(2) brightness(1.35);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 28px;
+        padding: 20px 20px 16px;
+        box-shadow:
+          0 0 0 1px rgba(255,255,255,0.2) inset,
+          0 16px 48px rgba(0,0,0,0.28);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.38s cubic-bezier(0.34,1.4,0.64,1);
+      }
+      #option-panel.open {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      #panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+      #panel-category {
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--warm);
+      }
+      #panel-title {
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        color: rgba(10,8,5,0.88);
+      }
+      #panel-close {
+        width: 28px; height: 28px;
+        border-radius: 50%;
+        background: rgba(0,0,0,0.08);
+        border: 1px solid rgba(0,0,0,0.1);
+        display: flex; align-items: center; justify-content: center;
+        cursor: none; flex-shrink: 0;
+        transition: background 0.2s;
+      }
+      #panel-close:hover { background: rgba(0,0,0,0.15); }
+      #panel-close svg {
+        width: 9px; height: 9px;
+        stroke: rgba(0,0,0,0.6); stroke-width: 2;
+        fill: none; stroke-linecap: round;
+      }
+
+      #panel-canvas-wrap {
+        position: relative;
+        width: 100%; height: 170px;
+        border-radius: 16px;
+        overflow: hidden;
+        background: rgba(0,0,0,0.04);
+      }
+      #option-canvas {
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+        cursor: none;
+      }
+
+      #sphere-labels {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .sphere-label {
+        text-align: center;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: rgba(10,8,5,0.45);
+        padding: 7px 8px;
+        border-radius: 10px;
+        border: 1.5px solid transparent;
+        transition: color 0.2s, border-color 0.2s, background 0.2s;
+        cursor: none;
+      }
+      .sphere-label.active {
+        color: rgba(10,8,5,0.88);
+        border-color: var(--warm);
+        background: rgba(200,169,110,0.12);
+      }
+      @media (hover: none) {
+        #option-panel { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(245,242,236,0.97); }
+        .sphere-label, #panel-close { cursor: pointer; }
+      }
+      @media (max-width: 600px) {
+        #option-panel { bottom: 110px; }
+        #panel-canvas-wrap { height: 140px; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="cursor"></div>
+    <div id="ring"></div>
+
+    <div id="stage"></div>
+
+    <!-- COVER -->
+    <div id="cover">
+      <div id="cover-bg"></div>
+      <div id="cover-card">
+        <div id="cover-eyebrow">Factory Interactive</div>
+        <div id="cover-title">Configurador</div>
+        <div id="cover-sub">Banheiros · Bathroom</div>
+        <div id="cover-line"></div>
+        <button id="btn-start" onclick="startExperience()">
+          Explorar
+          <svg viewBox="0 0 14 14"><polyline points="3,1 11,7 3,13"/></svg>
+        </button>
+      </div>
+    </div>
+
+<!-- OPTION PANEL -->
+    <div id="option-panel">
+      <div id="panel-header">
+        <div>
+          <div id="panel-category">Configurador</div>
+          <div id="panel-title">Piso</div>
+        </div>
+        <button id="panel-close" onclick="closePanel()">
+          <svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7"/><line x1="7" y1="1" x2="1" y2="7"/></svg>
+        </button>
+      </div>
+      <div id="panel-canvas-wrap">
+        <canvas id="option-canvas"></canvas>
+      </div>
+      <div id="sphere-labels">
+        <div class="sphere-label active" data-idx="0">—</div>
+        <div class="sphere-label"        data-idx="1">—</div>
+        <div class="sphere-label"        data-idx="2">—</div>
+      </div>
+    </div>
+
+    <!-- TRACK -->
+    <div id="track">
+      <!-- botões inseridos pelo JS -->
+    </div>
+
+    <script>
+      // ── CENÁRIOS ──────────────────────────────────────────
+      const PTS = [
+        { id: "piso",     label: "Piso",      sub: "Floor Tile"                  },
+        { id: "torneira", label: "Torneira 1", sub: "Wall-mounted Washbasin Taps" },
+        { id: "pia",      label: "Pia",        sub: "Bathroom Sink"               },
+      ];
+
+      // ── ESTADO ────────────────────────────────────────────
+      let cur = -1; // -1 = capa
+
+      // ── NAVEGAÇÃO ─────────────────────────────────────────
+      function jumpTo(idx) {
+        if (idx === cur) return;
+        cur = idx;
+        updateUI();
+        openPanel(idx);
+      }
+
+      function startExperience() {
+        document.getElementById("cover").style.display = "none";
+        cur = 0;
+        document.getElementById("track").classList.add("show");
+        document.getElementById("option-panel").classList.add("open");
+        updateUI();
+        openPanel(0);
+      }
+
+      // ══════════════════════════════════════════════════════
+      // UI — TRACK
+      // ══════════════════════════════════════════════════════
+      function buildTrack() {
+        const track = document.getElementById("track");
+        PTS.forEach((pt, idx) => {
+          const el = document.createElement("div");
+          el.className = "t-pt";
+          el.dataset.i = idx;
+          el.innerHTML = `<span class="t-pt-label">${pt.label}</span><span class="t-pt-sub">${pt.sub}</span>`;
+          el.addEventListener("click", () => { jumpTo(idx); openPanel(idx); });
+          el.addEventListener("touchstart", (e) => {
+            if (e.cancelable) e.preventDefault();
+            jumpTo(idx); openPanel(idx);
+          }, { passive: false });
+          track.appendChild(el);
+        });
+      }
+
+      function updateUI() {
+        document.querySelectorAll(".t-pt").forEach(el => {
+          el.classList.toggle("active", parseInt(el.dataset.i) === cur);
+        });
+        updatePOIs();
+      }
+
+      // ══════════════════════════════════════════════════════
+      // POIs
+      // ══════════════════════════════════════════════════════
+      // x e y em % da viewport (0–100). img: caminho ou null.
+      const POIS = {
+        // ── PISO (cenário 0) ──────────────────────────────
+        0: [
+          {
+            id: "piso-poi-1",
+            label: "Opção 1",
+            x: 38, y: 55,
+            tag: "Piso · Floor Tile",
+            title: "Opção 1",
+            desc: "Descrição da primeira opção de revestimento de piso.",
+            img: null,
+          },
+          {
+            id: "piso-poi-2",
+            label: "Opção 2",
+            x: 62, y: 55,
+            tag: "Piso · Floor Tile",
+            title: "Opção 2",
+            desc: "Descrição da segunda opção de revestimento de piso.",
+            img: null,
+          },
+        ],
+        // ── TORNEIRA 1 (cenário 1) ────────────────────────
+        1: [
+          {
+            id: "torn-poi-1",
+            label: "Modelo A",
+            x: 40, y: 42,
+            tag: "Torneira · Wall-mounted Taps",
+            title: "Modelo A",
+            desc: "Descrição do primeiro modelo de torneira de parede.",
+            img: null,
+          },
+          {
+            id: "torn-poi-2",
+            label: "Modelo B",
+            x: 60, y: 42,
+            tag: "Torneira · Wall-mounted Taps",
+            title: "Modelo B",
+            desc: "Descrição do segundo modelo de torneira de parede.",
+            img: null,
+          },
+        ],
+        // ── PIA (cenário 2) ───────────────────────────────
+        2: [
+          {
+            id: "pia-poi-1",
+            label: "Modelo A",
+            x: 38, y: 48,
+            tag: "Pia · Bathroom Sink",
+            title: "Modelo A",
+            desc: "Descrição do primeiro modelo de pia de banheiro.",
+            img: null,
+          },
+          {
+            id: "pia-poi-2",
+            label: "Modelo B",
+            x: 62, y: 48,
+            tag: "Pia · Bathroom Sink",
+            title: "Modelo B",
+            desc: "Descrição do segundo modelo de pia de banheiro.",
+            img: null,
+          },
+        ],
+      };
+
+      let activePopup = null;
+
+      function buildPOIs() {
+        Object.entries(POIS).forEach(([ptIdx, pois]) => {
+          pois.forEach(poi => {
+            // Marker
+            const marker = document.createElement("div");
+            marker.className = "poi hidden";
+            marker.id = "poi-" + poi.id;
+            marker.dataset.pt = ptIdx;
+            marker.style.left = poi.x + "%";
+            marker.style.top  = poi.y + "%";
+            marker.innerHTML = `
+              <div class="poi-actions">
+                <div class="poi-pulse"></div>
+                <div class="poi-btn"></div>
+              </div>
+              <div class="poi-name">${poi.label}</div>
+            `;
+            marker.querySelector(".poi-btn").addEventListener("click", e => {
+              e.stopPropagation();
+              togglePopup(poi, marker);
+            });
+            marker.querySelector(".poi-btn").addEventListener("touchstart", e => {
+              if (e.cancelable) e.preventDefault();
+              e.stopPropagation();
+              togglePopup(poi, marker);
+            }, { passive: false });
+            document.body.appendChild(marker);
+
+            // Popup
+            const popup = document.createElement("div");
+            popup.className = "poi-popup";
+            popup.id = "popup-" + poi.id;
+            popup.style.left = Math.min(poi.x + 4, 68) + "%";
+            popup.style.top  = Math.max(poi.y - 32, 5) + "%";
+            popup.innerHTML = `
+              <div class="popup-img-wrap">
+                ${poi.img
+                  ? `<img class="popup-img" src="${poi.img}" alt="${poi.title}">`
+                  : `<div class="popup-img-placeholder">Imagem em breve</div>`}
+                <button class="popup-close-btn" onclick="closePopup('${poi.id}')">
+                  <svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7"/><line x1="7" y1="1" x2="1" y2="7"/></svg>
+                </button>
+              </div>
+              <div class="popup-body">
+                <div class="popup-tag">${poi.tag}</div>
+                <div class="popup-title">${poi.title}</div>
+                <div class="popup-desc">${poi.desc}</div>
+              </div>
+            `;
+            document.body.appendChild(popup);
+          });
+        });
+      }
+
+      function togglePopup(poi, marker) {
+        const popup = document.getElementById("popup-" + poi.id);
+        const isOpen = popup.classList.contains("open");
+        closeAllPopups();
+        if (!isOpen) { popup.classList.add("open"); activePopup = poi.id; }
+      }
+
+      function closePopup(id) {
+        const popup = document.getElementById("popup-" + id);
+        if (popup) { popup.classList.remove("open"); }
+        if (activePopup === id) activePopup = null;
+      }
+
+      function closeAllPopups() {
+        document.querySelectorAll(".poi-popup.open").forEach(p => p.classList.remove("open"));
+        activePopup = null;
+      }
+
+      function updatePOIs() {
+        Object.entries(POIS).forEach(([ptIdx, pois]) => {
+          const visible = parseInt(ptIdx) === cur;
+          pois.forEach(poi => {
+            const marker = document.getElementById("poi-" + poi.id);
+            if (marker) marker.classList.toggle("hidden", !visible);
+            if (!visible) closePopup(poi.id);
+          });
+        });
+      }
+
+      // ══════════════════════════════════════════════════════
+      // OPTION PANEL — opções de cada cenário
+      // ══════════════════════════════════════════════════════
+      // texture: caminho da imagem ou null (usa só a cor PBR)
+      const OPTIONS = {
+        0: [ // Piso — Floor Tile
+          { label: "Mármore",     color: 0xf0ece4, roughness: 0.12, metalness: 0.04, texture: null },
+          { label: "Porcelanato", color: 0xc4b49a, roughness: 0.28, metalness: 0.02, texture: null },
+          { label: "Ardósia",     color: 0x6a6460, roughness: 0.88, metalness: 0.0,  texture: null },
+        ],
+        1: [ // Torneira — Wall-mounted Taps
+          { label: "Cromado",   color: 0xbecad2, roughness: 0.04, metalness: 0.98, texture: null },
+          { label: "Dourado",   color: 0xc8a96e, roughness: 0.08, metalness: 0.90, texture: null },
+          { label: "Preto Mat", color: 0x1c1c1c, roughness: 0.88, metalness: 0.12, texture: null },
+        ],
+        2: [ // Pia — Bathroom Sink
+          { label: "Louça",    color: 0xfafaf8, roughness: 0.08, metalness: 0.0,  texture: null },
+          { label: "Pedra",    color: 0x9c9088, roughness: 0.82, metalness: 0.0,  texture: null },
+          { label: "Concreto", color: 0x706e68, roughness: 0.92, metalness: 0.05, texture: null },
+        ],
+      };
+
+      // ── Three.js scene (criada uma vez, reutilizada) ──
+      let threeReady = false;
+      let threeRenderer, threeScene, threeCamera, threeAnim;
+      let sphereMeshes = [], ringMeshes = [];
+      let selectedSphere = 0;
+      let hoveredSphere  = -1;
+
+      function initThree() {
+        if (threeReady) return;
+        threeReady = true;
+
+        const canvas = document.getElementById("option-canvas");
+        const wrap   = document.getElementById("panel-canvas-wrap");
+        const W = wrap.clientWidth, H = wrap.clientHeight;
+
+        threeRenderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        threeRenderer.setSize(W, H);
+        threeRenderer.outputColorSpace = THREE.SRGBColorSpace;
+        threeRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+        threeRenderer.toneMappingExposure = 1.2;
+
+        threeScene  = new THREE.Scene();
+        threeCamera = new THREE.PerspectiveCamera(42, W / H, 0.1, 50);
+        threeCamera.position.set(0, 0, 7.5);
+
+        // Lights
+        const ambient = new THREE.AmbientLight(0xffffff, 1.2);
+        threeScene.add(ambient);
+        const key = new THREE.DirectionalLight(0xffffff, 2.8);
+        key.position.set(3, 4, 5);
+        threeScene.add(key);
+        const fill = new THREE.DirectionalLight(0xd0e8ff, 0.8);
+        fill.position.set(-4, 2, 3);
+        threeScene.add(fill);
+        const rim = new THREE.DirectionalLight(0xffe8c0, 0.6);
+        rim.position.set(0, -3, -4);
+        threeScene.add(rim);
+
+        // Spheres
+        const geo  = new THREE.SphereGeometry(1, 64, 64);
+        const ringGeo = new THREE.TorusGeometry(1.28, 0.045, 16, 80);
+        const positions = [-2.4, 0, 2.4];
+
+        positions.forEach((x, i) => {
+          const mat = new THREE.MeshStandardMaterial({ color: 0xaaaaaa, roughness: 0.3, metalness: 0.1 });
+          const mesh = new THREE.Mesh(geo, mat);
+          mesh.position.set(x, 0, 0);
+          mesh.userData.idx = i;
+          threeScene.add(mesh);
+          sphereMeshes.push(mesh);
+
+          const ringMat = new THREE.MeshBasicMaterial({
+            color: 0xc8a96e, transparent: true, opacity: 0,
+          });
+          const ring = new THREE.Mesh(ringGeo, ringMat);
+          ring.position.set(x, 0, -0.1);
+          threeScene.add(ring);
+          ringMeshes.push(ring);
+        });
+
+        // Raycaster
+        const raycaster = new THREE.Raycaster();
+        const pointer    = new THREE.Vector2(-999, -999);
+
+        function toNDC(clientX, clientY) {
+          const rect = canvas.getBoundingClientRect();
+          pointer.x = ((clientX - rect.left) / rect.width)  *  2 - 1;
+          pointer.y = ((clientY - rect.top)  / rect.height) * -2 + 1;
+        }
+
+        canvas.addEventListener("mousemove", e => {
+          toNDC(e.clientX, e.clientY);
+          raycaster.setFromCamera(pointer, threeCamera);
+          const hits = raycaster.intersectObjects(sphereMeshes);
+          hoveredSphere = hits.length ? hits[0].object.userData.idx : -1;
+          canvas.style.cursor = hoveredSphere >= 0 ? "pointer" : "none";
+        });
+
+        canvas.addEventListener("click", e => {
+          toNDC(e.clientX, e.clientY);
+          raycaster.setFromCamera(pointer, threeCamera);
+          const hits = raycaster.intersectObjects(sphereMeshes);
+          if (hits.length) selectSphere(hits[0].object.userData.idx);
+        });
+
+        canvas.addEventListener("touchend", e => {
+          const t = e.changedTouches[0];
+          toNDC(t.clientX, t.clientY);
+          raycaster.setFromCamera(pointer, threeCamera);
+          const hits = raycaster.intersectObjects(sphereMeshes);
+          if (hits.length) selectSphere(hits[0].object.userData.idx);
+        }, { passive: true });
+
+        // Resize
+        window.addEventListener("resize", () => {
+          const W2 = wrap.clientWidth, H2 = wrap.clientHeight;
+          threeRenderer.setSize(W2, H2);
+          threeCamera.aspect = W2 / H2;
+          threeCamera.updateProjectionMatrix();
+        });
+      }
+
+      function applySphereOptions(configIdx) {
+        const opts = OPTIONS[configIdx];
+        const loader = new THREE.TextureLoader();
+        opts.forEach((opt, i) => {
+          const mat = sphereMeshes[i].material;
+          mat.color.set(opt.color);
+          mat.roughness  = opt.roughness;
+          mat.metalness  = opt.metalness;
+          if (opt.texture) {
+            loader.load(opt.texture, tex => {
+              tex.colorSpace = THREE.SRGBColorSpace;
+              mat.map = tex;
+              mat.needsUpdate = true;
+            });
+          } else {
+            mat.map = null;
+            mat.needsUpdate = true;
+          }
+        });
+        // Update labels
+        const labels = document.querySelectorAll(".sphere-label");
+        opts.forEach((opt, i) => { labels[i].textContent = opt.label; });
+        selectSphere(0);
+      }
+
+      function selectSphere(idx) {
+        selectedSphere = idx;
+        // Labels
+        document.querySelectorAll(".sphere-label").forEach((el, i) => {
+          el.classList.toggle("active", i === idx);
+        });
+        // Ring visibility
+        ringMeshes.forEach((r, i) => { r.material.opacity = i === idx ? 0.9 : 0; });
+      }
+
+      function startThreeLoop() {
+        if (threeAnim) return;
+        function loop() {
+          threeAnim = requestAnimationFrame(loop);
+          const t = performance.now() * 0.001;
+          sphereMeshes.forEach((mesh, i) => {
+            mesh.rotation.y += 0.006;
+            const isSelected = i === selectedSphere;
+            const isHovered  = i === hoveredSphere;
+            const target = isSelected ? 1.12 : isHovered ? 1.06 : 1.0;
+            mesh.scale.lerp(new THREE.Vector3(target, target, target), 0.1);
+            // bob selected sphere gently
+            mesh.position.y += (isSelected ? Math.sin(t * 1.4) * 0.04 - mesh.position.y : -mesh.position.y) * 0.08;
+          });
+          threeRenderer.render(threeScene, threeCamera);
+        }
+        loop();
+      }
+
+      function stopThreeLoop() {
+        if (threeAnim) { cancelAnimationFrame(threeAnim); threeAnim = null; }
+      }
+
+      // ── Panel open / close ──
+      let panelOpen = false;
+      let currentPanelConfig = -1;
+
+      function openPanel(configIdx) {
+        try { initThree(); } catch(e) { console.warn("Three.js:", e); }
+        if (currentPanelConfig !== configIdx) {
+          currentPanelConfig = configIdx;
+          try { applySphereOptions(configIdx); } catch(e) {}
+          document.getElementById("panel-title").textContent = PTS[configIdx].label;
+        }
+        document.getElementById("option-panel").classList.add("open");
+        panelOpen = true;
+        try { startThreeLoop(); } catch(e) {}
+      }
+
+      function closePanel() {
+        document.getElementById("option-panel").classList.remove("open");
+        panelOpen = false;
+        stopThreeLoop();
+      }
+
+      // Label clicks
+      document.querySelectorAll(".sphere-label").forEach(el => {
+        el.addEventListener("click", () => selectSphere(parseInt(el.dataset.idx)));
+      });
+
+      // ══════════════════════════════════════════════════════
+      // INIT
+      // ══════════════════════════════════════════════════════
+      buildTrack();
+      buildPOIs();
+      updateUI();
+
+
+      // Clica fora fecha popup
+      document.addEventListener("click", e => {
+        if (!e.target.closest(".poi-popup, .poi-btn")) closeAllPopups();
+      });
+      window.addEventListener("keydown", e => {
+        if (e.key === "Escape") closeAllPopups();
+      });
+
+      // ══════════════════════════════════════════════════════
+      // CURSOR
+      // ══════════════════════════════════════════════════════
+      const cursor = document.getElementById("cursor");
+      const ring   = document.getElementById("ring");
+      let mx = 0, my = 0, rx = 0, ry = 0;
+      document.addEventListener("mousemove", e => { mx = e.clientX; my = e.clientY; });
+      (function loop() {
+        cursor.style.left = mx + "px"; cursor.style.top = my + "px";
+        rx += (mx - rx) * .1; ry += (my - ry) * .1;
+        ring.style.left = rx + "px"; ring.style.top = ry + "px";
+        requestAnimationFrame(loop);
+      })();
+      document.addEventListener("mouseover", e => {
+        cursor.classList.toggle("on", !!e.target.closest("button, .t-pt, .poi, .poi-btn"));
+      });
+    </script>
+  </body>
+</html>
