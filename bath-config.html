@@ -10,6 +10,7 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0d0d0b" />
     <title>Configurador de Banheiros — Factory Interactive</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
     <style>
@@ -28,6 +29,8 @@
         --vp-blur:    40px;
         --text:       #1a1a1a;
         --text-muted: rgba(80, 80, 80, 0.8);
+        --safe-b:     env(safe-area-inset-bottom, 0px);
+        --safe-t:     env(safe-area-inset-top, 0px);
       }
 
       html, body {
@@ -35,6 +38,7 @@
         overflow: hidden;
         background: var(--ink);
         font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        -webkit-font-smoothing: antialiased;
       }
 
       /* ── STAGE ── */
@@ -54,57 +58,72 @@
 
       /* ── LOGO EXPERIÊNCIA ── */
       #exp-logo-wrap {
-        position: fixed; top: 28px; left: 50%;
+        position: fixed; top: max(28px, calc(var(--safe-t) + 16px)); left: 50%;
         transform: translateX(-50%);
         z-index: 20; opacity: 0; pointer-events: none;
         transition: opacity 400ms var(--ease);
       }
       #exp-logo-wrap.show { opacity: 1; }
-      #exp-logo-wrap img { height: 38px; width: auto; display: block; filter: drop-shadow(0 2px 10px rgba(0,0,0,0.45)); }
+      #exp-logo-wrap img {
+        height: 34px; width: auto; display: block;
+        filter: drop-shadow(0 2px 10px rgba(0,0,0,0.45));
+      }
 
       /* ── COVER ── */
       #cover {
         position: fixed; inset: 0; z-index: 100;
         display: flex; align-items: center; justify-content: center;
+        padding: 24px;
         transition: opacity 400ms var(--ease), visibility 400ms;
       }
       #cover.out { opacity: 0; visibility: hidden; pointer-events: none; }
       #cover-card {
-        position: relative; z-index: 1;
         display: flex; flex-direction: column; align-items: center;
         background: rgba(200, 200, 200, 0.28);
         backdrop-filter: blur(40px) saturate(1.8);
         -webkit-backdrop-filter: blur(40px) saturate(1.8);
         border: 1px solid rgba(255,255,255,0.35);
-        border-radius: 28px; padding: 52px 68px 48px;
+        border-radius: 28px;
+        padding: 52px 68px 48px;
         text-align: center;
         box-shadow: 0 0 0 0.5px rgba(255,255,255,0.5) inset, 0 20px 60px rgba(0,0,0,0.22);
         animation: coverIn 400ms var(--ease) both;
+        width: 100%; max-width: 420px;
       }
       @keyframes coverIn {
-        from { opacity: 0; transform: translateY(8px); }
+        from { opacity: 0; transform: translateY(10px); }
         to   { opacity: 1; transform: none; }
       }
-      #cover-logo { height: 80px; width: auto; display: block; margin-bottom: 40px; filter: drop-shadow(0 2px 16px rgba(0,0,0,0.22)); }
+      #cover-logo {
+        height: 72px; width: auto; display: block; margin-bottom: 36px;
+        filter: drop-shadow(0 2px 16px rgba(0,0,0,0.22));
+      }
       #btn-start {
         display: flex; align-items: center; gap: 10px;
-        padding: 14px 36px;
+        padding: 14px 36px; min-height: 48px;
         background: var(--green); border: none; border-radius: 999px; cursor: pointer;
-        font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: white;
+        font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: white;
         transition: all 220ms var(--ease);
         box-shadow: 0 6px 20px rgba(48,209,88,0.32);
+        touch-action: manipulation;
       }
-      #btn-start:hover { background: #34e85c; transform: scale(1.015); box-shadow: 0 8px 28px rgba(48,209,88,0.42); }
-      #btn-start svg { width: 13px; height: 13px; stroke: rgba(255,255,255,0.9); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 220ms var(--ease); }
+      #btn-start:hover  { background: #34e85c; transform: scale(1.015); box-shadow: 0 8px 28px rgba(48,209,88,0.42); }
+      #btn-start:active { transform: scale(0.98); }
+      #btn-start svg {
+        width: 13px; height: 13px;
+        stroke: rgba(255,255,255,0.9); fill: none; stroke-width: 2;
+        stroke-linecap: round; stroke-linejoin: round;
+        transition: transform 220ms var(--ease);
+      }
       #btn-start:hover svg { transform: translateX(3px); }
-      @media (max-width: 480px) { #cover-card { padding: 40px 28px 36px; } }
 
       /* ── SIDEBAR ── */
       #sidebar {
-        position: fixed; top: calc(15vh + 14px); right: 84px; bottom: calc(15vh + 14px);
+        position: fixed;
+        top: calc(15vh + 14px); right: 84px; bottom: calc(15vh + 14px);
         width: 288px; z-index: 30;
-        display: flex; flex-direction: column; gap: 20px;
-        padding: 24px 20px 20px;
+        display: flex; flex-direction: column; gap: 18px;
+        padding: 22px 18px 18px;
         background: var(--vp-bg);
         border: 1px solid var(--vp-border);
         border-radius: 20px;
@@ -113,18 +132,38 @@
         box-shadow: 0 0 0 0.5px rgba(255,255,255,0.5) inset, 0 20px 60px rgba(0,0,0,0.2);
         overflow-y: auto; overflow-x: hidden; scrollbar-width: none;
         transform: translateX(calc(100% + 84px));
-        transition: transform 300ms var(--ease);
+        transition: transform 320ms var(--ease);
       }
       #sidebar::-webkit-scrollbar { display: none; }
       #sidebar.open { transform: translateX(0); }
 
-      .sb-title  { font-size: 24px; font-weight: 300; color: var(--text); line-height: 1.2; letter-spacing: -0.01em; }
-      .sb-divider{ height: 1px; background: rgba(120,120,120,0.2); flex-shrink: 0; }
-      .sb-label  { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+      /* Drag handle — visível só no mobile */
+      #sb-handle {
+        display: none;
+        width: 36px; height: 4px;
+        background: rgba(0,0,0,0.18); border-radius: 99px;
+        margin: 0 auto -4px;
+        flex-shrink: 0;
+      }
+
+      .sb-title   { font-size: 22px; font-weight: 300; color: var(--text); line-height: 1.2; letter-spacing: -0.01em; }
+      .sb-divider { height: 1px; background: rgba(120,120,120,0.2); flex-shrink: 0; }
+      .sb-label   { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
 
       /* Mode tabs */
-      .sb-modes { display: flex; gap: 4px; background: rgba(160,160,160,0.22); padding: 4px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.28); }
-      .sb-mode-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 9px 5px; border-radius: 999px; border: none; background: transparent; cursor: pointer; transition: all 220ms var(--ease); }
+      .sb-modes {
+        display: flex; gap: 4px;
+        background: rgba(160,160,160,0.22);
+        padding: 4px; border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.28);
+      }
+      .sb-mode-btn {
+        flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+        padding: 8px 5px; min-height: 52px;
+        border-radius: 999px; border: none; background: transparent;
+        cursor: pointer; touch-action: manipulation;
+        transition: all 220ms var(--ease);
+      }
       .sb-mode-btn.active { background: rgba(255,255,255,0.85); box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
       .sb-mode-icon { display: flex; align-items: center; justify-content: center; color: rgba(40,40,40,0.55); transition: color 220ms var(--ease); }
       .sb-mode-btn.active .sb-mode-icon { color: var(--text); }
@@ -140,11 +179,17 @@
         border: 1px solid rgba(255,255,255,0.4);
         background: rgba(255,255,255,0.22);
         overflow: hidden; cursor: pointer;
+        touch-action: manipulation;
         transition: all 220ms var(--ease);
         box-shadow: 0 2px 8px rgba(0,0,0,0.07);
       }
-      .opt-card:hover { transform: scale(1.015); border-color: rgba(255,255,255,0.65); box-shadow: 0 6px 20px rgba(0,0,0,0.11); }
-      .opt-card.selected { border-color: rgba(255,255,255,0.78); box-shadow: 0 0 0 2px rgba(255,255,255,0.45), 0 6px 20px rgba(0,0,0,0.11); background: rgba(255,255,255,0.38); }
+      .opt-card:hover   { transform: scale(1.015); border-color: rgba(255,255,255,0.65); box-shadow: 0 6px 20px rgba(0,0,0,0.11); }
+      .opt-card:active  { transform: scale(0.98); }
+      .opt-card.selected {
+        border-color: rgba(255,255,255,0.78);
+        box-shadow: 0 0 0 2px rgba(255,255,255,0.45), 0 6px 20px rgba(0,0,0,0.11);
+        background: rgba(255,255,255,0.38);
+      }
 
       /* Swatches */
       .opt-swatch { width: 100%; aspect-ratio: 1.1; position: relative; overflow: hidden; }
@@ -175,7 +220,7 @@
           repeating-linear-gradient(45deg, rgba(255,255,255,.025) 0px, transparent 1px, transparent 5px),
           linear-gradient(135deg, #242424 0%, #303030 50%, #1c1c1c 100%);
       }
-      .sw-louca   { background: linear-gradient(160deg, #fafaf8 0%, #f0f0ec 50%, #f8f8f4 100%); }
+      .sw-louca { background: linear-gradient(160deg, #fafaf8 0%, #f0f0ec 50%, #f8f8f4 100%); }
       .sw-pedra {
         background:
           repeating-linear-gradient(110deg, rgba(255,255,255,.06) 0px, transparent 2px, transparent 14px),
@@ -200,8 +245,14 @@
       .opt-sub  { font-size: 10px; font-weight: 300; color: var(--text-muted); margin-top: 2px; }
 
       /* Summary */
-      .sb-summary { display: flex; flex-direction: column; gap: 7px; }
-      .sb-sum-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 11px; background: rgba(255,255,255,0.18); border-radius: 11px; border: 1px solid rgba(255,255,255,0.32); transition: all 220ms var(--ease); }
+      .sb-summary { display: flex; flex-direction: column; gap: 6px; }
+      .sb-sum-row {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 8px 11px; min-height: 40px;
+        background: rgba(255,255,255,0.18); border-radius: 11px;
+        border: 1px solid rgba(255,255,255,0.32);
+        transition: all 220ms var(--ease);
+      }
       .sb-sum-row.filled { background: rgba(255,255,255,0.28); border-color: rgba(255,255,255,0.5); }
       .sb-sum-mode   { font-size: 12px; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
       .sb-sum-choice { font-size: 11px; font-weight: 400; color: var(--text); }
@@ -209,29 +260,81 @@
 
       /* CTA */
       .sb-cta {
-        margin-top: auto; width: 100%; padding: 14px;
+        margin-top: auto; width: 100%; padding: 14px; min-height: 48px;
         border-radius: 999px; border: none;
         background: var(--green); color: white;
         font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
-        cursor: pointer; transition: all 220ms var(--ease);
+        cursor: pointer; touch-action: manipulation;
+        transition: all 220ms var(--ease);
         box-shadow: 0 6px 20px rgba(48,209,88,0.28);
       }
       .sb-cta:hover  { background: #34e85c; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(48,209,88,0.38); }
-      .sb-cta:active { transform: translateY(0); }
+      .sb-cta:active { transform: translateY(0) scale(0.99); }
 
-      /* Mobile */
+      /* ── TABLET (até 1024px) ── */
+      @media (max-width: 1024px) {
+        #sidebar { right: 20px; transform: translateX(calc(100% + 20px)); }
+        #sidebar.open { transform: translateX(0); }
+      }
+
+      /* ── MOBILE BOTTOM SHEET (até 640px) ── */
       @media (max-width: 640px) {
+        #exp-logo-wrap img { height: 28px; }
+
+        #cover-card { padding: 36px 28px 32px; border-radius: 24px; }
+        #cover-logo { height: 58px; margin-bottom: 28px; }
+
         #sidebar {
           top: auto; right: 0; left: 0; bottom: 0;
-          width: 100%; border-radius: 20px 20px 0 0;
-          padding: 18px 16px 28px; max-height: 75vh;
-          transform: translateY(calc(100% + 20px));
-          box-shadow: 0 -8px 40px rgba(0,0,0,0.18);
+          width: 100%; max-height: 80vh;
+          border-radius: 20px 20px 0 0;
+          padding: 12px 16px calc(20px + var(--safe-b)) 16px;
+          gap: 14px;
+          transform: translateY(calc(100% + 24px));
+          box-shadow: 0 -8px 40px rgba(0,0,0,0.22);
         }
         #sidebar.open { transform: translateY(0); }
+
+        #sb-handle { display: block; }
+
+        .sb-title { font-size: 18px; }
+
+        /* Cards 2 col no mobile também — swatches mais baixos */
+        .opt-swatch { aspect-ratio: 1.4; }
+        .sb-cards .opt-card:last-child:nth-child(odd) .opt-swatch { aspect-ratio: 2.8; }
+
+        .sb-modes .sb-mode-btn { min-height: 48px; }
       }
+
+      /* ── LANDSCAPE MOBILE ── */
+      @media (max-width: 896px) and (orientation: landscape) and (max-height: 500px) {
+        #sidebar {
+          top: 0; right: 0; bottom: 0; left: auto;
+          width: min(300px, 52vw); max-height: 100%;
+          border-radius: 0; border-left: 1px solid var(--vp-border);
+          padding: 12px 14px calc(12px + var(--safe-b)) 14px;
+          transform: translateX(calc(100% + 1px));
+          gap: 10px;
+        }
+        #sidebar.open { transform: translateX(0); }
+        #sb-handle { display: none; }
+        .sb-title { font-size: 17px; }
+        .opt-swatch { aspect-ratio: 1.6; }
+        #exp-logo-wrap { display: none; }
+      }
+
+      /* ── TOUCH / NO-HOVER ── */
       @media (hover: none) {
-        #sidebar { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(240,240,240,0.97); }
+        #sidebar {
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+          background: rgba(235, 235, 235, 0.97);
+        }
+        #cover-card {
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+          background: rgba(210, 210, 210, 0.95);
+        }
       }
     </style>
   </head>
@@ -256,6 +359,7 @@
     </div>
 
     <div id="sidebar">
+      <div id="sb-handle"></div>
       <div class="sb-title" id="sb-title">Configurador</div>
       <div class="sb-divider"></div>
 
@@ -310,13 +414,13 @@
 
       const OPTIONS = {
         0: [
-          { label: "Mármore Verde",  sub: "Pedra natural · Polido", swatch: "sw-marble"      },
-          { label: "Porcelanato",    sub: "Cerâmica · Acetinado",   swatch: "sw-porcelanato" },
-          { label: "Ardósia",        sub: "Pedra natural · Fosco",  swatch: "sw-ardosia"     },
+          { label: "Mármore Verde", sub: "Pedra natural · Polido", swatch: "sw-marble"      },
+          { label: "Porcelanato",   sub: "Cerâmica · Acetinado",   swatch: "sw-porcelanato" },
+          { label: "Ardósia",       sub: "Pedra natural · Fosco",  swatch: "sw-ardosia"     },
         ],
         1: [
-          { label: "Bronze",  sub: "Aço · PVD Bronze",  swatch: "sw-bronze"    },
-          { label: "Preto",   sub: "Aço · Fosco Preto", swatch: "sw-preto-mat" },
+          { label: "Bronze", sub: "Aço · PVD Bronze",  swatch: "sw-bronze"    },
+          { label: "Preto",  sub: "Aço · Fosco Preto", swatch: "sw-preto-mat" },
         ],
         2: [
           { label: "Louça Branca",  sub: "Cerâmica · Vitrificado", swatch: "sw-louca" },
@@ -327,7 +431,7 @@
       // ── CANVAS / FRAME SEQUENCE ──────────────────────────
       const seqCanvas = document.getElementById('seq-canvas');
       const seqCtx    = seqCanvas.getContext('2d');
-      let seqRaf   = null;
+      let seqRaf      = null;
       const seqCaches = {};
 
       function resizeCanvas() {
@@ -337,6 +441,7 @@
         seqCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
       window.addEventListener('resize', resizeCanvas);
+      screen.orientation?.addEventListener('change', resizeCanvas);
       resizeCanvas();
 
       function drawSeqFrame(img) {
@@ -397,9 +502,9 @@
 
       function jumpTo(idx) {
         if (idx === cur) return;
-        if (idx === 1) { // Torneira → geral_to_torneira (49 frames: 00–48)
+        if (idx === 1) {
           playSeq(loadFrames('geral_to_torneira', 'images/conf/geral_to_torneira_', 49), 24);
-        } else if (idx === 0 && cur === 1) { // Piso voltando da Torneira → reverso (48→00)
+        } else if (idx === 0 && cur === 1) {
           playSeq([...loadFrames('geral_to_torneira', 'images/conf/geral_to_torneira_', 49)].reverse(), 24);
         } else if (idx !== 0) {
           clearSeqCanvas();
@@ -417,7 +522,6 @@
         document.getElementById("exp-logo-wrap").classList.add("show");
         setTimeout(() => { document.getElementById("cover").style.display = "none"; }, 500);
         document.getElementById("sidebar").classList.add("open");
-        // preload em background para garantir fluidez ao clicar em Torneira
         loadFrames('geral_to_torneira', 'images/conf/geral_to_torneira_', 49);
         jumpTo(0);
         buildSummary();
@@ -465,39 +569,35 @@
         updateSummary(modeIdx, OPTIONS[modeIdx][optIdx].label);
 
         if (modeIdx === 0) {
-          if (optIdx === 0) { // Mármore Verde
-            if (prev === 2) { // veio da Ardósia → piso2_to_piso3 reverso (72→00)
+          if (optIdx === 0) {
+            if (prev === 2)
               playSeq([...loadFrames('marmore_to_ardosia', 'images/conf/piso2_to_piso3_', 73)].reverse(), 24);
-            } else { // veio de outro lugar → piso1_to_piso2 (54 frames: 00–53)
+            else
               playSeq(loadFrames('marmore', 'images/conf/piso1_to_piso2_', 54), 24);
-            }
-          } else if (optIdx === 2) { // Ardósia
-            if (prev === 0) { // veio do Mármore Verde → piso2_to_piso3 (73 frames: 00–72)
+          } else if (optIdx === 2) {
+            if (prev === 0)
               playSeq(loadFrames('marmore_to_ardosia', 'images/conf/piso2_to_piso3_', 73), 24);
-            } else { // veio de outro lugar → piso1_to_piso3 (49 frames: 00–48)
+            else
               playSeq(loadFrames('ardosia', 'images/conf/piso1_to_piso3_', 49), 24);
-            }
-          } else if (optIdx === 1) { // Porcelanato
-            if (prev === 2) { // veio da Ardósia → piso1_to_piso3 reverso (48→00)
+          } else if (optIdx === 1) {
+            if (prev === 2)
               playSeq([...loadFrames('ardosia', 'images/conf/piso1_to_piso3_', 49)].reverse(), 24);
-            } else if (prev === 0) { // veio do Mármore Verde → piso1_to_piso2 reverso (53→00)
+            else if (prev === 0)
               playSeq([...loadFrames('marmore', 'images/conf/piso1_to_piso2_', 54)].reverse(), 24);
-            } else {
+            else
               clearSeqCanvas();
-            }
           } else {
             clearSeqCanvas();
           }
         }
 
         if (modeIdx === 1) {
-          if (optIdx === 1) { // Preto → torneira2_totorneira1 (29 frames: 00–28)
+          if (optIdx === 1)
             playSeq(loadFrames('torneira_preto', 'images/conf/torneira2_totorneira1_', 29), 24);
-          } else if (optIdx === 0 && prev === 1) { // Bronze ← Preto → reverso (28→00)
+          else if (optIdx === 0 && prev === 1)
             playSeq([...loadFrames('torneira_preto', 'images/conf/torneira2_totorneira1_', 29)].reverse(), 24);
-          } else {
+          else
             clearSeqCanvas();
-          }
         }
       }
 
