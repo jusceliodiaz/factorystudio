@@ -1523,6 +1523,24 @@
           bottom: max(20px, env(safe-area-inset-bottom, 20px));
         }
       }
+
+      /* Mobile: desabilita backdrop-filter e noise — muito pesados na GPU mobile */
+      @media (hover: none) {
+        #noise { display: none; }
+        #track,
+        #ai-bot-bar {
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+        }
+        .poi-popup,
+        #ai-panel,
+        #neo-bubble,
+        #neo-setup-card {
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+          background: rgba(10, 9, 7, 0.97);
+        }
+      }
     </style>
   </head>
 
@@ -2183,8 +2201,10 @@
       const ctx = canvas.getContext("2d");
       let seqRaf = null;
 
+      const MOBILE = window.matchMedia('(hover: none)').matches;
+
       function resizeCanvas() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const dpr = MOBILE ? 1 : Math.min(window.devicePixelRatio || 1, 2);
         canvas.width = window.innerWidth * dpr;
         canvas.height = window.innerHeight * dpr;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -2262,31 +2282,40 @@
         state = "playing";
         updateUI();
 
-        // Cancela sequência anterior se ainda rodando
         if (seqRaf) {
           cancelAnimationFrame(seqRaf);
           seqRaf = null;
         }
 
-        const {
-          base,
-          count,
-          pad = 2,
-          ext = "jpg",
-          fps = 36,
-          reverse = false,
-        } = seq;
+        const { base, pad = 2, ext = "jpg", reverse = false } = seq;
+
+        // Mobile: pula frames alternados (24 frames em vez de 48) e usa fps menor
+        const step = MOBILE ? 2 : 1;
+        const fps = MOBILE ? 20 : (seq.fps || 36);
         const INTERVAL = 1000 / fps;
 
-        // Pré-carrega todos os frames (ordem direta ou invertida)
-        const indices = Array.from({ length: count }, (_, i) =>
-          reverse ? count - 1 - i : i,
-        );
-        const frames = indices.map((i) => {
+        const indices = [];
+        for (let i = 0; i < seq.count; i += step) {
+          indices.push(reverse ? seq.count - 1 - i : i);
+        }
+        const count = indices.length;
+        const frames = new Array(count).fill(null);
+
+        // Desktop: carrega todos de uma vez.
+        // Mobile: mantém apenas 4 downloads paralelos — evita travar a rede.
+        const SLOTS = MOBILE ? 4 : count;
+        let nextLoad = 0;
+
+        function loadSlot() {
+          if (nextLoad >= count) return;
+          const i = nextLoad++;
           const img = new Image();
-          img.src = base + String(i).padStart(pad, "0") + "." + ext;
-          return img;
-        });
+          img.onload = loadSlot;
+          img.onerror = loadSlot;
+          img.src = base + String(indices[i]).padStart(pad, "0") + "." + ext;
+          frames[i] = img;
+        }
+        for (let k = 0; k < Math.min(SLOTS, count); k++) loadSlot();
 
         let frameIdx = 0;
         let lastTime = null;
@@ -2295,14 +2324,14 @@
             cur = to;
             runQ();
           }
-        }, 8000);
+        }, MOBILE ? 20000 : 8000);
 
         function tick(ts) {
           if (!lastTime) lastTime = ts;
           if (ts - lastTime >= INTERVAL) {
             lastTime = ts;
             const img = frames[frameIdx];
-            if (img.complete && img.naturalWidth) {
+            if (img && img.complete && img.naturalWidth) {
               drawFrame(img);
               frameIdx++;
             }
@@ -2321,7 +2350,7 @@
           seqRaf = requestAnimationFrame(tick);
         }
 
-        if (frames[0].complete && frames[0].naturalWidth) {
+        if (frames[0] && frames[0].complete && frames[0].naturalWidth) {
           start();
         } else {
           frames[0].onload = start;
