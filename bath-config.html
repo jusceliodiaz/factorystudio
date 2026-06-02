@@ -118,7 +118,6 @@
       #sidebar::-webkit-scrollbar { display: none; }
       #sidebar.open { transform: translateX(0); }
 
-      .sb-brand  { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); }
       .sb-title  { font-size: 24px; font-weight: 300; color: var(--text); line-height: 1.2; letter-spacing: -0.01em; }
       .sb-divider{ height: 1px; background: rgba(120,120,120,0.2); flex-shrink: 0; }
       .sb-label  { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
@@ -166,8 +165,16 @@
           repeating-linear-gradient(30deg, rgba(255,255,255,.04) 0px, transparent 2px, transparent 10px),
           linear-gradient(160deg, #6a6460 0%, #585450 50%, #646060 100%);
       }
-      .sw-cromado { background: linear-gradient(135deg, #b0b8c8 0%, #e8ecf4 30%, #c0c8d8 55%, #f0f2f8 75%, #b8c0d0 100%); }
-      .sw-dourado { background: linear-gradient(135deg, #b8922a 0%, #e0bb6a 30%, #c8a040 55%, #f0d080 75%, #c0982e 100%); }
+      .sw-bronze {
+        background:
+          repeating-linear-gradient(45deg, rgba(255,255,255,.06) 0px, transparent 1px, transparent 6px),
+          linear-gradient(135deg, #7c5c2e 0%, #c49a52 30%, #9a7238 55%, #d4aa60 75%, #8a6432 100%);
+      }
+      .sw-preto-mat {
+        background:
+          repeating-linear-gradient(45deg, rgba(255,255,255,.025) 0px, transparent 1px, transparent 5px),
+          linear-gradient(135deg, #242424 0%, #303030 50%, #1c1c1c 100%);
+      }
       .sw-louca   { background: linear-gradient(160deg, #fafaf8 0%, #f0f0ec 50%, #f8f8f4 100%); }
       .sw-pedra {
         background:
@@ -249,7 +256,6 @@
     </div>
 
     <div id="sidebar">
-      <div class="sb-brand">Factory Interactive</div>
       <div class="sb-title" id="sb-title">Configurador</div>
       <div class="sb-divider"></div>
 
@@ -309,8 +315,8 @@
           { label: "Ardósia",        sub: "Pedra natural · Fosco",  swatch: "sw-ardosia"     },
         ],
         1: [
-          { label: "Cromado", sub: "Aço · Alto brilho", swatch: "sw-cromado" },
-          { label: "Dourado", sub: "Aço · PVD Gold",    swatch: "sw-dourado" },
+          { label: "Bronze",  sub: "Aço · PVD Bronze",  swatch: "sw-bronze"    },
+          { label: "Preto",   sub: "Aço · Fosco Preto", swatch: "sw-preto-mat" },
         ],
         2: [
           { label: "Louça Branca",  sub: "Cerâmica · Vitrificado", swatch: "sw-louca" },
@@ -325,7 +331,7 @@
       const seqCaches = {};
 
       function resizeCanvas() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const dpr = window.devicePixelRatio || 1;
         seqCanvas.width  = window.innerWidth  * dpr;
         seqCanvas.height = window.innerHeight * dpr;
         seqCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -368,9 +374,9 @@
         function tick(ts) {
           if (!last) last = ts;
           if (ts - last >= interval) {
-            last = ts;
             const img = frames[idx];
             if (img && img.complete && img.naturalWidth) {
+              last = ts;
               drawSeqFrame(img);
               idx++;
             }
@@ -391,7 +397,13 @@
 
       function jumpTo(idx) {
         if (idx === cur) return;
-        if (idx !== 0) clearSeqCanvas();
+        if (idx === 1) { // Torneira → geral_to_torneira (49 frames: 00–48)
+          playSeq(loadFrames('geral_to_torneira', 'images/conf/geral_to_torneira_', 49), 24);
+        } else if (idx === 0 && cur === 1) { // Piso voltando da Torneira → reverso (48→00)
+          playSeq([...loadFrames('geral_to_torneira', 'images/conf/geral_to_torneira_', 49)].reverse(), 24);
+        } else if (idx !== 0) {
+          clearSeqCanvas();
+        }
         cur = idx;
         document.getElementById("sb-title").textContent = PTS[idx].label;
         document.querySelectorAll(".sb-mode-btn").forEach(el =>
@@ -405,6 +417,8 @@
         document.getElementById("exp-logo-wrap").classList.add("show");
         setTimeout(() => { document.getElementById("cover").style.display = "none"; }, 500);
         document.getElementById("sidebar").classList.add("open");
+        // preload em background para garantir fluidez ao clicar em Torneira
+        loadFrames('geral_to_torneira', 'images/conf/geral_to_torneira_', 49);
         jumpTo(0);
         buildSummary();
       }
@@ -471,6 +485,16 @@
             } else {
               clearSeqCanvas();
             }
+          } else {
+            clearSeqCanvas();
+          }
+        }
+
+        if (modeIdx === 1) {
+          if (optIdx === 1) { // Preto → torneira2_totorneira1 (29 frames: 00–28)
+            playSeq(loadFrames('torneira_preto', 'images/conf/torneira2_totorneira1_', 29), 24);
+          } else if (optIdx === 0 && prev === 1) { // Bronze ← Preto → reverso (28→00)
+            playSeq([...loadFrames('torneira_preto', 'images/conf/torneira2_totorneira1_', 29)].reverse(), 24);
           } else {
             clearSeqCanvas();
           }
