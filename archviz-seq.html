@@ -532,19 +532,6 @@
         background: rgba(255, 255, 255, 0.12);
       }
 
-      /* TOPBAR */
-      #btn-back {
-        position: fixed;
-        top: 24px;
-        left: 28px;
-        z-index: 10;
-        opacity: 0;
-        transition: opacity 0.8s var(--ease);
-      }
-
-      #btn-back.show {
-        opacity: 1;
-      }
 
       /* TRACK */
       #track {
@@ -1554,55 +1541,6 @@
       <canvas id="seq-canvas"></canvas>
     </div>
 
-    <!-- TOPBAR -->
-    <a
-      id="btn-back"
-      href="fi-preview.html#admin"
-      style="
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 6px 14px 6px 8px;
-        border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        background: rgba(255, 255, 255, 0.07);
-        color: rgba(255, 255, 255, 0.8);
-        font-family: inherit;
-        font-size: 0.78rem;
-        font-weight: 600;
-        text-decoration: none;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        transition:
-          background 0.2s,
-          transform 0.2s,
-          opacity 0.8s;
-      "
-      onmouseover="
-        this.style.background = 'rgba(255,255,255,0.13)';
-        this.style.transform = 'translateY(-1px)';
-      "
-      onmouseout="
-        this.style.background = 'rgba(255,255,255,0.07)';
-        this.style.transform = '';
-      "
-    >
-      <span
-        style="
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 26px;
-          height: 26px;
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 6px;
-          font-size: 13px;
-        "
-        >←</span
-      >
-      Voltar
-    </a>
-
     <!-- TRACK -->
     <div id="track">
       <button class="t-arrow" id="arr-l">
@@ -1663,7 +1601,6 @@
             <line x1="17.66" y1="6.34" x2="19.78" y2="4.22" />
           </svg>
         </div>
-        <span class="ab-label">Sol</span>
       </div>
 
       <div class="light-btn" id="light-sunset" tabindex="-1" onclick="setLight('sunset')">
@@ -1677,7 +1614,6 @@
             <line x1="3" y1="22" x2="21" y2="22" />
           </svg>
         </div>
-        <span class="ab-label">Sunset</span>
       </div>
 
       <div class="light-btn" id="light-night" tabindex="-1" onclick="setLight('night')">
@@ -1686,7 +1622,6 @@
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
           </svg>
         </div>
-        <span class="ab-label">Noite</span>
       </div>
     </div>
 
@@ -2405,13 +2340,26 @@
         }
       }
 
-      function buildTrack() {
-        document.getElementById("arr-l").style.display = "none";
-        document.getElementById("arr-r").style.display = "none";
+      const TRACK_ORDER = [6, 0, 9, 8, 7];
+      const TRACK_VISIBLE = 2;
+      let trackOffset = 0;
 
+      function updateTrackSlots() {
+        const arrL = document.getElementById("arr-l");
+        const arrR = document.getElementById("arr-r");
+        document.querySelectorAll(".t-pt").forEach((el, i) => {
+          el.classList.toggle("slot-hidden", i < trackOffset || i >= trackOffset + TRACK_VISIBLE);
+        });
+        arrL.disabled = trackOffset === 0;
+        arrR.disabled = trackOffset >= TRACK_ORDER.length - TRACK_VISIBLE;
+      }
+
+      function buildTrack() {
+        const arrR = document.getElementById("arr-r");
         const track = document.getElementById("track");
+
         // Ordem: Parque (6) | Panorâmica (0) | Estacionamento (9) | Portaria (8) | Prédio 1 (7)
-        [6, 0, 9, 8, 7].forEach((idx) => {
+        TRACK_ORDER.forEach((idx) => {
           const el = document.createElement("div");
           el.className = "t-pt";
           el.dataset.i = idx;
@@ -2425,15 +2373,32 @@
             },
             { passive: false },
           );
-          track.appendChild(el);
+          track.insertBefore(el, arrR);
         });
+
+        document.getElementById("arr-l").addEventListener("click", () => {
+          trackOffset = Math.max(0, trackOffset - 1);
+          updateTrackSlots();
+        });
+        document.getElementById("arr-r").addEventListener("click", () => {
+          trackOffset = Math.min(TRACK_ORDER.length - TRACK_VISIBLE, trackOffset + 1);
+          updateTrackSlots();
+        });
+
+        updateTrackSlots();
       }
 
       function updateUI() {
         // Track: Parque=6, Panorâmica=0–5, Portaria=8, Prédio 1=7
         const activeTrack = cur >= 6 ? cur : 0;
-        document.querySelectorAll(".t-pt").forEach((el) => {
-          el.classList.toggle("active", parseInt(el.dataset.i) === activeTrack);
+        document.querySelectorAll(".t-pt").forEach((el, i) => {
+          const isActive = parseInt(el.dataset.i) === activeTrack;
+          el.classList.toggle("active", isActive);
+          // Se o botão ativo ficou fora da janela visível, ajusta o offset
+          if (isActive && (i < trackOffset || i >= trackOffset + TRACK_VISIBLE)) {
+            trackOffset = Math.max(0, Math.min(TRACK_ORDER.length - TRACK_VISIBLE, i));
+            updateTrackSlots();
+          }
         });
 
         updatePOIs();
@@ -2442,8 +2407,7 @@
       // ══════════════════════════════════════════════════════
       // INICIALIZAÇÃO
       // ══════════════════════════════════════════════════════
-      document.getElementById("btn-back").classList.add("show");
-      document.getElementById("track").classList.add("show");
+document.getElementById("track").classList.add("show");
       document.getElementById("ai-bot-bar").classList.add("show");
 
       // ══════════════════════════════════════════════════════
