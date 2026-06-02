@@ -216,3 +216,267 @@ Adicionar como override no final do bloco `<style>`, antes de `</style>`. Usar s
 ---
 
 *Atualizado em 15/05/2026 — pós refactor completo do `factoryinteractive.html`*
+
+---
+---
+
+# Configurador de Banheiros — `bath-config.html`
+
+> Página interativa standalone para configuração visual de materiais de banheiro. HTML/CSS/JS puro, sem frameworks, com Three.js via CDN.
+
+---
+
+## Sobre o Arquivo
+
+**Arquivo:** `bath-config.html`  
+**Tipo:** SPA one-page, `overflow: hidden`, sem scroll de página  
+**Dependências:** Three.js `0.160.0` (CDN), Inter (Google Fonts), Google Analytics `G-3K51DFTX3J`  
+**Objetivo:** Experiência imersiva de configuração de materiais — o usuário escolhe piso, torneira e pia visualizando as opções via esferas 3D e animações de transição no stage
+
+---
+
+## CSS Variables (`:root`)
+
+```css
+--ink:   #0d0d0b;   /* fundo global — mais escuro que o --bg do site principal */
+--warm:  #c8a96e;   /* dourado — equivale ao --gold do site principal */
+--muted: #7a7568;   /* texto secundário */
+--ease:  cubic-bezier(0.87, 0, 0.13, 1);  /* ease mais dramático que o do site */
+```
+
+> A paleta é compatível com o site principal mas usa nomes diferentes. `--warm` = `--gold`.
+
+---
+
+## Estrutura HTML (camadas z-index)
+
+| Elemento | ID/Classe | z-index | Descrição |
+|---|---|---|---|
+| Stage (fundo) | `#stage` | — | `position: fixed; inset: 0` — imagem de fundo full-viewport |
+| POIs | `.poi` | 9 | Marcadores flutuantes posicionados em `%` da viewport |
+| Track | `#track` | 10 | Barra de navegação inferior em pill, `opacity: 0` → `.show` |
+| Option Panel | `#option-panel` | 30 | Painel flutuante acima do track, `opacity: 0` → `.open` |
+| POI Popups | `.poi-popup` | 50 | Cards de info, aparecem ao clicar nos POIs |
+| Cover | `#cover` | 100 | Tela de entrada, some ao clicar "Explorar" |
+| Cursor | `#cursor`, `#ring` | 9998–9999 | Cursor customizado (oculto em touch) |
+
+---
+
+## Fluxo de Estado
+
+```
+cover visível (cur = -1)
+    ↓ clique em "Explorar" → startExperience()
+track aparece + option-panel abre + cur = 0
+    ↓ clique em botão do track → jumpTo(idx) + openPanel(idx)
+troca de cenário: cur atualizado, POIs visíveis trocam, panel atualiza título e esferas
+```
+
+**Estado principal:** `let cur = -1` — índice do cenário ativo (-1 = cover)
+
+---
+
+## Cenários (PTS)
+
+```js
+const PTS = [
+  { id: "piso",     label: "Piso",      sub: "Floor Tile"                  },  // idx 0
+  { id: "torneira", label: "Torneira 1", sub: "Wall-mounted Washbasin Taps" },  // idx 1
+  { id: "pia",      label: "Pia",        sub: "Bathroom Sink"               },  // idx 2
+];
+```
+
+---
+
+## Option Panel (`#option-panel`)
+
+- `position: fixed; bottom: 130px; left: 50%` — centralizado, flutua acima do track
+- `width: min(520px, 92vw)` — responsivo
+- Background: `rgba(255,255,255,0.18)` + `backdrop-filter: blur(48px) saturate(2) brightness(1.35)` — glass light
+- Estado: `opacity: 0; pointer-events: none` → `.open { opacity: 1; pointer-events: auto }`
+- Transição de entrada: spring `cubic-bezier(0.34,1.4,0.64,1)` com `translateY(24px→0)`
+- **Abre automaticamente** ao iniciar a experiência (`startExperience()` → `openPanel(0)`)
+- Mobile (`≤600px`): `bottom: 110px`, canvas reduz para `140px`
+
+### Estrutura interna do painel
+
+```
+#option-panel
+├── #panel-header
+│   ├── #panel-category  ("Configurador" — fixo, dourado)
+│   └── #panel-title     (nome do cenário atual — atualizado pelo JS)
+│   └── #panel-close     (botão ×)
+├── #panel-canvas-wrap   (170px height)
+│   └── #option-canvas   (canvas Three.js)
+└── #sphere-labels       (grid 3 colunas — rótulos clicáveis)
+    ├── .sphere-label[data-idx="0"]
+    ├── .sphere-label[data-idx="1"]
+    └── .sphere-label[data-idx="2"]
+```
+
+---
+
+## Three.js — Esferas de Opção
+
+**Instanciado uma única vez** (`threeReady` flag). Reutilizado entre cenários.
+
+| Elemento | Configuração |
+|---|---|
+| Renderer | `WebGLRenderer`, `alpha: true`, `pixelRatio min(dpr, 2)` |
+| Camera | `PerspectiveCamera(42°)`, `position.z = 7.5` |
+| Tone mapping | `ACESFilmicToneMapping`, exposure `1.2` |
+| Geometry | `SphereGeometry(1, 64, 64)` — compartilhada entre as 3 esferas |
+| Seleção | `TorusGeometry(1.28, 0.045)` dourado ao redor da esfera ativa |
+| Posições X | `[-2.4, 0, 2.4]` — 3 esferas horizontais |
+
+**Luzes:**
+- Ambient `0xffffff` intensity `1.2`
+- Key `0xffffff` intensity `2.8` pos `(3,4,5)`
+- Fill `0xd0e8ff` intensity `0.8` pos `(-4,2,3)`
+- Rim `0xffe8c0` intensity `0.6` pos `(0,-3,-4)`
+
+**Loop de animação (`useFrame` equivalente):**
+- Cada esfera rota `+0.006` rad/frame em Y
+- Esfera selecionada: `scale 1.12` + bob senoidal Y
+- Esfera hover: `scale 1.06`
+- Lerp suave: `mesh.scale.lerp(target, 0.1)`
+- Loop pausa ao fechar o painel (`stopThreeLoop`)
+
+---
+
+## OPTIONS — Materiais PBR por Cenário
+
+```js
+const OPTIONS = {
+  0: [ // Piso — Floor Tile
+    { label: "Mármore Branco", color: 0xf0ece4, roughness: 0.12, metalness: 0.04 },
+    { label: "Porcelanato",    color: 0xc4b49a, roughness: 0.28, metalness: 0.02 },
+    { label: "Ardósia",        color: 0x6a6460, roughness: 0.88, metalness: 0.0  },
+  ],
+  1: [ // Torneira — Wall-mounted Taps
+    { label: "Cromado",   color: 0xbecad2, roughness: 0.04, metalness: 0.98 },
+    { label: "Dourado",   color: 0xc8a96e, roughness: 0.08, metalness: 0.90 },
+    { label: "Preto Mat", color: 0x1c1c1c, roughness: 0.88, metalness: 0.12 },
+  ],
+  2: [ // Pia — Bathroom Sink
+    { label: "Louça",    color: 0xfafaf8, roughness: 0.08, metalness: 0.0  },
+    { label: "Pedra",    color: 0x9c9088, roughness: 0.82, metalness: 0.0  },
+    { label: "Concreto", color: 0x706e68, roughness: 0.92, metalness: 0.05 },
+  ],
+};
+```
+
+Cada opção pode receber `texture: "caminho.jpg"` para usar `TextureLoader` em vez de só cor PBR.
+
+---
+
+## Animação de Frame Sequence — Stage
+
+Ao selecionar uma opção no cenário **Piso**, o `#stage` (fundo) é animado por uma sequência de imagens pré-carregadas.
+
+### Constantes
+
+```js
+const STAGE_DEFAULT = 'images/conf/capa_config.jpg';  // estado inicial
+const SEQ_PREFIX    = 'images/conf/piso1_to_piso2_';  // prefixo dos frames
+const SEQ_COUNT     = 54;   // frames 00 a 53
+const SEQ_FPS       = 30;   // velocidade de reprodução
+```
+
+### Nomes dos arquivos
+
+`images/conf/piso1_to_piso2_00.jpg` → `images/conf/piso1_to_piso2_53.jpg`  
+Número sempre zero-padded: `padN(n)` → `String(n).padStart(2, '0')`
+
+### Comportamento
+
+| Ação do usuário | Direção da animação |
+|---|---|
+| Clica em **Mármore Branco** (idx 0) | Forward: frame 00 → 53 (piso1 → piso2) |
+| Clica em qualquer outra opção de piso | Reverse: frame 53 → 00 (piso2 → piso1) |
+| Abre o painel Piso pela primeira vez | Preload silencioso dos 54 frames |
+
+**Preload:** feito via `new Image()` lazy (`loadSeq()` — chamado uma vez, resultado cacheado em `seqFrames`)  
+**Render:** `requestAnimationFrame` com controle de tempo por `dur = 1000 / fps`  
+**Stage update:** `stage.style.background = url(...) center/cover no-repeat` (inline sobrescreve CSS)
+
+### Funções principais
+
+| Função | Responsabilidade |
+|---|---|
+| `loadSeq()` | Cria array de `Image` com todos os frames; retorna cache se já carregado |
+| `playStageFrames(frames, fps)` | Cancela animação anterior e inicia nova loop de frames no stage |
+| `selectSphere(idx)` | Atualiza seleção visual + dispara frame animation se `currentPanelConfig === 0` |
+
+---
+
+## POIs (Points of Interest)
+
+Marcadores flutuantes posicionados em `%` da viewport. Visíveis apenas no cenário ativo.
+
+- Criados dinamicamente em `buildPOIs()` e appendados ao `<body>`
+- `.hidden`: `opacity: 0; pointer-events: none; scale: 0.5`
+- Clique no `.poi-btn` → abre `.poi-popup` correspondente
+- Fechar: botão ×, clique fora, `Escape`
+
+**Estrutura de dados (`POIS`):**
+```js
+{ id, label, x, y,   // posição em % da viewport
+  tag, title, desc,  // conteúdo do popup
+  img }              // null = placeholder "Imagem em breve"
+```
+
+---
+
+## Track (Barra de Navegação)
+
+- Criado dinamicamente em `buildTrack()` a partir do array `PTS`
+- `opacity: 0` por padrão → `.show` após `startExperience()`
+- Botão ativo: `background: #c8a96e; border-color: #c8a96e; color: #1a1200`
+- Mobile `≤600px`: `.t-pt-sub` (`font-size: 9px`) é ocultado
+
+---
+
+## Cover (`#cover`)
+
+- Tela inicial com glassmorphism: `backdrop-filter: blur(28px) saturate(1.6)`
+- Animação de entrada: `coverIn 1s` — `translateY(20px) scale(.97) → normal`
+- Botão "Explorar" → `startExperience()` → `display: none` no cover
+- Mobile `≤480px`: padding reduzido (`40px 28px 36px`)
+
+---
+
+## Assets do Configurador
+
+| Arquivo | Uso |
+|---|---|
+| `images/conf/capa_config.jpg` | Background inicial do `#stage` |
+| `images/conf/piso1_to_piso2_00.jpg` … `_53.jpg` | Sequência de animação Mármore Branco |
+
+> Extensão dos frames: `.jpg`, zero-padded 2 dígitos, diretório `images/conf/`
+
+---
+
+## Padrões a Evitar (bath-config específico)
+
+- Não usar `display: none` para esconder o cover na transição — o código atual usa isso corretamente (sem fade), não "melhorar" para `opacity` sem testar o z-index
+- Não chamar `initThree()` fora de `openPanel()` — a função tem guarda `threeReady` mas o canvas precisa ter dimensões reais para o renderer
+- Não calcular `maxX` para o stage — o stage é `fixed; inset: 0`, sem scroll
+- Não compartilhar o `THREE.BufferGeometry` entre instâncias com `.dispose()` fora do ciclo de vida correto — a geo é shared entre as 3 esferas intencionalmente
+- Não usar `backdrop-filter` em mobile sem o fallback `background: rgba(..., 0.97)` — já está no `@media (hover: none)`
+- Não alterar `SEQ_FPS` acima de 30 sem verificar se os frames existem na taxa correta
+
+---
+
+## Próximos Passos Possíveis (bath-config)
+
+- [ ] Sequências de frame para Torneira (cromado ↔ dourado ↔ preto) e Pia
+- [ ] Texturas PBR reais nas esferas (`opt.texture` já suportado)
+- [ ] Imagens reais nos POI popups (`poi.img`)
+- [ ] Conteúdo real dos POIs (label, title, desc dos materiais)
+- [ ] Transição suave do stage ao trocar de cenário (Piso → Torneira → Pia)
+- [ ] Versão mobile revisada do option-panel
+
+---
+
+*Atualizado em 02/06/2026 — documentação inicial de `bath-config.html`*
