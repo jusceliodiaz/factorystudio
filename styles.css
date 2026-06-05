@@ -228,6 +228,33 @@ html, body {
   pointer-events: none;
 }
 .t-pt svg * { pointer-events: none; }
+
+.t-pt {
+  position: relative;
+}
+.t-pt::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: rgba(20, 20, 20, 0.88);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.t-pt:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
 .t-pt:not(.active):hover {
   border-color: rgba(0,0,0,.15);
   color: rgba(20,20,20,.9);
