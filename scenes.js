@@ -17,7 +17,7 @@ const CONFIG = {
 
   sequences: {
     "aereo-to-pool": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "aereo_to_piscina_",
       from: 0,
       to: 47,
@@ -26,13 +26,13 @@ const CONFIG = {
       fps: 30,
     },
     "pool-to-aereo": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "aereo_to_piscina_",
       from: 0, to: 47, pad: 2, ext: "jpg",
       reverse: true,
     },
     "pool-to-living": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "pool_to_living_",
       from: 0,
       to: 72,
@@ -40,7 +40,7 @@ const CONFIG = {
       ext: "jpg",
     },
     "living-to-pool": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "pool_to_living_",
       from: 0,
       to: 72,
@@ -49,7 +49,7 @@ const CONFIG = {
       reverse: true,
     },
     "pool-to-kitchen": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "pool_to_kitchen_",
       from: 0,
       to: 72,
@@ -57,62 +57,62 @@ const CONFIG = {
       ext: "jpg",
     },
     "kitchen-to-pool": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "pool_to_kitchen_",
       from: 0, to: 72, pad: 2, ext: "jpg",
       reverse: true,
     },
     "pool-to-jardim": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "pool_to_jardim_",
       from: 0, to: 47, pad: 2, ext: "jpg",
     },
     "jardim-to-pool": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "pool_to_jardim_",
       from: 0, to: 47, pad: 2, ext: "jpg",
       reverse: true,
     },
     "aereo-to-jardim": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "pano_jardim_",
       from: 0, to: 47, pad: 2, ext: "jpg",
     },
     "jardim-to-aereo": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "pano_jardim_",
       from: 0, to: 47, pad: 2, ext: "jpg",
       reverse: true,
     },
     "aereo-to-kitchen": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "pano_cozinha_",
       from: 0, to: 47, pad: 2, ext: "jpg",
     },
     "kitchen-to-aereo": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "pano_cozinha_",
       from: 0, to: 47, pad: 2, ext: "jpg",
       reverse: true,
     },
     "aereo-to-living": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "pano_living_",
       from: 0, to: 47, pad: 2, ext: "jpg",
     },
     "living-to-aereo": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "pano_living_",
       from: 0, to: 47, pad: 2, ext: "jpg",
       reverse: true,
     },
     "living-to-kitchen": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "living_to_kitchen_",
       from: 0, to: 72, pad: 2, ext: "jpg",
     },
     "kitchen-to-living": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "living_to_kitchen_",
       from: 0, to: 72, pad: 2, ext: "jpg",
       reverse: true,

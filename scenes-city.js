@@ -170,7 +170,7 @@ const CONFIG = {
       reverse: true,
     },
     "aereo-to-living": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "pano_to_hall_",
       from: 0,
       to: 47,
@@ -178,7 +178,7 @@ const CONFIG = {
       ext: "jpg",
     },
     "living-to-aereo": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "pano_to_hall_",
       from: 0,
       to: 47,
@@ -204,7 +204,7 @@ const CONFIG = {
       reverse: true,
     },
     "jardim-to-kitchen": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "predio_to_parque_",
       from: 0,
       to: 46,
@@ -212,7 +212,7 @@ const CONFIG = {
       ext: "jpg",
     },
     "kitchen-to-jardim": {
-      folder: "images/seq/",
+      folder: "images/seq_arch/",
       prefix: "predio_to_parque_",
       from: 0,
       to: 46,

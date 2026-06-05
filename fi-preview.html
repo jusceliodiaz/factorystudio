@@ -203,15 +203,14 @@
         position: fixed;
         inset: 0;
         z-index: 0;
-        background: url("images/Portfolio_001.jpg") center/cover no-repeat;
-        filter: blur(32px) brightness(0.6) saturate(1.3);
-        transform: scale(1.08);
+        overflow: hidden;
         pointer-events: none;
       }
       .gate-bg::after {
         content: "";
         position: absolute;
         inset: 0;
+        z-index: 1;
         background:
           radial-gradient(
             ellipse 80% 60% at 20% 10%,
@@ -229,6 +228,19 @@
             rgba(6, 6, 10, 0.3) 50%,
             rgba(6, 6, 10, 0.7) 100%
           );
+      }
+      .gate-slide {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        transform: scale(1.06);
+        transition: opacity 1.5s ease, transform 9s ease;
+      }
+      .gate-slide.active {
+        opacity: 1;
+        transform: scale(1);
       }
 
       .gate-card {
@@ -832,7 +844,15 @@
   <body>
     <!-- ── GATE ── -->
     <div class="gate" id="gate">
-      <div class="gate-bg"></div>
+      <div class="gate-bg">
+        <div class="gate-slide active" style="background-image: url('images/hero/h1.jpg')"></div>
+        <div class="gate-slide" style="background-image: url('images/hero/h2.jpg')"></div>
+        <div class="gate-slide" style="background-image: url('images/hero/h3.jpg')"></div>
+        <div class="gate-slide" style="background-image: url('images/hero/h4.jpg')"></div>
+        <div class="gate-slide" style="background-image: url('images/hero/h5.jpg')"></div>
+        <div class="gate-slide" style="background-image: url('images/hero/h6.jpg')"></div>
+        <div class="gate-slide" style="background-image: url('images/hero/h7.jpg')"></div>
+      </div>
       <div class="gate-card">
         <div class="lang-switcher" role="group" aria-label="Select language">
           <button class="lang-btn active" data-lang="pt">PT</button>
@@ -996,7 +1016,7 @@
         <a class="pcard" href="firstperson.html">
           <div class="pcard-thumb">
             <img
-              src="images/seq/aereo_to_piscina_01.jpg"
+              src="images/seq_arch/aereo_to_piscina_01.jpg"
               alt="Exterior Interativo"
               width="800"
               height="500"
@@ -1463,5 +1483,14 @@
       }
     </script>
   <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
+  <script>
+    const gateSlides = document.querySelectorAll('.gate-slide');
+    let gateCur = 0;
+    setInterval(() => {
+      gateSlides[gateCur].classList.remove('active');
+      gateCur = (gateCur + 1) % gateSlides.length;
+      gateSlides[gateCur].classList.add('active');
+    }, 5000);
+  </script>
   </body>
 </html>

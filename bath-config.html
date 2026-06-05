@@ -44,7 +44,7 @@
       /* ── STAGE ── */
       #stage {
         position: fixed; inset: 0; z-index: 0;
-        background: url("images/conf/capa_config.jpg") center/cover no-repeat;
+        background: url("images/seq_arch/capa_config.jpg") center/cover no-repeat;
       }
       #stage::after {
         content: ""; position: absolute; inset: 0; z-index: 2;
@@ -345,12 +345,12 @@
     </div>
 
     <div id="exp-logo-wrap">
-      <img src="images/conf/showroom-plus-logo.svg" alt="Showroom Plus" />
+      <img src="images/seq_arch/showroom-plus-logo.svg" alt="Showroom Plus" />
     </div>
 
     <div id="cover">
       <div id="cover-card">
-        <img id="cover-logo" src="images/conf/showroom-plus-logo.svg" alt="Showroom Plus" />
+        <img id="cover-logo" src="images/seq_arch/showroom-plus-logo.svg" alt="Showroom Plus" />
         <button id="btn-start" onclick="startExperience()">
           Explorar
           <svg viewBox="0 0 14 14"><polyline points="3,1 11,7 3,13"/></svg>
@@ -503,9 +503,9 @@
       function jumpTo(idx) {
         if (idx === cur) return;
         if (idx === 1) {
-          playSeq(loadFrames('geral_to_torneira', 'images/conf/geral_to_torneira_', 49), 24);
+          playSeq(loadFrames('geral_to_torneira', 'images/seq_arch/geral_to_torneira_', 49), 24);
         } else if (idx === 0 && cur === 1) {
-          playSeq([...loadFrames('geral_to_torneira', 'images/conf/geral_to_torneira_', 49)].reverse(), 24);
+          playSeq([...loadFrames('geral_to_torneira', 'images/seq_arch/geral_to_torneira_', 49)].reverse(), 24);
         } else if (idx !== 0) {
           clearSeqCanvas();
         }
@@ -522,7 +522,7 @@
         document.getElementById("exp-logo-wrap").classList.add("show");
         setTimeout(() => { document.getElementById("cover").style.display = "none"; }, 500);
         document.getElementById("sidebar").classList.add("open");
-        loadFrames('geral_to_torneira', 'images/conf/geral_to_torneira_', 49);
+        loadFrames('geral_to_torneira', 'images/seq_arch/geral_to_torneira_', 49);
         jumpTo(0);
         buildSummary();
       }
@@ -571,19 +571,19 @@
         if (modeIdx === 0) {
           if (optIdx === 0) {
             if (prev === 2)
-              playSeq([...loadFrames('marmore_to_ardosia', 'images/conf/piso2_to_piso3_', 73)].reverse(), 24);
+              playSeq([...loadFrames('marmore_to_ardosia', 'images/seq_arch/piso2_to_piso3_', 73)].reverse(), 24);
             else
-              playSeq(loadFrames('marmore', 'images/conf/piso1_to_piso2_', 54), 24);
+              playSeq(loadFrames('marmore', 'images/seq_arch/piso1_to_piso2_', 54), 24);
           } else if (optIdx === 2) {
             if (prev === 0)
-              playSeq(loadFrames('marmore_to_ardosia', 'images/conf/piso2_to_piso3_', 73), 24);
+              playSeq(loadFrames('marmore_to_ardosia', 'images/seq_arch/piso2_to_piso3_', 73), 24);
             else
-              playSeq(loadFrames('ardosia', 'images/conf/piso1_to_piso3_', 49), 24);
+              playSeq(loadFrames('ardosia', 'images/seq_arch/piso1_to_piso3_', 49), 24);
           } else if (optIdx === 1) {
             if (prev === 2)
-              playSeq([...loadFrames('ardosia', 'images/conf/piso1_to_piso3_', 49)].reverse(), 24);
+              playSeq([...loadFrames('ardosia', 'images/seq_arch/piso1_to_piso3_', 49)].reverse(), 24);
             else if (prev === 0)
-              playSeq([...loadFrames('marmore', 'images/conf/piso1_to_piso2_', 54)].reverse(), 24);
+              playSeq([...loadFrames('marmore', 'images/seq_arch/piso1_to_piso2_', 54)].reverse(), 24);
             else
               clearSeqCanvas();
           } else {
@@ -593,9 +593,9 @@
 
         if (modeIdx === 1) {
           if (optIdx === 1)
-            playSeq(loadFrames('torneira_preto', 'images/conf/torneira2_totorneira1_', 29), 24);
+            playSeq(loadFrames('torneira_preto', 'images/seq_arch/torneira2_totorneira1_', 29), 24);
           else if (optIdx === 0 && prev === 1)
-            playSeq([...loadFrames('torneira_preto', 'images/conf/torneira2_totorneira1_', 29)].reverse(), 24);
+            playSeq([...loadFrames('torneira_preto', 'images/seq_arch/torneira2_totorneira1_', 29)].reverse(), 24);
           else
             clearSeqCanvas();
         }

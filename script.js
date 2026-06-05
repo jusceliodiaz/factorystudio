@@ -23,7 +23,7 @@ window.addEventListener('load', () => {
   resizeCanvas();
   if (!MOBILE) initCursor();
   buildTrack();
-  showPoster(CONFIG.poster || 'images/seq/aereo_to_piscina_00.jpg', () => startScene('aereo'));
+  showPoster(CONFIG.poster || 'images/seq_arch/aereo_to_piscina_00.jpg', () => startScene('aereo'));
   preloadAllVideos();
 });
 
@@ -167,7 +167,7 @@ function preload(seqId) {
   const seqBase = CONFIG.sequences[seqId];
   // Mobile: usa pasta seq_arch_m com imagens 50% menores e quality 35
   const seq = MOBILE
-    ? { ...seqBase, folder: seqBase.folder.replace('images/seq/', 'images/seq_arch_m/') }
+    ? { ...seqBase, folder: seqBase.folder.replace('images/seq_arch/', 'images/seq_arch_m/') }
     : seqBase;
   const step  = MOBILE ? 2 : 1;
   const total = seq.to - seq.from + 1;
