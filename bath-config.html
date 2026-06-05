@@ -336,10 +336,39 @@
           background: rgba(210, 210, 210, 0.95);
         }
       }
+
+      /* ── LANG SWITCHER ── */
+      .lang-switcher {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9000;
+        display: flex;
+        gap: 16px;
+      }
+      .lang-btn {
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        padding: 2px 0 4px;
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: rgba(255,255,255,0.35);
+        transition: color 0.2s ease, border-color 0.2s ease;
+      }
+      .lang-btn.active { color: #fff; border-bottom-color: var(--warm); }
+      .lang-btn:hover:not(.active) { color: rgba(255,255,255,0.65); }
     </style>
   </head>
 
   <body>
+    <div class="lang-switcher" role="group" aria-label="Selecionar idioma">
+      <button class="lang-btn active" data-lang="pt" title="Português">PT</button>
+      <button class="lang-btn" data-lang="en" title="English">EN</button>
+    </div>
     <div id="stage">
       <canvas id="seq-canvas"></canvas>
     </div>
@@ -352,7 +381,7 @@
       <div id="cover-card">
         <img id="cover-logo" src="images/seq_arch/showroom-plus-logo.svg" alt="Showroom Plus" />
         <button id="btn-start" onclick="startExperience()">
-          Explorar
+          <span data-i18n="explore">Explorar</span>
           <svg viewBox="0 0 14 14"><polyline points="3,1 11,7 3,13"/></svg>
         </button>
       </div>
@@ -360,26 +389,26 @@
 
     <div id="sidebar">
       <div id="sb-handle"></div>
-      <div class="sb-title" id="sb-title">Configurador</div>
+      <div class="sb-title" id="sb-title" data-i18n="sb-title">Configurador</div>
       <div class="sb-divider"></div>
 
       <div>
-        <div class="sb-label">Modo</div>
+        <div class="sb-label" data-i18n="sb-mode">Modo</div>
         <div class="sb-modes" id="sb-modes"></div>
       </div>
 
       <div>
-        <div class="sb-label">Revestimento</div>
+        <div class="sb-label" data-i18n="sb-cladding">Revestimento</div>
         <div class="sb-cards" id="sb-cards"></div>
       </div>
 
       <div>
-        <div class="sb-label">Sua Seleção</div>
+        <div class="sb-label" data-i18n="sb-selection">Sua Seleção</div>
         <div class="sb-summary" id="sb-summary"></div>
       </div>
 
       <button class="sb-cta" id="sb-cta-btn" onclick="confirmConfig()">
-        ✦ Confirmar Configuração
+        ✦ <span data-i18n="sb-confirm">Confirmar Configuração</span>
       </button>
     </div>
 
@@ -406,27 +435,50 @@
         </svg>`,
       };
 
+      const PTS_LABELS = {
+        pt: ["Piso", "Torneira", "Pia"],
+        en: ["Floor", "Faucet", "Sink"]
+      };
       const PTS = [
         { id: "piso",     label: "Piso",     icon: ICONS.piso     },
         { id: "torneira", label: "Torneira", icon: ICONS.torneira },
         { id: "pia",      label: "Pia",      icon: ICONS.pia      },
       ];
 
-      const OPTIONS = {
-        0: [
-          { label: "Mármore Verde", sub: "Pedra natural · Polido", swatch: "sw-marble"      },
-          { label: "Porcelanato",   sub: "Cerâmica · Acetinado",   swatch: "sw-porcelanato" },
-          { label: "Ardósia",       sub: "Pedra natural · Fosco",  swatch: "sw-ardosia"     },
-        ],
-        1: [
-          { label: "Bronze", sub: "Aço · PVD Bronze",  swatch: "sw-bronze"    },
-          { label: "Preto",  sub: "Aço · Fosco Preto", swatch: "sw-preto-mat" },
-        ],
-        2: [
-          { label: "Louça Branca",  sub: "Cerâmica · Vitrificado", swatch: "sw-louca" },
-          { label: "Pedra Natural", sub: "Quartzito · Escovado",   swatch: "sw-pedra" },
-        ],
+      const OPTIONS_DATA = {
+        pt: {
+          0: [
+            { label: "Mármore Verde", sub: "Pedra natural · Polido", swatch: "sw-marble"      },
+            { label: "Porcelanato",   sub: "Cerâmica · Acetinado",   swatch: "sw-porcelanato" },
+            { label: "Ardósia",       sub: "Pedra natural · Fosco",  swatch: "sw-ardosia"     },
+          ],
+          1: [
+            { label: "Bronze", sub: "Aço · PVD Bronze",  swatch: "sw-bronze"    },
+            { label: "Preto",  sub: "Aço · Fosco Preto", swatch: "sw-preto-mat" },
+          ],
+          2: [
+            { label: "Louça Branca",  sub: "Cerâmica · Vitrificado", swatch: "sw-louca" },
+            { label: "Pedra Natural", sub: "Quartzito · Escovado",   swatch: "sw-pedra" },
+          ],
+        },
+        en: {
+          0: [
+            { label: "Green Marble",  sub: "Natural stone · Polished", swatch: "sw-marble"      },
+            { label: "Porcelain",     sub: "Ceramic · Satin",          swatch: "sw-porcelanato" },
+            { label: "Slate",         sub: "Natural stone · Matte",    swatch: "sw-ardosia"     },
+          ],
+          1: [
+            { label: "Bronze", sub: "Steel · PVD Bronze", swatch: "sw-bronze"    },
+            { label: "Black",  sub: "Steel · Matte Black", swatch: "sw-preto-mat" },
+          ],
+          2: [
+            { label: "White Ceramic", sub: "Ceramic · Glazed",         swatch: "sw-louca" },
+            { label: "Natural Stone", sub: "Quartzite · Brushed",      swatch: "sw-pedra" },
+          ],
+        }
       };
+      let _currentLang = localStorage.getItem("fi-lang") || "pt";
+      let OPTIONS = OPTIONS_DATA[_currentLang] || OPTIONS_DATA.pt;
 
       // ── CANVAS / FRAME SEQUENCE ──────────────────────────
       const seqCanvas = document.getElementById('seq-canvas');
@@ -639,6 +691,75 @@
       }
 
       buildModes();
+    </script>
+
+    <script>
+      (function () {
+        var TUI = {
+          pt: {
+            "explore": "Explorar",
+            "sb-title": "Configurador",
+            "sb-mode": "Modo",
+            "sb-cladding": "Revestimento",
+            "sb-selection": "Sua Seleção",
+            "sb-confirm": "Confirmar Configuração"
+          },
+          en: {
+            "explore": "Explore",
+            "sb-title": "Configurator",
+            "sb-mode": "Mode",
+            "sb-cladding": "Material",
+            "sb-selection": "Your Selection",
+            "sb-confirm": "Confirm Configuration"
+          }
+        };
+
+        function applyLang(lang) {
+          var dict = TUI[lang]; if (!dict) return;
+          document.querySelectorAll("[data-i18n]").forEach(function (el) {
+            var key = el.getAttribute("data-i18n");
+            var val = dict[key]; if (val === undefined) return;
+            el.textContent = val;
+          });
+
+          // Atualiza OPTIONS e PTS labels e re-renderiza
+          if (typeof OPTIONS_DATA !== "undefined") {
+            OPTIONS = OPTIONS_DATA[lang] || OPTIONS_DATA.pt;
+          }
+          if (typeof PTS_LABELS !== "undefined" && typeof PTS !== "undefined") {
+            var lbls = PTS_LABELS[lang] || PTS_LABELS.pt;
+            PTS.forEach(function (pt, i) { pt.label = lbls[i]; });
+            // Re-render mode buttons
+            var wrap = document.getElementById("sb-modes");
+            if (wrap) {
+              wrap.querySelectorAll(".sb-mode-name").forEach(function (el, i) {
+                el.textContent = PTS[i].label;
+              });
+            }
+            // Re-render cards for current mode
+            if (typeof renderCards === "function" && typeof cur === "number" && cur >= 0) {
+              renderCards(cur);
+              // Update sidebar title
+              var titleEl = document.getElementById("sb-title");
+              if (titleEl) titleEl.textContent = PTS[cur].label;
+            }
+          }
+
+          document.documentElement.lang = lang === "en" ? "en-US" : "pt-BR";
+          localStorage.setItem("fi-lang", lang);
+        }
+
+        document.querySelectorAll(".lang-btn").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var lang = btn.getAttribute("data-lang");
+            document.querySelectorAll(".lang-btn").forEach(function (b) { b.classList.toggle("active", b === btn); });
+            applyLang(lang);
+          });
+        });
+
+        var saved = localStorage.getItem("fi-lang");
+        if (saved && TUI[saved] && saved !== "pt") applyLang(saved);
+      })();
     </script>
   </body>
 </html>

@@ -255,15 +255,68 @@
         }
       }
 
-      @media (max-width: 480px) {
+      @media (max-width: 640px) {
+        .page {
+          transform: none;
+          padding: 80px 24px 40px;
+          justify-content: center;
+          gap: 0;
+        }
         .logo {
-          height: 60px;
-          margin-bottom: 40px;
+          height: 56px;
+          margin-bottom: 16px;
+        }
+        h1 {
+          font-size: clamp(1.7rem, 7.5vw, 2.4rem);
+          margin-bottom: 16px;
+        }
+        .sub {
+          font-size: 0.88rem;
+          margin-bottom: 36px;
+          max-width: 100%;
+        }
+        .btn-wa {
+          scale: 1;
+          margin-top: 24px;
+        }
+        .lang-switcher {
+          top: max(16px, env(safe-area-inset-top, 16px));
+          right: 16px;
         }
       }
+
+      /* ── LANG SWITCHER ── */
+      .lang-switcher {
+        position: fixed;
+        top: 28px;
+        right: 32px;
+        z-index: 200;
+        display: flex;
+        gap: 16px;
+      }
+      .lang-btn {
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        padding: 2px 0 4px;
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: rgba(255, 255, 255, 0.35);
+        transition: color 0.2s ease, border-color 0.2s ease;
+      }
+      .lang-btn.active { color: #fff; border-bottom-color: var(--gold); }
+      .lang-btn:hover:not(.active) { color: rgba(255, 255, 255, 0.65); }
     </style>
   </head>
   <body>
+    <div class="lang-switcher" role="group" aria-label="Selecionar idioma">
+      <button class="lang-btn active" data-lang="pt" title="Português">PT</button>
+      <button class="lang-btn" data-lang="en" title="English">EN</button>
+    </div>
+
     <div class="hero-bg">
       <div
         class="hero-slide active"
@@ -298,11 +351,11 @@
     <div class="page">
       <img src="images/logo_site2.png" alt="Factory Studio" class="logo" />
       <h1>
-        We are a webdesign studio.<br /><span
+        We are a webdesign studio.<br /><span data-i18n="hero-sub"
           >Algo novo está sendo construído.</span
         >
       </h1>
-      <p class="sub">
+      <p class="sub" data-i18n="sub" data-i18n-html="true">
         Inovação que impressiona, tecnologia que simplifica.<br />Do site ao tour 3D interativo, tudo entregue como um link.
       </p>
       <div class="divider"></div>
@@ -325,11 +378,47 @@
             />
           </svg>
         </span>
-        Fale conosco
+        <span data-i18n="btn-wa">Fale conosco</span>
       </a>
     </div>
 
     <a href="/site.html" class="btn-admin">admin</a>
+    <script>
+      (function () {
+        var T = {
+          pt: {
+            "hero-sub": "Algo novo está sendo construído.",
+            "sub": "Inovação que impressiona, tecnologia que simplifica.<br />Do site ao tour 3D interativo, tudo entregue como um link.",
+            "btn-wa": "Fale conosco"
+          },
+          en: {
+            "hero-sub": "Something new is being built.",
+            "sub": "Innovation that impresses, technology that simplifies.<br />From the website to the 3D interactive tour, all delivered as a link.",
+            "btn-wa": "Talk to us"
+          }
+        };
+        function applyLang(lang) {
+          var dict = T[lang]; if (!dict) return;
+          document.querySelectorAll("[data-i18n]").forEach(function (el) {
+            var key = el.getAttribute("data-i18n");
+            var val = dict[key]; if (val === undefined) return;
+            if (el.getAttribute("data-i18n-html") === "true") el.innerHTML = val;
+            else el.textContent = val;
+          });
+          document.documentElement.lang = lang === "en" ? "en-US" : "pt-BR";
+          localStorage.setItem("fi-lang", lang);
+        }
+        document.querySelectorAll(".lang-btn").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var lang = btn.getAttribute("data-lang");
+            document.querySelectorAll(".lang-btn").forEach(function (b) { b.classList.toggle("active", b === btn); });
+            applyLang(lang);
+          });
+        });
+        var saved = localStorage.getItem("fi-lang");
+        if (saved && T[saved] && saved !== "pt") applyLang(saved);
+      })();
+    </script>
     <script>
       const slides = document.querySelectorAll(".hero-slide");
       let cur = 0;

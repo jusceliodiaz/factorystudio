@@ -2809,10 +2809,39 @@
           bottom: max(20px, env(safe-area-inset-bottom, 20px));
         }
       }
+
+      /* ── LANG SWITCHER ── */
+      .lang-switcher {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9000;
+        display: flex;
+        gap: 16px;
+      }
+      .lang-btn {
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        padding: 2px 0 4px;
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: rgba(255, 255, 255, 0.35);
+        transition: color 0.2s ease, border-color 0.2s ease;
+      }
+      .lang-btn.active { color: #fff; border-bottom-color: var(--warm); }
+      .lang-btn:hover:not(.active) { color: rgba(255, 255, 255, 0.65); }
     </style>
   </head>
 
   <body>
+    <div class="lang-switcher" role="group" aria-label="Selecionar idioma">
+      <button class="lang-btn active" data-lang="pt" title="Português">PT</button>
+      <button class="lang-btn" data-lang="en" title="English">EN</button>
+    </div>
     <div id="cursor"></div>
     <div id="ring"></div>
     <div id="noise"></div>
@@ -2846,7 +2875,7 @@
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M10 3L5 8l5 5"/>
         </svg>
-        Voltar
+        <span data-i18n="back">Voltar</span>
       </a>
       <div id="state-badge" style="display:none">
         <div id="state-dot"></div>
@@ -2884,7 +2913,7 @@
             <path d="M9 18h6" />
           </svg>
         </div>
-        <span id="ai-label">IA</span>
+        <span id="ai-label" data-i18n="ai-label">IA</span>
       </div>
       <div class="ai-bot-sep"></div>
       <div id="neo-track-btn" onclick="neoClick()" tabindex="-1">
@@ -2907,14 +2936,14 @@
             <circle cx="12" cy="2.5" r="1" fill="#c8a96e" stroke="none" />
           </svg>
         </div>
-        <span id="neo-label">VOZ</span>
+        <span id="neo-label" data-i18n="voz-label">VOZ</span>
       </div>
     </div>
 
     <!-- AI IMAGE PANEL -->
     <div id="ai-panel">
       <div id="ai-panel-header">
-        <div id="ai-panel-title">AI Image Generator</div>
+        <div id="ai-panel-title" data-i18n="ai-panel-title">AI Image Generator</div>
         <div id="ai-panel-close" onclick="aiTogglePanel()" tabindex="-1">
           <svg viewBox="0 0 10 10">
             <line x1="2" y1="2" x2="8" y2="8" />
@@ -2938,8 +2967,8 @@
         </div>
         <div class="ai-field">
           <label class="ai-lbl" style="display:flex;align-items:center;gap:6px">
-            Instrução de estilo
-            <span style="font-size:9px;letter-spacing:0.06em;color:rgba(200,169,110,0.7);font-weight:500;text-transform:none">• usa a vista atual como referência</span>
+            <span data-i18n="ai-style-label">Instrução de estilo</span>
+            <span data-i18n="ai-style-hint" style="font-size:9px;letter-spacing:0.06em;color:rgba(200,169,110,0.7);font-weight:500;text-transform:none">• usa a vista atual como referência</span>
           </label>
           <textarea
             id="ai-prompt"
@@ -3083,8 +3112,8 @@
           </button>
         </div>
         <div id="p-cta">
-          <button class="btn-fill">Solicitar info</button>
-          <button class="btn-line">Planta</button>
+          <button class="btn-fill" data-i18n="btn-request">Solicitar info</button>
+          <button class="btn-line" data-i18n="btn-floorplan">Planta</button>
         </div>
       </div>
     </div>
@@ -3144,11 +3173,11 @@
           >
             <path d="M7 3L3 7l4 4M3 7h11M13 17l4-4-4-4M17 13H6" />
           </svg>
-          Arraste para explorar · Scroll para zoom
+          <span data-i18n="pano-hint">Arraste para explorar · Scroll para zoom</span>
         </div>
         <div id="pano-loading">
           <div id="pano-spinner"></div>
-          Carregando panorama 360°
+          <span data-i18n="pano-loading">Carregando panorama 360°</span>
         </div>
       </div>
     </div>
@@ -5815,5 +5844,54 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
     </script>
 
   <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
+  <script>
+    (function () {
+      var T = {
+        pt: {
+          "back": "Voltar",
+          "ai-label": "IA",
+          "voz-label": "VOZ",
+          "ai-panel-title": "AI Image Generator",
+          "ai-style-label": "Instrução de estilo",
+          "ai-style-hint": "• usa a vista atual como referência",
+          "btn-request": "Solicitar info",
+          "btn-floorplan": "Planta",
+          "pano-hint": "Arraste para explorar · Scroll para zoom",
+          "pano-loading": "Carregando panorama 360°"
+        },
+        en: {
+          "back": "Back",
+          "ai-label": "AI",
+          "voz-label": "VOICE",
+          "ai-panel-title": "AI Image Generator",
+          "ai-style-label": "Style instruction",
+          "ai-style-hint": "• uses current view as reference",
+          "btn-request": "Request info",
+          "btn-floorplan": "Floor Plan",
+          "pano-hint": "Drag to explore · Scroll to zoom",
+          "pano-loading": "Loading 360° panorama"
+        }
+      };
+      function applyLang(lang) {
+        var dict = T[lang]; if (!dict) return;
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          var key = el.getAttribute("data-i18n");
+          var val = dict[key]; if (val === undefined) return;
+          el.textContent = val;
+        });
+        document.documentElement.lang = lang === "en" ? "en-US" : "pt-BR";
+        localStorage.setItem("fi-lang", lang);
+      }
+      document.querySelectorAll(".lang-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var lang = btn.getAttribute("data-lang");
+          document.querySelectorAll(".lang-btn").forEach(function (b) { b.classList.toggle("active", b === btn); });
+          applyLang(lang);
+        });
+      });
+      var saved = localStorage.getItem("fi-lang");
+      if (saved && T[saved] && saved !== "pt") applyLang(saved);
+    })();
+  </script>
   </body>
 </html>
