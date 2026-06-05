@@ -2,20 +2,25 @@
 <html lang="pt-BR">
   <head>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3K51DFTX3J"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-3K51DFTX3J"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'G-3K51DFTX3J');
+      gtag("config", "G-3K51DFTX3J");
     </script>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <title>Archviz Explorer — Factory Interactive</title>
+    <title>Archviz Explorer</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Mono:wght@300;400&family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet"
@@ -38,7 +43,8 @@
         -webkit-tap-highlight-color: transparent !important;
       }
 
-      div[onclick], div[tabindex] {
+      div[onclick],
+      div[tabindex] {
         -webkit-tap-highlight-color: transparent !important;
         outline: none !important;
         user-select: none;
@@ -181,6 +187,10 @@
       /* ── Botões do dock IA/Bot ── */
       #ai-track-btn,
       #neo-track-btn {
+        display: none !important;
+      }
+      #ai-track-btn.__unused,
+      #neo-track-btn.__unused {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -532,7 +542,6 @@
         background: rgba(255, 255, 255, 0.12);
       }
 
-
       /* TRACK */
       #track {
         position: fixed;
@@ -602,6 +611,66 @@
 
       .t-pt.slot-hidden {
         display: none;
+      }
+
+      #track-pts {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+      }
+
+      @keyframes tpt-in-fwd {
+        from {
+          transform: translateX(56px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes tpt-in-back {
+        from {
+          transform: translateX(-56px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes tpt-out-fwd {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(-56px);
+          opacity: 0;
+        }
+      }
+      @keyframes tpt-out-back {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(56px);
+          opacity: 0;
+        }
+      }
+      .t-pt.tpt-in-fwd {
+        animation: tpt-in-fwd 0.26s var(--ease) both;
+      }
+      .t-pt.tpt-in-back {
+        animation: tpt-in-back 0.26s var(--ease) both;
+      }
+      .t-pt.tpt-out-fwd {
+        animation: tpt-out-fwd 0.26s var(--ease) both;
+      }
+      .t-pt.tpt-out-back {
+        animation: tpt-out-back 0.26s var(--ease) both;
       }
 
       .t-arrow {
@@ -1513,7 +1582,9 @@
 
       /* Mobile: desabilita backdrop-filter e noise — muito pesados na GPU mobile */
       @media (hover: none) {
-        #noise { display: none; }
+        #noise {
+          display: none;
+        }
         #track,
         #ai-bot-bar {
           backdrop-filter: none;
@@ -1587,7 +1658,12 @@
 
       <div id="track-sep"></div>
 
-      <div class="light-btn active" id="light-day" tabindex="-1" onclick="setLight('day')">
+      <div
+        class="light-btn active"
+        id="light-day"
+        tabindex="-1"
+        onclick="setLight('day')"
+      >
         <div class="ab-icon">
           <svg viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="4" />
@@ -1603,7 +1679,12 @@
         </div>
       </div>
 
-      <div class="light-btn" id="light-sunset" tabindex="-1" onclick="setLight('sunset')">
+      <div
+        class="light-btn"
+        id="light-sunset"
+        tabindex="-1"
+        onclick="setLight('sunset')"
+      >
         <div class="ab-icon">
           <svg viewBox="0 0 24 24">
             <path
@@ -1616,7 +1697,12 @@
         </div>
       </div>
 
-      <div class="light-btn" id="light-night" tabindex="-1" onclick="setLight('night')">
+      <div
+        class="light-btn"
+        id="light-night"
+        tabindex="-1"
+        onclick="setLight('night')"
+      >
         <div class="ab-icon">
           <svg viewBox="0 0 24 24">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
@@ -1757,7 +1843,6 @@
         </div>
       </div>
     </div>
-
 
     <!-- 360° PANORAMA MODAL -->
     <div id="pano-modal" aria-hidden="true">
@@ -2136,7 +2221,7 @@
       const ctx = canvas.getContext("2d");
       let seqRaf = null;
 
-      const MOBILE = window.matchMedia('(hover: none)').matches;
+      const MOBILE = window.matchMedia("(hover: none)").matches;
 
       function resizeCanvas() {
         const dpr = MOBILE ? 1 : Math.min(window.devicePixelRatio || 1, 2);
@@ -2226,7 +2311,7 @@
 
         // Mobile: pula frames alternados (24 frames em vez de 48) e usa fps menor
         const step = MOBILE ? 2 : 1;
-        const fps = MOBILE ? 20 : (seq.fps || 36);
+        const fps = MOBILE ? 20 : seq.fps || 36;
         const INTERVAL = 1000 / fps;
 
         const indices = [];
@@ -2254,12 +2339,15 @@
 
         let frameIdx = 0;
         let lastTime = null;
-        const bail = setTimeout(() => {
-          if (state === "playing") {
-            cur = to;
-            runQ();
-          }
-        }, MOBILE ? 20000 : 8000);
+        const bail = setTimeout(
+          () => {
+            if (state === "playing") {
+              cur = to;
+              runQ();
+            }
+          },
+          MOBILE ? 20000 : 8000,
+        );
 
         function tick(ts) {
           if (!lastTime) lastTime = ts;
@@ -2341,15 +2429,61 @@
       }
 
       const TRACK_ORDER = [6, 0, 9, 8, 7];
-      const TRACK_VISIBLE = 2;
+      const TRACK_VISIBLE = 1;
       let trackOffset = 0;
 
-      function updateTrackSlots() {
+      function updateTrackSlots(dir) {
         const arrL = document.getElementById("arr-l");
         const arrR = document.getElementById("arr-r");
+        const ANIM_CLASSES = [
+          "tpt-in-fwd",
+          "tpt-in-back",
+          "tpt-out-fwd",
+          "tpt-out-back",
+        ];
+
         document.querySelectorAll(".t-pt").forEach((el, i) => {
-          el.classList.toggle("slot-hidden", i < trackOffset || i >= trackOffset + TRACK_VISIBLE);
+          const shouldShow =
+            i >= trackOffset && i < trackOffset + TRACK_VISIBLE;
+          const isHidden = el.classList.contains("slot-hidden");
+
+          if (shouldShow && isHidden) {
+            el.classList.remove("slot-hidden");
+            el.classList.remove(...ANIM_CLASSES);
+            if (dir) {
+              const cls = dir === "fwd" ? "tpt-in-fwd" : "tpt-in-back";
+              el.classList.add(cls);
+              el.addEventListener(
+                "animationend",
+                () => el.classList.remove(cls),
+                { once: true },
+              );
+            }
+          } else if (!shouldShow && !isHidden) {
+            el.classList.remove(...ANIM_CLASSES);
+            if (dir) {
+              const cls = dir === "fwd" ? "tpt-out-fwd" : "tpt-out-back";
+              el.style.position = "absolute";
+              el.style.left = "0";
+              el.style.pointerEvents = "none";
+              el.classList.add(cls);
+              el.addEventListener(
+                "animationend",
+                () => {
+                  el.classList.add("slot-hidden");
+                  el.classList.remove(cls);
+                  el.style.position = "";
+                  el.style.left = "";
+                  el.style.pointerEvents = "";
+                },
+                { once: true },
+              );
+            } else {
+              el.classList.add("slot-hidden");
+            }
+          }
         });
+
         arrL.disabled = trackOffset === 0;
         arrR.disabled = trackOffset >= TRACK_ORDER.length - TRACK_VISIBLE;
       }
@@ -2357,6 +2491,10 @@
       function buildTrack() {
         const arrR = document.getElementById("arr-r");
         const track = document.getElementById("track");
+
+        const ptsWrap = document.createElement("div");
+        ptsWrap.id = "track-pts";
+        track.insertBefore(ptsWrap, arrR);
 
         // Ordem: Parque (6) | Panorâmica (0) | Estacionamento (9) | Portaria (8) | Prédio 1 (7)
         TRACK_ORDER.forEach((idx) => {
@@ -2373,16 +2511,19 @@
             },
             { passive: false },
           );
-          track.insertBefore(el, arrR);
+          ptsWrap.appendChild(el);
         });
 
         document.getElementById("arr-l").addEventListener("click", () => {
           trackOffset = Math.max(0, trackOffset - 1);
-          updateTrackSlots();
+          updateTrackSlots("back");
         });
         document.getElementById("arr-r").addEventListener("click", () => {
-          trackOffset = Math.min(TRACK_ORDER.length - TRACK_VISIBLE, trackOffset + 1);
-          updateTrackSlots();
+          trackOffset = Math.min(
+            TRACK_ORDER.length - TRACK_VISIBLE,
+            trackOffset + 1,
+          );
+          updateTrackSlots("fwd");
         });
 
         updateTrackSlots();
@@ -2395,9 +2536,17 @@
           const isActive = parseInt(el.dataset.i) === activeTrack;
           el.classList.toggle("active", isActive);
           // Se o botão ativo ficou fora da janela visível, ajusta o offset
-          if (isActive && (i < trackOffset || i >= trackOffset + TRACK_VISIBLE)) {
-            trackOffset = Math.max(0, Math.min(TRACK_ORDER.length - TRACK_VISIBLE, i));
-            updateTrackSlots();
+          if (
+            isActive &&
+            (i < trackOffset || i >= trackOffset + TRACK_VISIBLE)
+          ) {
+            const newOffset = Math.max(
+              0,
+              Math.min(TRACK_ORDER.length - TRACK_VISIBLE, i),
+            );
+            const dir = newOffset > trackOffset ? "fwd" : "back";
+            trackOffset = newOffset;
+            updateTrackSlots(dir);
           }
         });
 
@@ -2407,7 +2556,7 @@
       // ══════════════════════════════════════════════════════
       // INICIALIZAÇÃO
       // ══════════════════════════════════════════════════════
-document.getElementById("track").classList.add("show");
+      document.getElementById("track").classList.add("show");
       document.getElementById("ai-bot-bar").classList.add("show");
 
       // ══════════════════════════════════════════════════════
@@ -3642,8 +3791,8 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
           _aiDragging = true;
           panel.classList.add("dragging");
           const r = panel.getBoundingClientRect();
-          panel.style.top       = r.top  + "px";
-          panel.style.left      = r.left + "px";
+          panel.style.top = r.top + "px";
+          panel.style.left = r.left + "px";
           panel.style.transform = "none";
           _aiDragOX = e.clientX - r.left;
           _aiDragOY = e.clientY - r.top;
@@ -3652,14 +3801,32 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
         header.addEventListener("pointermove", function (e) {
           if (!_aiDragging) return;
           e.preventDefault();
-          const nx = Math.max(0, Math.min(window.innerWidth  - panel.offsetWidth,  e.clientX - _aiDragOX));
-          const ny = Math.max(0, Math.min(window.innerHeight - panel.offsetHeight, e.clientY - _aiDragOY));
+          const nx = Math.max(
+            0,
+            Math.min(
+              window.innerWidth - panel.offsetWidth,
+              e.clientX - _aiDragOX,
+            ),
+          );
+          const ny = Math.max(
+            0,
+            Math.min(
+              window.innerHeight - panel.offsetHeight,
+              e.clientY - _aiDragOY,
+            ),
+          );
           panel.style.left = nx + "px";
-          panel.style.top  = ny + "px";
+          panel.style.top = ny + "px";
         });
 
-        header.addEventListener("pointerup",     function () { _aiDragging = false; panel.classList.remove("dragging"); });
-        header.addEventListener("pointercancel", function () { _aiDragging = false; panel.classList.remove("dragging"); });
+        header.addEventListener("pointerup", function () {
+          _aiDragging = false;
+          panel.classList.remove("dragging");
+        });
+        header.addEventListener("pointercancel", function () {
+          _aiDragging = false;
+          panel.classList.remove("dragging");
+        });
       }
 
       function aiTogglePanel() {
@@ -3781,31 +3948,9 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
       });
     </script>
 
-    <div
-      style="
-        position: fixed;
-        bottom: 16px;
-        right: 20px;
-        z-index: 999;
-        font-family: &quot;Inter&quot;, sans-serif;
-        font-size: 0.62rem;
-        letter-spacing: 0.1em;
-        color: rgba(255, 255, 255, 0.22);
-        pointer-events: none;
-      "
-    >
+    <div style="display: none">
       Powered by
-      <a
-        href="https://factorystudio.works/"
-        rel="noopener"
-        style="
-          color: rgba(255, 255, 255, 0.42);
-          font-weight: 600;
-          text-decoration: none;
-          font-family: &quot;Silkscreen&quot;, sans-serif;
-        "
-        >Factory</a
-      >
+      <a href="https://factorystudio.works/" rel="noopener">Factory</a>
     </div>
     <link
       href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap"
