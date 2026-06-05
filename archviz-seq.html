@@ -21,10 +21,13 @@
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <title>Archviz Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Mono:wght@300;400&family=Inter:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap"
       rel="stylesheet"
     />
+    <link rel="preload" href="images/seq_arch/arch_00.jpg" as="image" />
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <style>
       *,
@@ -55,9 +58,23 @@
         --ink: #0d0d0b;
         --paper: #f4f0e8;
         --warm: #c8a96e;
+        --green: #30d158;
         --muted: #7a7568;
         --pw: 380px;
-        --ease: cubic-bezier(0.87, 0, 0.13, 1);
+        --ease: cubic-bezier(0.4, 0, 0.2, 1);
+        /* Vision Pro glass tokens */
+        --glass-light: rgba(195, 195, 195, 0.32);
+        --glass-mid: rgba(255, 255, 255, 0.18);
+        --glass-dark: rgba(28, 28, 28, 0.78);
+        --glass-border-light: rgba(255, 255, 255, 0.35);
+        --glass-border-dark: rgba(255, 255, 255, 0.12);
+        --shadow-light:
+          0 0 0 0.5px rgba(255, 255, 255, 0.5) inset,
+          0 20px 60px rgba(0, 0, 0, 0.25);
+        --shadow-dark:
+          0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+          0 20px 60px rgba(0, 0, 0, 0.55);
+        --trans: 220ms cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       html,
@@ -67,7 +84,7 @@
         overflow: hidden;
         background: var(--ink);
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           BlinkMacSystemFont,
           sans-serif;
@@ -85,8 +102,8 @@
         z-index: 9999;
         transform: translate(-50%, -50%);
         transition:
-          width 0.3s var(--ease),
-          height 0.3s var(--ease),
+          width 220ms var(--ease),
+          height 220ms var(--ease),
           background 0.3s;
       }
 
@@ -162,103 +179,81 @@
         position: fixed;
         top: 24px;
         left: 50%;
-        transform: translateX(-50%) scale(0.7);
-        transform-origin: top center;
+        transform: translateX(-50%) scale(1.2);
         z-index: 50;
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 3px;
-        background: rgba(12, 11, 8, 0.8);
-        backdrop-filter: blur(28px) saturate(1.4);
-        -webkit-backdrop-filter: blur(28px) saturate(1.4);
-        border: 1px solid rgba(255, 255, 255, 0.07);
-        border-radius: 99px;
-        padding: 8px 10px;
-        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+        gap: 0px;
+        background: rgba(195, 195, 195, 0.32);
+        backdrop-filter: blur(40px) saturate(1.8);
+        -webkit-backdrop-filter: blur(40px) saturate(1.8);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 999px;
+        padding: 5px 6px;
+        transform-origin: top center;
+        box-shadow: var(--shadow-light);
         opacity: 0;
-        transition: opacity 0.8s var(--ease);
+        transition: opacity 0.35s var(--ease);
       }
       #ai-bot-bar.show {
         opacity: 1;
-        transform: translateX(-50%) scale(0.7);
+        transform: translateX(-50%) scale(1.2);
       }
 
       /* ── Botões do dock IA/Bot ── */
       #ai-track-btn,
       #neo-track-btn {
-        display: none !important;
-      }
-      #ai-track-btn.__unused,
-      #neo-track-btn.__unused {
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 8px;
-        padding: 8px 14px 8px 10px;
-        border-radius: 99px;
+        gap: 4px;
+        padding: 5px 8px 5px 6px;
+        border-radius: 999px;
         cursor: none;
-        opacity: 0.35;
+        color: rgba(30, 30, 30, 0.6);
         transition:
-          opacity 0.25s var(--ease),
-          background 0.25s var(--ease);
+          background var(--trans),
+          color var(--trans);
         flex-shrink: 0;
         outline: none;
-        -webkit-tap-highlight-color: transparent;
         user-select: none;
         -webkit-user-select: none;
       }
       #ai-track-btn:hover,
       #neo-track-btn:hover {
-        opacity: 0.72;
+        background: rgba(255, 255, 255, 0.4);
+        color: rgba(20, 20, 20, 0.9);
       }
-
-      #ai-track-btn.active,
-      #neo-track-btn.listening,
-      #neo-track-btn.thinking {
-        opacity: 1;
-      }
-
       #ai-track-btn.active {
-        background: rgba(200, 169, 110, 0.13);
+        background: rgba(255, 255, 255, 0.6);
+        color: #1a1a1a;
       }
       #neo-track-btn.listening {
-        background: rgba(255, 55, 95, 0.13);
+        background: rgba(255, 55, 95, 0.15);
+        color: #cc2244;
       }
       #neo-track-btn.thinking {
-        background: rgba(200, 169, 110, 0.13);
+        background: rgba(255, 255, 255, 0.6);
+        color: #1a1a1a;
       }
 
       .ab-icon {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.06);
-        color: rgba(255, 255, 255, 0.82);
+        width: 26px;
+        height: 26px;
+        color: inherit;
         transition:
-          color 0.25s var(--ease),
-          background 0.25s var(--ease);
+          color 200ms var(--ease),
+          background 200ms var(--ease);
         flex-shrink: 0;
-      }
-      #ai-track-btn.active .ab-icon {
-        color: var(--warm);
-        background: rgba(200, 169, 110, 0.15);
-      }
-      #neo-track-btn.listening .ab-icon {
-        color: #ff375f;
-        background: rgba(255, 55, 95, 0.15);
-      }
-      #neo-track-btn.thinking .ab-icon {
-        color: var(--warm);
-        background: rgba(200, 169, 110, 0.15);
       }
 
       .ab-icon svg {
-        width: 18px;
-        height: 18px;
+        width: 14px;
+        height: 14px;
         stroke: currentColor;
         fill: none;
         stroke-width: 1.5;
@@ -268,24 +263,14 @@
 
       .ab-label {
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           sans-serif;
         font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.14em;
+        font-weight: 500;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.75);
-        transition: color 0.25s var(--ease);
-      }
-      #ai-track-btn.active .ab-label {
-        color: var(--warm);
-      }
-      #neo-track-btn.listening .ab-label {
-        color: #ff375f;
-      }
-      #neo-track-btn.thinking .ab-label {
-        color: var(--warm);
+        color: inherit;
       }
 
       @keyframes neo-pulse {
@@ -318,14 +303,14 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 8px;
-        padding: 8px 14px 8px 10px;
-        border-radius: 99px;
+        gap: 4px;
+        padding: 5px 8px 5px 6px;
+        border-radius: 999px;
         cursor: none;
-        opacity: 0.35;
+        color: rgba(30, 30, 30, 0.6);
         transition:
-          opacity 0.25s var(--ease),
-          background 0.25s var(--ease);
+          background 200ms var(--ease),
+          color 200ms var(--ease);
         flex-shrink: 0;
         outline: none;
         -webkit-tap-highlight-color: transparent;
@@ -333,20 +318,13 @@
         -webkit-user-select: none;
       }
       .light-btn:hover {
-        opacity: 0.72;
+        background: rgba(255, 255, 255, 0.4);
+        color: rgba(20, 20, 20, 0.9);
       }
       .light-btn.active {
-        opacity: 1;
-        background: rgba(200, 169, 110, 0.13);
+        background: rgba(255, 255, 255, 0.6);
+        color: #1a1a1a;
       }
-      .light-btn.active .ab-icon {
-        color: var(--warm);
-        background: rgba(200, 169, 110, 0.15);
-      }
-      .light-btn.active .ab-label {
-        color: var(--warm);
-      }
-
       /* ── AI PANEL ── */
       #ai-panel {
         position: fixed;
@@ -354,19 +332,19 @@
         left: 50%;
         z-index: 60;
         width: 360px;
-        background: rgba(14, 12, 10, 0.92);
-        border: 1px solid rgba(200, 169, 110, 0.22);
+        background: var(--glass-light);
+        border: 1px solid var(--glass-border-light);
         border-radius: 20px;
         overflow: hidden;
-        backdrop-filter: blur(40px) saturate(1.6);
+        backdrop-filter: blur(40px) saturate(1.8);
         -webkit-backdrop-filter: blur(40px) saturate(1.6);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        box-shadow: var(--shadow-light);
         opacity: 0;
         pointer-events: none;
         transform: translate(-50%, -50%) scale(0.97);
         transition:
-          opacity 0.3s ease,
-          transform 0.3s var(--ease);
+          opacity 220ms var(--ease),
+          transform 220ms var(--ease);
         user-select: none;
       }
       #ai-panel.open {
@@ -380,7 +358,7 @@
       }
       #ai-panel-header {
         padding: 14px 18px;
-        border-bottom: 1px solid rgba(200, 169, 110, 0.14);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -392,7 +370,7 @@
         cursor: grabbing;
       }
       #ai-panel-title {
-        color: var(--warm);
+        color: rgba(60, 60, 60, 0.85);
         font-size: 11px;
         letter-spacing: 0.18em;
         text-transform: uppercase;
@@ -451,7 +429,7 @@
         border-radius: 10px;
         padding: 9px 11px;
         color: #fff;
-        font-family: "Inter", sans-serif;
+        font-family: "DM Sans", sans-serif;
         font-size: 13px;
         outline: none;
         transition: border-color 0.2s;
@@ -474,9 +452,9 @@
         padding: 12px;
         border: none;
         border-radius: 12px;
-        background: var(--warm);
+        background: var(--green);
         color: #1a1000;
-        font-family: "Inter", sans-serif;
+        font-family: "DM Sans", sans-serif;
         font-size: 12px;
         font-weight: 700;
         letter-spacing: 0.1em;
@@ -487,7 +465,7 @@
           transform 0.2s;
       }
       #ai-generate-btn:hover {
-        background: #ddb16a;
+        background: #28bd4d;
         transform: scale(1.02);
       }
       #ai-generate-btn:disabled {
@@ -526,7 +504,7 @@
         border-radius: 12px;
         background: rgba(255, 255, 255, 0.06);
         color: rgba(255, 255, 255, 0.8);
-        font-family: "Inter", sans-serif;
+        font-family: "DM Sans", sans-serif;
         font-size: 12px;
         font-weight: 600;
         letter-spacing: 0.08em;
@@ -545,185 +523,90 @@
       /* TRACK */
       #track {
         position: fixed;
-        bottom: 36px;
+        bottom: 32px;
         left: 50%;
-        transform: translateX(-50%) scale(0.8);
-        transform-origin: bottom center;
+        transform: translateX(-50%);
         z-index: 10;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background: rgba(52, 52, 50, 0.92);
-        backdrop-filter: blur(24px) saturate(1.6);
-        -webkit-backdrop-filter: blur(24px) saturate(1.6);
-        border-radius: 999px;
+        background: rgba(195, 195, 195, 0.32);
+        backdrop-filter: blur(40px) saturate(1.8);
+        -webkit-backdrop-filter: blur(40px) saturate(1.8);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 20px;
         padding: 10px 12px;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+        box-shadow: var(--shadow-light);
         opacity: 0;
         transition: opacity 0.8s var(--ease);
       }
 
       #track.show {
         opacity: 1;
-        transform: translateX(-50%) scale(0.8);
+      }
+
+      #track-pts {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
+        width: 300px;
+      }
+
+      .t-pt-main {
+        grid-column: 1 / -1;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 10px 18px;
+        letter-spacing: 0.12em;
       }
 
       .t-pt {
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 11px 26px;
+        padding: 8px 14px;
         border-radius: 999px;
-        border: 1.5px solid rgba(255, 255, 255, 0.14);
-        background: transparent;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        background: rgba(255, 255, 255, 0.22);
         cursor: pointer;
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           sans-serif;
-        font-size: 12px;
-        font-weight: 700;
+        font-size: 11px;
+        font-weight: 500;
         letter-spacing: 0.1em;
         text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.65);
+        color: rgba(30, 30, 30, 0.65);
         white-space: nowrap;
+        user-select: none;
         transition:
-          background 0.25s ease,
-          border-color 0.25s ease,
-          color 0.25s ease;
-      }
-
-      .t-pt.active {
-        background: #c8a96e;
-        border-color: #c8a96e;
-        color: #1a1200;
-      }
-
-      .t-pt.near {
-        border-color: #c8a96e;
-        color: #c8a96e;
+          background var(--trans),
+          border-color var(--trans),
+          color var(--trans);
       }
 
       .t-pt:not(.active):hover {
-        border-color: rgba(255, 255, 255, 0.38);
-        color: rgba(255, 255, 255, 0.9);
+        border-color: rgba(0, 0, 0, 0.15);
+        color: rgba(20, 20, 20, 0.9);
+        background: rgba(255, 255, 255, 0.45);
       }
 
-      .t-pt.slot-hidden {
-        display: none;
+      .t-pt.active {
+        background: rgba(255, 255, 255, 0.88);
+        border-color: rgba(255, 255, 255, 0.9);
+        color: #1a1a1a;
+        font-weight: 600;
       }
 
-      #track-pts {
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-      }
-
-      @keyframes tpt-in-fwd {
-        from {
-          transform: translateX(56px);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-      @keyframes tpt-in-back {
-        from {
-          transform: translateX(-56px);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-      @keyframes tpt-out-fwd {
-        from {
-          transform: translateX(0);
-          opacity: 1;
-        }
-        to {
-          transform: translateX(-56px);
-          opacity: 0;
-        }
-      }
-      @keyframes tpt-out-back {
-        from {
-          transform: translateX(0);
-          opacity: 1;
-        }
-        to {
-          transform: translateX(56px);
-          opacity: 0;
-        }
-      }
-      .t-pt.tpt-in-fwd {
-        animation: tpt-in-fwd 0.26s var(--ease) both;
-      }
-      .t-pt.tpt-in-back {
-        animation: tpt-in-back 0.26s var(--ease) both;
-      }
-      .t-pt.tpt-out-fwd {
-        animation: tpt-out-fwd 0.26s var(--ease) both;
-      }
-      .t-pt.tpt-out-back {
-        animation: tpt-out-back 0.26s var(--ease) both;
-      }
-
-      .t-arrow {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        background: rgba(255, 255, 255, 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: none;
-        transition:
-          border-color 0.2s,
-          background 0.2s,
-          transform 0.2s;
-        flex-shrink: 0;
-      }
-
-      .t-arrow:hover:not(:disabled) {
-        border-color: rgba(255, 255, 255, 0.45);
-        background: rgba(255, 255, 255, 0.18);
-        transform: scale(1.08);
-      }
-
-      .t-arrow:disabled {
-        opacity: 0.18;
-      }
-
-      .t-arrow svg {
-        width: 12px;
-        height: 12px;
-        stroke: rgba(255, 255, 255, 0.9);
-        fill: none;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
-
-      #arr-l {
-        margin-right: 12px;
-      }
-
-      #arr-r {
-        margin-left: 12px;
+      .t-pt.near {
+        border-color: rgba(0, 0, 0, 0.12);
+        color: rgba(20, 20, 20, 0.75);
       }
 
       /* ══ NEO — botão no track ══ */
       #track-sep {
         width: 1px;
         height: 26px;
-        background: rgba(255, 255, 255, 0.15);
-        margin: 0 10px;
+        background: rgba(0, 0, 0, 0.12);
+        margin: 0 4px;
         flex-shrink: 0;
       }
 
@@ -736,12 +619,12 @@
         z-index: 60;
         max-width: 340px;
         min-width: 200px;
-        background: rgba(255, 255, 255, 0.09);
-        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(22, 22, 20, 0.82);
+        border: 1px solid var(--glass-border-dark);
         border-radius: 18px;
         padding: 16px 20px;
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           sans-serif;
         font-size: 13px;
@@ -757,8 +640,8 @@
         opacity: 0;
         pointer-events: none;
         transition:
-          opacity 0.3s ease,
-          transform 0.3s var(--ease);
+          opacity 220ms var(--ease),
+          transform 220ms var(--ease);
         text-align: center;
       }
 
@@ -773,7 +656,7 @@
       #neo-bubble-transcript {
         font-size: 11px;
         font-weight: 400;
-        color: rgba(200, 169, 110, 0.7);
+        color: rgba(255, 255, 255, 0.38);
         letter-spacing: 0.02em;
         font-style: italic;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -794,7 +677,7 @@
         -webkit-backdrop-filter: blur(20px);
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.4s ease;
+        transition: opacity 280ms var(--ease);
       }
 
       #neo-setup.show {
@@ -804,7 +687,7 @@
 
       #neo-setup-card {
         width: 420px;
-        background: rgba(255, 255, 255, 0.09);
+        background: var(--glass-light);
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 26px;
         padding: 36px 36px 28px;
@@ -813,10 +696,8 @@
         gap: 20px;
         backdrop-filter: blur(60px) saturate(1.8);
         -webkit-backdrop-filter: blur(60px) saturate(1.8);
-        box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.14) inset,
-          0 24px 64px rgba(0, 0, 0, 0.4);
-        animation: setup-in 0.4s var(--ease) both;
+        box-shadow: var(--shadow-light);
+        animation: setup-in 280ms var(--ease) both;
       }
 
       @keyframes setup-in {
@@ -867,7 +748,7 @@
 
       #neo-setup-name {
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           sans-serif;
         font-size: 26px;
@@ -878,7 +759,7 @@
 
       #neo-setup-sub {
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           sans-serif;
         font-size: 11px;
@@ -890,7 +771,7 @@
 
       #neo-setup-desc {
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           sans-serif;
         font-size: 13px;
@@ -915,7 +796,7 @@
 
       #neo-setup-field label {
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           sans-serif;
         font-size: 11px;
@@ -933,7 +814,7 @@
         border-radius: 14px;
         color: rgba(255, 255, 255, 0.9);
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           sans-serif;
         font-size: 13px;
@@ -962,12 +843,12 @@
       #neo-setup-confirm {
         flex: 1;
         padding: 14px;
-        background: rgba(200, 169, 110, 0.85);
+        background: var(--green);
         color: rgba(255, 255, 255, 0.95);
         border: 1px solid rgba(200, 169, 110, 0.5);
         border-radius: 14px;
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           sans-serif;
         font-size: 12px;
@@ -979,7 +860,7 @@
       }
 
       #neo-setup-confirm:hover {
-        background: rgba(212, 184, 122, 0.95);
+        background: #28bd4d;
       }
 
       #neo-setup-cancel {
@@ -989,7 +870,7 @@
         border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 14px;
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           sans-serif;
         font-size: 12px;
@@ -1011,7 +892,7 @@
 
       #neo-setup-hint {
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           sans-serif;
         font-size: 11px;
@@ -1037,9 +918,10 @@
         transform: translate(-50%, -50%);
         cursor: none;
         opacity: 1;
+        will-change: opacity, transform;
         transition:
           opacity 0.4s ease,
-          transform 0.4s var(--ease);
+          transform 280ms var(--ease);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -1067,16 +949,18 @@
         width: 28px;
         height: 28px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.92);
-        border: none;
+        background: rgba(255, 255, 255, 0.82);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: none;
         transition:
-          background 0.25s,
-          transform 0.25s;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+          background var(--trans),
+          transform var(--trans);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
         flex-shrink: 0;
       }
 
@@ -1084,7 +968,7 @@
       .poi-btn::after {
         content: "";
         position: absolute;
-        background: var(--ink);
+        background: rgba(20, 20, 20, 0.75);
         border-radius: 2px;
       }
 
@@ -1103,45 +987,21 @@
       }
 
       /* pulse ring */
-      .poi-pulse {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 56px;
-        height: 56px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        animation: poipulse 3s ease-in-out infinite;
-        pointer-events: none;
-      }
-
-      @keyframes poipulse {
-        0%,
-        100% {
-          transform: translate(-50%, -50%) scale(1);
-          opacity: 0.5;
-        }
-
-        50% {
-          transform: translate(-50%, -50%) scale(1.6);
-          opacity: 0;
-        }
-      }
-
       .poi-name {
         font-size: 8px;
+        font-weight: 500;
         letter-spacing: 0.16em;
-        color: rgba(255, 255, 255, 0.9);
+        color: rgba(20, 20, 20, 0.85);
         text-transform: uppercase;
         white-space: nowrap;
-        text-shadow:
-          0 1px 6px rgba(0, 0, 0, 0.8),
-          0 0 12px rgba(0, 0, 0, 0.6);
-        background: rgba(0, 0, 0, 0.35);
-        padding: 3px 7px;
-        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        padding: 3px 8px;
+        border-radius: 20px;
         pointer-events: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       }
 
       .poi-label {
@@ -1151,24 +1011,29 @@
         transform: translateY(-50%);
         white-space: nowrap;
         font-size: 9px;
-        letter-spacing: 0.2em;
-        color: #fff;
+        font-weight: 500;
+        letter-spacing: 0.16em;
+        color: rgba(20, 20, 20, 0.85);
         text-transform: uppercase;
         opacity: 0;
-        transition: opacity 0.2s;
+        transition: opacity 200ms var(--ease);
         pointer-events: none;
-        padding-left: 8px;
-        text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+        padding: 3px 8px 3px 12px;
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
       }
 
       .poi-label::before {
         content: "";
         position: absolute;
-        left: 0;
+        left: 5px;
         top: 50%;
-        width: 5px;
+        width: 4px;
         height: 1px;
-        background: #fff;
+        background: rgba(20, 20, 20, 0.5);
       }
 
       .poi:hover .poi-label {
@@ -1180,19 +1045,20 @@
         position: fixed;
         z-index: 50;
         width: 300px;
-        background: rgba(14, 12, 10, 0.88);
-        border: 1px solid rgba(255, 255, 255, 0.14);
+        will-change: opacity, transform;
+        background: rgba(195, 195, 195, 0.32);
+        border: 1px solid rgba(255, 255, 255, 0.45);
         border-radius: 20px;
         overflow: hidden;
-        backdrop-filter: blur(60px) saturate(1.6);
-        -webkit-backdrop-filter: blur(60px) saturate(1.6);
-        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(40px) saturate(1.8);
+        -webkit-backdrop-filter: blur(40px) saturate(1.8);
+        box-shadow: var(--shadow-light);
         opacity: 0;
         pointer-events: none;
         transform: translateY(10px) scale(0.96);
         transition:
-          opacity 0.3s ease,
-          transform 0.3s var(--ease);
+          opacity 220ms var(--ease),
+          transform 220ms var(--ease);
         user-select: none;
       }
 
@@ -1242,32 +1108,42 @@
         width: 28px;
         height: 28px;
         border-radius: 50%;
-        background: rgba(0, 0, 0, 0.45);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.65);
+        border: 1px solid rgba(255, 255, 255, 0.5);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: none;
-        transition:
-          background 0.2s,
-          border-color 0.2s;
+        transition: background 200ms var(--ease);
         z-index: 2;
       }
 
       .popup-close-btn:hover {
-        background: rgba(0, 0, 0, 0.65);
-        border-color: rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.9);
       }
 
       .popup-close-btn svg {
         width: 9px;
         height: 9px;
-        stroke: rgba(255, 255, 255, 0.9);
+        stroke: rgba(20, 20, 20, 0.7);
         stroke-width: 1.8;
         fill: none;
         stroke-linecap: round;
+      }
+
+      .popup-img-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        letter-spacing: 0.18em;
+        color: rgba(40, 40, 40, 0.35);
+        text-transform: uppercase;
+        background: rgba(255, 255, 255, 0.25);
       }
 
       .popup-body {
@@ -1279,25 +1155,25 @@
 
       .popup-tag {
         font-size: 10px;
-        font-weight: 500;
+        font-weight: 600;
         letter-spacing: 0.16em;
-        color: var(--warm);
+        color: rgba(80, 80, 80, 0.7);
         text-transform: uppercase;
       }
 
       .popup-title {
         font-size: 24px;
         font-weight: 300;
-        color: rgba(255, 255, 255, 0.95);
+        color: rgba(20, 20, 20, 0.92);
         line-height: 1.15;
         letter-spacing: -0.02em;
       }
 
       .popup-desc {
         font-size: 12px;
-        font-weight: 300;
+        font-weight: 400;
         line-height: 1.65;
-        color: rgba(255, 255, 255, 0.5);
+        color: rgba(40, 40, 40, 0.6);
         margin-bottom: 4px;
       }
 
@@ -1307,30 +1183,30 @@
         justify-content: center;
         gap: 8px;
         width: 100%;
-        padding: 12px;
-        border-radius: 10px;
-        border: 1px solid rgba(200, 169, 110, 0.45);
-        background: rgba(200, 169, 110, 0.07);
+        padding: 11px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.55);
         font-size: 11px;
         font-weight: 500;
-        letter-spacing: 0.14em;
-        color: var(--warm);
+        letter-spacing: 0.12em;
+        color: rgba(20, 20, 20, 0.75);
         text-transform: uppercase;
         cursor: none;
         transition:
-          background 0.2s,
-          border-color 0.2s;
+          background 200ms var(--ease),
+          border-color 200ms var(--ease);
       }
 
       .popup-360-btn:hover {
-        background: rgba(200, 169, 110, 0.16);
-        border-color: rgba(200, 169, 110, 0.7);
+        background: rgba(255, 255, 255, 0.85);
+        border-color: rgba(0, 0, 0, 0.15);
       }
 
       .popup-360-btn svg {
         width: 14px;
         height: 14px;
-        stroke: var(--warm);
+        stroke: rgba(20, 20, 20, 0.6);
         stroke-width: 1.5;
         fill: none;
         flex-shrink: 0;
@@ -1373,7 +1249,7 @@
         border: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: 0 40px 120px rgba(0, 0, 0, 0.75);
         transform: scale(0.93);
-        transition: transform 0.4s var(--ease);
+        transition: transform 280ms var(--ease);
       }
 
       #pano-modal.open #pano-modal-box {
@@ -1425,7 +1301,7 @@
         border: 1px solid rgba(200, 169, 110, 0.35);
         border-radius: 20px;
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           sans-serif;
         font-size: 9px;
@@ -1463,7 +1339,7 @@
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 20px;
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           sans-serif;
         font-size: 10px;
@@ -1489,7 +1365,7 @@
         gap: 12px;
         background: #0c0c0a;
         font-family:
-          "Inter",
+          "DM Sans",
           -apple-system,
           sans-serif;
         font-size: 10px;
@@ -1589,14 +1465,77 @@
         #ai-bot-bar {
           backdrop-filter: none;
           -webkit-backdrop-filter: none;
+          background: rgba(220, 220, 218, 0.92);
         }
         .poi-popup,
-        #ai-panel,
-        #neo-bubble,
         #neo-setup-card {
           backdrop-filter: none;
           -webkit-backdrop-filter: none;
-          background: rgba(10, 9, 7, 0.97);
+          background: rgba(235, 235, 232, 0.97);
+        }
+        #ai-panel,
+        #neo-bubble {
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+          background: rgba(235, 235, 232, 0.97);
+        }
+      }
+
+      /* ── Mobile landscape — docks nas laterais, centro livre ── */
+      @media (hover: none) and (orientation: landscape) {
+        /* Dock superior → lateral esquerda, vertical */
+        #ai-bot-bar,
+        #ai-bot-bar.show {
+          top: 50%;
+          left: 12px;
+          right: auto;
+          bottom: auto;
+          transform: translateY(-50%);
+          flex-direction: column;
+          padding: 8px 6px;
+          border-radius: 18px;
+          gap: 2px;
+        }
+
+        #track-sep {
+          width: 60%;
+          height: 1px;
+          margin: 2px auto;
+        }
+
+        /* Dock inferior → lateral direita, vertical */
+        #track,
+        #track.show {
+          bottom: auto;
+          top: 50%;
+          right: 12px;
+          left: auto;
+          transform: translateY(-50%);
+          padding: 8px 10px;
+          border-radius: 18px;
+        }
+
+        #track-pts {
+          grid-template-columns: 1fr;
+          width: auto;
+          min-width: 100px;
+          gap: 4px;
+        }
+
+        /* Panorâmica volta a ocupar 1 coluna */
+        .t-pt-main {
+          grid-column: 1;
+        }
+
+        /* Botões menores em landscape */
+        .t-pt {
+          padding: 7px 12px;
+          font-size: 10px;
+        }
+
+        /* POI popup centralizado com largura menor */
+        .poi-popup {
+          width: min(260px, 60vw);
         }
       }
     </style>
@@ -1614,17 +1553,7 @@
 
     <!-- TRACK -->
     <div id="track">
-      <button class="t-arrow" id="arr-l">
-        <svg viewBox="0 0 10 10">
-          <polyline points="7,1 3,5 7,9" />
-        </svg>
-      </button>
-      <!-- dots inserted by JS between the two arrows -->
-      <button class="t-arrow" id="arr-r">
-        <svg viewBox="0 0 10 10">
-          <polyline points="3,1 7,5 3,9" />
-        </svg>
-      </button>
+      <!-- dots inserted by JS -->
     </div>
 
     <!-- AI + BOT DOCK — top center -->
@@ -1897,7 +1826,7 @@
           pinY: null,
           tag: "Visão geral · Archviz Template",
           title: "Panorâmica",
-          desc: "Vista panorâmica do empreendimento. Uma visão completa do conjunto arquitetônico e sua relação com o entorno, a topografia e os acessos principais.",
+          desc: "Vista panorâmica do empreendimento.",
           stats: [
             { label: "Total de unidades", value: "312", unit: "" },
             { label: "Área do terreno", value: "4,2", unit: "ha" },
@@ -1907,96 +1836,11 @@
           hue: 220,
           sat: 12,
         },
-        {
-          id: "vista-norte",
-          label: "Vista 001",
-          index: 1,
-          pinX: 0.36,
-          pinY: 0.3,
-          tag: "Residencial · Bloco Norte",
-          title: "Vista\nNorte",
-          desc: "Fachada norte do empreendimento. Torre com 28 pavimentos e vistas panorâmicas para o estuário. Unidades de 68m² a 220m² com envidraçamento piso-teto.",
-          stats: [
-            { label: "Pavimentos", value: "28", unit: "" },
-            { label: "Unidades", value: "96", unit: "" },
-            { label: "A partir de", value: "485k", unit: "R$" },
-            { label: "Disponíveis", value: "34", unit: "" },
-          ],
-          hue: 200,
-          sat: 18,
-        },
-        {
-          id: "vista-sul",
-          label: "Vista 002",
-          index: 2,
-          pinX: 0.54,
-          pinY: 0.56,
-          tag: "Comercial · Térreo",
-          title: "Vista\nSul",
-          desc: "Fachada sul com hall comercial integrado ao térreo. 2.400m² de varejo, gastronomia e serviços abertos ao público todos os dias da semana.",
-          stats: [
-            { label: "Área", value: "2.4k", unit: "m²" },
-            { label: "Lojas", value: "48", unit: "" },
-            { label: "Pé-direito", value: "9", unit: "m" },
-            { label: "Abertura", value: "2026", unit: "" },
-          ],
-          hue: 35,
-          sat: 22,
-        },
-        {
-          id: "vista-leste",
-          label: "Vista 003",
-          index: 3,
-          pinX: 0.64,
-          pinY: 0.42,
-          tag: "Paisagismo · Nível 4",
-          title: "Vista\nLeste",
-          desc: "Fachada leste com jardim elevado no 4º pavimento. 1.800m² de área verde com espécies nativas, espelhos d'água e pista de caminhada.",
-          stats: [
-            { label: "Área", value: "1.8k", unit: "m²" },
-            { label: "Nível", value: "4", unit: "" },
-            { label: "Árvores", value: "120", unit: "" },
-            { label: "Acesso", value: "Público", unit: "" },
-          ],
-          hue: 140,
-          sat: 18,
-        },
-        {
-          id: "vista-oeste",
-          label: "Vista 004",
-          index: 4,
-          pinX: 0.28,
-          pinY: 0.5,
-          tag: "Infraestrutura · Bloco Oeste",
-          title: "Vista\nOeste",
-          desc: "Fachada oeste voltada para o parque linear. Bloco residencial com unidades de 1 a 3 dormitórios, terraços privativos e conexão com a ciclovia.",
-          stats: [
-            { label: "Pavimentos", value: "18", unit: "" },
-            { label: "Unidades", value: "84", unit: "" },
-            { label: "A partir de", value: "320k", unit: "R$" },
-            { label: "Disponíveis", value: "52", unit: "" },
-          ],
-          hue: 270,
-          sat: 14,
-        },
-        {
-          id: "vista-interna",
-          label: "Vista 006",
-          index: 5,
-          pinX: 0.5,
-          pinY: 0.38,
-          tag: "Espaços comuns · Átrio central",
-          title: "Vista\nInterna",
-          desc: "O átrio central conecta todos os blocos no nível do térreo. Espaço de convivência com iluminação zenital, jardins internos e acesso aos elevadores.",
-          stats: [
-            { label: "Pé-direito", value: "14", unit: "m" },
-            { label: "Área", value: "980", unit: "m²" },
-            { label: "Jardins", value: "3", unit: "" },
-            { label: "Acesso", value: "Livre", unit: "" },
-          ],
-          hue: 50,
-          sat: 16,
-        },
+        null,
+        null,
+        null,
+        null,
+        null, // índices 1-5 removidos
         {
           id: "parque",
           label: "Parque",
@@ -2080,16 +1924,6 @@
       // fps: velocidade de reprodução (padrão 24)
       // ══════════════════════════════════════════════════════
       const SEQS = {
-        // ── Botão PANORÂMICA (entre vistas internas) ──────────────────────────
-        "0_1": { base: "images/seq_arch/arch_", count: 48, pad: 2, ext: "jpg" }, // Panorâmica → Vista 001   (arch_00…47)
-        "1_0": {
-          base: "images/seq_arch/arch_",
-          count: 48,
-          pad: 2,
-          ext: "jpg",
-          reverse: true,
-        }, // Vista 001 → Panorâmica   (arch_47…00)
-
         // ── Botão PARQUE ──────────────────────────────────────────────────────
         "0_6": {
           base: "images/seq_arch/parque_",
@@ -2203,14 +2037,9 @@
       // Poster de cada viewpoint (frame estático quando idle)
       const POSTERS = {
         0: "images/seq_arch/arch_00.jpg",
-        1: "images/seq_arch/arch_47.jpg",
-        2: "images/seq/1_2/frame_47.jpg",
-        3: "images/seq/2_3/frame_47.jpg",
-        4: "images/seq/3_4/frame_47.jpg",
-        5: "images/seq/4_5/frame_47.jpg",
         6: "images/seq_arch/parque_47.jpg",
-        7: "images/seq_arch/torre_47.jpg",
-        8: "images/seq_arch/arch_47.jpg",
+        7: "images/seq_arch/torre_47",
+        8: "images/seq_arch/torre_47",
         9: "images/seq_arch/est_47.jpg",
       };
 
@@ -2221,7 +2050,14 @@
       const ctx = canvas.getContext("2d");
       let seqRaf = null;
 
-      const MOBILE = window.matchMedia("(hover: none)").matches;
+      const MOBILE =
+        window.matchMedia("(hover: none)").matches || window.innerWidth < 768;
+
+      // Redireciona para imagens mobile quando necessário
+      function imgPath(path) {
+        if (!MOBILE) return path;
+        return path.replace("images/seq_arch/", "images/seq_arch_m/");
+      }
 
       function resizeCanvas() {
         const dpr = MOBILE ? 1 : Math.min(window.devicePixelRatio || 1, 2);
@@ -2250,7 +2086,7 @@
         if (!src) return;
         const img = new Image();
         img.onload = () => drawFrame(img);
-        img.src = src;
+        img.src = imgPath(src);
       }
 
       // ══════════════════════════════════════════════════════
@@ -2263,20 +2099,6 @@
       // ══════════════════════════════════════════════════════
       // NAVEGAÇÃO
       // ══════════════════════════════════════════════════════
-      function goTo(idx) {
-        if (idx === cur) {
-          return;
-        }
-        const dir = idx > cur ? 1 : -1;
-        q = [];
-        let c = cur;
-        while (c !== idx) {
-          q.push({ from: c, to: c + dir });
-          c += dir;
-        }
-        runQ();
-      }
-
       function runQ() {
         if (!q.length) {
           state = "idle";
@@ -2307,7 +2129,8 @@
           seqRaf = null;
         }
 
-        const { base, pad = 2, ext = "jpg", reverse = false } = seq;
+        const { pad = 2, ext = "jpg", reverse = false } = seq;
+        const base = imgPath(seq.base);
 
         // Mobile: pula frames alternados (24 frames em vez de 48) e usa fps menor
         const step = MOBILE ? 2 : 1;
@@ -2428,78 +2251,17 @@
         }
       }
 
-      const TRACK_ORDER = [6, 0, 9, 8, 7];
-      const TRACK_VISIBLE = 1;
-      let trackOffset = 0;
-
-      function updateTrackSlots(dir) {
-        const arrL = document.getElementById("arr-l");
-        const arrR = document.getElementById("arr-r");
-        const ANIM_CLASSES = [
-          "tpt-in-fwd",
-          "tpt-in-back",
-          "tpt-out-fwd",
-          "tpt-out-back",
-        ];
-
-        document.querySelectorAll(".t-pt").forEach((el, i) => {
-          const shouldShow =
-            i >= trackOffset && i < trackOffset + TRACK_VISIBLE;
-          const isHidden = el.classList.contains("slot-hidden");
-
-          if (shouldShow && isHidden) {
-            el.classList.remove("slot-hidden");
-            el.classList.remove(...ANIM_CLASSES);
-            if (dir) {
-              const cls = dir === "fwd" ? "tpt-in-fwd" : "tpt-in-back";
-              el.classList.add(cls);
-              el.addEventListener(
-                "animationend",
-                () => el.classList.remove(cls),
-                { once: true },
-              );
-            }
-          } else if (!shouldShow && !isHidden) {
-            el.classList.remove(...ANIM_CLASSES);
-            if (dir) {
-              const cls = dir === "fwd" ? "tpt-out-fwd" : "tpt-out-back";
-              el.style.position = "absolute";
-              el.style.left = "0";
-              el.style.pointerEvents = "none";
-              el.classList.add(cls);
-              el.addEventListener(
-                "animationend",
-                () => {
-                  el.classList.add("slot-hidden");
-                  el.classList.remove(cls);
-                  el.style.position = "";
-                  el.style.left = "";
-                  el.style.pointerEvents = "";
-                },
-                { once: true },
-              );
-            } else {
-              el.classList.add("slot-hidden");
-            }
-          }
-        });
-
-        arrL.disabled = trackOffset === 0;
-        arrR.disabled = trackOffset >= TRACK_ORDER.length - TRACK_VISIBLE;
-      }
+      const TRACK_ORDER = [0, 6, 9, 7, 8];
 
       function buildTrack() {
-        const arrR = document.getElementById("arr-r");
         const track = document.getElementById("track");
-
         const ptsWrap = document.createElement("div");
         ptsWrap.id = "track-pts";
-        track.insertBefore(ptsWrap, arrR);
+        track.appendChild(ptsWrap);
 
-        // Ordem: Parque (6) | Panorâmica (0) | Estacionamento (9) | Portaria (8) | Prédio 1 (7)
         TRACK_ORDER.forEach((idx) => {
           const el = document.createElement("div");
-          el.className = "t-pt";
+          el.className = idx === 0 ? "t-pt t-pt-main" : "t-pt";
           el.dataset.i = idx;
           el.textContent = PTS[idx].label;
           el.addEventListener("click", () => jumpTo(idx));
@@ -2513,43 +2275,14 @@
           );
           ptsWrap.appendChild(el);
         });
-
-        document.getElementById("arr-l").addEventListener("click", () => {
-          trackOffset = Math.max(0, trackOffset - 1);
-          updateTrackSlots("back");
-        });
-        document.getElementById("arr-r").addEventListener("click", () => {
-          trackOffset = Math.min(
-            TRACK_ORDER.length - TRACK_VISIBLE,
-            trackOffset + 1,
-          );
-          updateTrackSlots("fwd");
-        });
-
-        updateTrackSlots();
       }
 
       function updateUI() {
         // Track: Parque=6, Panorâmica=0–5, Portaria=8, Prédio 1=7
         const activeTrack = cur >= 6 ? cur : 0;
-        document.querySelectorAll(".t-pt").forEach((el, i) => {
-          const isActive = parseInt(el.dataset.i) === activeTrack;
-          el.classList.toggle("active", isActive);
-          // Se o botão ativo ficou fora da janela visível, ajusta o offset
-          if (
-            isActive &&
-            (i < trackOffset || i >= trackOffset + TRACK_VISIBLE)
-          ) {
-            const newOffset = Math.max(
-              0,
-              Math.min(TRACK_ORDER.length - TRACK_VISIBLE, i),
-            );
-            const dir = newOffset > trackOffset ? "fwd" : "back";
-            trackOffset = newOffset;
-            updateTrackSlots(dir);
-          }
+        document.querySelectorAll(".t-pt").forEach((el) => {
+          el.classList.toggle("active", parseInt(el.dataset.i) === activeTrack);
         });
-
         updatePOIs();
       }
 
@@ -2689,17 +2422,27 @@
         my = 0,
         rx = 0,
         ry = 0;
-      document.addEventListener("mousemove", (e) => {
-        mx = e.clientX;
-        my = e.clientY;
-      });
+      document.addEventListener(
+        "mousemove",
+        (e) => {
+          mx = e.clientX;
+          my = e.clientY;
+        },
+        { passive: true },
+      );
       (function loop() {
+        // cursor: só atualiza DOM se posição mudou
         cursor.style.left = mx + "px";
         cursor.style.top = my + "px";
-        rx += (mx - rx) * 0.1;
-        ry += (my - ry) * 0.1;
-        ring.style.left = rx + "px";
-        ring.style.top = ry + "px";
+        // ring: lerp — só escreve se movimento relevante
+        const dx = (mx - rx) * 0.1;
+        const dy = (my - ry) * 0.1;
+        rx += dx;
+        ry += dy;
+        if (Math.abs(dx) > 0.05 || Math.abs(dy) > 0.05) {
+          ring.style.left = rx + "px";
+          ring.style.top = ry + "px";
+        }
         requestAnimationFrame(loop);
       })();
       document.addEventListener("mouseover", (e) => {
@@ -2832,7 +2575,7 @@
             marker.style.top = poi.y + "%";
             marker.innerHTML = `
               <div class="poi-actions">
-                <div class="poi-pulse"></div>
+
                 <div class="poi-btn"></div>
               </div>
               <div class="poi-name">${poi.label}</div>
@@ -3032,24 +2775,23 @@ AÇÃO OBRIGATÓRIA: responda SOMENTE com um objeto JSON usando exatamente um de
 NUNCA use outro nome de action. NUNCA adicione texto fora do JSON.
 
 VISTAS (use "goto"):
-0=Panorâmica, 1=Vista Norte, 2=Vista Sul, 3=Vista Leste, 4=Vista Oeste, 5=Vista Interna
+0=Panorâmica, 6=Parque, 7=Portaria, 8=Prédio 1, 9=Estacionamento
 
 Exemplos de comandos de vista → JSON esperado:
-"abrir vista norte" → {"action":"goto","index":1}
-"ir para vista sul" → {"action":"goto","index":2}
-"mostrar vista leste" → {"action":"goto","index":3}
-"quero ver a vista oeste" → {"action":"goto","index":4}
-"vista interna" → {"action":"goto","index":5}
 "panorâmica" → {"action":"goto","index":0}
+"ir para o parque" → {"action":"goto","index":6}
+"mostrar portaria" → {"action":"goto","index":7}
+"prédio 1" → {"action":"goto","index":8}
+"estacionamento" → {"action":"goto","index":9}
 
 POIs (use "poi"):
-Vista Norte: Casa Tipo 01=vn-1, Varanda Duplex=vn-2, Piscinas=vn-3, Quadras=vn-4
-Vista Sul: Quadra Poliesportiva=vs-1, Rooftop=vs-2, Estacionamento=vs-3, Coworking=vs-4
-Vista Leste: Centro da Cidade=vl-1, Supermercado=vl-2, Portaria=vl-3, Coworking=vl-4
-Vista Oeste: Casa Tipo 02=vo-1, Casa Tipo 01=vo-2, Igreja=vo-3, Rooftop=vo-4
-Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis=vi-3, Piscina=vi-4
+Panorâmica: Estacionamento=pan-1, Parque=pan-2, Prédio=pan-3, Portaria=pan-4
+Parque: Parque=parq-1
+Portaria: Acesso=port-1
+Prédio 1: Portaria=pred-1
+Estacionamento: Acesso=est-1
 
-- Vista + POI juntos (ex: "vista norte quadras") → priorize o POI: {"action":"poi","id":"vn-4"}
+- Só POI → use o POI da vista mais provável
 - Só POI → use o POI da vista mais provável
 - Pergunta sobre o empreendimento → {"action":"info","text":"resposta curta em português"}
 - Não entendeu → {"action":"unknown"}`;
@@ -3108,7 +2850,8 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
           lightRaf = null;
         }
 
-        const { base, count, pad, ext, fps = 36, reverse = false } = seq;
+        const { count, pad, ext, fps = 36, reverse = false } = seq;
+        const base = imgPath(seq.base);
         const INTERVAL = 1000 / fps;
         const indices = Array.from({ length: count }, (_, i) =>
           reverse ? count - 1 - i : i,
@@ -3167,7 +2910,7 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
         } else if (LIGHT_POSTERS[mode]) {
           const img = new Image();
           img.onload = () => drawFrame(img);
-          img.src = LIGHT_POSTERS[mode];
+          img.src = imgPath(LIGHT_POSTERS[mode]);
         }
       }
 
@@ -3522,7 +3265,7 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
           const pt = PTS[cmd.index];
           if (pt) {
             neoBubble("→ " + pt.label, transcript);
-            goTo(cmd.index);
+            jumpTo(cmd.index);
           } else neoBubble("Vista não encontrada.", transcript);
         } else if (cmd && cmd.action === "poi") {
           let found = null,
@@ -3537,7 +3280,7 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
           );
           if (found) {
             neoBubble("→ " + found.title, transcript);
-            goTo(ptIdx);
+            jumpTo(ptIdx);
             const t = setInterval(() => {
               if (state === "idle" && cur === ptIdx) {
                 clearInterval(t);
@@ -3545,6 +3288,7 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
                 if (m) togglePopup(found, m);
               }
             }, 200);
+            setTimeout(() => clearInterval(t), 5000);
           } else neoBubble("Ponto não encontrado.", transcript);
         } else if (cmd && cmd.action === "info") {
           neoBubble(cmd.text, transcript);
@@ -3561,6 +3305,8 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
       // ══════════════════════════════════════════════════════
       let panoRenderer = null;
       let panoFrame = null;
+      let panoGeo = null;
+      let panoMesh = null;
 
       function openPanoModal(imageSrc) {
         const modal = document.getElementById("pano-modal");
@@ -3601,16 +3347,16 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
           const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 200);
           camera.position.set(0, 0, 0);
 
-          const geo = new THREE.SphereGeometry(100, 64, 32);
-          geo.scale(-1, 1, 1);
+          panoGeo = new THREE.SphereGeometry(100, 64, 32);
+          panoGeo.scale(-1, 1, 1);
 
           new THREE.TextureLoader().load(
             imageSrc,
             (tex) => {
               tex.colorSpace = THREE.LinearSRGBColorSpace;
-              scene.add(
-                new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: tex })),
-              );
+              const mat = new THREE.MeshBasicMaterial({ map: tex });
+              panoMesh = new THREE.Mesh(panoGeo, mat);
+              scene.add(panoMesh);
               loading.classList.add("hidden");
             },
             undefined,
@@ -3751,6 +3497,15 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
         if (panoFrame) {
           cancelAnimationFrame(panoFrame);
           panoFrame = null;
+        }
+        if (panoMesh) {
+          panoMesh.material.map?.dispose();
+          panoMesh.material.dispose();
+          panoMesh = null;
+        }
+        if (panoGeo) {
+          panoGeo.dispose();
+          panoGeo = null;
         }
         if (panoRenderer) {
           panoRenderer.dispose();
