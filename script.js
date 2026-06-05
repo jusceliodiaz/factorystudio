@@ -10,7 +10,7 @@ const ctx         = seqCanvas.getContext('2d');
 // Mobile: hover:none cobre iOS, Android e touch-only devices
 const MOBILE = window.matchMedia('(hover: none)').matches || window.innerWidth < 768;
 
-let currentScene = 'aereo';
+let currentScene = CONFIG.initialScene || 'aereo';
 let busy         = false;
 let navGen       = 0;
 let poiTimer     = null;
@@ -23,7 +23,7 @@ window.addEventListener('load', () => {
   resizeCanvas();
   if (!MOBILE) initCursor();
   buildTrack();
-  showPoster('images/seq/aereo_to_piscina_00.jpg', () => startScene('aereo'));
+  showPoster(CONFIG.poster || 'images/seq/aereo_to_piscina_00.jpg', () => startScene(CONFIG.initialScene || 'aereo'));
   preloadAllVideos();
 });
 
