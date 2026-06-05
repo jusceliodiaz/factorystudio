@@ -567,7 +567,7 @@
         color: #666;
         line-height: 1.7;
         max-width: 540px;
-        margin-bottom: 56px;
+        margin-bottom: 48px;
         text-align: center;
         margin-left: auto;
         margin-right: auto;
@@ -575,39 +575,42 @@
 
       .cards {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 24px;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 48vh 48vh;
+        gap: 3px;
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        margin-left: -50vw;
+        margin-top: 0;
       }
 
       .pcard {
-        background: #fff;
-        border-radius: 20px;
+        position: relative;
         overflow: hidden;
-        border: 1px solid rgba(0, 0, 0, 0.07);
-        display: flex;
-        flex-direction: column;
+        background: #111;
+        border-radius: 0;
+        border: none;
         text-decoration: none;
-        color: #111;
-        transition:
-          transform 0.35s var(--ease),
-          border-color 0.3s;
         cursor: pointer;
+        display: block;
       }
-      .pcard:hover {
-        transform: translateY(-7px);
-        border-color: rgba(184, 156, 110, 0.4);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+      .pcard:hover .pcard-thumb img {
+        transform: scale(1.06);
+      }
+      .pcard:hover .pcard-body {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .pcard:hover .pcard-thumb::after {
+        opacity: 1;
       }
 
       .pcard-thumb {
-        height: 210px;
+        position: absolute;
+        inset: 0;
+        height: 100%;
         background: #1a1a1a;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
-        flex-shrink: 0;
       }
       .pcard-thumb img {
         position: absolute;
@@ -615,10 +618,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.5s var(--ease);
-      }
-      .pcard:hover .pcard-thumb img {
-        transform: scale(1.06);
+        transition: transform 0.7s var(--ease);
       }
       .pcard-thumb::after {
         content: "";
@@ -626,17 +626,21 @@
         inset: 0;
         background: linear-gradient(
           to top,
-          rgba(0, 0, 0, 0.45) 0%,
-          rgba(0, 0, 0, 0.1) 60%
+          rgba(0, 0, 0, 0.82) 0%,
+          rgba(0, 0, 0, 0.18) 55%,
+          transparent 100%
         );
         z-index: 1;
+        opacity: 0.7;
+        transition: opacity 0.4s var(--ease);
       }
+
       .pcard-badge {
         position: absolute;
-        top: 16px;
-        left: 16px;
-        z-index: 2;
-        font-size: 0.62rem;
+        top: 20px;
+        left: 20px;
+        z-index: 3;
+        font-size: 0.6rem;
         font-weight: 700;
         letter-spacing: 0.18em;
         text-transform: uppercase;
@@ -645,33 +649,44 @@
         padding: 4px 12px;
         border-radius: 20px;
       }
+
       .pcard-body {
-        padding: 24px 24px 28px;
-        flex: 1;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 2;
+        padding: 32px 36px;
         display: flex;
         flex-direction: column;
+        opacity: 0.85;
+        transform: translateY(8px);
+        transition:
+          opacity 0.4s var(--ease),
+          transform 0.4s var(--ease);
       }
       .pcard-title {
-        font-size: 1.2rem;
+        font-size: clamp(1.1rem, 2vw, 1.5rem);
         font-weight: 700;
-        margin-bottom: 8px;
-        color: #111;
+        margin-bottom: 6px;
+        color: #fff;
       }
       .pcard-desc {
-        font-size: 0.86rem;
-        color: #777;
-        line-height: 1.65;
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.65);
+        line-height: 1.6;
         flex: 1;
+        max-width: 420px;
       }
       .pcard-link {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        margin-top: 20px;
-        font-size: 0.8rem;
+        margin-top: 16px;
+        font-size: 0.78rem;
         font-weight: 600;
         color: var(--gold);
-        letter-spacing: 0.03em;
+        letter-spacing: 0.06em;
       }
       .pcard--disabled {
         cursor: default;
@@ -914,7 +929,7 @@
         <a class="pcard" href="archviz-seq.html">
           <div class="pcard-thumb">
             <img
-              src="images/Portfolio_001.jpg"
+              src="images/hero/h7.jpg"
               alt="Archviz Explorer"
               width="800"
               height="500"
@@ -937,7 +952,7 @@
         <a class="pcard" href="launching-page.html">
           <div class="pcard-thumb">
             <img
-              src="images/Portfolio_002.jpg"
+              src="images/hero/h5.jpg"
               alt="Launching Page"
               width="800"
               height="500"
@@ -982,146 +997,6 @@
           </div>
         </a>
 
-        <a class="pcard" href="panorama-360.html">
-          <div class="pcard-thumb">
-            <img
-              src="images/pano_living.jpg"
-              alt="Panorama 360°"
-              width="800"
-              height="500"
-              loading="lazy"
-            />
-            <span class="pcard-badge">360°</span>
-          </div>
-          <div class="pcard-body">
-            <div class="pcard-title">Panorama 360°</div>
-            <div class="pcard-desc" data-i18n="card-pano-desc">
-              Tour imersivo em 360° pelos ambientes do empreendimento
-              diretamente no navegador, sem app ou óculos — quarto, living e
-              sacada.
-            </div>
-            <div class="pcard-link" data-i18n="link-explore">
-              Explorar demo →
-            </div>
-          </div>
-        </a>
-
-        <a class="pcard" href="bath-config.html">
-          <div class="pcard-thumb">
-            <img
-              src="images/floor_3d_04-2.jpg"
-              alt="Configurador de Banheiros"
-              width="800"
-              height="500"
-              loading="lazy"
-            />
-            <span class="pcard-badge">Configurador</span>
-          </div>
-          <div class="pcard-body">
-            <div class="pcard-title">Configurador de Banheiros</div>
-            <div class="pcard-desc">
-              Navegação interativa entre ambientes com sequências de imagem e
-              pontos de interesse — personalize acabamentos e visualize em tempo real.
-            </div>
-            <div class="pcard-link">
-              Explorar demo →
-            </div>
-          </div>
-        </a>
-
-        <div class="pcard pcard--disabled">
-          <div class="pcard-thumb">
-            <img
-              src="images/Portfolio_003.jpg"
-              alt="Visualizador 3D"
-              width="800"
-              height="500"
-              loading="lazy"
-            />
-            <span class="pcard-badge">3D</span>
-            <span class="pcard-soon" data-i18n="label-soon">Em Breve</span>
-          </div>
-          <div class="pcard-body">
-            <div class="pcard-title" data-i18n="card-3d-title">
-              Visualizador 3D
-            </div>
-            <div class="pcard-desc" data-i18n="card-3d-desc">
-              Modelo tridimensional interativo do edifício com rotação livre,
-              zoom e seleção de pavimentos diretamente no navegador.
-            </div>
-            <div class="pcard-link pcard-link--disabled" data-i18n="label-soon">
-              Em Breve
-            </div>
-          </div>
-        </div>
-
-        <a class="pcard" href="#" style="display: none">
-          <div class="pcard-thumb">
-            <img
-              src="images/Portfolio_005.jpg"
-              alt="Walkthrough Interior"
-              width="800"
-              height="500"
-              loading="lazy"
-            />
-            <span class="pcard-badge">Walkthrough</span>
-          </div>
-          <div class="pcard-body">
-            <div class="pcard-title">Walkthrough Interior</div>
-            <div class="pcard-desc" data-i18n="card-walk-desc">
-              Percurso imersivo pelos ambientes internos do empreendimento com
-              sequência de imagens navegáveis e pontos de interesse interativos.
-            </div>
-            <div class="pcard-link" data-i18n="link-soon">Em breve →</div>
-          </div>
-        </a>
-
-        <div class="pcard pcard--disabled">
-          <div class="pcard-thumb">
-            <img
-              src="images/pano_quarto.jpg"
-              alt="Configurador de Ambiente"
-              width="800"
-              height="500"
-              loading="lazy"
-            />
-            <span class="pcard-badge">Configurador</span>
-            <span class="pcard-soon">Em Breve</span>
-          </div>
-          <div class="pcard-body">
-            <div class="pcard-title" data-i18n="card-config-title">
-              Configurador de Ambiente
-            </div>
-            <div class="pcard-desc" data-i18n="card-config-desc">
-              Ferramenta interativa para personalização de acabamentos,
-              revestimentos e mobiliário com visualização em tempo real do
-              resultado.
-            </div>
-            <div class="pcard-link pcard-link--disabled">Em Breve</div>
-          </div>
-        </div>
-
-        <div class="pcard pcard--disabled">
-          <div class="pcard-thumb">
-            <img
-              src="images/pano_sacada.jpg"
-              alt="AR / VR"
-              width="800"
-              height="500"
-              loading="lazy"
-            />
-            <span class="pcard-badge">AR / VR</span>
-            <span class="pcard-soon">Em Breve</span>
-          </div>
-          <div class="pcard-body">
-            <div class="pcard-title">AR / VR</div>
-            <div class="pcard-desc" data-i18n="card-arvr-desc">
-              Experiência imersiva em realidade aumentada e virtual — visualize
-              o empreendimento em escala real pelo celular ou headset VR.
-            </div>
-            <div class="pcard-link pcard-link--disabled">Em Breve</div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -1489,7 +1364,7 @@
           "addressCountry": "BR"
         },
         "sameAs": [
-          "https://www.instagram.com/umdesignerchato",
+          "https://www.instagram.com/jdworkviz/",
           "https://www.behance.net/firsightstudio"
         ],
         "hasOfferCatalog": {

@@ -2,13 +2,18 @@
 <html lang="pt-BR">
   <head>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3K51DFTX3J"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-3K51DFTX3J"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'G-3K51DFTX3J');
+      gtag("config", "G-3K51DFTX3J");
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -287,9 +292,31 @@
         max-width: 560px;
       }
 
+      /* ── MID CTA ── */
+      .lp-midcta {
+        background: #f7f7f7;
+        padding: 100px 10%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .lp-midcta-text {
+        font-size: clamp(1.8rem, 4vw, 3.2rem);
+        font-weight: 800;
+        color: #111;
+        text-align: center;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        max-width: 720px;
+      }
+      .lp-midcta-text em {
+        font-style: normal;
+        color: var(--gold);
+      }
+
       /* ── GALLERY GRID ── */
       .gallery-section {
-        padding: 80px 0;
+        padding: 0;
         background: #0d0d0d;
       }
 
@@ -301,7 +328,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 56vh 56vh;
-        gap: 3px;
+        gap: 0;
       }
 
       .gallery-card {
@@ -1181,7 +1208,7 @@
 
     <!-- HERO -->
     <section class="lp-hero">
-      <img class="lp-hero-bg" src="images/Portfolio_001.jpg" alt="Lançamento" />
+      <img class="lp-hero-bg" src="images/hero/h5.jpg" alt="Lançamento" />
       <div class="lp-hero-overlay"></div>
       <div class="lp-hero-content">
         <span class="lp-badge" data-i18n="badge">Lançamento Imobiliário</span>
@@ -1322,29 +1349,19 @@
       </div>
     </div>
 
+    <!-- MIDCTA -->
+    <div class="lp-midcta">
+      <p class="lp-midcta-text reveal">
+        Tudo isso pode estar<br />no seu site
+        <em>pronto<br />para o seu lançamento.</em>
+      </p>
+    </div>
+
     <!-- GALLERY -->
     <div class="gallery-section" id="galeria">
-      <div class="gallery-header reveal">
-        <div class="lp-section-label" data-i18n="gallery-label">— Galeria</div>
-        <h2
-          style="
-            font-size: clamp(1.8rem, 3.5vw, 3rem);
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            color: #fff;
-          "
-          data-i18n="gallery-h2"
-          data-i18n-html="true"
-        >
-          Vistas externas e
-          <em style="font-style: italic; font-weight: 300; color: var(--gold)"
-            >ambientes internos</em
-          >
-        </h2>
-      </div>
       <div class="gallery-grid">
         <div class="gallery-card reveal">
-          <img src="images/Portfolio_001.jpg" alt="Vista externa" />
+          <img src="images/hero/h5.jpg" alt="Vista externa" />
           <div class="gallery-card-overlay">
             <span class="gallery-card-label" data-i18n="gallery-img-1"
               >Vista Externa</span
@@ -1352,7 +1369,7 @@
           </div>
         </div>
         <div class="gallery-card reveal reveal-delay-1">
-          <img src="images/Portfolio_002.jpg" alt="Sala de estar" />
+          <img src="images/hero/h6.jpg" alt="Sala de estar" />
           <div class="gallery-card-overlay">
             <span class="gallery-card-label" data-i18n="gallery-img-2"
               >Sala de Estar</span
@@ -1360,7 +1377,7 @@
           </div>
         </div>
         <div class="gallery-card reveal reveal-delay-2">
-          <img src="images/Portfolio_003.jpg" alt="Suíte master" />
+          <img src="images/hero/h8.jpg" alt="Suíte master" />
           <div class="gallery-card-overlay">
             <span class="gallery-card-label" data-i18n="gallery-img-3"
               >Suíte Master</span
@@ -1369,71 +1386,6 @@
         </div>
       </div>
     </div>
-
-    <!-- FEATURES -->
-    <section class="features-section">
-      <div>
-        <div class="lp-section-label reveal" data-i18n="feat-label">
-          — Diferenciais
-        </div>
-        <h2
-          class="reveal reveal-delay-1"
-          data-i18n="feat-h2"
-          data-i18n-html="true"
-        >
-          Experiência digital <em>completa</em>
-        </h2>
-        <p class="reveal reveal-delay-2" data-i18n="feat-desc">
-          Uma landing page interativa que leva o cliente para dentro do projeto
-          antes mesmo da visita ao stand.
-        </p>
-        <div class="features-list">
-          <div class="feature-item reveal">
-            <span class="feature-num">01</span>
-            <div class="feature-text">
-              <h4 data-i18n="feat-1-h4">Galeria imersiva de alta resolução</h4>
-              <p data-i18n="feat-1-p">
-                Imagens de archviz fotorrealistas com navegação fluida em
-                qualquer dispositivo.
-              </p>
-            </div>
-          </div>
-          <div class="feature-item reveal reveal-delay-1">
-            <span class="feature-num">02</span>
-            <div class="feature-text">
-              <h4 data-i18n="feat-2-h4">Tour visual por ambientes</h4>
-              <p data-i18n="feat-2-p">
-                O cliente percorre os ambientes em sequência, criando uma
-                narrativa de venda consistente.
-              </p>
-            </div>
-          </div>
-          <div class="feature-item reveal reveal-delay-2">
-            <span class="feature-num">03</span>
-            <div class="feature-text">
-              <h4 data-i18n="feat-3-h4">CTA integrado e rastreável</h4>
-              <p data-i18n="feat-3-p">
-                Botão de contato direto via WhatsApp com mensagem
-                pré-configurada para o empreendimento.
-              </p>
-            </div>
-          </div>
-          <div class="feature-item reveal reveal-delay-3">
-            <span class="feature-num">04</span>
-            <div class="feature-text">
-              <h4 data-i18n="feat-4-h4">100% web — sem app, sem plugin</h4>
-              <p data-i18n="feat-4-p">
-                O cliente acessa por um link e já está dentro da experiência, em
-                qualquer dispositivo.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="features-img-wrap reveal">
-        <img src="images/Portfolio_004.jpg" alt="Ambiente interno" />
-      </div>
-    </section>
 
     <!-- CTA -->
     <section class="lp-cta">
@@ -1524,9 +1476,9 @@
 
       /* ── IMAGE SEQUENCER ── */
       (function () {
-        const FRAME_COUNT = 119;
+        const FRAME_COUNT = 48;
         const BASE_PATH = "images/seq/launch_";
-        const PAD = 3;
+        const PAD = 2;
         const wrap = document.querySelector(".seq-wrap");
         const canvas = document.querySelector(".seq-canvas");
         if (!wrap || !canvas) return;
@@ -1577,7 +1529,7 @@
               title: "Torre Residencial",
               tag: "Residencial · Rooftop",
               desc: "Empreendimento de alto padrão com piscina no rooftop e vista 360° para a baía e a cidade.",
-              img: "images/seq/launch_001.jpg",
+              img: "images/seq/launch_00.jpg",
               pano: "aerial",
             },
             {
@@ -1586,7 +1538,7 @@
               title: "Baía Norte",
               tag: "Vista · Entorno",
               desc: "Vista privilegiada para a baía e as ilhas naturais ao redor da capital catarinense.",
-              img: "images/seq/launch_001.jpg",
+              img: "images/seq/launch_00.jpg",
               pano: "aerial",
             },
             {
@@ -1595,7 +1547,7 @@
               title: "Ponte Hercílio Luz",
               tag: "Cartão-postal · Ícone",
               desc: "Ícone histórico e cartão-postal de Florianópolis, conectando a ilha ao continente.",
-              img: "images/seq/launch_001.jpg",
+              img: "images/seq/launch_00.jpg",
               pano: "aerial",
             },
             {
@@ -1604,7 +1556,7 @@
               title: "Morro da Cruz",
               tag: "Paisagem · 360°",
               desc: "Ponto mais alto da Ilha, com vista panorâmica de toda a cidade e do oceano Atlântico.",
-              img: "images/seq/launch_001.jpg",
+              img: "images/seq/launch_00.jpg",
               pano: "aerial",
             },
           ],
@@ -1615,7 +1567,7 @@
               title: "Área de Estar",
               tag: "Interior · Living",
               desc: "Sofás de design italiano com acabamentos premium e integração total com a varanda.",
-              img: "images/seq/launch_118.jpg",
+              img: "images/seq/launch_47.jpg",
               pano: "living",
             },
           ],
