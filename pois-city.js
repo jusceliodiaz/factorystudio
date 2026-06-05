@@ -1,0 +1,220 @@
+// ── Rich POI system for City Explorer ─────────────────────────────────────────
+// Overrides renderPOIs from script.js to add popup cards + 360° panorama modal
+
+let cityActivePopup = null;
+
+// Override hidePOIs to also clean up popups
+const _baseHidePOIs = hidePOIs;
+hidePOIs = function () {
+  document.querySelectorAll('.city-popup').forEach(el => el.remove());
+  cityActivePopup = null;
+  _baseHidePOIs();
+};
+
+// Override renderPOIs with rich version
+renderPOIs = function (pois) {
+  document.querySelectorAll('.city-popup').forEach(el => el.remove());
+  cityActivePopup = null;
+  poiLayer.innerHTML = '';
+
+  if (!pois || !pois.length) return;
+
+  pois.forEach((poi, i) => {
+    // ── Marker ──────────────────────────────────────────────────
+    const marker = document.createElement('div');
+    marker.className = 'poi';
+    marker.style.left = poi.x + '%';
+    marker.style.top  = poi.y + '%';
+    marker.style.animationDelay = (i * 80) + 'ms';
+    marker.innerHTML = `
+      <div class="poi-btn"></div>
+      <div class="poi-name">${poi.label}</div>
+    `;
+
+    const btn = marker.querySelector('.poi-btn');
+    btn.addEventListener('click', (e) => { e.stopPropagation(); cityTogglePopup(poi); });
+    btn.addEventListener('touchstart', (e) => {
+      if (e.cancelable) e.preventDefault();
+      e.stopPropagation();
+      cityTogglePopup(poi);
+    }, { passive: false });
+
+    poiLayer.appendChild(marker);
+
+    // ── Popup ────────────────────────────────────────────────────
+    buildCityPopup(poi);
+  });
+};
+
+// ── Build popup card ──────────────────────────────────────────────────────────
+function buildCityPopup(poi) {
+  const popup = document.createElement('div');
+  popup.className = 'city-popup';
+  popup.id = 'city-popup-' + poi.id;
+  const imgSrc  = poi.img  || 'images/POI_001.jpg';
+  const panoSrc = poi.panorama360 || null;
+
+  popup.innerHTML = `
+    <div class="popup-img-wrap" data-drag="true">
+      <img class="popup-img" src="${imgSrc}" alt="${poi.title}" draggable="false">
+      <button class="popup-close-btn" onclick="cityClosePopup('${poi.id}')">
+        <svg viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <line x1="1" y1="1" x2="7" y2="7"/><line x1="7" y1="1" x2="1" y2="7"/>
+        </svg>
+      </button>
+    </div>
+    <div class="popup-body">
+      <div class="popup-tag">${poi.tag || ''}</div>
+      <div class="popup-title">${poi.title}</div>
+      <div class="popup-desc">${poi.desc || ''}</div>
+      ${panoSrc ? `
+      <button class="popup-360-btn" onclick="cityOpenPano('${panoSrc}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>
+          <path d="M3.6 9h16.8M3.6 15h16.8M12 3a15.3 15.3 0 0 1 4 9 15.3 15.3 0 0 1-4 9 15.3 15.3 0 0 1-4-9 15.3 15.3 0 0 1 4-9z"/>
+        </svg>
+        Ver 360°
+      </button>` : ''}
+    </div>
+  `;
+
+  document.body.appendChild(popup);
+  makeCityDraggable(popup);
+}
+
+// ── Toggle / close popup ──────────────────────────────────────────────────────
+function cityTogglePopup(poi) {
+  const popup = document.getElementById('city-popup-' + poi.id);
+  if (!popup) return;
+  if (popup.classList.contains('open')) {
+    cityClosePopup(poi.id);
+  } else {
+    if (cityActivePopup) cityActivePopup.classList.remove('open');
+    const popH = popup.offsetHeight || 420;
+    popup.style.left = Math.round((window.innerWidth - 300) / 2) + 'px';
+    popup.style.top  = Math.max(10, Math.round((window.innerHeight - popH) / 2)) + 'px';
+    popup.classList.add('open');
+    cityActivePopup = popup;
+  }
+}
+
+function cityClosePopup(id) {
+  const popup = document.getElementById('city-popup-' + id);
+  if (popup) popup.classList.remove('open');
+  if (cityActivePopup === popup) cityActivePopup = null;
+}
+
+window.cityClosePopup = cityClosePopup;
+
+// Close on backdrop click / Escape
+document.addEventListener('click', (e) => {
+  if (cityActivePopup && !e.target.closest('.city-popup') && !e.target.closest('.poi-btn')) {
+    cityActivePopup.classList.remove('open');
+    cityActivePopup = null;
+  }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') cityClosePopup(cityActivePopup?.id?.replace('city-popup-', '') || '');
+});
+
+// ── Draggable popup ───────────────────────────────────────────────────────────
+function makeCityDraggable(el) {
+  let sx, sy, sl, st, dragging = false;
+
+  const start = (cx, cy) => {
+    dragging = true;
+    sx = cx; sy = cy;
+    sl = parseInt(el.style.left) || el.getBoundingClientRect().left;
+    st = parseInt(el.style.top)  || el.getBoundingClientRect().top;
+    el.style.left = sl + 'px';
+    el.style.top  = st + 'px';
+  };
+  const move = (cx, cy) => {
+    if (!dragging) return;
+    el.style.left = Math.max(0, Math.min(window.innerWidth  - el.offsetWidth,  sl + cx - sx)) + 'px';
+    el.style.top  = Math.max(0, Math.min(window.innerHeight - el.offsetHeight, st + cy - sy)) + 'px';
+  };
+  const end = () => { dragging = false; };
+
+  el.addEventListener('mousedown', (e) => { if (!e.target.closest('[data-drag]')) return; if (e.cancelable) e.preventDefault(); start(e.clientX, e.clientY); });
+  document.addEventListener('mousemove', (e) => move(e.clientX, e.clientY));
+  document.addEventListener('mouseup', end);
+
+  el.addEventListener('touchstart', (e) => { if (!e.target.closest('[data-drag]') || e.target.closest('button')) return; if (e.cancelable) e.preventDefault(); start(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
+  document.addEventListener('touchmove', (e) => { if (!dragging) return; if (e.cancelable) e.preventDefault(); move(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
+  document.addEventListener('touchend', end);
+}
+
+// ── 360° Panorama Modal ───────────────────────────────────────────────────────
+let panoRenderer = null, panoRaf = null;
+
+function cityOpenPano(src) {
+  const modal = document.getElementById('pano-modal');
+  if (!modal) return;
+  document.getElementById('pano-loading').classList.remove('hidden');
+  document.getElementById('pano-hint').classList.remove('hidden');
+  modal.classList.add('open');
+
+  if (panoRaf) { cancelAnimationFrame(panoRaf); panoRaf = null; }
+  if (panoRenderer) { panoRenderer.dispose(); panoRenderer = null; }
+
+  requestAnimationFrame(() => {
+    const canvas = document.getElementById('pano-canvas');
+    const box    = document.getElementById('pano-modal-box');
+    const w = box.clientWidth, h = box.clientHeight;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.NoToneMapping;
+    renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+    THREE.ColorManagement.enabled = false;
+    panoRenderer = renderer;
+
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 200);
+    const geo    = new THREE.SphereGeometry(100, 64, 32);
+    geo.scale(-1, 1, 1);
+
+    new THREE.TextureLoader().load(src, (tex) => {
+      tex.colorSpace = THREE.LinearSRGBColorSpace;
+      scene.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: tex })));
+
+      document.getElementById('pano-loading').classList.add('hidden');
+      const hint = document.getElementById('pano-hint');
+      setTimeout(() => hint.classList.add('hidden'), 3000);
+
+      // Controls
+      let isDragging = false, startX, startY, lon = 0, lat = 0, startLon, startLat;
+      const onMove = (cx, cy) => {
+        if (!isDragging) return;
+        lon = startLon - (cx - startX) * 0.2;
+        lat = Math.max(-85, Math.min(85, startLat + (cy - startY) * 0.2));
+        const phi = THREE.MathUtils.degToRad(90 - lat);
+        const theta = THREE.MathUtils.degToRad(lon);
+        camera.lookAt(Math.sin(phi) * Math.cos(theta), Math.cos(phi), Math.sin(phi) * Math.sin(theta));
+      };
+      canvas.addEventListener('mousedown',  (e) => { isDragging = true;  startX = e.clientX; startY = e.clientY; startLon = lon; startLat = lat; });
+      document.addEventListener('mousemove',(e) => onMove(e.clientX, e.clientY));
+      document.addEventListener('mouseup',  ()  => { isDragging = false; });
+      canvas.addEventListener('touchstart', (e) => { isDragging = true;  startX = e.touches[0].clientX; startY = e.touches[0].clientY; startLon = lon; startLat = lat; }, { passive: true });
+      canvas.addEventListener('touchmove',  (e) => onMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+      canvas.addEventListener('touchend',   ()  => { isDragging = false; });
+      canvas.addEventListener('wheel', (e) => { camera.fov = Math.max(30, Math.min(100, camera.fov + e.deltaY * 0.05)); camera.updateProjectionMatrix(); }, { passive: true });
+
+      const tick = () => { panoRaf = requestAnimationFrame(tick); renderer.render(scene, camera); };
+      tick();
+    });
+  });
+}
+
+window.cityOpenPano = cityOpenPano;
+
+function cityClosePano() {
+  const modal = document.getElementById('pano-modal');
+  if (modal) modal.classList.remove('open');
+  if (panoRaf) { cancelAnimationFrame(panoRaf); panoRaf = null; }
+  if (panoRenderer) { panoRenderer.dispose(); panoRenderer = null; }
+}
+
+window.cityClosePano = cityClosePano;

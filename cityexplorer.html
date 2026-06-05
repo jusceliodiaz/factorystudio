@@ -4,13 +4,151 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>City Explorer</title>
-  <!-- Preload do poster e do primeiro vídeo -->
   <link rel="preload" href="images/seq_arch/est_00.jpg" as="image" />
   <link rel="preload" href="images/dia_low.webm" as="video" type="video/webm" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── POI Popup ── */
+    .city-popup {
+      position: fixed;
+      z-index: 50;
+      width: 300px;
+      background: rgba(195,195,195,0.32);
+      border: 1px solid rgba(255,255,255,0.45);
+      border-radius: 20px;
+      overflow: hidden;
+      backdrop-filter: blur(40px) saturate(1.8);
+      -webkit-backdrop-filter: blur(40px) saturate(1.8);
+      box-shadow: 0 0 0 0.5px rgba(255,255,255,0.5) inset, 0 20px 60px rgba(0,0,0,0.25);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px) scale(0.96);
+      transition: opacity 220ms ease, transform 220ms ease;
+      user-select: none;
+    }
+    .city-popup.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: none;
+    }
+    .popup-img-wrap {
+      position: relative;
+      width: 100%;
+      height: 190px;
+      overflow: hidden;
+      cursor: grab;
+      user-select: none;
+    }
+    .popup-img-wrap:active { cursor: grabbing; }
+    .popup-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .popup-close-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.65);
+      border: 1px solid rgba(255,255,255,0.5);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 200ms ease;
+      z-index: 2;
+    }
+    .popup-close-btn:hover { background: rgba(255,255,255,0.9); }
+    .popup-close-btn svg { width: 9px; height: 9px; }
+    .popup-body { padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 8px; }
+    .popup-tag  { font-size: 10px; font-weight: 600; letter-spacing: 0.16em; color: rgba(80,80,80,0.7); text-transform: uppercase; }
+    .popup-title{ font-size: 24px; font-weight: 300; color: rgba(20,20,20,0.92); line-height: 1.15; letter-spacing: -0.02em; }
+    .popup-desc { font-size: 12px; font-weight: 400; line-height: 1.65; color: rgba(40,40,40,0.6); }
+    .popup-360-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 11px;
+      border-radius: 999px; border: 1px solid rgba(0,0,0,0.1);
+      background: rgba(255,255,255,0.55);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em; color: rgba(20,20,20,0.75);
+      text-transform: uppercase; cursor: pointer;
+      transition: background 200ms ease, border-color 200ms ease;
+    }
+    .popup-360-btn:hover { background: rgba(255,255,255,0.85); border-color: rgba(0,0,0,0.15); }
+    .popup-360-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ── Panorama Modal ── */
+    #pano-modal {
+      position: fixed; inset: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    #pano-modal.open { opacity: 1; pointer-events: auto; }
+    #pano-modal-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(5,5,4,0.78);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      cursor: pointer;
+    }
+    #pano-modal-box {
+      position: relative;
+      width: min(98vw, 1440px); height: min(94vh, 980px);
+      border-radius: 16px; overflow: hidden;
+      background: #0c0c0a;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 40px 120px rgba(0,0,0,0.75);
+      transform: scale(0.93);
+      transition: transform 280ms ease;
+    }
+    #pano-modal.open #pano-modal-box { transform: scale(1); }
+    #pano-modal-close {
+      position: absolute; top: 16px; right: 16px; z-index: 10;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: rgba(255,255,255,0.85);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    #pano-modal-close:hover { background: rgba(0,0,0,0.72); border-color: rgba(255,255,255,0.35); }
+    #pano-modal-badge {
+      position: absolute; top: 16px; left: 16px; z-index: 10;
+      padding: 4px 12px;
+      background: rgba(0,0,0,0.52); backdrop-filter: blur(10px);
+      border: 1px solid rgba(200,169,110,0.35); border-radius: 20px;
+      font-size: 9px; font-weight: 500; letter-spacing: 0.2em;
+      color: #c8a96e; text-transform: uppercase; pointer-events: none;
+    }
+    #pano-canvas { width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; }
+    #pano-canvas:active { cursor: grabbing; }
+    #pano-hint {
+      position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 7px;
+      padding: 6px 14px;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+      font-size: 10px; letter-spacing: 0.12em; color: rgba(255,255,255,0.55);
+      text-transform: uppercase; pointer-events: none; white-space: nowrap;
+      transition: opacity 0.5s;
+    }
+    #pano-hint.hidden { opacity: 0; }
+    #pano-loading {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px;
+      background: #0c0c0a;
+      font-size: 10px; letter-spacing: 0.15em; color: rgba(255,255,255,0.3);
+      text-transform: uppercase; transition: opacity 0.4s; pointer-events: none;
+    }
+    #pano-loading.hidden { opacity: 0; pointer-events: none; }
+    #pano-spinner {
+      width: 28px; height: 28px;
+      border: 2px solid rgba(255,255,255,0.08); border-top-color: #c8a96e;
+      border-radius: 50%; animation: panoSpin 0.8s linear infinite;
+    }
+    @keyframes panoSpin { to { transform: rotate(360deg); } }
+    @media (hover: none) {
+      .city-popup { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(235,235,232,0.97); }
+    }
+  </style>
 </head>
 <body>
   <div id="cursor"></div>
@@ -33,7 +171,25 @@
     <span id="debug-coords">—</span>
   </div>
 
+  <!-- 360° Panorama Modal -->
+  <div id="pano-modal" aria-hidden="true">
+    <div id="pano-modal-backdrop" onclick="cityClosePano()"></div>
+    <div id="pano-modal-box">
+      <button id="pano-modal-close" onclick="cityClosePano()">
+        <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" width="10" height="10">
+          <line x1="1" y1="1" x2="9" y2="9"/><line x1="9" y1="1" x2="1" y2="9"/>
+        </svg>
+      </button>
+      <div id="pano-modal-badge">360°</div>
+      <canvas id="pano-canvas"></canvas>
+      <div id="pano-hint">Arraste para explorar · Scroll para zoom</div>
+      <div id="pano-loading"><div id="pano-spinner"></div>Carregando panorama 360°</div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
   <script src="scenes-city.js"></script>
   <script src="script.js"></script>
+  <script src="pois-city.js"></script>
 </body>
 </html>

@@ -30,11 +30,39 @@ const CONFIG = {
   ],
 
   scenes: {
-    aereo: { video: "images/dia_low.webm", pois: [] },
-    pool: { video: "images/estacionamento.webm", pois: [] },
-    living: { video: "images/hall.webm", pois: [] },
-    jardim: { video: "images/predio.webm", pois: [] },
-    kitchen: { video: "images/parque.webm", pois: [] },
+    aereo: {
+      video: "images/dia_low.webm",
+      pois: [
+        { id: "pan-1", label: "Estacionamento", x: 51.4, y: 37.9, tag: "Infraestrutura · Subsolo",     title: "Estacionamento",  desc: "Área de estacionamento coberto com vagas para moradores e visitantes, acesso por cancela automática e reconhecimento de placas.", panorama360: "images/XP_NPL_360_2.jpg" },
+        { id: "pan-2", label: "Parque",         x: 13.8, y: 65.2, tag: "Lazer · Parque",               title: "Parque",          desc: "Espaço de convivência com playground, quadras e área de piquenique integrada ao paisagismo.", panorama360: "images/XP_NPL_360_2.jpg" },
+        { id: "pan-3", label: "Prédio",         x: 59.1, y: 57.1, tag: "Residencial · Bloco Principal", title: "Prédio",          desc: "Torre residencial com 28 pavimentos e vistas panorâmicas. Unidades de 68m² a 220m² com envidraçamento piso-teto.", panorama360: "images/XP_NPL_360_2.jpg" },
+        { id: "pan-4", label: "Hall",           x: 64.6, y: 71.0, tag: "Acesso · Portaria",            title: "Hall",            desc: "Portaria com controle de acesso 24h, hall envidraçado e sistema biométrico integrado.", panorama360: "images/XP_NPL_360_2.jpg" },
+      ],
+    },
+    pool: {
+      video: "images/estacionamento.webm",
+      pois: [
+        { id: "est-1", label: "Estacionamento", x: 48.7, y: 59.7, tag: "Infraestrutura · Subsolo", title: "Acesso Veicular", desc: "Entrada exclusiva com cancela automática e sistema de reconhecimento de placas via app.", panorama360: "images/XP_NPL_360_2.jpg" },
+      ],
+    },
+    living: {
+      video: "images/hall.webm",
+      pois: [
+        { id: "hall-1", label: "Hall", x: 50.0, y: 55.0, tag: "Acesso · Portaria", title: "Acesso Principal", desc: "Portaria com controle de acesso 24h, hall envidraçado e sistema biométrico integrado.", panorama360: "images/XP_NPL_360_2.jpg" },
+      ],
+    },
+    jardim: {
+      video: "images/predio.webm",
+      pois: [
+        { id: "pred-1", label: "Portaria", x: 56.9, y: 82.2, tag: "Circulação · Térreo", title: "Portaria", desc: "Hall com pé-direito de 6m, revestimento em mármore e recepção para moradores e visitantes.", panorama360: "images/XP_NPL_360_2.jpg" },
+      ],
+    },
+    kitchen: {
+      video: "images/parque.webm",
+      pois: [
+        { id: "parq-1", label: "Parque", x: 53.6, y: 58.6, tag: "Lazer · Parque", title: "Parque", desc: "Espaço de convivência com playground, quadras e área de piquenique integrada ao paisagismo.", panorama360: "images/XP_NPL_360_2.jpg" },
+      ],
+    },
   },
 
   sequences: {
