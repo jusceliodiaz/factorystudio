@@ -65,12 +65,12 @@ const CONFIG = {
     "pool-to-jardim": {
       folder: "images/seq/",
       prefix: "pool_to_jardim_",
-      from: 0, to: 72, pad: 2, ext: "jpg",
+      from: 0, to: 47, pad: 2, ext: "jpg",
     },
     "jardim-to-pool": {
       folder: "images/seq/",
       prefix: "pool_to_jardim_",
-      from: 0, to: 72, pad: 2, ext: "jpg",
+      from: 0, to: 47, pad: 2, ext: "jpg",
       reverse: true,
     },
     "aereo-to-jardim": {
