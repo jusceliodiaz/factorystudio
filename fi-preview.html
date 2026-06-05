@@ -688,6 +688,86 @@
         color: var(--gold);
         letter-spacing: 0.06em;
       }
+      /* ── VALUE PROP ── */
+      .vp-section {
+        background: #f7f7f5;
+        padding: 100px 10%;
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        margin-left: -50vw;
+      }
+      .vp-inner {
+        display: flex;
+        gap: 0;
+        align-items: flex-start;
+        margin-bottom: 64px;
+      }
+      .vp-col {
+        flex: 1;
+        padding: 0 48px 0 0;
+      }
+      .vp-col:last-child {
+        padding: 0 0 0 48px;
+      }
+      .vp-divider {
+        width: 1px;
+        align-self: stretch;
+        background: rgba(0,0,0,0.1);
+        flex-shrink: 0;
+      }
+      .vp-tag {
+        display: inline-block;
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 20px;
+      }
+      .vp-title {
+        font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        color: #111;
+        margin-bottom: 20px;
+      }
+      .vp-desc {
+        font-size: 0.92rem;
+        line-height: 1.7;
+        color: #666;
+        max-width: 380px;
+      }
+      .vp-cta {
+        display: flex;
+        justify-content: center;
+      }
+      .vp-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 16px 36px;
+        border-radius: 16px;
+        background: #111;
+        color: #fff;
+        font-family: inherit;
+        font-size: 0.88rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-decoration: none;
+        transition: background 0.25s, transform 0.25s;
+      }
+      .vp-btn:hover {
+        background: var(--gold);
+        color: #111;
+        transform: translateY(-3px);
+      }
+      @media (max-width: 720px) {
+        .vp-inner { flex-direction: column; gap: 48px; }
+        .vp-col, .vp-col:last-child { padding: 0; }
+        .vp-divider { display: none; }
+      }
+
       .pcard--disabled {
         cursor: default;
         pointer-events: none;
@@ -892,14 +972,25 @@
         </div>
       </nav>
 
-      <div class="prod-sup" data-i18n="prod-sup">Produtos</div>
-      <h1 class="prod-h1" data-i18n="prod-h1" data-i18n-html="true">
-        Demonstrações<br />disponíveis.
-      </h1>
-      <p class="prod-sub" data-i18n="prod-sub">
-        Explore nossas ferramentas interativas desenvolvidas para arquitetura e
-        incorporação imobiliária.
-      </p>
+      <!-- VALUE PROP -->
+      <section class="vp-section">
+        <div class="vp-inner">
+          <div class="vp-col reveal">
+            <span class="vp-tag" data-i18n="vp-tag-1">Integração</span>
+            <h3 class="vp-title" data-i18n-html="true" data-i18n="vp-title-1">Plugue no site<br>que você já tem.</h3>
+            <p class="vp-desc" data-i18n="vp-desc-1">Cada funcionalidade é desenvolvida como um módulo independente, incorporamos diretamente na sua plataforma atual, sem precisar reconstruir nada.</p>
+          </div>
+          <div class="vp-divider"></div>
+          <div class="vp-col reveal reveal-delay-1">
+            <span class="vp-tag" data-i18n="vp-tag-2">Site do zero</span>
+            <h3 class="vp-title" data-i18n-html="true" data-i18n="vp-title-2">Ou criamos tudo<br>do começo.</h3>
+            <p class="vp-desc" data-i18n="vp-desc-2">Projetamos e desenvolvemos o site completo do empreendimento, da identidade visual à experiência interativa, pronto para lançar.</p>
+          </div>
+        </div>
+        <div class="vp-cta reveal reveal-delay-2">
+          <a href="https://wa.me/5541992272317" target="_blank" rel="noopener" class="vp-btn" data-i18n="vp-cta">Falar com a equipe →</a>
+        </div>
+      </section>
 
       <div class="cards">
         <a class="pcard" href="firstperson.html">
@@ -1205,31 +1296,19 @@
             "btn-access": "Acessar demonstração →",
             "gate-privacy": "Seus dados não serão compartilhados.",
             "btn-back": "Voltar ao site",
-            "prod-sup": "— Produtos",
-            "prod-h1": "Demonstrações<br>disponíveis.",
-            "prod-sub":
-              "Explore nossas ferramentas interativas desenvolvidas para arquitetura e incorporação imobiliária.",
-            "card-archviz-desc":
-              "Navegação interativa por pontos de vista do empreendimento com transições em vídeo, painéis informativos e POIs dinâmicos.",
-            "card-launching-desc":
-              "Landing page de lançamento com galeria de vistas externas e ambientes internos, tour visual e call-to-action integrado.",
-            "card-pano-desc":
-              "Tour imersivo em 360° pelos ambientes do empreendimento diretamente no navegador, sem app ou óculos — quarto, living e sacada.",
-            "card-3d-title": "Visualizador 3D",
-            "card-3d-desc":
-              "Modelo tridimensional interativo do edifício com rotação livre, zoom e seleção de pavimentos diretamente no navegador.",
+            "vp-tag-1": "Integração",
+            "vp-title-1": "Plugue no site<br>que você já tem.",
+            "vp-desc-1": "Cada funcionalidade é desenvolvida como um módulo independente — incorporamos diretamente na sua plataforma atual, sem precisar reconstruir nada.",
+            "vp-tag-2": "Site do zero",
+            "vp-title-2": "Ou criamos tudo<br>do começo.",
+            "vp-desc-2": "Projetamos e desenvolvemos o site completo do empreendimento — da identidade visual à experiência interativa — pronto para lançar.",
+            "vp-cta": "Falar com a equipe →",
+            "card-exterior-desc": "Navegação imersiva pelo exterior do empreendimento com transições fluidas entre vistas aérea, piscina e living — pontos de interesse clicáveis em cada cena.",
+            "card-archviz-desc": "Navegação interativa por pontos de vista do empreendimento com transições em vídeo, painéis informativos e POIs dinâmicos.",
+            "card-launching-desc": "Landing page de lançamento com galeria de vistas externas e ambientes internos, tour visual e call-to-action integrado.",
             "card-floor-title": "Planta Humanizada",
-            "card-floor-desc":
-              "Planta baixa animada com mobiliário, texturas e elementos humanos que revelam progressivamente os ambientes do imóvel.",
-            "card-walk-desc":
-              "Percurso imersivo pelos ambientes internos do empreendimento com sequência de imagens navegáveis e pontos de interesse interativos.",
-            "card-config-title": "Configurador de Ambiente",
-            "card-config-desc":
-              "Ferramenta interativa para personalização de acabamentos, revestimentos e mobiliário com visualização em tempo real do resultado.",
-            "card-arvr-desc":
-              "Experiência imersiva em realidade aumentada e virtual — visualize o empreendimento em escala real pelo celular ou headset VR.",
+            "card-floor-desc": "Planta baixa animada com mobiliário, texturas e elementos humanos que revelam progressivamente os ambientes do imóvel.",
             "link-explore": "Explorar demo →",
-            "link-soon": "Em breve →",
             _emailErr: "Use um e-mail corporativo (não gmail, hotmail, yahoo…)",
             _required: "Preencha todos os campos.",
             _sending: "Enviando…",
@@ -1255,31 +1334,19 @@
             "btn-access": "Access demo →",
             "gate-privacy": "Your data won't be shared.",
             "btn-back": "Back to site",
-            "prod-sup": "Products",
-            "prod-h1": "Available<br>demos.",
-            "prod-sub":
-              "Explore our interactive tools developed for architecture and real estate.",
-            "card-archviz-desc":
-              "Interactive navigation through project viewpoints with video transitions, info panels and dynamic POIs.",
-            "card-launching-desc":
-              "Launch landing page with external views gallery, interior environments, visual tour and integrated call-to-action.",
-            "card-pano-desc":
-              "Immersive 360° tour through project environments directly in the browser, no app or headset — bedroom, living room and balcony.",
-            "card-3d-title": "3D Viewer",
-            "card-3d-desc":
-              "Interactive 3D building model with free rotation, zoom and floor selection directly in the browser.",
+            "vp-tag-1": "Integration",
+            "vp-title-1": "Plug into the site<br>you already have.",
+            "vp-desc-1": "Each feature is built as a standalone module, we integrate it directly into your current platform, no need to rebuild anything.",
+            "vp-tag-2": "From scratch",
+            "vp-title-2": "Or we build<br>everything from the start.",
+            "vp-desc-2": "We design and develop the full project website, from visual identity to interactive experience, ready to launch.",
+            "vp-cta": "Talk to the team →",
+            "card-exterior-desc": "Immersive navigation through the building's exterior with fluid transitions between aerial, pool and living views — clickable points of interest in every scene.",
+            "card-archviz-desc": "Interactive navigation through project viewpoints with video transitions, info panels and dynamic POIs.",
+            "card-launching-desc": "Launch landing page with external views gallery, interior environments, visual tour and integrated call-to-action.",
             "card-floor-title": "Humanized Floor Plan",
-            "card-floor-desc":
-              "Animated floor plan with furniture, textures and human elements that progressively reveal the property's spaces.",
-            "card-walk-desc":
-              "Immersive walkthrough of the building's interior environments with navigable image sequences and interactive points of interest.",
-            "card-config-title": "Space Configurator",
-            "card-config-desc":
-              "Interactive tool for customizing finishes, cladding and furniture with real-time visualization of the result.",
-            "card-arvr-desc":
-              "Immersive augmented and virtual reality experience — visualize the building at real scale via mobile or VR headset.",
+            "card-floor-desc": "Animated floor plan with furniture, textures and human elements that progressively reveal the property's spaces.",
             "link-explore": "Explore demo →",
-            "link-soon": "Coming soon →",
             _emailErr: "Use a corporate email (no gmail, hotmail, yahoo…)",
             _required: "Please fill in all fields.",
             _sending: "Sending…",
