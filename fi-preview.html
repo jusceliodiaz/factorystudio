@@ -449,19 +449,6 @@
         box-shadow: none;
       }
 
-      #gate-powered {
-        position: absolute;
-        bottom: 20px;
-        right: 28px;
-        font-size: 0.65rem;
-        letter-spacing: 0.08em;
-        color: rgba(255, 255, 255, 0.22);
-        pointer-events: none;
-      }
-      #gate-powered strong {
-        color: rgba(255, 255, 255, 0.45);
-        font-weight: 600;
-      }
       .gate-foot {
         display: flex;
         align-items: center;
@@ -512,50 +499,34 @@
         opacity: 0.9;
       }
       .btn-back {
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
+        position: fixed;
+        top: max(20px, env(safe-area-inset-top, 20px));
+        left: 20px;
+        z-index: 200;
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        padding: 10px 20px 10px 10px;
-        background: transparent;
-        border: 1px solid rgba(0, 0, 0, 0.18);
-        border-radius: 16px;
-        color: #111;
+        gap: 8px;
+        padding: 10px 16px 10px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        color: rgba(0, 0, 0, 0.7);
         font-family: inherit;
-        font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
         text-decoration: none;
         white-space: nowrap;
-        transition:
-          background 0.3s,
-          border-color 0.3s,
-          transform 0.3s;
+        transition: background 0.2s, border-color 0.2s, transform 0.2s;
       }
       .btn-back:hover {
-        background: rgba(0, 0, 0, 0.05);
-        border-color: rgba(0, 0, 0, 0.3);
-        transform: translateY(calc(-50% - 3px));
+        background: rgba(255, 255, 255, 0.92);
+        border-color: rgba(0, 0, 0, 0.25);
+        transform: translateX(-2px);
       }
-      .btn-back-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        background: rgba(0, 0, 0, 0.08);
-        border-radius: 10px;
-        color: #111;
-        flex-shrink: 0;
-        font-size: 18px;
-        transition: transform 0.35s var(--ease);
-      }
-      .btn-back:hover .btn-back-icon {
-        transform: translateX(-4px) scale(1.1);
-      }
+      .btn-back svg { flex-shrink: 0; opacity: 0.6; }
 
       .prod-sup {
         font-size: 0.68rem;
@@ -817,13 +788,8 @@
           margin-bottom: 36px;
         }
         .btn-back {
-          position: static;
-          transform: none;
           order: 1;
           flex-shrink: 0;
-        }
-        .btn-back:hover {
-          transform: translateY(-2px);
         }
         .lang-switcher--prod {
           position: static;
@@ -865,13 +831,13 @@
           class="gate-logo"
           fetchpriority="high"
         />
-        <div class="gate-sup" data-i18n="gate-sup">Acesso Exclusivo</div>
+        <div class="gate-sup" data-i18n="gate-sup">Demonstrações para Arquitetura</div>
         <h1 class="gate-h1" data-i18n="gate-h1" data-i18n-html="true">
           Experiências que vendem<br />antes de construir.
         </h1>
         <p class="gate-sub" data-i18n="gate-sub">
-          Acesse nossas demonstrações exclusivas desenvolvidas para arquitetos e
-          incorporadoras.
+          Veja na prática como a interatividade transforma a apresentação do seu
+          empreendimento. Acesso gratuito.
         </p>
 
         <div class="gate-divider"></div>
@@ -957,22 +923,15 @@
           <button class="btn-admin" id="btn-admin" type="button">admin</button>
         </div>
       </div>
-      <div id="gate-powered">
-        Powered by
-        <a
-          href="https://factorystudio.works/"
-          rel="noopener"
-          style="color: inherit; font-weight: inherit; text-decoration: none; font-family: 'Silkscreen', sans-serif"
-          >Factory</a
-        >
-      </div>
     </div>
 
     <!-- ── PRODUCTS ── -->
     <section class="products" id="products">
       <nav class="prod-nav">
         <a class="btn-back" href="index.html">
-          <span class="btn-back-icon">←</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 3L5 8l5 5"/>
+          </svg>
           <span data-i18n="btn-back">Voltar ao site</span>
         </a>
         <img
@@ -1028,7 +987,7 @@
             <div class="pcard-title">Exterior Interativo</div>
             <div class="pcard-desc">
               Navegação imersiva pelo exterior do empreendimento com transições
-              fluidas entre vistas aérea, piscina e living — pontos de interesse
+              fluidas entre vistas aérea, piscina e living, com pontos de interesse
               clicáveis em cada cena.
             </div>
             <div class="pcard-link">
@@ -1051,8 +1010,8 @@
           <div class="pcard-body">
             <div class="pcard-title">City Explorer</div>
             <div class="pcard-desc" data-i18n="card-archviz-desc">
-              Navegação interativa por pontos de vista do empreendimento com
-              sequências de imagem, POIs dinâmicos e visualização 360°.
+              Maquete interativa do empreendimento, onde o cliente navega por vistas
+              aéreas, fachadas e pontos de interesse em 360°.
             </div>
             <div class="pcard-link" data-i18n="link-explore">
               Explorar demo →
@@ -1074,8 +1033,8 @@
           <div class="pcard-body">
             <div class="pcard-title">Launching Page</div>
             <div class="pcard-desc" data-i18n="card-launching-desc">
-              Landing page de lançamento com galeria de vistas externas e
-              ambientes internos, tour visual e call-to-action integrado.
+              Landing page imersiva para lançamento, com galeria, tour visual e
+              CTA integrado. Pronta para converter.
             </div>
             <div class="pcard-link" data-i18n="link-explore">
               Explorar demo →
@@ -1296,10 +1255,10 @@
       (function () {
         var T = {
           pt: {
-            "gate-sup": "Acesso Exclusivo",
+            "gate-sup": "Demonstrações para Arquitetura",
             "gate-h1": "Experiências que vendem<br>antes de construir.",
             "gate-sub":
-              "Acesse nossas demonstrações exclusivas desenvolvidas para arquitetos e incorporadoras.",
+              "Veja na prática como a interatividade transforma a apresentação do seu empreendimento. Acesso gratuito.",
             "f-name": "Nome completo",
             "f-company": "Empresa",
             "f-email": "E-mail corporativo",
@@ -1318,14 +1277,14 @@
             "btn-back": "Voltar ao site",
             "vp-tag-1": "Integração",
             "vp-title-1": "Plugue no site<br>que você já tem.",
-            "vp-desc-1": "Cada funcionalidade é desenvolvida como um módulo independente — incorporamos diretamente na sua plataforma atual, sem precisar reconstruir nada.",
+            "vp-desc-1": "Cada funcionalidade é desenvolvida como um módulo independente. Incorporamos diretamente na sua plataforma atual, sem precisar reconstruir nada.",
             "vp-tag-2": "Site do zero",
             "vp-title-2": "Ou criamos tudo<br>do começo.",
-            "vp-desc-2": "Projetamos e desenvolvemos o site completo do empreendimento — da identidade visual à experiência interativa — pronto para lançar.",
+            "vp-desc-2": "Projetamos e desenvolvemos o site completo do empreendimento, da identidade visual à experiência interativa, pronto para lançar.",
             "vp-cta": "Falar com a equipe →",
-            "card-exterior-desc": "Navegação imersiva pelo exterior do empreendimento com transições fluidas entre vistas aérea, piscina e living — pontos de interesse clicáveis em cada cena.",
-            "card-archviz-desc": "Navegação interativa por pontos de vista do empreendimento com transições em vídeo, painéis informativos e POIs dinâmicos.",
-            "card-launching-desc": "Landing page de lançamento com galeria de vistas externas e ambientes internos, tour visual e call-to-action integrado.",
+            "card-exterior-desc": "Navegação imersiva pelo exterior do empreendimento com transições fluidas entre vistas aérea, piscina e living, com pontos de interesse clicáveis em cada cena.",
+            "card-archviz-desc": "Maquete interativa do empreendimento, onde o cliente navega por vistas aéreas, fachadas e pontos de interesse em 360°.",
+            "card-launching-desc": "Landing page imersiva para lançamento, com galeria, tour visual e CTA integrado. Pronta para converter.",
             "card-floor-title": "Planta Humanizada",
             "card-floor-desc": "Planta baixa animada com mobiliário, texturas e elementos humanos que revelam progressivamente os ambientes do imóvel.",
             "link-explore": "Explorar demo →",
@@ -1334,10 +1293,10 @@
             _sending: "Enviando…",
           },
           en: {
-            "gate-sup": "Exclusive Access",
+            "gate-sup": "Architecture Demos",
             "gate-h1": "Experiences that sell<br>before you build.",
             "gate-sub":
-              "Access our exclusive demos built for architects and real estate developers.",
+              "See in practice how interactivity transforms the way your project is presented. Free access.",
             "f-name": "Full name",
             "f-company": "Company",
             "f-email": "Corporate email",
@@ -1361,9 +1320,9 @@
             "vp-title-2": "Or we build<br>everything from the start.",
             "vp-desc-2": "We design and develop the full project website, from visual identity to interactive experience, ready to launch.",
             "vp-cta": "Talk to the team →",
-            "card-exterior-desc": "Immersive navigation through the building's exterior with fluid transitions between aerial, pool and living views — clickable points of interest in every scene.",
-            "card-archviz-desc": "Interactive navigation through project viewpoints with video transitions, info panels and dynamic POIs.",
-            "card-launching-desc": "Launch landing page with external views gallery, interior environments, visual tour and integrated call-to-action.",
+            "card-exterior-desc": "Immersive navigation through the building's exterior with fluid transitions between aerial, pool and living views, with clickable points of interest in every scene.",
+            "card-archviz-desc": "Interactive project model, where clients navigate aerial views, facades and points of interest in 360°.",
+            "card-launching-desc": "Immersive launch landing page, with gallery, visual tour and integrated CTA. Ready to convert.",
             "card-floor-title": "Humanized Floor Plan",
             "card-floor-desc": "Animated floor plan with furniture, textures and human elements that progressively reveal the property's spaces.",
             "link-explore": "Explore demo →",

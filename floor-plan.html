@@ -690,6 +690,31 @@
         opacity: 1;
       }
 
+      .fp-btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px 10px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.10);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        color: rgba(255, 255, 255, 0.85);
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        text-decoration: none;
+        transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      }
+      .fp-btn-back:hover {
+        background: rgba(255, 255, 255, 0.18);
+        border-color: rgba(255, 255, 255, 0.35);
+        transform: translateX(-2px);
+      }
+      .fp-btn-back svg { flex-shrink: 0; opacity: 0.75; }
+
       #logo {
         font-family:
           "Inter",
@@ -2817,8 +2842,10 @@
 
     <!-- TOPBAR -->
     <div id="topbar">
-      <a href="fi-preview.html#admin" style="display:inline-flex;align-items:center;gap:7px;padding:6px 14px 6px 8px;border-radius:99px;border:1px solid rgba(255,255,255,0.07);background:rgba(12,11,8,0.82);color:rgba(255,255,255,0.8);font-family:inherit;font-size:0.78rem;font-weight:500;text-decoration:none;backdrop-filter:blur(28px) saturate(1.4);-webkit-backdrop-filter:blur(28px) saturate(1.4);box-shadow:0 8px 40px rgba(0,0,0,0.5);transition:background 0.2s,transform 0.2s;flex-shrink:0;" onmouseover="this.style.background='rgba(28,24,16,0.92)';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='rgba(12,11,8,0.82)';this.style.transform=''">
-        <span style="display:flex;align-items:center;justify-content:center;width:26px;height:26px;background:rgba(200,169,110,0.15);border-radius:50%;font-size:13px;color:#c8a96e;">←</span>
+      <a href="fi-preview.html#admin" class="fp-btn-back">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 3L5 8l5 5"/>
+        </svg>
         Voltar
       </a>
       <div id="state-badge" style="display:none">
@@ -5787,32 +5814,6 @@ Vista Interna: Quadras Poliesportivas=vi-1, Salão de Festas=vi-2, Quadra Tênis
       });
     </script>
 
-    <div
-      style="
-        position: fixed;
-        bottom: 16px;
-        right: 20px;
-        z-index: 999;
-        font-family: &quot;Inter&quot;, sans-serif;
-        font-size: 0.62rem;
-        letter-spacing: 0.1em;
-        color: rgba(255, 255, 255, 0.22);
-        pointer-events: none;
-      "
-    >
-      Powered by
-      <a
-        href="https://factorystudio.works/"
-        rel="noopener"
-        style="
-          color: rgba(255, 255, 255, 0.42);
-          font-weight: 600;
-          text-decoration: none;
-          font-family: 'Silkscreen', sans-serif;
-        "
-        >Factory</a
-      >
-    </div>
   <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
   </body>
 </html>

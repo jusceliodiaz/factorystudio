@@ -293,8 +293,8 @@
         height: 100vh;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        padding: 0 var(--pad);
+        justify-content: flex-end;
+        padding: 0 var(--pad) 168px;
         position: relative;
         overflow: hidden;
       }
@@ -334,13 +334,121 @@
 
       /* Animações de entrada do hero */
       .hero-logo {
-        height: 140px;
+        height: 100px;
         width: auto;
         align-self: flex-start;
-        margin-bottom: 24px;
+        margin-bottom: 28px;
         opacity: 0;
-        transform: translateY(-14px);
-        animation: heroFadeDown 0.8s var(--ease) 0.25s forwards;
+        transform: translateY(14px);
+        animation: heroFadeUp 0.8s var(--ease) 0.25s forwards;
+      }
+
+      /* ── HERO NAV BLOCKS ── */
+      .hero-nav {
+        position: absolute;
+        bottom: 36px;
+        right: var(--pad);
+        display: flex;
+        gap: 7px;
+        z-index: 2;
+        width: min(532px, 50vw);
+      }
+
+      .hero-nav-block {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 13px;
+        border-radius: 14px;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.22);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        text-decoration: none;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      }
+      .hero-nav-block:hover {
+        background: rgba(255,255,255,0.18);
+        border-color: rgba(255,255,255,0.4);
+        transform: translateY(-3px);
+      }
+      .hero-nav-block.active {
+        background: rgba(255,255,255,0.1);
+        border-color: rgba(255,255,255,0.22);
+      }
+
+      .hero-nav-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 9px;
+        background: var(--gold);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #000;
+        transition: transform 0.35s var(--ease), background 0.3s;
+      }
+      .hero-nav-block:hover .hero-nav-icon {
+        transform: rotate(12deg) scale(1.12);
+        background: var(--gold-d);
+      }
+
+      .hero-nav-text { flex: 1; min-width: 0; }
+
+      .hero-nav-title {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: #fff;
+        white-space: nowrap;
+      }
+
+      .hero-nav-sub {
+        font-size: 10px;
+        font-weight: 400;
+        color: rgba(255,255,255,0.5);
+        margin-top: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: 0;
+        opacity: 0;
+        transition: max-height 0.35s ease, opacity 0.35s ease, margin 0.35s ease;
+      }
+      .hero-nav-block.active .hero-nav-sub {
+        max-height: 20px;
+        opacity: 1;
+        margin-top: 4px;
+      }
+
+      .hero-nav-num {
+        position: absolute;
+        bottom: 10px;
+        right: 11px;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        color: rgba(255,255,255,0.3);
+      }
+
+      .hero-nav-bar { display: none; }
+
+      @media (max-width: 860px) {
+        .hero-nav { width: auto; right: 20px; gap: 6px; }
+        .hero-nav-sub { display: none; }
+        .hero-nav-block { padding: 14px 14px; gap: 10px; }
+        .hero-nav-icon { width: 34px; height: 34px; }
+        .hero-nav-title { font-size: 13px; }
+      }
+      @media (max-width: 540px) {
+        .hero-nav { display: none; }
+        .hero { padding-bottom: 80px; }
       }
 
       .hero h1 {
@@ -1312,6 +1420,7 @@
         display: flex;
         flex-direction: column;
         align-items: flex-end;
+        transition: opacity 0.4s ease;
       }
 
       .side-nav ul {
@@ -1561,6 +1670,7 @@
       </div>
       <div class="hero-overlay"></div>
 
+
       <div class="hero-tr">
         <a
           href="https://www.instagram.com/jdworkviz/"
@@ -1626,12 +1736,12 @@
       />
 
       <h1 data-i18n="hero-h1">
-        Interatividade, Design e Experiências Digitais.
+        Webdesign e experiências interativas para empresas e o mercado imobiliário.
       </h1>
 
       <p data-i18n="hero-p">
-        Criamos interfaces, websites, experiências interativas e soluções
-        visuais para marcas, produtos e empresas contemporâneas.
+        Criamos sites, landing pages e experiências digitais customizadas, com
+        produtos especializados para arquitetos, incorporadoras e construtoras.
       </p>
 
       <a
@@ -1647,6 +1757,53 @@
         </span>
         Whatsapp
       </a>
+
+      <!-- ── HERO NAV BLOCKS ── -->
+      <nav class="hero-nav" aria-label="Navegação rápida">
+        <a class="hero-nav-block active" href="#portfolio" data-nav="0">
+          <div class="hero-nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+          </div>
+          <div class="hero-nav-text">
+            <div class="hero-nav-title">Portfólio</div>
+            <div class="hero-nav-sub">Projetos selecionados</div>
+          </div>
+          <span class="hero-nav-num">01</span>
+          <div class="hero-nav-bar"></div>
+        </a>
+
+        <a class="hero-nav-block" href="#services" data-nav="1">
+          <div class="hero-nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div class="hero-nav-text">
+            <div class="hero-nav-title">Serviços</div>
+            <div class="hero-nav-sub">O que fazemos</div>
+          </div>
+          <span class="hero-nav-num">02</span>
+          <div class="hero-nav-bar"></div>
+        </a>
+
+        <a class="hero-nav-block" href="#contact" data-nav="2">
+          <div class="hero-nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <div class="hero-nav-text">
+            <div class="hero-nav-title">Contato</div>
+            <div class="hero-nav-sub">Iniciar um projeto</div>
+          </div>
+          <span class="hero-nav-num">03</span>
+          <div class="hero-nav-bar"></div>
+        </a>
+      </nav>
     </section>
 
     <!-- ── SERVIÇOS ── -->
@@ -1670,10 +1827,10 @@
           <div class="svc-content">
             <span class="svc-num">01</span>
             <div class="svc-bottom">
-              <h3 data-i18n="svc-web-h3">Websites & Digital Experiences</h3>
+              <h3 data-i18n="svc-web-h3">Websites & Landing Pages</h3>
               <p data-i18n="svc-web-p">
-                Sites e experiências web com alto impacto visual para marcas e
-                produtos.
+                Sites, landing pages e launching pages com alto impacto visual,
+                feitos para converter.
               </p>
               <div class="tags">
                 <span class="tag">Landing pages</span>
@@ -1691,8 +1848,8 @@
           <div>
             <h3 data-i18n="svc-ai-h3">AI Creative Interface</h3>
             <p data-i18n="svc-ai-p">
-              IA para gerar imagens, conceitos e iterações criativas em
-              segundos.
+              IA integrada ao site. Gera imagens, responde perguntas e
+              personaliza a experiência em tempo real.
             </p>
             <div class="tags">
               <span class="tag tag-special">Generative AI</span>
@@ -1714,8 +1871,8 @@
             <div class="svc-bottom">
               <h3 data-i18n="svc-arch-h3">Interactive Archviz</h3>
               <p data-i18n="svc-arch-p">
-                Navegação cinematográfica pelo projeto antes mesmo de ser
-                construído.
+                Maquete interativa navegável no navegador, ideal para
+                arquitetos, incorporadoras e construtoras.
               </p>
               <div class="tags">
                 <span class="tag">Walkthroughs</span>
@@ -1764,7 +1921,8 @@
             <div class="svc-bottom">
               <h3 data-i18n="svc-vr-h3">VR & AR</h3>
               <p data-i18n="svc-vr-p">
-                O projeto ao vivo — para sentir antes de construir.
+                O cliente visita o projeto antes de ser construído, com imersão
+                total em VR ou AR.
               </p>
               <div class="tags">
                 <span class="tag">VR/AR</span>
@@ -1783,7 +1941,8 @@
           <div>
             <h3 data-i18n="svc-voz-h3">Voice Interfaces</h3>
             <p data-i18n="svc-voz-p">
-              Controle por voz integrado a ambientes e experiências digitais.
+              Navegação por voz em quiosques, eventos e experiências
+              presenciais.
             </p>
             <div class="tags">
               <span class="tag tag-special">AI Voice Agent</span>
@@ -1810,14 +1969,13 @@
                 data-i18n="ph-heading"
                 data-i18n-html="true"
               >
-                Criamos experiências que
-                <span class="ph-muted">unem design</span> e
-                <span class="ph-muted">interatividade.</span>
+                Apresentamos projetos antes de serem construídos,
+                <span class="ph-muted">e marcas</span>
+                antes de serem conhecidas.
               </h2>
               <p class="ph-desc" data-i18n="ph-desc">
-                A Factory Interactive desenvolve websites, interfaces e soluções
-                digitais focadas em experiência visual, interatividade e
-                narrativa contemporânea.
+                Da landing page ao tour interativo em 3D, entregamos
+                experiências que rodam direto no navegador, como um link.
               </p>
             </div>
 
@@ -1908,10 +2066,9 @@
                 data-i18n-html="true"
               >
                 <span style="color: #4a4a4a"
-                  >Cada interface é desenvolvida para criar</span
+                  >Cada entrega é um link. Sem download, sem app.</span
                 >
-                <em>presença, impacto e interação</em
-                ><span style="color: #4a4a4a">.</span>
+                <em>Funciona em qualquer tela.</em>
               </h2>
             </div>
           </div>
@@ -1985,11 +2142,11 @@
     <section class="cta reveal" id="contact" aria-labelledby="cta-heading">
       <div class="section-label" data-i18n="cta-label">Iniciar Projeto</div>
       <h2 id="cta-heading" data-i18n="cta-h2">
-        Transformamos ideias em experiências digitais de alto impacto.
+        Tem um projeto em mente? A gente entrega.
       </h2>
       <p data-i18n="cta-p">
-        Interfaces, soluções interativas e ferramentas visuais desenvolvidas
-        para marcas, produtos e empresas modernas.
+        Arquitetura, incorporação, produto ou serviço. Criamos a experiência
+        digital certa para o seu mercado.
       </p>
       <a
         href="https://wa.me/5541992272317"
@@ -2183,6 +2340,18 @@
           });
         });
 
+        const sideNav = document.querySelector(".side-nav");
+        const heroSection = document.getElementById("hero");
+        if (sideNav && heroSection) {
+          new IntersectionObserver(
+            ([entry]) => {
+              sideNav.style.opacity = entry.isIntersecting ? "0" : "";
+              sideNav.style.pointerEvents = entry.isIntersecting ? "none" : "";
+            },
+            { threshold: 0.1 }
+          ).observe(heroSection);
+        }
+
         /* ── Proteção de conteúdo ── */
         document.addEventListener("contextmenu", (e) => {
           if (e.target.closest("img, canvas")) e.preventDefault();
@@ -2205,46 +2374,46 @@
       (function () {
         const T = {
           pt: {
-            "hero-h1": "Interatividade, Design e Experiências Digitais.",
+            "hero-h1": "Webdesign e experiências interativas para empresas e o mercado imobiliário.",
             "hero-p":
-              "Criamos interfaces, websites, experiências interativas e soluções visuais para marcas, produtos e empresas contemporâneas.",
+              "Criamos sites, landing pages e experiências digitais customizadas, com produtos especializados para arquitetos, incorporadoras e construtoras.",
             "ph-label": "Produtos",
             "ph-heading":
-              'Criamos experiências que <span class="ph-muted">unem design</span> e <span class="ph-muted">interatividade.</span>',
+              'Apresentamos projetos antes de serem construídos, <span class="ph-muted">e marcas</span> antes de serem conhecidas.',
             "ph-desc":
-              "A Factory Interactive desenvolve websites, interfaces e soluções digitais focadas em experiência visual, interatividade e narrativa contemporânea.",
+              "Da landing page ao tour interativo em 3D, entregamos experiências que rodam direto no navegador, como um link.",
             "ph-meta-projeto": "Projeto / Cliente",
             "ph-meta-ano": "Ano",
-            "ph-end-label": "— Fim da Sessão",
+            "ph-end-label": "Online e interativo",
             "ph-end-heading":
-              '<span style="color:#4a4a4a">Cada interface é desenvolvida para criar</span> <em>presença, impacto e interação</em><span style="color:#4a4a4a">.</span>',
-            "svc-web-h3": "Websites & Digital Experiences",
+              '<span style="color:#4a4a4a">Cada entrega é um link. Sem download, sem app.</span> <em>Funciona em qualquer tela.</em>',
+            "svc-web-h3": "Websites & Landing Pages",
             "svc-web-p":
-              "Landing e Launching pages com alto impacto visual para marcas e produtos.",
+              "Sites, landing pages e launching pages com alto impacto visual, feitos para converter.",
             "svc-ai-badge": "IA",
             "svc-ai-h3": "AI Creative Interface",
             "svc-ai-p":
-              "IA para gerar imagens, conceitos e iterações criativas em segundos.",
+              "IA integrada ao site. Gera imagens, responde perguntas e personaliza a experiência em tempo real.",
             "svc-arch-h3": "Interactive Archviz",
             "svc-arch-p":
-              "Navegação cinematográfica pelo projeto antes mesmo de ser construído.",
+              "Maquete interativa navegável no navegador, ideal para arquitetos, incorporadoras e construtoras.",
             "svc-real-h3": "Realtime & Unreal Engine",
             "svc-real-p":
-              "Visualização interativa com qualidade de cinema, em tempo real.",
+              "Visualização com qualidade de cinema, em tempo real, para projetos que exigem o máximo.",
             "svc-vr-h3": "VR & AR",
-            "svc-vr-p": "O projeto ao vivo — para sentir antes de construir.",
+            "svc-vr-p": "O cliente visita o projeto antes de ser construído, com imersão total em VR ou AR.",
             "svc-voz-badge": "VOZ",
             "svc-voz-h3": "Voice Interfaces",
             "svc-voz-p":
-              "Controle por voz integrado a ambientes e experiências digitais.",
+              "Navegação por voz em quiosques, eventos e experiências presenciais.",
             "seq-title": "Interatividade<br><em>levada a sério.</em>",
             "seq-btn-aerial": "Aéreo",
             "seq-btn-living": "Living",
             "cta-label": "Iniciar Projeto",
             "cta-h2":
-              "Transformamos ideias em experiências digitais de alto impacto.",
+              "Tem um projeto em mente? A gente entrega.",
             "cta-p":
-              "Interfaces, soluções interativas e ferramentas visuais desenvolvidas para marcas, produtos e empresas modernas.",
+              "Arquitetura, incorporação, produto ou serviço. Criamos a experiência digital certa para o seu mercado.",
             "nav-inicio": "Início",
             "nav-portfolio": "Portfólio",
             "nav-servicos": "Serviços",
@@ -2277,46 +2446,46 @@
             "pano-rl-sacada": "Sacada",
           },
           en: {
-            "hero-h1": "Interactivity, Design and Digital Experiences.",
+            "hero-h1": "Web design and interactive experiences for businesses and the real estate market.",
             "hero-p":
-              "We create interfaces, websites, interactive experiences and visual solutions for contemporary brands, products and companies.",
+              "We build websites, landing pages and custom digital experiences, with specialized products for architects, developers and construction companies.",
             "ph-label": "Products",
             "ph-heading":
-              'We create experiences that <span class="ph-muted">blend design</span> and <span class="ph-muted">interactivity.</span>',
+              'We present projects before they\'re built, <span class="ph-muted">and brands</span> before they\'re known.',
             "ph-desc":
-              "Factory Interactive develops websites, interfaces and digital solutions focused on visual experience, interactivity and contemporary narrative.",
+              "From landing pages to interactive 3D tours, we deliver experiences that run directly in the browser, as a link.",
             "ph-meta-projeto": "Project / Client",
             "ph-meta-ano": "Year",
-            "ph-end-label": "— End of Session",
+            "ph-end-label": "Online and interactive",
             "ph-end-heading":
-              '<span style="color:#4a4a4a">Every interface is crafted to create</span> <em>presence, impact and interaction</em><span style="color:#4a4a4a">.</span>',
-            "svc-web-h3": "Websites & Digital Experiences",
+              '<span style="color:#4a4a4a">Every delivery is a link. No download, no app.</span> <em>Works on any screen.</em>',
+            "svc-web-h3": "Websites & Landing Pages",
             "svc-web-p":
-              "High-impact websites and digital experiences for brands and products.",
+              "High-impact websites, landing pages and launching pages, built to convert.",
             "svc-ai-badge": "AI",
             "svc-ai-h3": "AI Creative Interface",
             "svc-ai-p":
-              "AI that generates images, concepts and creative iterations in seconds.",
+              "AI integrated into your site. Generates images, answers questions and personalizes the experience in real time.",
             "svc-arch-h3": "Interactive Archviz",
             "svc-arch-p":
-              "Cinematic navigation through the project before it's even built.",
+              "Browser-based interactive models, ideal for architects, developers and construction companies.",
             "svc-real-h3": "Realtime & Unreal Engine",
             "svc-real-p":
-              "Interactive visualization with cinematic quality, in real time.",
+              "Cinematic-quality visualization, in real time, for projects that demand the best.",
             "svc-vr-h3": "VR & AR",
-            "svc-vr-p": "The project live — feel it before you build it.",
+            "svc-vr-p": "Clients walk through the project before it's built, with full immersion in VR or AR.",
             "svc-voz-badge": "VOICE",
             "svc-voz-h3": "Voice Interfaces",
             "svc-voz-p":
-              "Voice control integrated into spaces and digital experiences.",
+              "Voice-driven navigation for kiosks, events and on-site experiences.",
             "seq-title": "Interactivity<br><em>taken seriously.</em>",
             "seq-btn-aerial": "Aerial",
             "seq-btn-living": "Living",
             "cta-label": "Start a Project",
             "cta-h2":
-              "We transform ideas into high-impact digital experiences.",
+              "Have a project in mind? Let's build it.",
             "cta-p":
-              "Interfaces, interactive solutions and visual tools developed for modern brands, products and companies.",
+              "Architecture, real estate, product or service. We create the right digital experience for your market.",
             "nav-inicio": "Home",
             "nav-portfolio": "Portfolio",
             "nav-servicos": "Services",
@@ -2537,11 +2706,46 @@
     <script>
       const heroSlides = document.querySelectorAll(".hero-slide");
       let curHeroSlide = 0;
+      const SLIDE_DURATION = 5000;
+
+      const navBlocks = document.querySelectorAll(".hero-nav-block");
+      const navBars   = document.querySelectorAll(".hero-nav-bar");
+      let activeNav   = 0;
+
+      function activateNav(idx) {
+        navBlocks.forEach((b, i) => {
+          b.classList.toggle("active", i === idx);
+          navBars[i].style.transition = "none";
+          navBars[i].style.width = "0%";
+        });
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            navBars[idx].style.transition = `width ${SLIDE_DURATION}ms linear`;
+            navBars[idx].style.width = "100%";
+          });
+        });
+        activeNav = idx;
+      }
+
+      activateNav(0);
+
       setInterval(() => {
         heroSlides[curHeroSlide].classList.remove("active");
         curHeroSlide = (curHeroSlide + 1) % heroSlides.length;
         heroSlides[curHeroSlide].classList.add("active");
-      }, 5000);
+        activateNav(curHeroSlide % navBlocks.length);
+      }, SLIDE_DURATION);
+
+      navBlocks.forEach((block, i) => {
+        block.addEventListener("click", (e) => {
+          const href = block.getAttribute("href");
+          if (href && href.startsWith("#")) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) target.scrollIntoView({ behavior: "smooth" });
+          }
+        });
+      });
     </script>
   </body>
 </html>
