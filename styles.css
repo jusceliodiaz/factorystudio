@@ -271,24 +271,24 @@ html, body {
     -webkit-backdrop-filter: none;
     background: rgba(220, 220, 218, 0.95);
     bottom: max(16px, env(safe-area-inset-bottom, 16px));
-    left: 0;
-    right: 0;
-    transform: none;
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-    padding: 10px 16px;
-    padding-bottom: max(10px, env(safe-area-inset-bottom, 10px));
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    border-radius: 20px;
+    padding: 8px 10px;
+    padding-bottom: 8px;
   }
   #track-pts {
     flex-direction: row;
+    gap: 4px;
   }
   .t-pt {
     cursor: pointer;
-    padding: 10px 20px;
-    font-size: 12px;
+    width: 48px;
+    height: 48px;
+    min-height: 44px;
+    padding: 0;
     flex-shrink: 0;
-    min-height: 44px; /* Apple HIG mínimo de área de toque */
   }
   .poi { cursor: pointer; }
   .poi-btn { width: 40px; height: 40px; }

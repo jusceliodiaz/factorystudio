@@ -164,8 +164,11 @@ function loadWithLoader(seqId) {
 function preload(seqId) {
   if (cache.has(seqId)) return cache.get(seqId);
 
-  const seq   = CONFIG.sequences[seqId];
-  // Mobile: carrega 1 frame a cada 2 (metade dos frames, mesma duração visual)
+  const seqBase = CONFIG.sequences[seqId];
+  // Mobile: usa pasta seq_arch_m com imagens 50% menores e quality 35
+  const seq = MOBILE
+    ? { ...seqBase, folder: seqBase.folder.replace('images/seq/', 'images/seq_arch_m/') }
+    : seqBase;
   const step  = MOBILE ? 2 : 1;
   const total = seq.to - seq.from + 1;
   const indices = [];
