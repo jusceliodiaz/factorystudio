@@ -235,7 +235,7 @@ async function navigateTo(targetId) {
 
     // 1 — passa o fps correto; no mobile metade dos frames → metade do fps = duração igual
     const seq = CONFIG.sequences[seqId];
-    const fps = (seq.fps || 30) / (MOBILE ? 2 : 1);
+    const fps = (seq.fps || 60) / (MOBILE ? 2 : 1);
     await playSequence(frames, seq.reverse === true, gen, fps);
 
     if (gen !== navGen) return;
