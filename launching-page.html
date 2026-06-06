@@ -26,6 +26,7 @@
     <meta property="og:url" content="https://factorystudio.works/launching-page.html" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://factorystudio.works/images/og-cover.jpg" />
+    <link rel="preload" as="image" href="images/hero/h5.jpg" fetchpriority="high" />
     <link rel="icon" type="image/png" href="images/logo_site.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -450,6 +451,55 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+      }
+
+      .features-copy {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .features-copy .lp-section-label {
+        margin-bottom: 20px;
+      }
+
+      .features-copy h2 {
+        font-size: clamp(2rem, 4vw, 3.5rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        color: #fff;
+        margin-bottom: 20px;
+      }
+
+      .features-copy h2 em {
+        font-style: italic;
+        font-weight: 300;
+        color: var(--gold);
+      }
+
+      .features-copy > p {
+        font-size: 1rem;
+        color: var(--muted);
+        line-height: 1.7;
+        max-width: 420px;
+        margin-bottom: 48px;
+      }
+
+      .gallery-header {
+        padding: 72px 10% 56px;
+      }
+
+      .gallery-header .lp-section-label {
+        margin-bottom: 16px;
+      }
+
+      .gallery-header h2 {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #fff;
+        line-height: 1.1;
       }
 
       /* ── CTA ── */
@@ -1095,6 +1145,11 @@
         opacity: 1;
         transform: translateY(0);
       }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .reveal { opacity: 1; transform: none; transition: none; }
+      }
       .reveal-delay-1 {
         transition-delay: 0.1s;
       }
@@ -1237,7 +1292,7 @@
 
     <!-- HERO -->
     <section class="lp-hero">
-      <img class="lp-hero-bg" src="images/hero/h5.jpg" alt="Lançamento" />
+      <img class="lp-hero-bg" src="images/hero/h5.jpg" alt="Lançamento" fetchpriority="high" decoding="async" />
       <div class="lp-hero-overlay"></div>
       <div class="lp-hero-content">
         <span class="lp-badge" data-i18n="badge">Lançamento Imobiliário</span>
@@ -1295,7 +1350,12 @@
       <div class="seq-sticky">
         <canvas class="seq-canvas" aria-hidden="true"></canvas>
         <div class="seq-pins"></div>
-        <div class="seq-overlay"></div>
+        <div class="seq-overlay">
+          <div class="seq-content">
+            <span class="seq-label" data-i18n="badge">Lançamento Imobiliário</span>
+            <h2 class="seq-title" data-i18n="seq-title" data-i18n-html="true">Interatividade<br><em>levada a sério.</em></h2>
+          </div>
+        </div>
         <div class="seq-scrub" aria-label="Navegar sequência">
           <div class="seq-btns">
             <button
@@ -1388,9 +1448,15 @@
 
     <!-- GALLERY -->
     <div class="gallery-section" id="galeria">
+      <div class="gallery-header">
+        <p class="lp-section-label reveal" data-i18n="gallery-label">— Galeria</p>
+        <h2 class="reveal reveal-delay-1" data-i18n="gallery-h2" data-i18n-html="true">
+          Vistas externas e <em style="font-style:italic;font-weight:300;color:var(--gold)">ambientes internos</em>
+        </h2>
+      </div>
       <div class="gallery-grid">
         <div class="gallery-card reveal">
-          <img src="images/hero/h5.jpg" alt="Vista externa" />
+          <img src="images/hero/h5.jpg" alt="Vista externa" loading="lazy" decoding="async" />
           <div class="gallery-card-overlay">
             <span class="gallery-card-label" data-i18n="gallery-img-1"
               >Vista Externa</span
@@ -1398,7 +1464,7 @@
           </div>
         </div>
         <div class="gallery-card reveal reveal-delay-1">
-          <img src="images/hero/h6.jpg" alt="Sala de estar" />
+          <img src="images/hero/h6.jpg" alt="Sala de estar" loading="lazy" decoding="async" />
           <div class="gallery-card-overlay">
             <span class="gallery-card-label" data-i18n="gallery-img-2"
               >Sala de Estar</span
@@ -1406,7 +1472,7 @@
           </div>
         </div>
         <div class="gallery-card reveal reveal-delay-2">
-          <img src="images/hero/h8.jpg" alt="Suíte master" />
+          <img src="images/hero/h8.jpg" alt="Suíte master" loading="lazy" decoding="async" />
           <div class="gallery-card-overlay">
             <span class="gallery-card-label" data-i18n="gallery-img-3"
               >Suíte Master</span
@@ -1415,6 +1481,52 @@
         </div>
       </div>
     </div>
+
+    <!-- FEATURES / DIFERENCIAIS -->
+    <section class="features-section">
+      <div class="features-copy">
+        <p class="lp-section-label reveal" data-i18n="feat-label">— Diferenciais</p>
+        <h2 class="reveal reveal-delay-1" data-i18n="feat-h2" data-i18n-html="true">
+          Experiência digital <em>completa</em>
+        </h2>
+        <p class="reveal reveal-delay-2" data-i18n="feat-desc">
+          Uma landing page interativa que leva o cliente para dentro do projeto antes mesmo da visita ao stand.
+        </p>
+        <div class="features-list">
+          <div class="feature-item reveal reveal-delay-1">
+            <span class="feature-num">01</span>
+            <div class="feature-text">
+              <h4 data-i18n="feat-1-h4">Galeria imersiva de alta resolução</h4>
+              <p data-i18n="feat-1-p">Imagens de archviz fotorrealistas com navegação fluida em qualquer dispositivo.</p>
+            </div>
+          </div>
+          <div class="feature-item reveal reveal-delay-2">
+            <span class="feature-num">02</span>
+            <div class="feature-text">
+              <h4 data-i18n="feat-2-h4">Tour visual por ambientes</h4>
+              <p data-i18n="feat-2-p">O cliente percorre os ambientes em sequência, criando uma narrativa de venda consistente.</p>
+            </div>
+          </div>
+          <div class="feature-item reveal reveal-delay-3">
+            <span class="feature-num">03</span>
+            <div class="feature-text">
+              <h4 data-i18n="feat-3-h4">CTA integrado e rastreável</h4>
+              <p data-i18n="feat-3-p">Botão de contato direto via WhatsApp com mensagem pré-configurada para o empreendimento.</p>
+            </div>
+          </div>
+          <div class="feature-item reveal reveal-delay-3">
+            <span class="feature-num">04</span>
+            <div class="feature-text">
+              <h4 data-i18n="feat-4-h4">100% web — sem app, sem plugin</h4>
+              <p data-i18n="feat-4-p">O cliente acessa por um link e já está dentro da experiência, em qualquer dispositivo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="features-img-wrap reveal">
+        <img src="images/hero/h6.jpg" alt="Experiência archviz interativa" />
+      </div>
+    </section>
 
     <!-- CTA -->
     <section class="lp-cta">
@@ -1506,12 +1618,14 @@
       /* ── IMAGE SEQUENCER ── */
       (function () {
         const FRAME_COUNT = 48;
-        const BASE_PATH = "images/seq_arch/launch_";
+        const BASE_PATH = innerWidth < 768
+          ? "images/seq_arch_m/launch_"
+          : "images/seq_arch/launch_";
         const PAD = 2;
         const wrap = document.querySelector(".seq-wrap");
         const canvas = document.querySelector(".seq-canvas");
         if (!wrap || !canvas) return;
-        const ctx = canvas.getContext("2d");
+        const ctx = canvas.getContext("2d", { alpha: false });
         let currentFrame = 0,
           activeGroup = null,
           isAnimating = false,
@@ -1522,7 +1636,10 @@
         }
         const images = Array.from({ length: FRAME_COUNT }, () => new Image());
         function ensureFrame(i) {
-          if (!images[i].src) images[i].src = frameSrc(i);
+          if (images[i].src) return;
+          images[i].src = frameSrc(i);
+          images[i].decoding = 'async';
+          images[i].decode?.().catch(() => {});
         }
         ensureFrame(0);
         setTimeout(() => {
@@ -1718,14 +1835,21 @@
           });
         }
         function resize() {
-          canvas.width = window.innerWidth;
-          canvas.height = window.innerHeight;
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          canvas.width  = window.innerWidth  * dpr;
+          canvas.height = window.innerHeight * dpr;
+          canvas.style.width  = window.innerWidth  + 'px';
+          canvas.style.height = window.innerHeight + 'px';
           drawFrame(currentFrame);
         }
         images[0].onload = () => drawFrame(0);
         if (images[0].complete && images[0].naturalWidth) drawFrame(0);
         window.addEventListener("scroll", onScroll, { passive: true });
-        window.addEventListener("resize", resize);
+        let _rw = innerWidth;
+        window.addEventListener("resize", () => {
+          if (innerWidth === _rw) return;
+          _rw = innerWidth; resize();
+        });
         resize();
         const btnFirst = document.getElementById("seqBtnFirst");
         const btnLast = document.getElementById("seqBtnLast");
@@ -1999,8 +2123,16 @@
           renderer.setSize(w, h);
           renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
           renderer.toneMapping = THREE.NoToneMapping;
-          renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+          renderer.outputColorSpace = THREE.SRGBColorSpace;
           panoRenderer = renderer;
+
+          function onPanoResize() {
+            const W = box.clientWidth, H = box.clientHeight;
+            renderer.setSize(W, H);
+            camera.aspect = W / H;
+            camera.updateProjectionMatrix();
+          }
+          window.addEventListener('resize', onPanoResize);
           const scene = new THREE.Scene();
           _panoScene = scene;
           const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 200);
@@ -2014,7 +2146,8 @@
           new THREE.TextureLoader().load(
             TOUR[roomKey].src,
             (tex) => {
-              tex.colorSpace = THREE.LinearSRGBColorSpace;
+              tex.colorSpace = THREE.SRGBColorSpace;
+              tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
               mat.map = tex;
               mat.needsUpdate = true;
               loading.classList.add("hidden");
@@ -2128,7 +2261,7 @@
               Math.sin(phi) * Math.sin(theta),
             );
             renderer.render(scene, camera);
-            _updateHotspotPositions(w, h);
+            _updateHotspotPositions(box.clientWidth, box.clientHeight);
           }
           renderFrame();
         });
