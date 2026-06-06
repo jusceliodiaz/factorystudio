@@ -7,15 +7,56 @@ const debugHud    = document.getElementById('debug-hud');
 const debugCoords = document.getElementById('debug-coords');
 const ctx         = seqCanvas.getContext('2d');
 
-// Mobile: hover:none cobre iOS, Android e touch-only devices
 const MOBILE = window.matchMedia('(hover: none)').matches || window.innerWidth < 768;
 
+const LEAD = {
+  whatsapp: "5541987831394",
+  empreendimento: "Factory Interactive — Demo",
+  endpoint: "/api/leads",
+};
+
+const TOUR_ROUTE = ["aereo", "pool", "living", "kitchen", "jardim"];
+
+let mode         = "dia";
 let currentScene = 'aereo';
 let busy         = false;
 let navGen       = 0;
 let poiTimer     = null;
+let tourTimer    = null;
+let touring      = false;
 const cache      = new Map();
 const videoBlobs = new Map();
+
+// ─── Analytics ───────────────────────────────────────────────────────────────
+
+function sessionId() {
+  let s = sessionStorage.getItem('sid');
+  if (!s) { s = crypto.randomUUID(); sessionStorage.setItem('sid', s); }
+  return s;
+}
+
+function track(event, props = {}) {
+  const payload = {
+    event, ...props,
+    slug: CONFIG?.slug,
+    ts: Date.now(),
+    session: sessionId(),
+    device: MOBILE ? 'mobile' : 'desktop',
+  };
+  if (window.gtag) gtag('event', event, props);
+  navigator.sendBeacon?.('/api/track', JSON.stringify(payload));
+}
+
+let dwellStart = Date.now();
+let dwellScene = 'aereo';
+
+function markDwell(newScene) {
+  track('dwell', { scene: dwellScene, ms: Date.now() - dwellStart });
+  dwellScene = newScene;
+  dwellStart = Date.now();
+}
+
+window.addEventListener('pagehide', () => markDwell(dwellScene));
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
@@ -23,14 +64,14 @@ window.addEventListener('load', () => {
   resizeCanvas();
   if (!MOBILE) initCursor();
   buildTrack();
-  showPoster(CONFIG.poster || 'images/seq_arch/aereo_to_piscina_00.jpg', () => startScene('aereo'));
+  showPoster(CONFIG.poster || 'images/seq_arch/aereo_to_piscina_00.jpg', () => startScene(sceneFromHash()));
   preloadAllVideos();
+  initCTA();
 });
 
 window.addEventListener('resize', resizeCanvas);
 
 function resizeCanvas() {
-  // Mobile: DPR 1 — canvas mais leve, sem diferença visual perceptível em tela pequena
   const dpr = MOBILE ? 1 : Math.min(window.devicePixelRatio || 1, 2);
   seqCanvas.width        = window.innerWidth  * dpr;
   seqCanvas.height       = window.innerHeight * dpr;
@@ -39,27 +80,59 @@ function resizeCanvas() {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
+// ─── Deep link ────────────────────────────────────────────────────────────────
+
+function sceneFromHash() {
+  const id = new URLSearchParams(location.hash.slice(1)).get('cena');
+  return CONFIG.scenes[id] ? id : 'aereo';
+}
+
+function syncHash(sceneId) {
+  history.replaceState(null, '', `#cena=${sceneId}`);
+}
+
+function copyShare() {
+  const url = `${location.origin}${location.pathname}#cena=${currentScene}`;
+  navigator.clipboard?.writeText(url);
+  track('share_copy', { scene: currentScene });
+}
+
+// ─── Video source (com suporte a variantes dia/noite + objeto mp4/webm) ──────
+
+function videoSrc(scene) {
+  let v = scene.video;
+  if (v && (v.dia || v.noite)) v = v[mode] || v.dia;
+  if (!v) return null;
+  if (typeof v === 'string') return v;
+  const safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  return (MOBILE || safari) ? (v.mp4 || v.webm) : (v.webm || v.mp4);
+}
+
+function toggleMode() {
+  mode = mode === 'dia' ? 'noite' : 'dia';
+  track('mode_toggle', { mode });
+  startScene(currentScene);
+}
+
 // ─── Video Preload ────────────────────────────────────────────────────────────
 
 function preloadAllVideos() {
-  const videos = [...new Set(
+  const srcs = [...new Set(
     Object.values(CONFIG.scenes)
-      .map(s => s.video)
+      .map(s => videoSrc(s))
       .filter(Boolean)
   )];
 
-  // Primeiro vídeo (cena inicial) tem prioridade — os demais carregam em sequência
   const loadOne = (src) =>
     fetch(src)
       .then(r => r.blob())
       .then(blob => { videoBlobs.set(src, URL.createObjectURL(blob)); })
       .catch(() => {});
 
-  // Carrega o aereo primeiro, depois o restante em paralelo
-  const first = CONFIG.scenes['aereo']?.video;
-  const rest  = videos.filter(v => v !== first);
+  const firstSrc = videoSrc(CONFIG.scenes['aereo']);
+  const rest = srcs.filter(s => s !== firstSrc);
 
-  const chain = first ? loadOne(first) : Promise.resolve();
+  const chain = firstSrc ? loadOne(firstSrc) : Promise.resolve();
   chain.then(() => Promise.all(rest.map(loadOne)));
 }
 
@@ -78,23 +151,21 @@ function showPoster(src, cb) {
 function startScene(sceneId) {
   const scene = CONFIG.scenes[sceneId];
   if (!scene) return;
+
+  markDwell(sceneId);
   currentScene = sceneId;
   setActive(sceneId);
+  syncHash(sceneId);
   renderPOIs(scene.pois);
 
-  // Pré-carrega só as sequências desta cena em background
   const transitions = CONFIG.transitions[sceneId] || {};
   Object.values(transitions).forEach(id => preload(id));
 
-  if (!scene.video) {
-    seqCanvas.classList.remove('active');
-    return;
-  }
+  const src = videoSrc(scene);
+  if (!src) { seqCanvas.classList.remove('active'); return; }
 
-  // Captura a geração atual — callbacks disparados por cenas anteriores são ignorados
   const gen = navGen;
-
-  mainVideo.src  = videoBlobs.get(scene.video) || scene.video;
+  mainVideo.src  = videoBlobs.get(src) || src;
   mainVideo.loop = true;
   mainVideo.load();
 
@@ -165,20 +236,16 @@ function preload(seqId) {
   if (cache.has(seqId)) return cache.get(seqId);
 
   const seqBase = CONFIG.sequences[seqId];
-  // Mobile: usa pasta seq_arch_m com imagens 50% menores e quality 35
   const seq = MOBILE
     ? { ...seqBase, folder: seqBase.folder.replace('images/seq_arch/', 'images/seq_arch_m/') }
     : seqBase;
-  const step  = MOBILE ? 2 : 1;
-  const total = seq.to - seq.from + 1;
+  const step    = MOBILE ? 2 : 1;
   const indices = [];
   for (let i = seq.from; i <= seq.to; i += step) indices.push(i);
 
-  const frames = new Array(indices.length);
-  let loaded   = 0;
-  let failed   = false;
-
-  // Mobile: 4 downloads paralelos para não travar a rede; desktop: tudo de uma vez
+  const frames  = new Array(indices.length);
+  let loaded    = 0;
+  let failed    = false;
   const SLOTS   = MOBILE ? 4 : indices.length;
   let nextLoad  = 0;
 
@@ -236,21 +303,33 @@ function drawCover(img) {
   ctx.drawImage(img, dx, dy, dw, dh);
 }
 
-// ─── POIs ─────────────────────────────────────────────────────────────────────
+// ─── POIs com suporte a nav + info ───────────────────────────────────────────
 
-function renderPOIs(pois) {
+function renderPOIs(pois = []) {
   poiLayer.innerHTML = '';
   pois.forEach((poi, i) => {
     const el = document.createElement('div');
-    el.className  = 'poi';
+    el.className = 'poi' + (poi.type === 'info' ? ' poi--info' : '');
     el.style.left = poi.x + '%';
     el.style.top  = poi.y + '%';
     el.style.animationDelay = (i * 80) + 'ms';
-    el.innerHTML  = `<div class="poi-btn"><span class="poi-pulse"></span></div><div class="poi-name">${poi.label}</div>`;
-    if (poi.target) {
-      el.addEventListener('click',      () => navigateTo(poi.target));
-      el.addEventListener('touchstart', e  => { e.preventDefault(); navigateTo(poi.target); }, { passive: false });
-    }
+    el.innerHTML = `<div class="poi-btn"><span class="poi-pulse"></span></div>
+                    <div class="poi-name">${poi.label}</div>`;
+
+    const act = () => {
+      if (poi.type === 'nav' && poi.target) {
+        track('poi_nav', { from: currentScene, to: poi.target });
+        navigateTo(poi.target);
+      } else if (poi.type === 'info' && poi.info) {
+        track('poi_info', { scene: currentScene, label: poi.label });
+        openInfo(poi.info);
+      } else if (poi.target) {
+        navigateTo(poi.target);
+      }
+    };
+
+    el.addEventListener('click', act);
+    el.addEventListener('touchstart', e => { e.preventDefault(); act(); }, { passive: false });
     poiLayer.appendChild(el);
   });
 }
@@ -259,6 +338,27 @@ function hidePOIs() {
   clearTimeout(poiTimer);
   poiLayer.classList.add('out');
   poiTimer = setTimeout(() => { poiLayer.innerHTML = ''; poiLayer.classList.remove('out'); }, 300);
+}
+
+function openInfo(info) {
+  let panel = document.getElementById('info-panel');
+  if (!panel) {
+    panel = document.createElement('div');
+    panel.id = 'info-panel';
+    document.body.appendChild(panel);
+    panel.addEventListener('click', e => {
+      if (e.target === panel || e.target.dataset.close) panel.classList.remove('open');
+    });
+  }
+  panel.innerHTML = `
+    <div id="info-card">
+      <button data-close aria-label="Fechar">&times;</button>
+      ${info.imagem ? `<img src="${info.imagem}" alt="">` : ''}
+      <h3>${info.titulo}</h3>
+      ${info.area ? `<span class="info-area">${info.area}</span>` : ''}
+      <ul>${(info.itens || []).map(t => `<li>${t}</li>`).join('')}</ul>
+    </div>`;
+  requestAnimationFrame(() => panel.classList.add('open'));
 }
 
 // ─── Track ────────────────────────────────────────────────────────────────────
@@ -284,12 +384,87 @@ function setActive(id) {
   document.querySelectorAll('.t-pt').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.id === id);
   });
-
-  const item    = CONFIG.timeline.find(t => t.id === id);
-  const tag     = document.getElementById('scene-tag');
+  const item = CONFIG.timeline.find(t => t.id === id);
+  const tag  = document.getElementById('scene-tag');
   if (!item || !tag) return;
   tag.textContent = item.label;
   tag.classList.add('show');
+}
+
+// ─── Tour autoguiado ──────────────────────────────────────────────────────────
+
+function startTour() {
+  touring = true;
+  document.body.classList.add('touring');
+  track('tour_start', {});
+  let i = TOUR_ROUTE.indexOf(currentScene);
+  const next = () => {
+    if (!touring) return;
+    i = (i + 1) % TOUR_ROUTE.length;
+    navigateTo(TOUR_ROUTE[i]);
+    tourTimer = setTimeout(next, 6000);
+  };
+  tourTimer = setTimeout(next, 6000);
+  const btn = document.getElementById('cta-tour');
+  if (btn) { btn.innerHTML = '■ <span>Parar</span>'; btn.onclick = stopTour; }
+}
+
+function stopTour() {
+  touring = false;
+  clearTimeout(tourTimer);
+  document.body.classList.remove('touring');
+  const btn = document.getElementById('cta-tour');
+  if (btn) { btn.innerHTML = '▶ <span>Tour</span>'; btn.onclick = startTour; }
+}
+
+['pointerdown', 'keydown'].forEach(ev =>
+  document.addEventListener(ev, () => { if (touring) stopTour(); }, { passive: true })
+);
+
+// ─── CTA + Lead modal ─────────────────────────────────────────────────────────
+
+function initCTA() {
+  const wa = document.getElementById('cta-whats');
+  if (wa) {
+    wa.href = `https://wa.me/${LEAD.whatsapp}?text=` +
+      encodeURIComponent(`Olá! Vi a maquete do ${LEAD.empreendimento} e quero saber mais.`);
+    wa.addEventListener('click', () => track('cta_whatsapp', { scene: currentScene }));
+  }
+
+  const modal = document.getElementById('lead-modal');
+  if (!modal) return;
+
+  const open  = () => { modal.hidden = false; track('lead_open', { scene: currentScene }); };
+  const close = () => { modal.hidden = true; };
+
+  const visitBtn = document.getElementById('cta-visit');
+  if (visitBtn) visitBtn.addEventListener('click', open);
+
+  const closeBtn = document.getElementById('lead-close');
+  if (closeBtn) closeBtn.addEventListener('click', close);
+
+  modal.addEventListener('click', e => { if (e.target === modal) close(); });
+
+  const form = document.getElementById('lead-form');
+  if (form) {
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.target));
+      data.empreendimento = LEAD.empreendimento;
+      data.cena = currentScene;
+      try {
+        await fetch(LEAD.endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+      } catch (_) {}
+      track('lead_submit', data);
+      e.target.hidden = true;
+      const ok = document.getElementById('lead-ok');
+      if (ok) ok.hidden = false;
+    });
+  }
 }
 
 // ─── Cursor (desktop only) ────────────────────────────────────────────────────

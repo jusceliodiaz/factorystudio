@@ -560,7 +560,7 @@
       .cards {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 48vh 48vh 48vh;
+        grid-template-rows: 48vh 48vh;
         gap: 3px;
         width: 100vw;
         position: relative;
@@ -752,6 +752,36 @@
         .vp-divider { display: none; }
       }
 
+      .pcard--plain {
+        background: #111;
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 120px;
+        text-decoration: none;
+        border-top: 1px solid rgba(255,255,255,0.06);
+      }
+      .pcard--plain:hover .pcard-plain-btn {
+        background: var(--gold);
+        color: #111;
+        transform: translateY(-2px);
+      }
+      .pcard-plain-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 36px;
+        border-radius: 14px;
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: #fff;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        transition: background 0.25s, color 0.25s, transform 0.25s;
+      }
+
       .pcard--disabled {
         cursor: default;
         pointer-events: none;
@@ -786,7 +816,7 @@
         }
         .cards {
           grid-template-columns: 1fr;
-          grid-template-rows: 60vw 60vw 60vw 60vw 60vw;
+          grid-template-rows: 60vw 60vw 60vw 60vw;
         }
         .vp-section {
           padding: 64px 5%;
@@ -819,7 +849,7 @@
           margin: 0 auto;
         }
         .cards {
-          grid-template-rows: 70vw 70vw 70vw 70vw 70vw;
+          grid-template-rows: 70vw 70vw 70vw 70vw;
         }
         .pcard-body {
           padding: 24px 20px;
@@ -1089,25 +1119,10 @@
           </div>
         </a>
 
-        <a class="pcard" href="firstmp4.html">
-          <div class="pcard-thumb">
-            <img
-              src="images/hero/h1.jpg"
-              alt="Teste"
-              width="800"
-              height="500"
-              loading="lazy"
-            />
-            <span class="pcard-badge">Teste</span>
-          </div>
-          <div class="pcard-body">
-            <div class="pcard-title">Teste</div>
-            <div class="pcard-desc">
-              Página de teste — firstmp4.
-            </div>
-            <div class="pcard-link">
-              Explorar demo →
-            </div>
+        <a class="pcard pcard--plain" href="firstperson2.html">
+          <div class="pcard-plain-btn">
+            Teste
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
           </div>
         </a>
 

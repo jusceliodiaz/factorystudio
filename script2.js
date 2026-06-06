@@ -5,7 +5,9 @@ const trackEl     = document.getElementById('track');
 const loaderEl    = document.getElementById('loader');
 const debugHud    = document.getElementById('debug-hud');
 const debugCoords = document.getElementById('debug-coords');
-const ctx         = seqCanvas.getContext('2d');
+
+// 4 — canvas opaco: compositing mais barato (sem canal alfa)
+const ctx = seqCanvas.getContext('2d', { alpha: false });
 
 const MOBILE = window.matchMedia('(hover: none)').matches || window.innerWidth < 768;
 
@@ -16,7 +18,7 @@ const LEAD = {
 };
 
 const TOUR_ROUTE = ["aereo", "pool", "living", "kitchen", "jardim"];
-const MAX_SEQ = 3;
+const MAX_SEQ    = 3;  // 3 — LRU: máximo de sequências em memória
 
 let mode         = "dia";
 let currentScene = 'aereo';
@@ -26,6 +28,10 @@ let poiTimer     = null;
 let tourTimer    = null;
 let touring      = false;
 const cache      = new Map();
+const videoBlobs = new Map();
+
+// 5 — resize inteligente: ignora variações de altura causadas pela barra de endereço
+let _w = innerWidth, _h = innerHeight, lastFrame = null;
 
 // ─── Analytics ───────────────────────────────────────────────────────────────
 
@@ -65,18 +71,27 @@ window.addEventListener('load', () => {
   if (!MOBILE) initCursor();
   buildTrack();
   showPoster(CONFIG.poster || 'images/seq_arch/aereo_to_piscina_00.jpg', () => startScene(sceneFromHash()));
+
+  // 6 — carrega vizinhos imediatamente; resto no idle
   preloadNeighbors('aereo');
+  (window.requestIdleCallback || setTimeout)(() => preloadAllVideos(), 2500);
   initCTA();
 });
 
-window.addEventListener('resize', resizeCanvas);
+// 5 — resize inteligente
+window.addEventListener('resize', () => {
+  if (innerWidth === _w && Math.abs(innerHeight - _h) < 120) return;
+  _w = innerWidth; _h = innerHeight;
+  resizeCanvas();
+  if (lastFrame) drawCover(lastFrame);
+});
 
 function resizeCanvas() {
   const dpr = MOBILE ? 1 : Math.min(window.devicePixelRatio || 1, 2);
-  seqCanvas.width        = window.innerWidth  * dpr;
-  seqCanvas.height       = window.innerHeight * dpr;
-  seqCanvas.style.width  = window.innerWidth  + 'px';
-  seqCanvas.style.height = window.innerHeight + 'px';
+  seqCanvas.width        = innerWidth  * dpr;
+  seqCanvas.height       = innerHeight * dpr;
+  seqCanvas.style.width  = innerWidth  + 'px';
+  seqCanvas.style.height = innerHeight + 'px';
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
@@ -97,7 +112,7 @@ function copyShare() {
   track('share_copy', { scene: currentScene });
 }
 
-// ─── Video source (dia/noite + MP4/WebM) ─────────────────────────────────────
+// ─── Video source ─────────────────────────────────────────────────────────────
 
 function videoSrc(scene) {
   let v = scene.video;
@@ -114,22 +129,32 @@ function toggleMode() {
   startScene(currentScene);
 }
 
-// ─── Video warm-up ────────────────────────────────────────────────────────────
+// ─── Video Preload ────────────────────────────────────────────────────────────
 
-const videoEl = new Map();
+const loadOne = (src) => {
+  if (!src || videoBlobs.has(src)) return Promise.resolve();
+  return fetch(src)
+    .then(r => r.blob())
+    .then(blob => { videoBlobs.set(src, URL.createObjectURL(blob)); })
+    .catch(() => {});
+};
 
-function warmVideo(src) {
-  if (!src || videoEl.has(src)) return;
-  const v = document.createElement('video');
-  v.muted = true; v.playsInline = true; v.preload = 'auto'; v.src = src;
-  videoEl.set(src, v);
+// 6 — carrega só os vídeos alcançáveis a partir da cena atual
+function preloadNeighbors(sceneId) {
+  const want = new Set([videoSrc(CONFIG.scenes[sceneId])]);
+  Object.keys(CONFIG.transitions[sceneId] || {})
+    .forEach(d => want.add(videoSrc(CONFIG.scenes[d])));
+  [...want].filter(Boolean).forEach(loadOne);
 }
 
-function preloadNeighbors(sceneId) {
-  warmVideo(videoSrc(CONFIG.scenes[sceneId]));
-  Object.keys(CONFIG.transitions[sceneId] || {}).forEach(dest =>
-    warmVideo(videoSrc(CONFIG.scenes[dest]))
-  );
+function preloadAllVideos() {
+  const srcs = [...new Set(
+    Object.values(CONFIG.scenes).map(s => videoSrc(s)).filter(Boolean)
+  )];
+  const firstSrc = videoSrc(CONFIG.scenes['aereo']);
+  const rest = srcs.filter(s => s !== firstSrc);
+  const chain = firstSrc ? loadOne(firstSrc) : Promise.resolve();
+  chain.then(() => Promise.all(rest.map(loadOne)));
 }
 
 // ─── Poster ───────────────────────────────────────────────────────────────────
@@ -153,8 +178,9 @@ function startScene(sceneId) {
   setActive(sceneId);
   syncHash(sceneId);
   renderPOIs(scene.pois);
-  preloadNeighbors(sceneId);
 
+  // 6 — pré-carrega vídeos vizinhos junto com as sequências
+  preloadNeighbors(sceneId);
   const transitions = CONFIG.transitions[sceneId] || {};
   Object.values(transitions).forEach(id => preload(id));
 
@@ -162,9 +188,8 @@ function startScene(sceneId) {
   if (!src) { seqCanvas.classList.remove('active'); return; }
 
   const gen = navGen;
-  mainVideo.preload = 'auto';
-  mainVideo.src     = src;
-  mainVideo.loop    = true;
+  mainVideo.src  = videoBlobs.get(src) || src;
+  mainVideo.loop = true;
   mainVideo.load();
 
   const onReady = () => {
@@ -207,8 +232,12 @@ async function navigateTo(targetId) {
   try {
     const frames = await loadWithLoader(seqId);
     if (gen !== navGen) return;
+
+    // 1 — passa o fps correto; no mobile metade dos frames → metade do fps = duração igual
     const seq = CONFIG.sequences[seqId];
-    await playSequence(frames, seq.reverse === true, gen, seq.fps || 30);
+    const fps = (seq.fps || 30) / (MOBILE ? 2 : 1);
+    await playSequence(frames, seq.reverse === true, gen, fps);
+
     if (gen !== navGen) return;
     startScene(targetId);
   } catch (err) {
@@ -229,8 +258,9 @@ function loadWithLoader(seqId) {
   return p.finally(() => { clearTimeout(timer); loaderEl.classList.remove('visible'); });
 }
 
-// ─── Pré-carregamento com LRU ─────────────────────────────────────────────────
+// ─── Pré-carregamento com LRU e pré-decode ────────────────────────────────────
 
+// 3 — LRU: evita acumular sequências indefinidamente
 function rememberSeq(seqId, promise) {
   cache.set(seqId, promise);
   if (cache.size > MAX_SEQ) {
@@ -262,11 +292,16 @@ function preload(seqId) {
       const slot = nextLoad++;
       const num  = String(indices[slot]).padStart(seq.pad, '0');
       const img  = new Image();
-      img.src     = `${seq.folder}${seq.prefix}${num}.${seq.ext}`;
-      img.onload  = () => {
-        frames[slot] = img;
-        loadNext();
-        if (++loaded === indices.length) resolve(frames);
+      img.src = `${seq.folder}${seq.prefix}${num}.${seq.ext}`;
+
+      img.onload = () => {
+        // 2 — pré-decodifica antes de guardar: elimina o stutter no primeiro drawImage
+        const ready = img.decode ? img.decode().catch(() => {}) : Promise.resolve();
+        ready.then(() => {
+          frames[slot] = img;
+          loadNext();
+          if (++loaded === indices.length) resolve(frames);
+        });
       };
       img.onerror = () => {
         if (!failed) { failed = true; cache.delete(seqId); reject(new Error(`Falha: ${img.src}`)); }
@@ -275,26 +310,27 @@ function preload(seqId) {
     for (let k = 0; k < Math.min(SLOTS, indices.length); k++) loadNext();
   });
 
-  rememberSeq(seqId, promise);
+  rememberSeq(seqId, promise);  // 3 — usa LRU em vez de cache.set direto
   return promise;
 }
 
 // ─── Playback travado em FPS ──────────────────────────────────────────────────
 
+// 1 — avança por tempo real, não por frame do rAF (corrige ProMotion 120Hz)
 function playSequence(frames, reverse = false, gen, fps = 30) {
   return new Promise(resolve => {
     seqCanvas.classList.add('active');
     let index = reverse ? frames.length - 1 : 0;
-    let last  = performance.now();
+    let last  = 0;
     const step = 1000 / fps;
 
     function loop(now) {
-      if (gen !== navGen) { resolve(); return; }
+      if (gen !== navGen) return resolve();
       if (now - last >= step) {
         last = now;
         if (frames[index]) drawCover(frames[index]);
         index += reverse ? -1 : 1;
-        if (reverse ? index < 0 : index >= frames.length) { resolve(); return; }
+        if (reverse ? index < 0 : index >= frames.length) return resolve();
       }
       requestAnimationFrame(loop);
     }
@@ -303,8 +339,8 @@ function playSequence(frames, reverse = false, gen, fps = 30) {
 }
 
 function drawCover(img) {
-  const cw    = window.innerWidth;
-  const ch    = window.innerHeight;
+  const cw    = innerWidth;
+  const ch    = innerHeight;
   const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
   const dw    = Math.round(img.naturalWidth  * scale);
   const dh    = Math.round(img.naturalHeight * scale);
@@ -312,6 +348,7 @@ function drawCover(img) {
   const dy    = Math.round((ch - dh) / 2);
   ctx.clearRect(0, 0, cw, ch);
   ctx.drawImage(img, dx, dy, dw, dh);
+  lastFrame = img;  // 5 — guarda para redesenhar após resize
 }
 
 // ─── POIs com suporte a nav + info ───────────────────────────────────────────
@@ -385,6 +422,17 @@ function buildTrack() {
     btn.setAttribute('data-label', item.label);
     btn.innerHTML  = item.icon || item.label;
     btn.addEventListener('click', () => navigateTo(item.id));
+
+    // 7 — preload por intenção: começa a baixar ao tocar/hover no botão
+    btn.addEventListener('pointerenter', () => {
+      const id = CONFIG.transitions?.[currentScene]?.[item.id];
+      if (id) preload(id);
+    }, { passive: true });
+    btn.addEventListener('touchstart', () => {
+      const id = CONFIG.transitions?.[currentScene]?.[item.id];
+      if (id) preload(id);
+    }, { passive: true });
+
     wrap.appendChild(btn);
   });
   trackEl.appendChild(wrap);
@@ -417,7 +465,7 @@ function startTour() {
   };
   tourTimer = setTimeout(next, 6000);
   const btn = document.getElementById('cta-tour');
-  if (btn) { btn.textContent = '■ Parar'; btn.onclick = stopTour; }
+  if (btn) { btn.innerHTML = '■ <span>Parar</span>'; btn.onclick = stopTour; }
 }
 
 function stopTour() {
@@ -425,7 +473,7 @@ function stopTour() {
   clearTimeout(tourTimer);
   document.body.classList.remove('touring');
   const btn = document.getElementById('cta-tour');
-  if (btn) { btn.textContent = '▶ Tour'; btn.onclick = startTour; }
+  if (btn) { btn.innerHTML = '▶ <span>Tour</span>'; btn.onclick = startTour; }
 }
 
 ['pointerdown', 'keydown'].forEach(ev =>
@@ -514,8 +562,8 @@ document.addEventListener('keydown', e => {
 });
 document.addEventListener('click', e => {
   if (!debugOn) return;
-  const x   = (e.clientX / window.innerWidth  * 100).toFixed(1);
-  const y   = (e.clientY / window.innerHeight * 100).toFixed(1);
+  const x   = (e.clientX / innerWidth  * 100).toFixed(1);
+  const y   = (e.clientY / innerHeight * 100).toFixed(1);
   const txt = `x: ${x}, y: ${y}`;
   debugCoords.textContent = txt;
   console.log(txt);

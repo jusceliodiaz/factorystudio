@@ -357,6 +357,103 @@ html, body {
   40%         { transform: scale(1);  opacity: 1;  }
 }
 
+/* ── CTA dock ── */
+#cta-dock {
+  position: fixed; z-index: 30;
+  right: 16px; bottom: max(96px, calc(env(safe-area-inset-bottom,16px) + 80px));
+  display: flex; flex-direction: column; gap: 10px; align-items: flex-end;
+}
+#cta-whats, #cta-visit, #cta-tour {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  padding: 12px 18px; border-radius: 999px; border: none; cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0,0,0,.28); transition: transform .15s var(--ease), opacity .15s var(--ease);
+  white-space: nowrap;
+}
+#cta-whats { background: #25D366; color: #fff; text-decoration: none; }
+#cta-visit { background: var(--warm); color: #1a1408; }
+#cta-tour  { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+#cta-whats:active, #cta-visit:active, #cta-tour:active { transform: scale(.96); }
+body.touring #cta-dock { opacity: 0.35; pointer-events: none; }
+
+/* ── Lead modal ── */
+#lead-modal {
+  position: fixed; inset: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(5,5,3,.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+#lead-modal[hidden] { display: none; }
+#lead-card {
+  position: relative; width: min(360px, 88vw);
+  background: #14130f; color: #f3efe6; border-radius: 18px; padding: 28px 24px;
+  border: 1px solid rgba(255,255,255,.12); font-family: 'DM Sans', sans-serif;
+}
+#lead-card h3 { font-size: 20px; margin-bottom: 6px; }
+#lead-card > p { font-size: 13px; opacity: .7; margin-bottom: 18px; }
+#lead-form { display: flex; flex-direction: column; gap: 10px; }
+#lead-form input {
+  padding: 12px 14px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.15); background: rgba(255,255,255,.05);
+  color: #fff; font-family: 'DM Sans', sans-serif; font-size: 16px;
+}
+#lead-form input::placeholder { color: rgba(255,255,255,0.35); }
+#lead-form button {
+  margin-top: 6px; padding: 13px; border: none; border-radius: 10px;
+  background: var(--warm); color: #1a1408; font-weight: 700; font-size: 15px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+#lead-close {
+  position: absolute; top: 12px; right: 16px; background: none;
+  border: none; color: #fff; font-size: 26px; line-height: 1; opacity: .6; cursor: pointer;
+}
+#lead-ok { font-size: 14px; color: var(--warm); margin-top: 12px; }
+
+/* ── Info panel (POI tipo info) ── */
+#info-panel {
+  position: fixed; inset: 0; z-index: 90;
+  display: flex; align-items: flex-end; justify-content: center;
+  pointer-events: none;
+}
+#info-panel.open { pointer-events: auto; }
+#info-card {
+  width: min(420px, 92vw);
+  transform: translateY(110%);
+  transition: transform .3s var(--ease);
+  margin-bottom: max(16px, env(safe-area-inset-bottom, 16px));
+  background: #14130f; color: #f3efe6; border-radius: 20px; padding: 0 0 20px;
+  overflow: hidden; border: 1px solid rgba(255,255,255,.12); position: relative;
+}
+#info-panel.open #info-card { transform: translateY(0); }
+#info-card img { width: 100%; height: 180px; object-fit: cover; display: block; }
+#info-card h3 { font-size: 19px; padding: 16px 20px 0; font-family: 'DM Sans', sans-serif; }
+#info-card .info-area {
+  display: inline-block; margin: 6px 20px 0;
+  font-size: 12px; font-weight: 700; letter-spacing: .1em;
+  color: var(--warm); text-transform: uppercase; font-family: 'DM Sans', sans-serif;
+}
+#info-card ul { list-style: none; padding: 12px 20px 0; }
+#info-card li {
+  font-size: 14px; opacity: .8; padding: 6px 0;
+  border-top: 1px solid rgba(255,255,255,.08); font-family: 'DM Sans', sans-serif;
+}
+#info-card [data-close] {
+  position: absolute; top: 10px; right: 14px; z-index: 2;
+  background: rgba(0,0,0,.45); border: none; color: #fff;
+  font-size: 24px; width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── Mobile adjustments para CTA ── */
+@media (max-width: 600px) {
+  #cta-dock {
+    bottom: max(110px, calc(env(safe-area-inset-bottom, 16px) + 100px));
+    right: 12px;
+  }
+  #cta-whats span, #cta-visit span, #cta-tour span { display: none; }
+  #cta-whats, #cta-visit, #cta-tour { padding: 14px; border-radius: 50%; width: 50px; height: 50px; justify-content: center; }
+  #cta-visit svg { stroke: #1a1408; }
+}
+
 /* ── Debug HUD ── */
 #debug-hud {
   position: fixed;
