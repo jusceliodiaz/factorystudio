@@ -5,9 +5,12 @@ const trackEl     = document.getElementById('track');
 const loaderEl    = document.getElementById('loader');
 const debugHud    = document.getElementById('debug-hud');
 const debugCoords = document.getElementById('debug-coords');
-const ctx         = seqCanvas.getContext('2d');
+const ctx         = seqCanvas.getContext('2d', { alpha: false });
 
 const MOBILE = window.matchMedia('(hover: none)').matches || window.innerWidth < 768;
+
+const MAX_SEQ = 3;  // LRU: máximo de sequências em memória
+let _w = innerWidth, _h = innerHeight, lastFrame = null;
 
 const LEAD = {
   whatsapp: "5541987831394",
@@ -65,18 +68,25 @@ window.addEventListener('load', () => {
   if (!MOBILE) initCursor();
   buildTrack();
   showPoster(CONFIG.poster || 'images/seq_arch/aereo_to_piscina_00.jpg', () => startScene(sceneFromHash()));
-  preloadAllVideos();
+  preloadNeighbors('aereo');
+  (window.requestIdleCallback || setTimeout)(() => preloadAllVideos(), 2500);
   initCTA();
 });
 
-window.addEventListener('resize', resizeCanvas);
+// resize inteligente: ignora variações de altura causadas pela barra de endereço mobile
+window.addEventListener('resize', () => {
+  if (innerWidth === _w && Math.abs(innerHeight - _h) < 120) return;
+  _w = innerWidth; _h = innerHeight;
+  resizeCanvas();
+  if (lastFrame) drawCover(lastFrame);
+});
 
 function resizeCanvas() {
   const dpr = MOBILE ? 1 : Math.min(window.devicePixelRatio || 1, 2);
-  seqCanvas.width        = window.innerWidth  * dpr;
-  seqCanvas.height       = window.innerHeight * dpr;
-  seqCanvas.style.width  = window.innerWidth  + 'px';
-  seqCanvas.style.height = window.innerHeight + 'px';
+  seqCanvas.width        = innerWidth  * dpr;
+  seqCanvas.height       = innerHeight * dpr;
+  seqCanvas.style.width  = innerWidth  + 'px';
+  seqCanvas.style.height = innerHeight + 'px';
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
@@ -116,18 +126,27 @@ function toggleMode() {
 
 // ─── Video Preload ────────────────────────────────────────────────────────────
 
+const loadOne = (src) => {
+  if (!src || videoBlobs.has(src)) return Promise.resolve();
+  return fetch(src)
+    .then(r => r.blob())
+    .then(blob => { videoBlobs.set(src, URL.createObjectURL(blob)); })
+    .catch(() => {});
+};
+
+function preloadNeighbors(sceneId) {
+  const want = new Set([videoSrc(CONFIG.scenes[sceneId])]);
+  Object.keys(CONFIG.transitions[sceneId] || {})
+    .forEach(d => want.add(videoSrc(CONFIG.scenes[d])));
+  [...want].filter(Boolean).forEach(loadOne);
+}
+
 function preloadAllVideos() {
   const srcs = [...new Set(
     Object.values(CONFIG.scenes)
       .map(s => videoSrc(s))
       .filter(Boolean)
   )];
-
-  const loadOne = (src) =>
-    fetch(src)
-      .then(r => r.blob())
-      .then(blob => { videoBlobs.set(src, URL.createObjectURL(blob)); })
-      .catch(() => {});
 
   const firstSrc = videoSrc(CONFIG.scenes['aereo']);
   const rest = srcs.filter(s => s !== firstSrc);
@@ -219,7 +238,11 @@ async function navigateTo(targetId) {
   try {
     const frames = await loadWithLoader(seqId);
     if (gen !== navGen) return;
-    await playSequence(frames, CONFIG.sequences[seqId].reverse === true, gen);
+
+    // passa fps correto; no mobile metade dos frames → metade do fps = duração igual
+    const seq = CONFIG.sequences[seqId];
+    const fps = (seq.fps || 30) / (MOBILE ? 2 : 1);
+    await playSequence(frames, seq.reverse === true, gen, fps);
     if (gen !== navGen) return;
     startScene(targetId);
   } catch (err) {
@@ -241,6 +264,15 @@ function loadWithLoader(seqId) {
 }
 
 // ─── Pré-carregamento ─────────────────────────────────────────────────────────
+
+// LRU: evita acumular sequências indefinidamente
+function rememberSeq(seqId, promise) {
+  cache.set(seqId, promise);
+  if (cache.size > MAX_SEQ) {
+    const oldest = cache.keys().next().value;
+    if (oldest !== seqId) cache.delete(oldest);
+  }
+}
 
 function preload(seqId) {
   if (cache.has(seqId)) return cache.get(seqId);
@@ -265,11 +297,16 @@ function preload(seqId) {
       const slot = nextLoad++;
       const num  = String(indices[slot]).padStart(seq.pad, '0');
       const img  = new Image();
-      img.src     = `${seq.folder}${seq.prefix}${num}.${seq.ext}`;
-      img.onload  = () => {
-        frames[slot] = img;
-        loadNext();
-        if (++loaded === indices.length) resolve(frames);
+      img.src = `${seq.folder}${seq.prefix}${num}.${seq.ext}`;
+
+      img.onload = () => {
+        // pré-decodifica antes de guardar: elimina stutter no primeiro drawImage
+        const ready = img.decode ? img.decode().catch(() => {}) : Promise.resolve();
+        ready.then(() => {
+          frames[slot] = img;
+          loadNext();
+          if (++loaded === indices.length) resolve(frames);
+        });
       };
       img.onerror = () => {
         if (!failed) { failed = true; cache.delete(seqId); reject(new Error(`Falha: ${img.src}`)); }
@@ -278,23 +315,28 @@ function preload(seqId) {
     for (let k = 0; k < Math.min(SLOTS, indices.length); k++) loadNext();
   });
 
-  cache.set(seqId, promise);
+  rememberSeq(seqId, promise);
   return promise;
 }
 
 // ─── Playback ─────────────────────────────────────────────────────────────────
 
-function playSequence(frames, reverse = false, gen) {
+// avança por tempo real, não por frame do rAF (corrige ProMotion 120Hz)
+function playSequence(frames, reverse = false, gen, fps = 30) {
   return new Promise(resolve => {
     seqCanvas.classList.add('active');
     let index = reverse ? frames.length - 1 : 0;
+    let last  = 0;
+    const step = 1000 / fps;
 
-    function loop() {
-      if (gen !== navGen) { resolve(); return; }
-      if (frames[index]) drawCover(frames[index]);
-      index += reverse ? -1 : 1;
-      const done = reverse ? index < 0 : index >= frames.length;
-      if (done) { resolve(); return; }
+    function loop(now) {
+      if (gen !== navGen) return resolve();
+      if (now - last >= step) {
+        last = now;
+        if (frames[index]) drawCover(frames[index]);
+        index += reverse ? -1 : 1;
+        if (reverse ? index < 0 : index >= frames.length) return resolve();
+      }
       requestAnimationFrame(loop);
     }
     requestAnimationFrame(loop);
@@ -302,8 +344,8 @@ function playSequence(frames, reverse = false, gen) {
 }
 
 function drawCover(img) {
-  const cw    = window.innerWidth;
-  const ch    = window.innerHeight;
+  const cw    = innerWidth;
+  const ch    = innerHeight;
   const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
   const dw    = Math.round(img.naturalWidth  * scale);
   const dh    = Math.round(img.naturalHeight * scale);
@@ -311,6 +353,7 @@ function drawCover(img) {
   const dy    = Math.round((ch - dh) / 2);
   ctx.clearRect(0, 0, cw, ch);
   ctx.drawImage(img, dx, dy, dw, dh);
+  lastFrame = img;  // guarda para redesenhar após resize
 }
 
 // ─── POIs com suporte a nav + info ───────────────────────────────────────────

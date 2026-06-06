@@ -82,6 +82,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
       reverse: true,
     },
     "pool-to-living": {
@@ -91,6 +92,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
     },
     "living-to-pool": {
       folder: "images/seq_arch/",
@@ -99,6 +101,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
       reverse: true,
     },
     "pool-to-kitchen": {
@@ -108,6 +111,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
     },
     "kitchen-to-pool": {
       folder: "images/seq_arch/",
@@ -116,6 +120,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
       reverse: true,
     },
     "pool-to-jardim": {
@@ -125,6 +130,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
     },
     "jardim-to-pool": {
       folder: "images/seq_arch/",
@@ -133,6 +139,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
       reverse: true,
     },
     "aereo-to-jardim": {
@@ -142,6 +149,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
     },
     "jardim-to-aereo": {
       folder: "images/seq_arch/",
@@ -150,6 +158,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
       reverse: true,
     },
     "aereo-to-kitchen": {
@@ -159,6 +168,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
     },
     "kitchen-to-aereo": {
       folder: "images/seq_arch/",
@@ -167,6 +177,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
       reverse: true,
     },
     "aereo-to-living": {
@@ -176,6 +187,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
     },
     "living-to-aereo": {
       folder: "images/seq_arch/",
@@ -184,6 +196,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
       reverse: true,
     },
     "living-to-kitchen": {
@@ -193,6 +206,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
     },
     "kitchen-to-living": {
       folder: "images/seq_arch/",
@@ -201,6 +215,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
       reverse: true,
     },
     "jardim-to-kitchen": {
@@ -210,6 +225,7 @@ const CONFIG = {
       to: 46,
       pad: 2,
       ext: "jpg",
+      fps: 30,
     },
     "kitchen-to-jardim": {
       folder: "images/seq_arch/",
@@ -218,6 +234,7 @@ const CONFIG = {
       to: 46,
       pad: 2,
       ext: "jpg",
+      fps: 30,
       reverse: true,
     },
     "jardim-to-living": {
@@ -227,6 +244,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
     },
     "living-to-jardim": {
       folder: "images/seq_arch/",
@@ -235,6 +253,7 @@ const CONFIG = {
       to: 47,
       pad: 2,
       ext: "jpg",
+      fps: 30,
       reverse: true,
     },
   },
