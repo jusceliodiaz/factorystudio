@@ -305,15 +305,24 @@
         font-weight: 600;
         letter-spacing: 0.08em;
         color: rgba(255, 255, 255, 0.35);
-        transition: color 0.2s ease, border-color 0.2s ease;
+        transition:
+          color 0.2s ease,
+          border-color 0.2s ease;
       }
-      .lang-btn.active { color: #fff; border-bottom-color: var(--gold); }
-      .lang-btn:hover:not(.active) { color: rgba(255, 255, 255, 0.65); }
+      .lang-btn.active {
+        color: #fff;
+        border-bottom-color: var(--gold);
+      }
+      .lang-btn:hover:not(.active) {
+        color: rgba(255, 255, 255, 0.65);
+      }
     </style>
   </head>
   <body>
     <div class="lang-switcher" role="group" aria-label="Selecionar idioma">
-      <button class="lang-btn active" data-lang="pt" title="Português">PT</button>
+      <button class="lang-btn active" data-lang="pt" title="Português">
+        PT
+      </button>
       <button class="lang-btn" data-lang="en" title="English">EN</button>
     </div>
 
@@ -355,12 +364,13 @@
     <div class="page">
       <img src="images/logo_site2.png" alt="Factory Studio" class="logo" />
       <h1>
-        We are a webdesign studio.<br /><span data-i18n="hero-sub"
+        A webdesign studio.<br /><span data-i18n="hero-sub"
           >Algo novo está sendo construído.</span
         >
       </h1>
       <p class="sub" data-i18n="sub" data-i18n-html="true">
-        Inovação que impressiona, tecnologia que simplifica.<br />Do site ao tour 3D interativo, tudo entregue como um link.
+        Inovação que impressiona, tecnologia que simplifica.<br />Do site ao
+        tour 3D interativo, tudo entregue como um link.
       </p>
       <div class="divider"></div>
       <a
@@ -392,21 +402,24 @@
         var T = {
           pt: {
             "hero-sub": "Algo novo está sendo construído.",
-            "sub": "Inovação que impressiona, tecnologia que simplifica.<br />Do site ao tour 3D interativo, tudo entregue como um link.",
-            "btn-wa": "Fale conosco"
+            sub: "Inovação que impressiona, tecnologia que simplifica.<br />Do site ao tour 3D interativo, tudo entregue como um link.",
+            "btn-wa": "Fale conosco",
           },
           en: {
             "hero-sub": "Something new is being built.",
-            "sub": "Innovation that impresses, technology that simplifies.<br />From the website to the 3D interactive tour, all delivered as a link.",
-            "btn-wa": "Talk to us"
-          }
+            sub: "Innovation that impresses, technology that simplifies.<br />From the website to the 3D interactive tour, all delivered as a link.",
+            "btn-wa": "Talk to us",
+          },
         };
         function applyLang(lang) {
-          var dict = T[lang]; if (!dict) return;
+          var dict = T[lang];
+          if (!dict) return;
           document.querySelectorAll("[data-i18n]").forEach(function (el) {
             var key = el.getAttribute("data-i18n");
-            var val = dict[key]; if (val === undefined) return;
-            if (el.getAttribute("data-i18n-html") === "true") el.innerHTML = val;
+            var val = dict[key];
+            if (val === undefined) return;
+            if (el.getAttribute("data-i18n-html") === "true")
+              el.innerHTML = val;
             else el.textContent = val;
           });
           document.documentElement.lang = lang === "en" ? "en-US" : "pt-BR";
@@ -415,7 +428,9 @@
         document.querySelectorAll(".lang-btn").forEach(function (btn) {
           btn.addEventListener("click", function () {
             var lang = btn.getAttribute("data-lang");
-            document.querySelectorAll(".lang-btn").forEach(function (b) { b.classList.toggle("active", b === btn); });
+            document.querySelectorAll(".lang-btn").forEach(function (b) {
+              b.classList.toggle("active", b === btn);
+            });
             applyLang(lang);
           });
         });
