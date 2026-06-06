@@ -171,8 +171,17 @@ function startScene(sceneId) {
 
   const onReady = () => {
     if (gen !== navGen) return;
-    mainVideo.play().catch(() => {});
-    fadeCanvas();
+    let faded = false;
+    const doFade = () => {
+      if (faded || gen !== navGen) return;
+      faded = true;
+      fadeCanvas();
+    };
+    // Só faz fade quando o primeiro frame está realmente pintado na tela
+    mainVideo.addEventListener('playing',    doFade, { once: true });
+    mainVideo.addEventListener('timeupdate', doFade, { once: true });
+    mainVideo.play().catch(doFade);
+    setTimeout(doFade, 500); // fallback se os eventos não dispararem
   };
 
   if (mainVideo.readyState >= 3) {

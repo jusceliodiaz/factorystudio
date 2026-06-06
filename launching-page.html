@@ -750,7 +750,8 @@
       .seq-scrub {
         position: absolute;
         left: 50%;
-        top: 24px;
+        bottom: 32px;
+        top: auto;
         transform: translateX(-50%);
         display: flex;
         flex-direction: column;
@@ -761,46 +762,47 @@
       .seq-btns {
         display: flex;
         flex-direction: row;
-        gap: 10px;
+        gap: 6px;
+        background: rgba(195, 195, 195, 0.32);
+        backdrop-filter: blur(40px) saturate(1.8);
+        -webkit-backdrop-filter: blur(40px) saturate(1.8);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 20px;
+        padding: 10px 12px;
+        box-shadow: 0 0 0 0.5px rgba(255,255,255,0.5) inset, 0 20px 60px rgba(0,0,0,0.25);
       }
       .seq-scrub-btn {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 13px 23px 13px 18px;
-        border-radius: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        background: rgba(20, 20, 20, 0.55);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        color: #fff;
+        gap: 8px;
+        padding: 10px 18px;
+        border-radius: 14px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        background: rgba(255, 255, 255, 0.22);
+        color: rgba(20, 20, 20, 0.65);
         font-family: inherit;
-        font-size: 0.88rem;
+        font-size: 0.78rem;
         font-weight: 600;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
         cursor: pointer;
-        transition:
-          background 0.25s var(--ease),
-          border-color 0.25s,
-          transform 0.25s var(--ease);
+        transition: background 220ms ease, border-color 220ms ease, color 220ms ease, transform 220ms ease;
         white-space: nowrap;
       }
       .seq-scrub-btn svg {
         flex-shrink: 0;
-        transition: transform 0.25s var(--ease);
       }
       .seq-scrub-btn:hover {
-        background: rgba(40, 40, 40, 0.7);
-        border-color: rgba(255, 255, 255, 0.32);
-        transform: translateY(-2px);
+        border-color: rgba(0, 0, 0, 0.15);
+        color: rgba(20, 20, 20, 0.9);
+        background: rgba(255, 255, 255, 0.45);
       }
       .seq-scrub-btn:active {
-        transform: translateY(-2px) scale(0.96);
+        transform: scale(0.96);
       }
       .seq-scrub-btn.btn-on {
-        background: rgba(60, 60, 60, 0.75);
-        border-color: rgba(255, 255, 255, 0.45);
+        background: rgba(20, 20, 20, 0.85);
+        border-color: transparent;
         color: #fff;
       }
 
