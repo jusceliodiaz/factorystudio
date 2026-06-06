@@ -120,6 +120,20 @@ function buildCityPopup(poi) {
 function cityTogglePopup(poi) {
   const popup = document.getElementById('city-popup-' + poi.id);
   if (!popup) return;
+
+  if (isCityTouch && cityMModal) {
+    // Mobile: clone popup content into the body-level modal to avoid
+    // fixed-inside-overflow clipping on iOS Safari
+    const card = document.getElementById('city-m-card');
+    card.innerHTML = popup.innerHTML;
+    card.style.animation = 'none';
+    requestAnimationFrame(() => { card.style.animation = 'cityMIn 0.28s cubic-bezier(0.34,1.4,0.64,1) both'; });
+    cityMModal.classList.add('open');
+    if (typeof track === 'function') track('poi_open', { poi: poi.id, cena: typeof currentScene !== 'undefined' ? currentScene : '' });
+    return;
+  }
+
+  // Desktop: draggable floating popup
   if (popup.classList.contains('open')) {
     cityClosePopup(poi.id);
   } else {
@@ -129,10 +143,15 @@ function cityTogglePopup(poi) {
     popup.style.top  = Math.max(10, Math.round((window.innerHeight - popH) / 2)) + 'px';
     popup.classList.add('open');
     cityActivePopup = popup;
+    if (typeof track === 'function') track('poi_open', { poi: poi.id, cena: typeof currentScene !== 'undefined' ? currentScene : '' });
   }
 }
 
 function cityClosePopup(id) {
+  if (isCityTouch && cityMModal) {
+    cityMModal.classList.remove('open');
+    return;
+  }
   const popup = document.getElementById('city-popup-' + id);
   if (popup) popup.classList.remove('open');
   if (cityActivePopup === popup) cityActivePopup = null;
@@ -180,17 +199,22 @@ function makeCityDraggable(el) {
 }
 
 // ── 360° Panorama Modal ───────────────────────────────────────────────────────
-let panoRenderer = null, panoRaf = null;
+let panoRenderer = null, panoRaf = null, panoCtl = null;
 
 function cityOpenPano(src) {
   const modal = document.getElementById('pano-modal');
   if (!modal) return;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
   document.getElementById('pano-loading').classList.remove('hidden');
   document.getElementById('pano-hint').classList.remove('hidden');
-  modal.classList.add('open');
 
+  if (panoCtl) { panoCtl.abort(); panoCtl = null; }
   if (panoRaf) { cancelAnimationFrame(panoRaf); panoRaf = null; }
   if (panoRenderer) { panoRenderer.dispose(); panoRenderer = null; }
+
+  panoCtl = new AbortController();
+  const sig = panoCtl.signal;
 
   requestAnimationFrame(() => {
     const canvas = document.getElementById('pano-canvas');
@@ -210,6 +234,14 @@ function cityOpenPano(src) {
     const geo    = new THREE.SphereGeometry(100, 64, 32);
     geo.scale(-1, 1, 1);
 
+    // Resize / orientation change — same signal so abort() cleans it up too
+    window.addEventListener('resize', () => {
+      const W = box.clientWidth, H = box.clientHeight;
+      renderer.setSize(W, H);
+      camera.aspect = W / H;
+      camera.updateProjectionMatrix();
+    }, { signal: sig });
+
     new THREE.TextureLoader().load(src, (tex) => {
       tex.colorSpace = THREE.LinearSRGBColorSpace;
       scene.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: tex })));
@@ -218,25 +250,86 @@ function cityOpenPano(src) {
       const hint = document.getElementById('pano-hint');
       setTimeout(() => hint.classList.add('hidden'), 3000);
 
-      // Controls
-      let isDragging = false, startX, startY, lon = 0, lat = 0, startLon, startLat;
+      // Drag state
+      let isDragging = false;
+      let startX, startY, startLon, startLat;
+      let prevCx = 0, prevCy = 0;
+      let lon = 0, lat = 0;
+      let velLon = 0, velLat = 0;
+
+      // Pinch-zoom state
+      let pinchDist0 = 0, fovAtPinch = camera.fov;
+
       const onMove = (cx, cy) => {
         if (!isDragging) return;
+        velLon = -(cx - prevCx) * 0.2;
+        velLat =  (cy - prevCy) * 0.2;
+        prevCx = cx; prevCy = cy;
         lon = startLon - (cx - startX) * 0.2;
         lat = Math.max(-85, Math.min(85, startLat + (cy - startY) * 0.2));
-        const phi = THREE.MathUtils.degToRad(90 - lat);
+      };
+
+      // Mouse
+      canvas.addEventListener('mousedown', (e) => {
+        isDragging = true; velLon = 0; velLat = 0;
+        startX = prevCx = e.clientX; startY = prevCy = e.clientY;
+        startLon = lon; startLat = lat;
+      }, { signal: sig });
+      document.addEventListener('mousemove', (e) => onMove(e.clientX, e.clientY), { signal: sig });
+      document.addEventListener('mouseup',   () => { isDragging = false; }, { signal: sig });
+
+      // Touch — 1 finger drag + 2 finger pinch-zoom
+      canvas.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          isDragging = true; velLon = 0; velLat = 0;
+          startX = prevCx = e.touches[0].clientX;
+          startY = prevCy = e.touches[0].clientY;
+          startLon = lon; startLat = lat;
+        } else if (e.touches.length === 2) {
+          isDragging = false;
+          pinchDist0 = Math.hypot(
+            e.touches[1].clientX - e.touches[0].clientX,
+            e.touches[1].clientY - e.touches[0].clientY
+          );
+          fovAtPinch = camera.fov;
+        }
+      }, { passive: true, signal: sig });
+
+      canvas.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2 && pinchDist0 > 0) {
+          const d = Math.hypot(
+            e.touches[1].clientX - e.touches[0].clientX,
+            e.touches[1].clientY - e.touches[0].clientY
+          );
+          camera.fov = Math.max(30, Math.min(100, fovAtPinch * (pinchDist0 / d)));
+          camera.updateProjectionMatrix();
+        } else if (e.touches.length === 1) {
+          onMove(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      }, { passive: true, signal: sig });
+
+      canvas.addEventListener('touchend', () => { isDragging = false; pinchDist0 = 0; }, { signal: sig });
+
+      // Wheel zoom
+      canvas.addEventListener('wheel', (e) => {
+        camera.fov = Math.max(30, Math.min(100, camera.fov + e.deltaY * 0.05));
+        camera.updateProjectionMatrix();
+      }, { passive: true, signal: sig });
+
+      // Render loop — camera.lookAt lives here so inertia keeps spinning after release
+      const tick = () => {
+        panoRaf = requestAnimationFrame(tick);
+        if (!isDragging) {
+          lon += velLon;
+          lat = Math.max(-85, Math.min(85, lat + velLat));
+          velLon *= 0.88;
+          velLat *= 0.88;
+        }
+        const phi   = THREE.MathUtils.degToRad(90 - lat);
         const theta = THREE.MathUtils.degToRad(lon);
         camera.lookAt(Math.sin(phi) * Math.cos(theta), Math.cos(phi), Math.sin(phi) * Math.sin(theta));
+        renderer.render(scene, camera);
       };
-      canvas.addEventListener('mousedown',  (e) => { isDragging = true;  startX = e.clientX; startY = e.clientY; startLon = lon; startLat = lat; });
-      document.addEventListener('mousemove',(e) => onMove(e.clientX, e.clientY));
-      document.addEventListener('mouseup',  ()  => { isDragging = false; });
-      canvas.addEventListener('touchstart', (e) => { isDragging = true;  startX = e.touches[0].clientX; startY = e.touches[0].clientY; startLon = lon; startLat = lat; }, { passive: true });
-      canvas.addEventListener('touchmove',  (e) => onMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
-      canvas.addEventListener('touchend',   ()  => { isDragging = false; });
-      canvas.addEventListener('wheel', (e) => { camera.fov = Math.max(30, Math.min(100, camera.fov + e.deltaY * 0.05)); camera.updateProjectionMatrix(); }, { passive: true });
-
-      const tick = () => { panoRaf = requestAnimationFrame(tick); renderer.render(scene, camera); };
       tick();
     });
   });
@@ -245,10 +338,14 @@ function cityOpenPano(src) {
 window.cityOpenPano = cityOpenPano;
 
 function cityClosePano() {
-  const modal = document.getElementById('pano-modal');
-  if (modal) modal.classList.remove('open');
+  if (panoCtl) { panoCtl.abort(); panoCtl = null; }
   if (panoRaf) { cancelAnimationFrame(panoRaf); panoRaf = null; }
   if (panoRenderer) { panoRenderer.dispose(); panoRenderer = null; }
+  const modal = document.getElementById('pano-modal');
+  if (modal) {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+  }
 }
 
 window.cityClosePano = cityClosePano;

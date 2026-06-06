@@ -211,6 +211,7 @@ async function navigateTo(targetId) {
   const seqId = CONFIG.transitions?.[currentScene]?.[targetId];
   if (!seqId) return;
 
+  track('scene_change', { de: currentScene, para: targetId });
   busy = true;
   const gen = ++navGen;
   hidePOIs();
@@ -385,6 +386,20 @@ function buildTrack() {
     btn.addEventListener('click', () => navigateTo(item.id));
     wrap.appendChild(btn);
   });
+
+  // Separador + botão Entorno (mapa) como último item à direita
+  const sep = document.createElement('div');
+  sep.id = 'track-map-sep';
+  wrap.appendChild(sep);
+
+  const mapBtn = document.createElement('button');
+  mapBtn.className = 't-pt';
+  mapBtn.setAttribute('aria-label', 'Entorno');
+  mapBtn.setAttribute('data-label', 'Entorno');
+  mapBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>';
+  mapBtn.addEventListener('click', () => { if (typeof openMapModal === 'function') openMapModal(); });
+  wrap.appendChild(mapBtn);
+
   trackEl.appendChild(wrap);
   trackEl.classList.add('show');
 }
