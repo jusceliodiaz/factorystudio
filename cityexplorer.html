@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>City Explorer</title>
+  <title>City Explorer — Factory Interactive</title>
+  <meta name="description" content="Veja o empreendimento no contexto urbano com pontos de interesse georreferenciados, vistas 360° e localização interativa." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="City Explorer — Factory Interactive" />
+  <meta property="og:description" content="Explore a localização do empreendimento com POIs interativos, panoramas 360° e mapa de conveniências do entorno." />
+  <meta property="og:image" content="https://factorystudio.works/images/og-cover.jpg" />
+  <meta property="og:url" content="https://factorystudio.works/cityexplorer.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://factorystudio.works/images/og-cover.jpg" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3K51DFTX3J"></script>
   <script>
@@ -279,6 +287,20 @@
       var saved = localStorage.getItem("fi-lang");
       if (saved && T[saved] && saved !== "pt") applyLang(saved);
     })();
+  </script>
+
+  <!-- ── GA Event Tracking ──────────────────────────────── -->
+  <script>
+    function track(name, params) { window.gtag && gtag('event', name, params || {}); }
+
+    // Panorama 360°
+    if (typeof cityOpenPano === 'function') {
+      var _origPano = cityOpenPano;
+      window.cityOpenPano = cityOpenPano = function(src) {
+        track('pano_open', { produto: 'city_explorer' });
+        return _origPano(src);
+      };
+    }
   </script>
 </body>
 </html>

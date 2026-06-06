@@ -1510,5 +1510,28 @@
       gateSlides[gateCur].classList.add('active');
     }, 5000);
   </script>
+
+  <!-- ── GA Event Tracking ──────────────────────────────── -->
+  <script>
+    function track(name, params) { window.gtag && gtag('event', name, params || {}); }
+
+    // WhatsApp
+    document.querySelectorAll('a[href*="wa.me"]').forEach(function(a) {
+      a.addEventListener('click', function() {
+        track('whatsapp_click', { local: (a.closest('section,div') || {}).className || '' });
+      });
+    });
+
+    // Scroll depth
+    (function() {
+      var f = {};
+      window.addEventListener('scroll', function() {
+        var d = document.documentElement;
+        var p = Math.round((d.scrollTop || window.scrollY) / (d.scrollHeight - d.clientHeight) * 100);
+        if (p >= 50 && !f[50]) { f[50] = 1; track('scroll_50'); }
+        if (p >= 90 && !f[90]) { f[90] = 1; track('scroll_90'); }
+      }, { passive: true });
+    })();
+  </script>
   </body>
 </html>

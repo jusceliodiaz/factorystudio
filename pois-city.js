@@ -3,6 +3,40 @@
 
 let cityActivePopup = null;
 
+// ── Mobile modal (touch devices) ─────────────────────────────────────────────
+const isCityTouch = ('ontouchstart' in window) || window.matchMedia('(hover: none)').matches;
+let cityMModal = null;
+
+if (isCityTouch) {
+  const mStyle = document.createElement('style');
+  mStyle.textContent = `
+    #city-m-modal {
+      display: none; position: fixed; inset: 0; z-index: 9000;
+      align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.45); backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px); padding: 24px;
+    }
+    #city-m-modal.open { display: flex; }
+    #city-m-card {
+      width: min(90vw, 340px); border-radius: 20px; overflow: hidden;
+      background: rgba(235,235,232,0.97); border: 1px solid rgba(255,255,255,0.45);
+      box-shadow: 0 0 0 0.5px rgba(255,255,255,0.5) inset, 0 20px 60px rgba(0,0,0,0.35);
+      max-height: 80vh; overflow-y: auto; overscroll-behavior: contain;
+    }
+    #city-m-card .popup-img-wrap { cursor: default; height: 180px; }
+    @keyframes cityMIn { from { opacity:0; transform: translateY(14px) scale(0.97); } to { opacity:1; transform:none; } }
+  `;
+  document.head.appendChild(mStyle);
+
+  cityMModal = document.createElement('div');
+  cityMModal.id = 'city-m-modal';
+  cityMModal.innerHTML = '<div id="city-m-card"></div>';
+  document.body.appendChild(cityMModal);
+  cityMModal.addEventListener('click', e => {
+    if (e.target === cityMModal) cityMModal.classList.remove('open');
+  });
+}
+
 // Override hidePOIs to also clean up popups
 const _baseHidePOIs = hidePOIs;
 hidePOIs = function () {

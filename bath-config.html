@@ -761,5 +761,10 @@
         if (saved && TUI[saved] && saved !== "pt") applyLang(saved);
       })();
     </script>
+
+    <!-- ── GA Event Tracking ──────────────────────────────── -->
+    <script>
+      function track(name, params) { window.gtag && gtag('event', name, params || {}); }
+    </script>
   </body>
 </html>

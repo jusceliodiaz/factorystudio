@@ -18,6 +18,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lançamento — Factory Interactive</title>
+    <meta name="description" content="Experiência imersiva de lançamento imobiliário — tour interativo, vistas 360° e galeria archviz. Tudo num link." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Lançamento — Factory Interactive" />
+    <meta property="og:description" content="Leve o cliente para dentro do empreendimento antes da visita ao stand." />
+    <meta property="og:image" content="https://factorystudio.works/images/og-cover.jpg" />
+    <meta property="og:url" content="https://factorystudio.works/launching-page.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://factorystudio.works/images/og-cover.jpg" />
     <link rel="icon" type="image/png" href="images/logo_site.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -630,26 +638,16 @@
         transform: translateX(-50%) translateY(8px);
         opacity: 0;
         pointer-events: none;
-        transition:
-          opacity 0.28s var(--ease),
-          transform 0.28s var(--ease);
-        background: rgba(14, 12, 10, 0.92);
-        backdrop-filter: blur(40px);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 18px;
+        transition: opacity 0.28s var(--ease), transform 0.28s var(--ease);
+        background: rgba(195, 195, 195, 0.32);
+        backdrop-filter: blur(40px) saturate(1.8);
+        -webkit-backdrop-filter: blur(40px) saturate(1.8);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 20px;
         overflow: hidden;
-        width: 260px;
+        width: 280px;
         white-space: normal;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      }
-      .poi-popup::after {
-        content: "";
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border: 7px solid transparent;
-        border-top-color: rgba(14, 12, 10, 0.92);
+        box-shadow: 0 0 0 0.5px rgba(255,255,255,0.5) inset, 0 20px 60px rgba(0,0,0,0.25);
       }
       .poi-pin.active .poi-popup {
         opacity: 1;
@@ -658,7 +656,7 @@
       }
       .poi-popup-img {
         width: 100%;
-        height: 150px;
+        height: 170px;
         object-fit: cover;
         display: block;
         position: relative;
@@ -666,84 +664,86 @@
       .poi-popup-img-wrap {
         position: relative;
         width: 100%;
-        height: 150px;
+        height: 170px;
         overflow: hidden;
       }
       .poi-popup-close {
         position: absolute;
-        top: 8px;
-        right: 8px;
-        width: 26px;
-        height: 26px;
+        top: 10px;
+        right: 10px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
-        background: rgba(0, 0, 0, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.65);
+        border: 1px solid rgba(255, 255, 255, 0.5);
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        backdrop-filter: blur(8px);
+        backdrop-filter: blur(10px);
         z-index: 2;
+        transition: background 200ms ease;
       }
+      .poi-popup-close:hover { background: rgba(255, 255, 255, 0.9); }
       .poi-popup-close svg {
         width: 9px;
         height: 9px;
-        stroke: rgba(255, 255, 255, 0.85);
+        stroke: rgba(20, 20, 20, 0.7);
         stroke-width: 1.8;
         fill: none;
         stroke-linecap: round;
       }
       .poi-popup-body {
-        padding: 14px 16px 14px;
+        padding: 20px 20px 18px;
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 8px;
       }
       .poi-popup-tag {
-        font-size: 0.65rem;
-        font-weight: 500;
+        font-size: 10px;
+        font-weight: 600;
         letter-spacing: 0.16em;
-        color: var(--gold);
+        color: rgba(80, 80, 80, 0.7);
         text-transform: uppercase;
       }
       .poi-popup-title {
-        font-size: 1.05rem;
+        font-size: 1.4rem;
         font-weight: 300;
-        color: rgba(255, 255, 255, 0.95);
+        color: rgba(20, 20, 20, 0.92);
         letter-spacing: -0.02em;
         line-height: 1.15;
       }
       .poi-popup-desc {
         font-size: 0.72rem;
-        color: rgba(255, 255, 255, 0.5);
-        line-height: 1.6;
+        color: rgba(40, 40, 40, 0.6);
+        line-height: 1.65;
       }
 
-      /* ── POI 360° BUTTON ── */
+      /* ── POI 360° BUTTON (living only) ── */
       .poi-pano-btn {
         display: flex;
         align-items: center;
-        gap: 6px;
-        margin-top: 10px;
-        padding: 7px 12px;
-        border-radius: 8px;
-        border: 1px solid rgba(184, 156, 110, 0.45);
-        background: rgba(184, 156, 110, 0.1);
-        color: var(--gold);
+        justify-content: center;
+        gap: 8px;
+        margin-top: 4px;
+        padding: 11px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.55);
+        color: rgba(20, 20, 20, 0.75);
         font-family: inherit;
-        font-size: 0.65rem;
-        font-weight: 600;
-        letter-spacing: 0.1em;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
         cursor: pointer;
         width: 100%;
-        transition:
-          background 0.2s,
-          border-color 0.2s;
+        transition: background 200ms ease, border-color 200ms ease;
       }
+      .poi-pano-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
       .poi-pano-btn:hover {
-        background: rgba(184, 156, 110, 0.22);
-        border-color: rgba(184, 156, 110, 0.7);
+        background: rgba(255, 255, 255, 0.85);
+        border-color: rgba(0, 0, 0, 0.15);
       }
 
       /* ── SEQ SCRUB BUTTONS ── */
@@ -1137,6 +1137,44 @@
         }
       }
 
+      /* ── POI MOBILE MODAL (body-level, escapa overflow:hidden) ── */
+      #poi-m-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9000;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+        padding: 24px;
+        touch-action: manipulation;
+      }
+      #poi-m-modal.open { display: flex; }
+      #poi-m-card {
+        width: min(90vw, 340px);
+        border-radius: 20px;
+        overflow: hidden;
+        background: rgba(195, 195, 195, 0.32);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        backdrop-filter: blur(40px) saturate(1.8);
+        -webkit-backdrop-filter: blur(40px) saturate(1.8);
+        box-shadow: 0 0 0 0.5px rgba(255,255,255,0.5) inset, 0 20px 60px rgba(0,0,0,0.35);
+        max-height: 80vh;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        animation: poiModalIn 0.25s ease both;
+      }
+      @keyframes poiModalIn {
+        from { opacity: 0; transform: translateY(14px) scale(0.97); }
+        to   { opacity: 1; transform: none; }
+      }
+      /* touch targets maiores no mobile */
+      @media (hover: none) {
+        .poi-dot { width: 44px; height: 44px; }
+      }
+
       /* ── LANG SWITCHER ── */
       .lang-switcher {
         position: fixed;
@@ -1503,7 +1541,6 @@
           );
           const x = (canvas.width - img.naturalWidth * scale) / 2;
           const y = (canvas.height - img.naturalHeight * scale) / 2;
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(
             img,
             x,
@@ -1572,6 +1609,11 @@
             const tagHtml = tag
               ? `<div class="poi-popup-tag">${tag}</div>`
               : "";
+            const panoBtn = group !== 'aerial' ? `
+                  <button class="poi-pano-btn" onclick="openPanoModal('${panoSrc}')">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12c3-4 5-6 10-6s7 2 10 6"/><path d="M2 12c3 4 5 6 10 6s7-2 10-6"/></svg>
+                    Ver 360°
+                  </button>` : '';
             seqPinsEl.insertAdjacentHTML(
               "beforeend",
               `
@@ -1588,10 +1630,7 @@
                   ${tagHtml}
                   <div class="poi-popup-title">${title}</div>
                   <div class="poi-popup-desc">${desc}</div>
-                  <button class="poi-pano-btn" onclick="openPanoModal('${panoSrc}')">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12c3-4 5-6 10-6s7 2 10 6"/><path d="M2 12c3 4 5 6 10 6s7-2 10-6"/></svg>
-                    Ver 360°
-                  </button>
+                  ${panoBtn}
                 </div>
               </div>
             </div>`,
@@ -1719,9 +1758,34 @@
             activateGroup("living", FRAME_COUNT - 1),
           );
         }
+        const isTouchDevice = ('ontouchstart' in window) || window.matchMedia('(hover: none)').matches;
+
+        // Modal body-level para mobile (evita clip de overflow:hidden no seq-sticky)
+        let poiMModal = null;
+        if (isTouchDevice) {
+          poiMModal = document.createElement('div');
+          poiMModal.id = 'poi-m-modal';
+          poiMModal.innerHTML = '<div id="poi-m-card"></div>';
+          document.body.appendChild(poiMModal);
+          poiMModal.addEventListener('click', e => {
+            if (e.target === poiMModal) poiMModal.classList.remove('open');
+          });
+        }
+
         document.querySelectorAll(".poi-dot").forEach((btn) => {
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
+            if (isTouchDevice && poiMModal) {
+              const popup = btn.closest(".poi-pin").querySelector('.poi-popup');
+              if (!popup) return;
+              const card = document.getElementById('poi-m-card');
+              card.innerHTML = popup.innerHTML;
+              card.querySelector('.poi-popup-close')?.addEventListener('click', () => {
+                poiMModal.classList.remove('open');
+              });
+              poiMModal.classList.add('open');
+              return;
+            }
             const pin = btn.closest(".poi-pin");
             const wasActive = pin.classList.contains("active");
             closePinPopups();
@@ -2225,6 +2289,27 @@
         var saved = localStorage.getItem("fi-lang") || "pt";
         applyLang(saved);
       })();
+    </script>
+
+    <!-- ── GA Event Tracking ──────────────────────────────── -->
+    <script>
+      function track(name, params) { window.gtag && gtag('event', name, params || {}); }
+
+      // WhatsApp
+      document.querySelectorAll('a[href*="wa.me"]').forEach(function(a) {
+        a.addEventListener('click', function() {
+          track('whatsapp_click', { local: (a.closest('section,div') || {}).className || '' });
+        });
+      });
+
+      // Panorama 360°
+      if (typeof openPanoModal === 'function') {
+        var _origPano = openPanoModal;
+        openPanoModal = function(src) {
+          track('pano_open', { produto: 'launching_page' });
+          return _origPano(src);
+        };
+      }
     </script>
   </body>
 </html>
