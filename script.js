@@ -376,35 +376,62 @@ function openInfo(info) {
 function buildTrack() {
   const wrap = document.createElement('div');
   wrap.id = 'track-pts';
+
   CONFIG.timeline.forEach(item => {
     const btn = document.createElement('button');
     btn.className  = 't-pt';
     btn.dataset.id = item.id;
     btn.setAttribute('aria-label', item.label);
     btn.setAttribute('data-label', item.label);
-    btn.innerHTML  = item.icon || item.label;
-    btn.addEventListener('click', () => navigateTo(item.id));
+    // Ícone SVG + label inline (expande ao ativar)
+    btn.innerHTML = (item.icon || '') + `<span class="t-label">${item.label}</span>`;
+    btn.addEventListener('click', () => {
+      selectTab(btn);
+      navigateTo(item.id);
+    });
     wrap.appendChild(btn);
   });
 
-  // Separador + botão Entorno (mapa) como último item à direita
+  // Separador visual
   const sep = document.createElement('div');
   sep.id = 'track-map-sep';
   wrap.appendChild(sep);
 
+  // Botão Entorno — expande label, abre modal, não muda cena
   const mapBtn = document.createElement('button');
   mapBtn.className = 't-pt';
   mapBtn.setAttribute('aria-label', 'Entorno');
   mapBtn.setAttribute('data-label', 'Entorno');
-  mapBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>';
-  mapBtn.addEventListener('click', () => { if (typeof openMapModal === 'function') openMapModal(); });
+  mapBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>'
+    + '<span class="t-label">Entorno</span>';
+  mapBtn.addEventListener('click', () => {
+    selectTab(mapBtn);
+    if (typeof openMapModal === 'function') openMapModal();
+  });
   wrap.appendChild(mapBtn);
 
   trackEl.appendChild(wrap);
   trackEl.classList.add('show');
+
+  // Colapsa todos ao clicar fora do track
+  document.addEventListener('click', e => {
+    if (!trackEl.contains(e.target)) collapseTrack();
+  });
+}
+
+// Ativa um botão e colapsa os demais
+function selectTab(btn) {
+  document.querySelectorAll('.t-pt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// Remove active de todos (clique fora ou Escape)
+function collapseTrack() {
+  document.querySelectorAll('.t-pt').forEach(b => b.classList.remove('active'));
 }
 
 function setActive(id) {
+  // Expande o botão da cena ativa (chamado após navegação completar)
   document.querySelectorAll('.t-pt').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.id === id);
   });
@@ -517,6 +544,10 @@ function initCursor() {
 }
 
 // ─── Debug (tecla D) ──────────────────────────────────────────────────────────
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') collapseTrack();
+});
 
 let debugOn = false;
 document.addEventListener('keydown', e => {

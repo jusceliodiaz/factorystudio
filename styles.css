@@ -206,19 +206,31 @@ html, body {
 }
 
 .t-pt {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
+  gap: 0;
   height: 48px;
-  border-radius: 50%;
+  min-width: 48px;
+  max-width: 48px;
+  padding: 0 .5rem;
+  border-radius: 14px;
   border: 1px solid rgba(0,0,0,.08);
   background: rgba(255,255,255,.22);
   cursor: none;
   color: rgba(20,20,20,.6);
   user-select: none;
   touch-action: manipulation;
-  transition: background var(--trans), border-color var(--trans), color var(--trans);
+  overflow: hidden;
+  white-space: nowrap;
+  transition:
+    max-width  .55s cubic-bezier(0.34,1.4,0.64,1),
+    padding    .55s cubic-bezier(0.34,1.4,0.64,1),
+    gap        .55s cubic-bezier(0.34,1.4,0.64,1),
+    background var(--trans),
+    border-color var(--trans),
+    color var(--trans);
 }
 .t-pt svg {
   width: 20px;
@@ -229,29 +241,46 @@ html, body {
 }
 .t-pt svg * { pointer-events: none; }
 
-.t-pt {
-  position: relative;
+/* Label inline — max-width:0 garante que não ocupa espaço no flex quando colapsado */
+.t-label {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  max-width: 0;
+  opacity: 0;
+  transition:
+    max-width .55s cubic-bezier(0.34,1.4,0.64,1),
+    opacity   .2s  ease .15s;
 }
+.t-pt.active .t-label {
+  max-width: 150px;
+  opacity: 1;
+}
+
+/* Tooltip acima — só para botões não ativos */
 .t-pt::after {
   content: attr(data-label);
   position: absolute;
   bottom: calc(100% + 10px);
   left: 50%;
   transform: translateX(-50%) translateY(4px);
-  background: rgba(20, 20, 20, 0.88);
+  background: rgba(20,20,20,.88);
   backdrop-filter: blur(8px);
   color: #fff;
-  font-size: 0.68rem;
+  font-size: .68rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: .08em;
   white-space: nowrap;
   padding: 5px 10px;
   border-radius: 8px;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  transition: opacity .18s ease, transform .18s ease;
 }
-.t-pt:hover::after {
+.t-pt:not(.active):hover::after {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
@@ -261,6 +290,9 @@ html, body {
   background: rgba(255,255,255,.45);
 }
 .t-pt.active {
+  max-width: 180px;
+  padding: 0 1rem;
+  gap: .5rem;
   background: rgba(20,20,20,.85);
   border-color: transparent;
   color: #fff;
@@ -270,25 +302,32 @@ html, body {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     background: rgba(220, 220, 218, 0.95);
-    bottom: max(16px, env(safe-area-inset-bottom, 16px));
+    bottom: max(12px, env(safe-area-inset-bottom, 12px));
     left: 50%;
     right: auto;
     transform: translateX(-50%);
-    border-radius: 20px;
-    padding: 8px 10px;
-    padding-bottom: 8px;
+    border-radius: 14px;
+    padding: 6px 3px;
   }
   #track-pts {
     flex-direction: row;
-    gap: 4px;
+    gap: 1px;
   }
   .t-pt {
     cursor: pointer;
-    width: 48px;
-    height: 48px;
-    min-height: 44px;
-    padding: 0;
+    min-width: 32px;
+    max-width: 32px;
+    height: 32px;
+    min-height: 32px;
+    padding: 0 .15rem;
     flex-shrink: 0;
+    border-radius: 9px;
+  }
+  .t-pt svg { width: 15px; height: 15px; }
+  .t-label { font-size: 10px; }
+  .t-pt.active {
+    max-width: 115px;
+    padding: 0 .4rem;
   }
   .poi { cursor: pointer; }
   .poi-btn { width: 40px; height: 40px; }
