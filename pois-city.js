@@ -202,6 +202,8 @@ function makeCityDraggable(el) {
 let panoRenderer = null, panoRaf = null, panoCtl = null;
 
 function cityOpenPano(src) {
+  if (cityActivePopup) { cityActivePopup.classList.remove('open'); cityActivePopup = null; }
+  if (isCityTouch && cityMModal) cityMModal.classList.remove('open');
   const modal = document.getElementById('pano-modal');
   if (!modal) return;
   modal.classList.add('open');
