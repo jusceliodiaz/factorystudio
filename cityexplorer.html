@@ -7,11 +7,15 @@
   <meta name="description" content="Veja o empreendimento no contexto urbano com pontos de interesse georreferenciados, vistas 360° e localização interativa." />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="City Explorer — Factory Interactive" />
-  <meta property="og:description" content="Explore a localização do empreendimento com POIs interativos, panoramas 360° e mapa de conveniências do entorno." />
-  <meta property="og:image" content="https://factorystudio.works/images/og-cover.jpg" />
+  <meta property="og:description" content="O empreendimento no contexto da cidade. POIs interativos, panoramas 360° e mapa do entorno." />
+  <meta property="og:image" content="https://factorystudio.works/images/og_city.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:url" content="https://factorystudio.works/cityexplorer.html" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="https://factorystudio.works/images/og-cover.jpg" />
+  <meta name="twitter:title" content="City Explorer — Factory Interactive" />
+  <meta name="twitter:description" content="O empreendimento no contexto da cidade. POIs interativos, panoramas 360° e mapa do entorno." />
+  <meta name="twitter:image" content="https://factorystudio.works/images/og_city.jpg" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3K51DFTX3J"></script>
   <script>
@@ -409,7 +413,7 @@
   <div id="map-modal" aria-hidden="true" onclick="if(event.target===this)closeMapModal()">
     <div id="map-modal-box">
       <div id="map-modal-header">
-        <div id="map-modal-title">O que tem perto</div>
+        <div id="map-modal-title">O entorno</div>
         <button id="map-modal-close" onclick="closeMapModal()" aria-label="Fechar">
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <line x1="1" y1="1" x2="9" y2="9"/><line x1="9" y1="1" x2="1" y2="9"/>
@@ -466,7 +470,7 @@
       <div id="pano-modal-badge">360°</div>
       <canvas id="pano-canvas"></canvas>
       <div id="pano-hint">Arraste para explorar · Scroll para zoom</div>
-      <div id="pano-loading"><div id="pano-spinner"></div>Carregando panorama 360°</div>
+      <div id="pano-loading"><div id="pano-spinner"></div>Carregando...</div>
     </div>
   </div>
 
