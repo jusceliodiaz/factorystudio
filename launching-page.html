@@ -547,7 +547,7 @@
 
       /* ── IMAGE SEQUENCER ── */
       .seq-wrap {
-        height: 500vh;
+        height: 100vh;
         position: relative;
       }
       .seq-sticky {
@@ -558,11 +558,22 @@
         overflow: hidden;
         background: #000;
       }
+      #lp-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 300ms ease;
+        z-index: 1;
+      }
       .seq-canvas {
         position: absolute;
         inset: 0;
         width: 100%;
         height: 100%;
+        z-index: 2;
       }
       .seq-overlay {
         position: absolute;
@@ -1385,6 +1396,7 @@
       aria-label="Animação interativa"
     >
       <div class="seq-sticky">
+        <video id="lp-video" muted loop playsinline preload="auto"></video>
         <canvas class="seq-canvas" aria-hidden="true"></canvas>
         <div class="seq-pins"></div>
         <div class="seq-scrub" aria-label="Navegar sequência">
@@ -1648,55 +1660,43 @@
 
       /* ── IMAGE SEQUENCER ── */
       (function () {
-        const FRAME_COUNT = 48;
-        const BASE_PATH = innerWidth < 768
-          ? "images/seq_arch_m/launch_"
-          : "images/seq_arch/launch_";
-        const PAD = 2;
-        const wrap = document.querySelector(".seq-wrap");
-        const canvas = document.querySelector(".seq-canvas");
-        if (!wrap || !canvas) return;
-        const ctx = canvas.getContext("2d", { alpha: false });
-        let currentFrame = 0,
-          activeGroup = null,
-          isAnimating = false,
-          animRaf = null,
-          scrollRafPending = false;
-        function frameSrc(i) {
-          return BASE_PATH + String(i).padStart(PAD, "0") + ".jpg";
-        }
-        const images = Array.from({ length: FRAME_COUNT }, () => new Image());
-        let lastDrawn = null;
+        const MOBILE = window.matchMedia('(hover: none)').matches || innerWidth < 768;
+        const canvas = document.querySelector('.seq-canvas');
+        const video  = document.getElementById('lp-video');
+        if (!canvas || !video) return;
+        const ctx = canvas.getContext('2d', { alpha: false });
 
-        function loadFrame(i) {
-          if (images[i]._started) return;
-          images[i]._started = true;
-          const img = images[i];
-          img.onload = () => {
-            const p = img.decode ? img.decode().catch(() => {}) : Promise.resolve();
-            p.then(() => { if (i === 0 && !lastDrawn) drawFrame(0); });
-          };
-          img.src = frameSrc(i);
-        }
-        // Prioridade: frame 0 e último imediatamente, resto em paralelo após 80ms
-        loadFrame(0);
-        loadFrame(FRAME_COUNT - 1);
-        setTimeout(() => {
-          for (let i = 1; i < FRAME_COUNT - 1; i++) loadFrame(i);
-        }, 80);
+        const SEQ_FOLDER = MOBILE ? 'images/seq_arch_m/' : 'images/seq_arch/';
+        const LP_SEQ = {
+          'aereo-to-living': { prefix: 'launch_', from: 0, to: 47, pad: 2, ext: 'jpg', fps: 30 },
+          'living-to-aereo': { prefix: 'launch_', from: 0, to: 47, pad: 2, ext: 'jpg', fps: 30, reverse: true },
+        };
+        const LP_VIDEOS = { aereo: 'images/1.webm', living: 'images/l_loop.webm' };
+        const LP_TRANS  = { aereo: { living: 'aereo-to-living' }, living: { aereo: 'living-to-aereo' } };
 
-        function drawFrame(index) {
-          const img = images[index];
-          const toDraw = (img && img.complete && img.naturalWidth) ? img : lastDrawn;
-          if (!toDraw) return;
-          const scale = Math.max(
-            canvas.width / toDraw.naturalWidth,
-            canvas.height / toDraw.naturalHeight,
-          );
-          const x = (canvas.width - toDraw.naturalWidth * scale) / 2;
-          const y = (canvas.height - toDraw.naturalHeight * scale) / 2;
-          ctx.drawImage(toDraw, x, y, toDraw.naturalWidth * scale, toDraw.naturalHeight * scale);
-          if (img && img.complete && img.naturalWidth) lastDrawn = img;
+        let currentScene = null, activeGroup = null, busy = false, navGen = 0, lastDrawn = null;
+        const seqCache = new Map(), videoBlobs = new Map();
+
+        function resizeCanvas() {
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          canvas.width        = innerWidth  * dpr;
+          canvas.height       = innerHeight * dpr;
+          canvas.style.width  = innerWidth  + 'px';
+          canvas.style.height = innerHeight + 'px';
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          if (lastDrawn) drawCover(lastDrawn);
+        }
+
+        function drawCover(img) {
+          const cw = innerWidth, ch = innerHeight;
+          const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+          const dw = Math.round(img.naturalWidth  * scale);
+          const dh = Math.round(img.naturalHeight * scale);
+          const dx = Math.round((cw - dw) / 2);
+          const dy = Math.round((ch - dh) / 2);
+          ctx.clearRect(0, 0, cw, ch);
+          ctx.drawImage(img, dx, dy, dw, dh);
+          lastDrawn = img;
         }
         const POI_DATA = {
           aerial: [
@@ -1822,114 +1822,147 @@
           seqPinsEl.classList.remove("show-aerial", "show-living");
           if (group) seqPinsEl.classList.add("show-" + group);
         }
-        function animateToFrame(targetFrame, onDone) {
-          if (animRaf) cancelAnimationFrame(animRaf);
-          isAnimating = true;
-          showPins(null);
+        // ── Video + sequence navigation (firstperson pattern) ──────────────────
+
+        function loadVideo(src) {
+          if (!src || videoBlobs.has(src)) return Promise.resolve();
+          return fetch(src).then(r => r.blob()).then(blob => {
+            videoBlobs.set(src, URL.createObjectURL(blob));
+          }).catch(() => {});
+        }
+
+        function preloadSeq(seqId) {
+          if (seqCache.has(seqId)) return seqCache.get(seqId);
+          const seq = LP_SEQ[seqId];
+          const step = MOBILE ? 2 : 1;
+          const indices = [];
+          for (let i = seq.from; i <= seq.to; i += step) indices.push(i);
+          const frames = new Array(indices.length);
+          let loaded = 0, nextLoad = 0;
+          const SLOTS = MOBILE ? 4 : indices.length;
+          const promise = new Promise((resolve, reject) => {
+            const loadNext = () => {
+              if (nextLoad >= indices.length) return;
+              const slot = nextLoad++;
+              const num  = String(indices[slot]).padStart(seq.pad, '0');
+              const img  = new Image();
+              img.src    = `${SEQ_FOLDER}${seq.prefix}${num}.${seq.ext}`;
+              img.onload = () => {
+                const p = img.decode ? img.decode().catch(() => {}) : Promise.resolve();
+                p.then(() => { frames[slot] = img; loadNext(); if (++loaded === indices.length) resolve(frames); });
+              };
+              img.onerror = () => reject(new Error('Frame failed: ' + img.src));
+            };
+            for (let k = 0; k < Math.min(SLOTS, indices.length); k++) loadNext();
+          });
+          seqCache.set(seqId, promise);
+          return promise;
+        }
+
+        function playSeq(frames, reverse, gen, fps) {
+          return new Promise(resolve => {
+            canvas.style.opacity = '1';
+            video.style.opacity  = '0';
+            let index = reverse ? frames.length - 1 : 0;
+            let last  = 0;
+            const ms  = 1000 / fps;
+            function loop(now) {
+              if (gen !== navGen) return resolve();
+              if (now - last >= ms) {
+                last = now;
+                if (frames[index]) drawCover(frames[index]);
+                index += reverse ? -1 : 1;
+                if (reverse ? index < 0 : index >= frames.length) return resolve();
+              }
+              requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
+          });
+        }
+
+        function startScene(sceneId) {
+          currentScene = sceneId;
+          const src = videoBlobs.get(LP_VIDEOS[sceneId]) || LP_VIDEOS[sceneId];
+          video.src  = src;
+          video.load();
+          const gen = navGen;
+          const doFade = () => {
+            if (gen !== navGen) return;
+            video.style.opacity = '1';
+            canvas.style.transition = 'opacity 300ms ease';
+            canvas.style.opacity    = '0';
+            setTimeout(() => { canvas.style.transition = ''; }, 300);
+          };
+          video.addEventListener('playing',    doFade, { once: true });
+          video.addEventListener('timeupdate', doFade, { once: true });
+          video.play().catch(doFade);
+          setTimeout(doFade, 600);
+        }
+
+        async function navigateTo(targetId) {
+          if (busy || targetId === currentScene) return;
+          const seqId = LP_TRANS[currentScene]?.[targetId];
+          busy = true;
+          const gen = ++navGen;
           closePinPopups();
-          const startFrame = currentFrame,
-            diff = targetFrame - startFrame;
-          if (diff === 0) {
-            isAnimating = false;
-            if (onDone) onDone();
-            return;
+          showPins(null);
+          video.style.opacity = '0';
+          try {
+            if (seqId) {
+              const frames = await preloadSeq(seqId);
+              if (gen !== navGen) return;
+              const seq = LP_SEQ[seqId];
+              await playSeq(frames, seq.reverse === true, gen, (seq.fps || 30) / (MOBILE ? 2 : 1));
+              if (gen !== navGen) return;
+            }
+            startScene(targetId);
+          } finally {
+            if (gen === navGen) setTimeout(() => { if (gen === navGen) busy = false; }, 350);
           }
-          const DURATION = 900;
-          let startTime = null;
-          function ease(t) {
-            return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-          }
-          function step(ts) {
-            if (!startTime) startTime = ts;
-            const progress = Math.min((ts - startTime) / DURATION, 1);
-            const frame = Math.round(startFrame + diff * ease(progress));
-            if (frame !== currentFrame) {
-              currentFrame = frame;
-              drawFrame(frame);
-            }
-            if (progress < 1) {
-              animRaf = requestAnimationFrame(step);
-            } else {
-              currentFrame = targetFrame;
-              drawFrame(targetFrame);
-              isAnimating = false;
-              if (onDone) onDone();
-            }
-          }
-          animRaf = requestAnimationFrame(step);
         }
-        function onScroll() {
-          if (isAnimating || scrollRafPending) return;
-          scrollRafPending = true;
-          requestAnimationFrame(() => {
-            scrollRafPending = false;
-            const rect = wrap.getBoundingClientRect();
-            const maxScroll = wrap.offsetHeight - window.innerHeight;
-            const progress = Math.max(0, Math.min(-rect.top / maxScroll, 1));
-            const frame = Math.min(
-              Math.round(progress * (FRAME_COUNT - 1)),
-              FRAME_COUNT - 1,
-            );
-            if (frame !== currentFrame) {
-              currentFrame = frame;
-              drawFrame(frame);
-            }
-            if (activeGroup === "aerial" && frame <= 2) showPins("aerial");
-            else if (activeGroup === "living" && frame >= FRAME_COUNT - 3)
-              showPins("living");
-            else {
-              showPins(null);
-              closePinPopups();
-            }
-          });
-        }
-        function resize() {
-          const dpr = Math.min(window.devicePixelRatio || 1, 2);
-          canvas.width  = window.innerWidth  * dpr;
-          canvas.height = window.innerHeight * dpr;
-          canvas.style.width  = window.innerWidth  + 'px';
-          canvas.style.height = window.innerHeight + 'px';
-          drawFrame(currentFrame);
-        }
-        if (images[0].complete && images[0].naturalWidth) drawFrame(0);
-        window.addEventListener("scroll", onScroll, { passive: true });
+
+        // ── Init ──────────────────────────────────────────────────────────────
+        resizeCanvas();
         let _rw = innerWidth;
-        window.addEventListener("resize", () => {
+        window.addEventListener('resize', () => {
           if (innerWidth === _rw) return;
-          _rw = innerWidth; resize();
+          _rw = innerWidth; resizeCanvas();
         });
-        resize();
-        const btnFirst = document.getElementById("seqBtnFirst");
-        const btnLast = document.getElementById("seqBtnLast");
-        function activateGroup(group, targetFrame) {
-          const already = activeGroup === group;
-          activeGroup = already ? null : group;
-          btnFirst.classList.toggle("btn-on", activeGroup === "aerial");
-          btnLast.classList.toggle("btn-on", activeGroup === "living");
-          showPoiCards(activeGroup);
-          if (already) {
-            showPins(null);
-            closePinPopups();
-            return;
-          }
-          const maxScroll = wrap.offsetHeight - window.innerHeight;
-          const scrollTarget =
-            wrap.offsetTop + maxScroll * (targetFrame / (FRAME_COUNT - 1));
-          animateToFrame(targetFrame, () => {
-            document.documentElement.style.scrollBehavior = "auto";
-            window.scrollTo({ top: scrollTarget });
-            requestAnimationFrame(() => {
-              document.documentElement.style.scrollBehavior = "";
-              showPins(activeGroup);
-            });
-          });
-        }
-        if (btnFirst && btnLast) {
-          btnFirst.addEventListener("click", () => activateGroup("aerial", 0));
-          btnLast.addEventListener("click", () =>
-            activateGroup("living", FRAME_COUNT - 1),
-          );
-        }
+
+        const btnFirst = document.getElementById('seqBtnFirst');
+        const btnLast  = document.getElementById('seqBtnLast');
+
+        // Poster frame 0 → start aerial video
+        const poster = new Image();
+        poster.onload = () => drawCover(poster);
+        poster.src = SEQ_FOLDER + 'launch_00.jpg';
+
+        currentScene = 'aereo';
+        activeGroup  = 'aerial';
+        if (btnFirst) btnFirst.classList.add('btn-on');
+        startScene('aereo');
+        showPoiCards('aerial');
+        setTimeout(() => showPins('aerial'), 500);
+
+        preloadSeq('aereo-to-living');
+        Object.values(LP_VIDEOS).forEach(loadVideo);
+
+        if (btnFirst) btnFirst.addEventListener('click', () => {
+          if (activeGroup === 'aerial') return;
+          activeGroup = 'aerial';
+          btnFirst.classList.add('btn-on');
+          if (btnLast) btnLast.classList.remove('btn-on');
+          showPoiCards('aerial');
+          navigateTo('aereo').then(() => { if (currentScene === 'aereo') showPins('aerial'); });
+        });
+        if (btnLast) btnLast.addEventListener('click', () => {
+          if (activeGroup === 'living') return;
+          activeGroup = 'living';
+          btnLast.classList.add('btn-on');
+          if (btnFirst) btnFirst.classList.remove('btn-on');
+          showPoiCards('living');
+          navigateTo('living').then(() => { if (currentScene === 'living') showPins('living'); });
+        });
         const isTouchDevice = ('ontouchstart' in window) || window.matchMedia('(hover: none)').matches;
 
         // Modal body-level para mobile (evita clip de overflow:hidden no seq-sticky)
