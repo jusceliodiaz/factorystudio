@@ -1801,7 +1801,8 @@
             to: 47,
             pad: 2,
             ext: "jpg",
-            fps: 30,
+            fps: 45,
+            step: 2,
           },
           "living-to-aereo": {
             prefix: "launch_",
@@ -1809,7 +1810,8 @@
             to: 47,
             pad: 2,
             ext: "jpg",
-            fps: 30,
+            fps: 45,
+            step: 2,
             reverse: true,
           },
         };
@@ -1996,7 +1998,7 @@
         function preloadSeq(seqId) {
           if (seqCache.has(seqId)) return seqCache.get(seqId);
           const seq = LP_SEQ[seqId];
-          const step = MOBILE ? 2 : 1;
+          const step = seq.step ? (MOBILE ? seq.step * 2 : seq.step) : (MOBILE ? 2 : 1);
           const indices = [];
           for (let i = seq.from; i <= seq.to; i += step) indices.push(i);
           const frames = new Array(indices.length);
@@ -2059,12 +2061,17 @@
           const gen = navGen;
           const doFade = () => {
             if (gen !== navGen) return;
+            video.style.transition = "none";
             video.style.opacity = "1";
-            canvas.style.transition = "opacity 300ms ease";
-            canvas.style.opacity = "0";
-            setTimeout(() => {
-              canvas.style.transition = "";
-            }, 300);
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                if (gen !== navGen) return;
+                video.style.transition = "";
+                canvas.style.transition = "opacity 300ms ease";
+                canvas.style.opacity = "0";
+                setTimeout(() => { canvas.style.transition = ""; }, 300);
+              });
+            });
           };
           video.addEventListener("playing", doFade, { once: true });
           video.addEventListener("timeupdate", doFade, { once: true });
