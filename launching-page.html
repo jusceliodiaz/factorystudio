@@ -18,19 +18,48 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lançamento — Factory Interactive</title>
-    <meta name="description" content="Experiência imersiva de lançamento imobiliário — tour interativo, vistas 360° e galeria archviz. Tudo num link." />
+    <meta
+      name="description"
+      content="Experiência imersiva de lançamento imobiliário — tour interativo, vistas 360° e galeria archviz. Tudo num link."
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Venda antes de construir — Factory Interactive" />
-    <meta property="og:description" content="Tour virtual imersivo para o seu lançamento. O cliente entra no imóvel pelo link, antes do stand." />
-    <meta property="og:image" content="https://factorystudio.works/images/hero/h5.jpg" />
+    <meta
+      property="og:title"
+      content="Venda antes de construir — Factory Interactive"
+    />
+    <meta
+      property="og:description"
+      content="Tour virtual imersivo para o seu lançamento. O cliente entra no imóvel pelo link, antes do stand."
+    />
+    <meta
+      property="og:image"
+      content="https://factorystudio.works/images/hero/h5.jpg"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:url" content="https://factorystudio.works/launching-page.html" />
+    <meta
+      property="og:url"
+      content="https://factorystudio.works/launching-page.html"
+    />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Venda antes de construir — Factory Interactive" />
-    <meta name="twitter:description" content="Tour virtual imersivo para o seu lançamento. O cliente entra no imóvel pelo link, antes do stand." />
-    <meta name="twitter:image" content="https://factorystudio.works/images/hero/h5.jpg" />
-    <link rel="preload" as="image" href="images/hero/h5.jpg" fetchpriority="high" />
+    <meta
+      name="twitter:title"
+      content="Venda antes de construir — Factory Interactive"
+    />
+    <meta
+      name="twitter:description"
+      content="Tour virtual imersivo para o seu lançamento. O cliente entra no imóvel pelo link, antes do stand."
+    />
+    <meta
+      name="twitter:image"
+      content="https://factorystudio.works/images/hero/h5.jpg"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="images/hero/h5.jpg"
+      fetchpriority="high"
+    />
     <link rel="icon" type="image/png" href="images/logo_site.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -80,7 +109,7 @@
         padding: 10px 16px 10px 12px;
         border-radius: 999px;
         border: 1px solid rgba(255, 255, 255, 0.18);
-        background: rgba(255, 255, 255, 0.10);
+        background: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         color: rgba(255, 255, 255, 0.85);
@@ -89,7 +118,10 @@
         font-weight: 500;
         letter-spacing: 0.02em;
         text-decoration: none;
-        transition: background 0.2s, border-color 0.2s, transform 0.2s;
+        transition:
+          background 0.2s,
+          border-color 0.2s,
+          transform 0.2s;
       }
       .back-btn:hover {
         background: rgba(255, 255, 255, 0.18);
@@ -703,14 +735,18 @@
         transform: translateX(-50%) translateY(8px);
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.28s var(--ease), transform 0.28s var(--ease);
+        transition:
+          opacity 0.28s var(--ease),
+          transform 0.28s var(--ease);
         background: #ebebea;
         border: 1px solid rgba(0, 0, 0, 0.08);
         border-radius: 20px;
         overflow: hidden;
         width: 280px;
         white-space: normal;
-        box-shadow: 0 8px 40px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.10);
+        box-shadow:
+          0 8px 40px rgba(0, 0, 0, 0.22),
+          0 2px 8px rgba(0, 0, 0, 0.1);
       }
       .poi-pin.active .poi-popup {
         opacity: 1;
@@ -747,7 +783,9 @@
         z-index: 2;
         transition: background 200ms ease;
       }
-      .poi-popup-close:hover { background: rgba(255, 255, 255, 0.9); }
+      .poi-popup-close:hover {
+        background: rgba(255, 255, 255, 0.9);
+      }
       .poi-popup-close svg {
         width: 9px;
         height: 9px;
@@ -838,9 +876,15 @@
         text-transform: uppercase;
         cursor: pointer;
         width: 100%;
-        transition: background 200ms ease, border-color 200ms ease;
+        transition:
+          background 200ms ease,
+          border-color 200ms ease;
       }
-      .poi-pano-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+      .poi-pano-btn svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+      }
       .poi-pano-btn:hover {
         background: rgba(255, 255, 255, 0.85);
         border-color: rgba(0, 0, 0, 0.15);
@@ -869,7 +913,9 @@
         border: 1px solid rgba(255, 255, 255, 0.45);
         border-radius: 20px;
         padding: 10px 12px;
-        box-shadow: 0 0 0 0.5px rgba(255,255,255,0.5) inset, 0 20px 60px rgba(0,0,0,0.25);
+        box-shadow:
+          0 0 0 0.5px rgba(255, 255, 255, 0.5) inset,
+          0 20px 60px rgba(0, 0, 0, 0.25);
       }
       .seq-scrub-btn {
         display: flex;
@@ -886,7 +932,11 @@
         letter-spacing: 0.1em;
         text-transform: uppercase;
         cursor: pointer;
-        transition: background 220ms ease, border-color 220ms ease, color 220ms ease, transform 220ms ease;
+        transition:
+          background 220ms ease,
+          border-color 220ms ease,
+          color 220ms ease,
+          transform 220ms ease;
         white-space: nowrap;
       }
       .seq-scrub-btn svg {
@@ -998,7 +1048,9 @@
         justify-content: center;
         transition: background 0.2s;
       }
-      #pano-modal-close:hover { background: rgba(255, 255, 255, 0.45); }
+      #pano-modal-close:hover {
+        background: rgba(255, 255, 255, 0.45);
+      }
       #pano-modal-badge {
         position: absolute;
         top: 16px;
@@ -1199,8 +1251,14 @@
       }
 
       @media (prefers-reduced-motion: reduce) {
-        html { scroll-behavior: auto; }
-        .reveal { opacity: 1; transform: none; transition: none; }
+        html {
+          scroll-behavior: auto;
+        }
+        .reveal {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
       }
       .reveal-delay-1 {
         transition-delay: 0.1s;
@@ -1258,7 +1316,9 @@
         padding: 24px;
         touch-action: manipulation;
       }
-      #poi-m-modal.open { display: flex; }
+      #poi-m-modal.open {
+        display: flex;
+      }
       #poi-m-card {
         width: min(90vw, 340px);
         border-radius: 20px;
@@ -1267,19 +1327,30 @@
         border: 1px solid rgba(255, 255, 255, 0.45);
         backdrop-filter: blur(40px) saturate(1.8);
         -webkit-backdrop-filter: blur(40px) saturate(1.8);
-        box-shadow: 0 0 0 0.5px rgba(255,255,255,0.5) inset, 0 20px 60px rgba(0,0,0,0.35);
+        box-shadow:
+          0 0 0 0.5px rgba(255, 255, 255, 0.5) inset,
+          0 20px 60px rgba(0, 0, 0, 0.35);
         max-height: 80vh;
         overflow-y: auto;
         overscroll-behavior: contain;
         animation: poiModalIn 0.25s ease both;
       }
       @keyframes poiModalIn {
-        from { opacity: 0; transform: translateY(14px) scale(0.97); }
-        to   { opacity: 1; transform: none; }
+        from {
+          opacity: 0;
+          transform: translateY(14px) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
       }
       /* touch targets maiores no mobile */
       @media (hover: none) {
-        .poi-dot { width: 44px; height: 44px; }
+        .poi-dot {
+          width: 44px;
+          height: 44px;
+        }
       }
 
       /* ── LANG SWITCHER ── */
@@ -1336,15 +1407,30 @@
     </div>
 
     <a href="fi-preview.html#admin" class="back-btn">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M10 3L5 8l5 5"/>
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M10 3L5 8l5 5" />
       </svg>
       <span data-i18n="back">Voltar</span>
     </a>
 
     <!-- HERO -->
     <section class="lp-hero">
-      <img class="lp-hero-bg" src="images/hero/h5.jpg" alt="Lançamento" fetchpriority="high" decoding="async" />
+      <img
+        class="lp-hero-bg"
+        src="images/hero/h5.jpg"
+        alt="Lançamento"
+        fetchpriority="high"
+        decoding="async"
+      />
       <div class="lp-hero-overlay"></div>
       <div class="lp-hero-content">
         <span class="lp-badge" data-i18n="badge">Lançamento Imobiliário</span>
@@ -1496,14 +1582,28 @@
     <!-- GALLERY -->
     <div class="gallery-section" id="galeria">
       <div class="gallery-header">
-        <p class="lp-section-label reveal" data-i18n="gallery-label">— Galeria</p>
-        <h2 class="reveal reveal-delay-1" data-i18n="gallery-h2" data-i18n-html="true">
-          Exterior e interior. <em style="font-style:italic;font-weight:300;color:var(--gold)">Cada ângulo.</em>
+        <p class="lp-section-label reveal" data-i18n="gallery-label">
+          — Galeria
+        </p>
+        <h2
+          class="reveal reveal-delay-1"
+          data-i18n="gallery-h2"
+          data-i18n-html="true"
+        >
+          Exterior e interior.
+          <em style="font-style: italic; font-weight: 300; color: var(--gold)"
+            >Cada ângulo.</em
+          >
         </h2>
       </div>
       <div class="gallery-grid">
         <div class="gallery-card reveal">
-          <img src="images/hero/h5.jpg" alt="Vista externa" loading="lazy" decoding="async" />
+          <img
+            src="images/hero/h5.jpg"
+            alt="Vista externa"
+            loading="lazy"
+            decoding="async"
+          />
           <div class="gallery-card-overlay">
             <span class="gallery-card-label" data-i18n="gallery-img-1"
               >Vista Externa</span
@@ -1511,7 +1611,12 @@
           </div>
         </div>
         <div class="gallery-card reveal reveal-delay-1">
-          <img src="images/hero/h6.jpg" alt="Sala de estar" loading="lazy" decoding="async" />
+          <img
+            src="images/hero/h6.jpg"
+            alt="Sala de estar"
+            loading="lazy"
+            decoding="async"
+          />
           <div class="gallery-card-overlay">
             <span class="gallery-card-label" data-i18n="gallery-img-2"
               >Sala de Estar</span
@@ -1519,7 +1624,12 @@
           </div>
         </div>
         <div class="gallery-card reveal reveal-delay-2">
-          <img src="images/hero/h8.jpg" alt="Suíte master" loading="lazy" decoding="async" />
+          <img
+            src="images/hero/h8.jpg"
+            alt="Suíte master"
+            loading="lazy"
+            decoding="async"
+          />
           <div class="gallery-card-overlay">
             <span class="gallery-card-label" data-i18n="gallery-img-3"
               >Suíte Master</span
@@ -1532,9 +1642,15 @@
     <!-- FEATURES / DIFERENCIAIS -->
     <section class="features-section">
       <div class="features-copy">
-        <p class="lp-section-label reveal" data-i18n="feat-label">— Diferenciais</p>
-        <h2 class="reveal reveal-delay-1" data-i18n="feat-h2" data-i18n-html="true">
-          Tudo que converte.<br><em>Num link.</em>
+        <p class="lp-section-label reveal" data-i18n="feat-label">
+          — Diferenciais
+        </p>
+        <h2
+          class="reveal reveal-delay-1"
+          data-i18n="feat-h2"
+          data-i18n-html="true"
+        >
+          Tudo que converte.<br /><em>Num link.</em>
         </h2>
         <p class="reveal reveal-delay-2" data-i18n="feat-desc">
           O cliente entra no imóvel pelo link. Antes do stand. Antes da visita.
@@ -1544,28 +1660,36 @@
             <span class="feature-num">01</span>
             <div class="feature-text">
               <h4 data-i18n="feat-1-h4">Archviz fotorrealista</h4>
-              <p data-i18n="feat-1-p">Fotorrealismo que vende. Fluido em qualquer tela.</p>
+              <p data-i18n="feat-1-p">
+                Fotorrealismo que vende. Fluido em qualquer tela.
+              </p>
             </div>
           </div>
           <div class="feature-item reveal reveal-delay-2">
             <span class="feature-num">02</span>
             <div class="feature-text">
               <h4 data-i18n="feat-2-h4">Tour por ambientes</h4>
-              <p data-i18n="feat-2-p">Cada espaço na sequência certa. A narrativa de venda ideal.</p>
+              <p data-i18n="feat-2-p">
+                Cada espaço na sequência certa. A narrativa de venda ideal.
+              </p>
             </div>
           </div>
           <div class="feature-item reveal reveal-delay-3">
             <span class="feature-num">03</span>
             <div class="feature-text">
               <h4 data-i18n="feat-3-h4">Contato direto. Rastreável.</h4>
-              <p data-i18n="feat-3-p">WhatsApp com mensagem pré-configurada. Zero atrito.</p>
+              <p data-i18n="feat-3-p">
+                WhatsApp com mensagem pré-configurada. Zero atrito.
+              </p>
             </div>
           </div>
           <div class="feature-item reveal reveal-delay-3">
             <span class="feature-num">04</span>
             <div class="feature-text">
               <h4 data-i18n="feat-4-h4">Um link. Qualquer dispositivo.</h4>
-              <p data-i18n="feat-4-p">Abre no celular, tablet, notebook. Sem app, sem plugin.</p>
+              <p data-i18n="feat-4-p">
+                Abre no celular, tablet, notebook. Sem app, sem plugin.
+              </p>
             </div>
           </div>
         </div>
@@ -1662,37 +1786,65 @@
 
       /* ── IMAGE SEQUENCER ── */
       (function () {
-        const MOBILE = window.matchMedia('(hover: none)').matches || innerWidth < 768;
-        const canvas = document.querySelector('.seq-canvas');
-        const video  = document.getElementById('lp-video');
+        const MOBILE =
+          window.matchMedia("(hover: none)").matches || innerWidth < 768;
+        const canvas = document.querySelector(".seq-canvas");
+        const video = document.getElementById("lp-video");
         if (!canvas || !video) return;
-        const ctx = canvas.getContext('2d', { alpha: false });
+        const ctx = canvas.getContext("2d", { alpha: false });
 
-        const SEQ_FOLDER = MOBILE ? 'images/seq_arch_m/' : 'images/seq_arch/';
+        const SEQ_FOLDER = MOBILE ? "images/seq_arch_m/" : "images/seq_arch/";
         const LP_SEQ = {
-          'aereo-to-living': { prefix: 'launch_', from: 0, to: 47, pad: 2, ext: 'jpg', fps: 30 },
-          'living-to-aereo': { prefix: 'launch_', from: 0, to: 47, pad: 2, ext: 'jpg', fps: 30, reverse: true },
+          "aereo-to-living": {
+            prefix: "launch_",
+            from: 0,
+            to: 47,
+            pad: 2,
+            ext: "jpg",
+            fps: 30,
+          },
+          "living-to-aereo": {
+            prefix: "launch_",
+            from: 0,
+            to: 47,
+            pad: 2,
+            ext: "jpg",
+            fps: 30,
+            reverse: true,
+          },
         };
-        const LP_VIDEOS = { aereo: 'images/1.webm', living: 'images/l_loop.webm' };
-        const LP_TRANS  = { aereo: { living: 'aereo-to-living' }, living: { aereo: 'living-to-aereo' } };
+        const LP_VIDEOS = {
+          aereo: "images/predio_loop.webm",
+          living: "images/living_loop.webm",
+        };
+        const LP_TRANS = {
+          aereo: { living: "aereo-to-living" },
+          living: { aereo: "living-to-aereo" },
+        };
 
-        let currentScene = null, activeGroup = null, busy = false, navGen = 0, lastDrawn = null;
-        const seqCache = new Map(), videoBlobs = new Map();
+        let currentScene = null,
+          activeGroup = null,
+          busy = false,
+          navGen = 0,
+          lastDrawn = null;
+        const seqCache = new Map(),
+          videoBlobs = new Map();
 
         function resizeCanvas() {
           const dpr = Math.min(window.devicePixelRatio || 1, 2);
-          canvas.width        = innerWidth  * dpr;
-          canvas.height       = innerHeight * dpr;
-          canvas.style.width  = innerWidth  + 'px';
-          canvas.style.height = innerHeight + 'px';
+          canvas.width = innerWidth * dpr;
+          canvas.height = innerHeight * dpr;
+          canvas.style.width = innerWidth + "px";
+          canvas.style.height = innerHeight + "px";
           ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
           if (lastDrawn) drawCover(lastDrawn);
         }
 
         function drawCover(img) {
-          const cw = innerWidth, ch = innerHeight;
+          const cw = innerWidth,
+            ch = innerHeight;
           const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
-          const dw = Math.round(img.naturalWidth  * scale);
+          const dw = Math.round(img.naturalWidth * scale);
           const dh = Math.round(img.naturalHeight * scale);
           const dx = Math.round((cw - dw) / 2);
           const dy = Math.round((ch - dh) / 2);
@@ -1750,20 +1902,25 @@
         const seqPinsEl = document.querySelector(".seq-pins");
         const poiCardsEl = document.getElementById("poi-cards");
         const SVG_WALK = `<svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 13.9l1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3c1.3 1.5 3.3 2.5 5.5 2.5v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L7.3 6.8v4.7h2V8.1l1.8-.7-1.6 8.1-4.9-1-.4 2 7 1.4z"/></svg>`;
-        const SVG_CAR  = `<svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M18.92 6C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-6zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg>`;
+        const SVG_CAR = `<svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M18.92 6C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-6zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/></svg>`;
         const CLOSE_BTN = `<button class="poi-popup-close" onclick="event.stopPropagation();this.closest('.poi-pin').classList.remove('active')"><svg viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7"/><line x1="7" y1="1" x2="1" y2="7"/></svg></button>`;
 
         Object.entries(POI_DATA).forEach(([group, pins]) => {
           pins.forEach(({ px, py, title, tag, desc, img, pano, walk, car }) => {
-            const tagHtml = tag ? `<div class="poi-popup-tag">${tag}</div>` : "";
+            const tagHtml = tag
+              ? `<div class="poi-popup-tag">${tag}</div>`
+              : "";
 
             let popupInner;
-            if (group === 'aerial') {
-              const timesHtml = (walk != null && walk > 0) || (car != null && car > 0) ? `
+            if (group === "aerial") {
+              const timesHtml =
+                (walk != null && walk > 0) || (car != null && car > 0)
+                  ? `
                 <div class="poi-popup-times">
-                  ${walk > 0 ? `<div class="poi-popup-time-item">${SVG_WALK}<span>${walk} min</span></div>` : ''}
-                  ${car > 0  ? `<div class="poi-popup-time-item">${SVG_CAR}<span>${car} min</span></div>`  : ''}
-                </div>` : '';
+                  ${walk > 0 ? `<div class="poi-popup-time-item">${SVG_WALK}<span>${walk} min</span></div>` : ""}
+                  ${car > 0 ? `<div class="poi-popup-time-item">${SVG_CAR}<span>${car} min</span></div>` : ""}
+                </div>`
+                  : "";
               popupInner = `
                 <div class="poi-popup poi-popup--simple">
                   <div class="poi-popup-simple-body">
@@ -1774,7 +1931,7 @@
                   </div>
                 </div>`;
             } else {
-              const imgSrc  = img  || "images/POI_001.jpg";
+              const imgSrc = img || "images/POI_001.jpg";
               const panoSrc = pano || "images/XP_NPL_360_2.jpg";
               const panoBtn = `
                 <button class="poi-pano-btn" onclick="openPanoModal('${panoSrc}')">
@@ -1790,7 +1947,7 @@
                   <div class="poi-popup-body">
                     ${tagHtml}
                     <div class="poi-popup-title">${title}</div>
-                    ${desc ? `<div class="poi-popup-desc">${desc}</div>` : ''}
+                    ${desc ? `<div class="poi-popup-desc">${desc}</div>` : ""}
                     ${panoBtn}
                   </div>
                 </div>`;
@@ -1828,9 +1985,12 @@
 
         function loadVideo(src) {
           if (!src || videoBlobs.has(src)) return Promise.resolve();
-          return fetch(src).then(r => r.blob()).then(blob => {
-            videoBlobs.set(src, URL.createObjectURL(blob));
-          }).catch(() => {});
+          return fetch(src)
+            .then((r) => r.blob())
+            .then((blob) => {
+              videoBlobs.set(src, URL.createObjectURL(blob));
+            })
+            .catch(() => {});
         }
 
         function preloadSeq(seqId) {
@@ -1840,41 +2000,50 @@
           const indices = [];
           for (let i = seq.from; i <= seq.to; i += step) indices.push(i);
           const frames = new Array(indices.length);
-          let loaded = 0, nextLoad = 0;
+          let loaded = 0,
+            nextLoad = 0;
           const SLOTS = MOBILE ? 4 : indices.length;
           const promise = new Promise((resolve, reject) => {
             const loadNext = () => {
               if (nextLoad >= indices.length) return;
               const slot = nextLoad++;
-              const num  = String(indices[slot]).padStart(seq.pad, '0');
-              const img  = new Image();
-              img.src    = `${SEQ_FOLDER}${seq.prefix}${num}.${seq.ext}`;
+              const num = String(indices[slot]).padStart(seq.pad, "0");
+              const img = new Image();
+              img.src = `${SEQ_FOLDER}${seq.prefix}${num}.${seq.ext}`;
               img.onload = () => {
-                const p = img.decode ? img.decode().catch(() => {}) : Promise.resolve();
-                p.then(() => { frames[slot] = img; loadNext(); if (++loaded === indices.length) resolve(frames); });
+                const p = img.decode
+                  ? img.decode().catch(() => {})
+                  : Promise.resolve();
+                p.then(() => {
+                  frames[slot] = img;
+                  loadNext();
+                  if (++loaded === indices.length) resolve(frames);
+                });
               };
-              img.onerror = () => reject(new Error('Frame failed: ' + img.src));
+              img.onerror = () => reject(new Error("Frame failed: " + img.src));
             };
-            for (let k = 0; k < Math.min(SLOTS, indices.length); k++) loadNext();
+            for (let k = 0; k < Math.min(SLOTS, indices.length); k++)
+              loadNext();
           });
           seqCache.set(seqId, promise);
           return promise;
         }
 
         function playSeq(frames, reverse, gen, fps) {
-          return new Promise(resolve => {
-            canvas.style.opacity = '1';
-            video.style.opacity  = '0';
+          return new Promise((resolve) => {
+            canvas.style.opacity = "1";
+            video.style.opacity = "0";
             let index = reverse ? frames.length - 1 : 0;
-            let last  = 0;
-            const ms  = 1000 / fps;
+            let last = 0;
+            const ms = 1000 / fps;
             function loop(now) {
               if (gen !== navGen) return resolve();
               if (now - last >= ms) {
                 last = now;
                 if (frames[index]) drawCover(frames[index]);
                 index += reverse ? -1 : 1;
-                if (reverse ? index < 0 : index >= frames.length) return resolve();
+                if (reverse ? index < 0 : index >= frames.length)
+                  return resolve();
               }
               requestAnimationFrame(loop);
             }
@@ -1885,18 +2054,20 @@
         function startScene(sceneId) {
           currentScene = sceneId;
           const src = videoBlobs.get(LP_VIDEOS[sceneId]) || LP_VIDEOS[sceneId];
-          video.src  = src;
+          video.src = src;
           video.load();
           const gen = navGen;
           const doFade = () => {
             if (gen !== navGen) return;
-            video.style.opacity = '1';
-            canvas.style.transition = 'opacity 300ms ease';
-            canvas.style.opacity    = '0';
-            setTimeout(() => { canvas.style.transition = ''; }, 300);
+            video.style.opacity = "1";
+            canvas.style.transition = "opacity 300ms ease";
+            canvas.style.opacity = "0";
+            setTimeout(() => {
+              canvas.style.transition = "";
+            }, 300);
           };
-          video.addEventListener('playing',    doFade, { once: true });
-          video.addEventListener('timeupdate', doFade, { once: true });
+          video.addEventListener("playing", doFade, { once: true });
+          video.addEventListener("timeupdate", doFade, { once: true });
           video.play().catch(doFade);
           setTimeout(doFade, 600);
         }
@@ -1908,74 +2079,91 @@
           const gen = ++navGen;
           closePinPopups();
           showPins(null);
-          video.style.opacity = '0';
+          video.style.opacity = "0";
           try {
             if (seqId) {
               const frames = await preloadSeq(seqId);
               if (gen !== navGen) return;
               const seq = LP_SEQ[seqId];
-              await playSeq(frames, seq.reverse === true, gen, (seq.fps || 30) / (MOBILE ? 2 : 1));
+              await playSeq(
+                frames,
+                seq.reverse === true,
+                gen,
+                (seq.fps || 30) / (MOBILE ? 2 : 1),
+              );
               if (gen !== navGen) return;
             }
             startScene(targetId);
           } finally {
-            if (gen === navGen) setTimeout(() => { if (gen === navGen) busy = false; }, 350);
+            if (gen === navGen)
+              setTimeout(() => {
+                if (gen === navGen) busy = false;
+              }, 350);
           }
         }
 
         // ── Init ──────────────────────────────────────────────────────────────
         resizeCanvas();
         let _rw = innerWidth;
-        window.addEventListener('resize', () => {
+        window.addEventListener("resize", () => {
           if (innerWidth === _rw) return;
-          _rw = innerWidth; resizeCanvas();
+          _rw = innerWidth;
+          resizeCanvas();
         });
 
-        const btnFirst = document.getElementById('seqBtnFirst');
-        const btnLast  = document.getElementById('seqBtnLast');
+        const btnFirst = document.getElementById("seqBtnFirst");
+        const btnLast = document.getElementById("seqBtnLast");
 
         // Poster frame 0 → start aerial video
         const poster = new Image();
         poster.onload = () => drawCover(poster);
-        poster.src = SEQ_FOLDER + 'launch_00.jpg';
+        poster.src = SEQ_FOLDER + "launch_00.jpg";
 
-        currentScene = 'aereo';
-        activeGroup  = 'aerial';
-        if (btnFirst) btnFirst.classList.add('btn-on');
-        startScene('aereo');
-        showPoiCards('aerial');
-        setTimeout(() => showPins('aerial'), 500);
+        currentScene = "aereo";
+        activeGroup = "aerial";
+        if (btnFirst) btnFirst.classList.add("btn-on");
+        startScene("aereo");
+        showPoiCards("aerial");
+        setTimeout(() => showPins("aerial"), 500);
 
-        preloadSeq('aereo-to-living');
+        preloadSeq("aereo-to-living");
         Object.values(LP_VIDEOS).forEach(loadVideo);
 
-        if (btnFirst) btnFirst.addEventListener('click', () => {
-          if (activeGroup === 'aerial') return;
-          activeGroup = 'aerial';
-          btnFirst.classList.add('btn-on');
-          if (btnLast) btnLast.classList.remove('btn-on');
-          showPoiCards('aerial');
-          navigateTo('aereo').then(() => { if (currentScene === 'aereo') showPins('aerial'); });
-        });
-        if (btnLast) btnLast.addEventListener('click', () => {
-          if (activeGroup === 'living') return;
-          activeGroup = 'living';
-          btnLast.classList.add('btn-on');
-          if (btnFirst) btnFirst.classList.remove('btn-on');
-          showPoiCards('living');
-          navigateTo('living').then(() => { if (currentScene === 'living') showPins('living'); });
-        });
-        const isTouchDevice = ('ontouchstart' in window) || window.matchMedia('(hover: none)').matches;
+        if (btnFirst)
+          btnFirst.addEventListener("click", () => {
+            if (activeGroup === "aerial") return;
+            activeGroup = "aerial";
+            btnFirst.classList.add("btn-on");
+            if (btnLast) btnLast.classList.remove("btn-on");
+            showPoiCards("aerial");
+            navigateTo("aereo").then(() => {
+              if (currentScene === "aereo") showPins("aerial");
+            });
+          });
+        if (btnLast)
+          btnLast.addEventListener("click", () => {
+            if (activeGroup === "living") return;
+            activeGroup = "living";
+            btnLast.classList.add("btn-on");
+            if (btnFirst) btnFirst.classList.remove("btn-on");
+            showPoiCards("living");
+            navigateTo("living").then(() => {
+              if (currentScene === "living") showPins("living");
+            });
+          });
+        const isTouchDevice =
+          "ontouchstart" in window ||
+          window.matchMedia("(hover: none)").matches;
 
         // Modal body-level para mobile (evita clip de overflow:hidden no seq-sticky)
         let poiMModal = null;
         if (isTouchDevice) {
-          poiMModal = document.createElement('div');
-          poiMModal.id = 'poi-m-modal';
+          poiMModal = document.createElement("div");
+          poiMModal.id = "poi-m-modal";
           poiMModal.innerHTML = '<div id="poi-m-card"></div>';
           document.body.appendChild(poiMModal);
-          poiMModal.addEventListener('click', e => {
-            if (e.target === poiMModal) poiMModal.classList.remove('open');
+          poiMModal.addEventListener("click", (e) => {
+            if (e.target === poiMModal) poiMModal.classList.remove("open");
           });
         }
 
@@ -1983,14 +2171,16 @@
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
             if (isTouchDevice && poiMModal) {
-              const popup = btn.closest(".poi-pin").querySelector('.poi-popup');
+              const popup = btn.closest(".poi-pin").querySelector(".poi-popup");
               if (!popup) return;
-              const card = document.getElementById('poi-m-card');
+              const card = document.getElementById("poi-m-card");
               card.innerHTML = popup.innerHTML;
-              card.querySelector('.poi-popup-close')?.addEventListener('click', () => {
-                poiMModal.classList.remove('open');
-              });
-              poiMModal.classList.add('open');
+              card
+                .querySelector(".poi-popup-close")
+                ?.addEventListener("click", () => {
+                  poiMModal.classList.remove("open");
+                });
+              poiMModal.classList.add("open");
               return;
             }
             const pin = btn.closest(".poi-pin");
@@ -2210,12 +2400,13 @@
           panoRenderer = renderer;
 
           function onPanoResize() {
-            const W = box.clientWidth, H = box.clientHeight;
+            const W = box.clientWidth,
+              H = box.clientHeight;
             renderer.setSize(W, H);
             camera.aspect = W / H;
             camera.updateProjectionMatrix();
           }
-          window.addEventListener('resize', onPanoResize);
+          window.addEventListener("resize", onPanoResize);
           const scene = new THREE.Scene();
           _panoScene = scene;
           const camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 200);
@@ -2391,8 +2582,7 @@
           pt: {
             back: "Voltar",
             badge: "Lançamento Exclusivo",
-            "hero-h1":
-              "Venda antes de <em>construir</em>.",
+            "hero-h1": "Venda antes de <em>construir</em>.",
             "meta-tipo-label": "Tipologia",
             "meta-tipo-val": "Alto Padrão",
             "meta-entrega-label": "Entrega",
@@ -2413,14 +2603,12 @@
             "feat-desc":
               "O cliente entra no imóvel pelo link. Antes do stand. Antes da visita.",
             "feat-1-h4": "Archviz fotorrealista",
-            "feat-1-p":
-              "Fotorrealismo que vende. Fluido em qualquer tela.",
+            "feat-1-p": "Fotorrealismo que vende. Fluido em qualquer tela.",
             "feat-2-h4": "Tour por ambientes",
             "feat-2-p":
               "Cada espaço na sequência certa. A narrativa de venda ideal.",
             "feat-3-h4": "Contato direto. Rastreável.",
-            "feat-3-p":
-              "WhatsApp com mensagem pré-configurada. Zero atrito.",
+            "feat-3-p": "WhatsApp com mensagem pré-configurada. Zero atrito.",
             "feat-4-h4": "Um link. Qualquer dispositivo.",
             "feat-4-p":
               "Abre no celular, tablet, notebook. Sem app, sem plugin.",
@@ -2455,11 +2643,9 @@
             "gallery-img-3": "Master Suite",
             "feat-label": "— Why it works",
             "feat-h2": "Everything that converts.<br><em>One link.</em>",
-            "feat-desc":
-              "The client steps inside before visiting the stand.",
+            "feat-desc": "The client steps inside before visiting the stand.",
             "feat-1-h4": "Photorealistic archviz",
-            "feat-1-p":
-              "Visuals that sell. Smooth on any screen.",
+            "feat-1-p": "Visuals that sell. Smooth on any screen.",
             "feat-2-h4": "Spaces on demand",
             "feat-2-p":
               "Every space in sequence. The sales narrative you've always wanted.",
@@ -2467,13 +2653,11 @@
             "feat-3-p":
               "WhatsApp at the right moment. Pre-set message. Zero friction.",
             "feat-4-h4": "One link. Any device.",
-            "feat-4-p":
-              "Opens on mobile, tablet, laptop. No app, no plugin.",
+            "feat-4-p": "Opens on mobile, tablet, laptop. No app, no plugin.",
             "cta-label": "— Start a Project",
             "cta-h2":
               'Ready to launch <em style="font-style:italic;font-weight:300;color:var(--gold)">differently</em>?',
-            "cta-p":
-              "Built for developers and high-end properties.",
+            "cta-p": "Built for developers and high-end properties.",
             "cta-btn-wa": "Talk on WhatsApp",
             "cta-btn-demos": "See other demos",
             footer: "Factory Interactive © 2026 · All rights reserved.",
@@ -2509,20 +2693,24 @@
 
     <!-- ── GA Event Tracking ──────────────────────────────── -->
     <script>
-      function track(name, params) { window.gtag && gtag('event', name, params || {}); }
+      function track(name, params) {
+        window.gtag && gtag("event", name, params || {});
+      }
 
       // WhatsApp
-      document.querySelectorAll('a[href*="wa.me"]').forEach(function(a) {
-        a.addEventListener('click', function() {
-          track('whatsapp_click', { local: (a.closest('section,div') || {}).className || '' });
+      document.querySelectorAll('a[href*="wa.me"]').forEach(function (a) {
+        a.addEventListener("click", function () {
+          track("whatsapp_click", {
+            local: (a.closest("section,div") || {}).className || "",
+          });
         });
       });
 
       // Panorama 360°
-      if (typeof openPanoModal === 'function') {
+      if (typeof openPanoModal === "function") {
         var _origPano = openPanoModal;
-        openPanoModal = function(src) {
-          track('pano_open', { produto: 'launching_page' });
+        openPanoModal = function (src) {
+          track("pano_open", { produto: "launching_page" });
           return _origPano(src);
         };
       }
