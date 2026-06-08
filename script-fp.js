@@ -266,7 +266,7 @@ function preload(seqId) {
   const seq = MOBILE
     ? { ...seqBase, folder: seqBase.folder.replace('images/seq_arch/', 'images/seq_arch_m/') }
     : seqBase;
-  const step    = MOBILE ? 2 : 1;
+  const step    = seq.step ? (MOBILE ? seq.step * 2 : seq.step) : (MOBILE ? 2 : 1);
   const indices = [];
   for (let i = seq.from; i <= seq.to; i += step) indices.push(i);
 

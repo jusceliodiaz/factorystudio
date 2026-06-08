@@ -18,75 +18,91 @@ const CONFIG = {
   sequences: {
     "aereo-to-pool": {
       folder: "images/seq_arch/", prefix: "aereo_to_piscina_",
-      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60,
+      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, step: 2,
     },
     "pool-to-aereo": {
       folder: "images/seq_arch/", prefix: "aereo_to_piscina_",
-      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, reverse: true,
+      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, step: 2, reverse: true,
     },
     "pool-to-living": {
       folder: "images/seq_arch/", prefix: "pool_to_living_",
-      from: 0, to: 72, pad: 2, ext: "jpg", fps: 60,
+      from: 0, to: 72, pad: 2, ext: "jpg", fps: 60, step: 2,
     },
     "living-to-pool": {
       folder: "images/seq_arch/", prefix: "pool_to_living_",
-      from: 0, to: 72, pad: 2, ext: "jpg", fps: 60, reverse: true,
+      from: 0, to: 72, pad: 2, ext: "jpg", fps: 60, step: 2, reverse: true,
     },
     "pool-to-kitchen": {
       folder: "images/seq_arch/", prefix: "pool_to_kitchen_",
-      from: 0, to: 72, pad: 2, ext: "jpg", fps: 60,
+      from: 0, to: 72, pad: 2, ext: "jpg", fps: 60, step: 2,
     },
     "kitchen-to-pool": {
       folder: "images/seq_arch/", prefix: "pool_to_kitchen_",
-      from: 0, to: 72, pad: 2, ext: "jpg", fps: 60, reverse: true,
+      from: 0, to: 72, pad: 2, ext: "jpg", fps: 60, step: 2, reverse: true,
     },
     "pool-to-jardim": {
       folder: "images/seq_arch/", prefix: "pool_to_jardim_",
-      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60,
+      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, step: 2,
     },
     "jardim-to-pool": {
       folder: "images/seq_arch/", prefix: "pool_to_jardim_",
-      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, reverse: true,
+      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, step: 2, reverse: true,
     },
     "aereo-to-jardim": {
       folder: "images/seq_arch/", prefix: "pano_jardim_",
-      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60,
+      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, step: 2,
     },
     "jardim-to-aereo": {
       folder: "images/seq_arch/", prefix: "pano_jardim_",
-      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, reverse: true,
+      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, step: 2, reverse: true,
     },
     "aereo-to-kitchen": {
       folder: "images/seq_arch/", prefix: "pano_cozinha_",
-      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60,
+      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, step: 2,
     },
     "kitchen-to-aereo": {
       folder: "images/seq_arch/", prefix: "pano_cozinha_",
-      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, reverse: true,
+      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, step: 2, reverse: true,
     },
     "aereo-to-living": {
       folder: "images/seq_arch/", prefix: "pano_living_",
-      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60,
+      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, step: 2,
     },
     "living-to-aereo": {
       folder: "images/seq_arch/", prefix: "pano_living_",
-      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, reverse: true,
+      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, step: 2, reverse: true,
     },
     "living-to-kitchen": {
       folder: "images/seq_arch/", prefix: "living_to_kitchen_",
-      from: 0, to: 72, pad: 2, ext: "jpg", fps: 60,
+      from: 0, to: 72, pad: 2, ext: "jpg", fps: 60, step: 2,
     },
     "kitchen-to-living": {
       folder: "images/seq_arch/", prefix: "living_to_kitchen_",
-      from: 0, to: 72, pad: 2, ext: "jpg", fps: 60, reverse: true,
+      from: 0, to: 72, pad: 2, ext: "jpg", fps: 60, step: 2, reverse: true,
+    },
+    "jardim-to-living": {
+      folder: "images/seq_arch/", prefix: "jardim_to_living_",
+      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, step: 2,
+    },
+    "living-to-jardim": {
+      folder: "images/seq_arch/", prefix: "jardim_to_living_",
+      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, step: 2, reverse: true,
+    },
+    "jardim-to-kitchen": {
+      folder: "images/seq_arch/", prefix: "jardim_to_kitchen_",
+      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, step: 2,
+    },
+    "kitchen-to-jardim": {
+      folder: "images/seq_arch/", prefix: "jardim_to_kitchen_",
+      from: 0, to: 47, pad: 2, ext: "jpg", fps: 60, step: 2, reverse: true,
     },
   },
 
   transitions: {
     aereo:   { pool: "aereo-to-pool", jardim: "aereo-to-jardim", kitchen: "aereo-to-kitchen", living: "aereo-to-living" },
     pool:    { aereo: "pool-to-aereo", living: "pool-to-living", kitchen: "pool-to-kitchen", jardim: "pool-to-jardim" },
-    living:  { pool: "living-to-pool", kitchen: "living-to-kitchen", aereo: "living-to-aereo" },
-    kitchen: { pool: "kitchen-to-pool", living: "kitchen-to-living", aereo: "kitchen-to-aereo" },
-    jardim:  { pool: "jardim-to-pool", aereo: "jardim-to-aereo" },
+    living:  { pool: "living-to-pool", kitchen: "living-to-kitchen", aereo: "living-to-aereo", jardim: "living-to-jardim" },
+    kitchen: { pool: "kitchen-to-pool", living: "kitchen-to-living", aereo: "kitchen-to-aereo", jardim: "kitchen-to-jardim" },
+    jardim:  { pool: "jardim-to-pool", aereo: "jardim-to-aereo", living: "jardim-to-living", kitchen: "jardim-to-kitchen" },
   },
 };
